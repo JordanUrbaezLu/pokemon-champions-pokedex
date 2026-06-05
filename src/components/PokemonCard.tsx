@@ -97,9 +97,10 @@ export function PokemonCard({ entry }: { entry: RosterEntry }) {
         </div>
       </div>
 
-      {/* Mega mark sits immediately left of the doubles pick rate. Tapping it
-          jumps straight to the Mega-toggled detail view. */}
-      <div className="flex shrink-0 items-center gap-2 pr-1">
+      {/* Mega mark sits left of the doubles pick rate. The larger gap keeps its
+          white glow from crowding (or getting clipped against) the % element.
+          Tapping it jumps straight to the Mega-toggled detail view. */}
+      <div className="flex shrink-0 items-center gap-3.5 pr-1">
         {entry.hasMega && entry.megaKey && (
           <Link
             href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
