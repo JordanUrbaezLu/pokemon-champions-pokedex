@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens for the Champions Pokedex.
+ * Dark-first: the app is built for hand-held use during live matches, where a
+ * dark UI is easier on the eyes and on battery.
+ */
+@theme {
+  --color-background: #0b0f14;
+  --color-surface: #151b23;
+  --color-surface-2: #1d2630;
+  --color-foreground: #f4f6f8;
+  --color-muted: #93a1b0;
+  --color-border: #232d38;
+  --color-accent: #ff5350;
+
+  --font-sans: var(--font-app-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-app-mono), ui-monospace, monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  /* Mobile niceties: no blue tap flash, no rubber-band scroll, crisp text. */
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+  text-rendering: optimizeLegibility;
+}
+
+/* Hide the browser's native search clear (X) — we render our own. */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Hide scrollbars on horizontal chip strips while keeping them scrollable. */
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Bottom-sheet entrance for the move-detail modal. */
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
