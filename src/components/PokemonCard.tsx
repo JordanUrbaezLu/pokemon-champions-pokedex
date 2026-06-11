@@ -114,7 +114,15 @@ export function PokemonCard({
             aria-label={`${entry.displayName} Mega Evolution`}
             className="relative z-10 -m-1 rounded-full p-1 active:bg-surface-2"
           >
-            <MegaIcon className="size-7.5 filter-[drop-shadow(0_0_4px_rgba(255,255,255,1))_drop-shadow(0_0_8px_rgba(255,255,255,0.6))]" />
+            {/* The glow filter lives on a PADDED wrapper (12px ≥ the shadow's
+                reach), so the whole glow stays inside the element's own box.
+                Browsers sometimes rasterize filtered layers with tight bounds
+                (ignoring filter bleed), which clipped the glow top/right until
+                a repaint — containment makes that bug class impossible. The
+                negative margin keeps layout identical. */}
+            <span className="-m-3 block p-3 filter-[drop-shadow(0_0_4px_rgba(255,255,255,1))_drop-shadow(0_0_8px_rgba(255,255,255,0.6))]">
+              <MegaIcon className="size-7.5" />
+            </span>
           </Link>
         )}
         {showUsage && (
