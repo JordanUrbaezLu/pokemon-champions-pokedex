@@ -21,18 +21,29 @@ const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
 const OUT_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
 
 const API = "https://pokeapi.co/api/v2";
-const CONCURRENCY = 8;
+// Pokémon Showdown's data files — move flags (contact, sound, …) PokeAPI
+// doesn't carry, per-form learnsets (a second opinion where PokeAPI has
+// holes), the prevo chain (egg/pre-evolution moves live on the prevo), and a
+// fallback for Champions-era moves PokeAPI can't resolve.
+const SHOWDOWN_MOVES_URL = "https://play.pokemonshowdown.com/data/moves.json";
+const SHOWDOWN_LEARNSETS_URL = "https://play.pokemonshowdown.com/data/learnsets.json";
+const SHOWDOWN_POKEDEX_URL = "https://play.pokemonshowdown.com/data/pokedex.json";
+const CONCURRENCY = 5;
 
-/** Fetch JSON with a few retries so one transient blip doesn't fail the build. */
+// Moves that don't exist in Champions (no Terastallization), filtered out of
+// every movepool no matter which source supplied them.
+const EXCLUDED_MOVES = new Set(["tera-blast", "tera-starstorm"]);
+
+/** Fetch JSON with patient retries — PokeAPI 5xx blips can last a while. */
 async function getJson(url, attempt = 1) {
   try {
-    const res = await fetch(url);
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } });
     if (res.status === 404) return { notFound: true };
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status} on ${url}`);
     return { data: await res.json() };
   } catch (err) {
-    if (attempt >= 3) throw err;
-    await new Promise((r) => setTimeout(r, 400 * attempt));
+    if (attempt >= 8) throw err;
+    await new Promise((r) => setTimeout(r, Math.min(15000, 700 * 2 ** (attempt - 1))));
     return getJson(url, attempt + 1);
   }
 }
@@ -100,16 +111,29 @@ const slugifyMove = (s) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-/** The set of moves a Pokémon can learn in Champions, as PokeAPI move slugs. */
-async function fetchChampionsMoves(rosterSlug) {
-  const url = `${SEREBII_BASE}/${SEREBII_SLUG[rosterSlug] ?? rosterSlug}/`;
+// Variant roster entries (regional / Rotom appliance forms) have no Serebii
+// Champions page of their own — their moves live on the base species' page.
+const VARIANT_SUFFIX = /-(alola|galar|hisui|paldea|wash|heat|frost|mow|fan)(-.*)?$/;
+const speciesPageSlug = (slug) => slug.replace(VARIANT_SUFFIX, "");
+
+// Cache Serebii pages by species so Ninetales + Alolan Ninetales fetch once.
+const serebiiCache = new Map();
+
+/** The set of moves on a Serebii Champions pokédex page, as PokeAPI move slugs. */
+async function fetchChampionsMoves(pageSlug) {
+  if (serebiiCache.has(pageSlug)) return serebiiCache.get(pageSlug);
+  const url = `${SEREBII_BASE}/${SEREBII_SLUG[pageSlug] ?? pageSlug}/`;
   const html = await getText(url);
-  if (!html) return [];
-  const re = /attackdex-champions\/[a-z0-9-]+\.shtml">([^<]+)</g;
-  const names = new Set();
-  let m;
-  while ((m = re.exec(html))) names.add(m[1].trim());
-  return [...new Set([...names].map(slugifyMove))].filter(Boolean).sort();
+  let slugs = [];
+  if (html) {
+    const re = /attackdex-champions\/[a-z0-9-]+\.shtml">([^<]+)</g;
+    const names = new Set();
+    let m;
+    while ((m = re.exec(html))) names.add(m[1].trim());
+    slugs = [...new Set([...names].map(slugifyMove))].filter(Boolean).sort();
+  }
+  serebiiCache.set(pageSlug, slugs);
+  return slugs;
 }
 
 const STAT_KEY = {
@@ -228,6 +252,133 @@ async function buildMove(slug) {
   };
 }
 
+// --- Showdown move data (flags + fallback for moves PokeAPI lacks) -----------
+
+const stripId = (s) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+// Move flags the app (and future battle math) cares about, in Showdown's naming.
+const FLAG_KEYS = ["contact", "punch", "sound", "bullet", "bite", "slicing", "wind", "pulse"];
+
+/** Showdown target -> PokeAPI target naming (the shape the UI already reads). */
+const SHOWDOWN_TARGET = {
+  normal: "selected-pokemon",
+  any: "selected-pokemon",
+  adjacentFoe: "selected-pokemon",
+  allAdjacentFoes: "all-opponents",
+  allAdjacent: "all-other-pokemon",
+  all: "entire-field",
+  self: "user",
+  adjacentAlly: "ally",
+  adjacentAllyOrSelf: "user-or-ally",
+  allies: "all-allies",
+  allySide: "users-field",
+  allyTeam: "users-field",
+  foeSide: "opponents-field",
+  randomNormal: "random-opponent",
+  scripted: "specific-move",
+};
+
+const SHOWDOWN_STATUS = {
+  par: "paralysis",
+  brn: "burn",
+  psn: "poison",
+  tox: "poison",
+  slp: "sleep",
+  frz: "freeze",
+};
+
+const SHOWDOWN_BOOST_STAT = {
+  atk: "attack",
+  def: "defense",
+  spa: "special-attack",
+  spd: "special-defense",
+  spe: "speed",
+  accuracy: "accuracy",
+  evasion: "evasion",
+};
+
+/** Read a move's flags off its Showdown entry, as a compact string array. */
+function showdownFlags(sd) {
+  return sd ? FLAG_KEYS.filter((k) => sd.flags?.[k]) : [];
+}
+
+/**
+ * Build a MoveSummary from Showdown data alone — the fallback for
+ * Champions-era moves PokeAPI doesn't serve yet, so they're never dropped
+ * from a movepool.
+ */
+function buildMoveFromShowdown(slug, sd) {
+  if (!sd || !sd.name) return null;
+  const boosts = sd.boosts ?? sd.secondary?.boosts ?? null;
+  const statChanges = boosts
+    ? Object.entries(boosts).map(([stat, change]) => ({
+        stat: SHOWDOWN_BOOST_STAT[stat] ?? stat,
+        change,
+      }))
+    : [];
+  const status = sd.status ?? sd.secondary?.status ?? null;
+  const ratio = (pair) =>
+    Array.isArray(pair) ? Math.round((pair[0] / pair[1]) * 100) : 0;
+  return {
+    name: slug,
+    displayName: sd.name,
+    type: (sd.type ?? "normal").toLowerCase(),
+    damageClass: (sd.category ?? "status").toLowerCase(),
+    power: sd.basePower || null,
+    accuracy: sd.accuracy === true ? null : sd.accuracy ?? null,
+    pp: sd.pp ?? null,
+    priority: sd.priority ?? 0,
+    shortEffect: sd.shortDesc || sd.desc || "",
+    effect: sd.desc || sd.shortDesc || "",
+    target: SHOWDOWN_TARGET[sd.target] ?? null,
+    ailment: status ? SHOWDOWN_STATUS[status] ?? status : null,
+    ailmentChance: status && sd.secondary?.status ? sd.secondary?.chance ?? 0 : 0,
+    statChanges,
+    statChance: boosts && sd.secondary?.boosts ? sd.secondary?.chance ?? 0 : 0,
+    healing: ratio(sd.heal),
+    drain: ratio(sd.drain) || (sd.recoil ? -ratio(sd.recoil) : 0),
+    flinchChance:
+      sd.secondary?.volatileStatus === "flinch" ? sd.secondary?.chance ?? 0 : 0,
+    critRate: (sd.critRatio ?? 1) > 1 ? 1 : 0,
+    minHits: Array.isArray(sd.multihit) ? sd.multihit[0] : sd.multihit ?? null,
+    maxHits: Array.isArray(sd.multihit) ? sd.multihit[1] : sd.multihit ?? null,
+    flags: showdownFlags(sd),
+  };
+}
+
+// Populated in main() before any Pokémon is built.
+/** roster forms per Serebii species page, to know when a page is a multi-form union. */
+let speciesFormCount = new Map();
+/** every move slug PokeAPI serves, to tell "other form's move" from "Champions-new move". */
+let knownPokeapiMoves = new Set();
+/** Showdown learnsets keyed by stripped form id, the second form-learnset source. */
+let showdownLearnsets = {};
+/** Showdown pokédex keyed by stripped id — supplies the prevo chain. */
+let showdownPokedex = {};
+
+/**
+ * The move ids a form can learn according to Showdown — INCLUDING its
+ * pre-evolutions' learnsets, because egg and prevo-only moves (Arcanine's
+ * Morning Sun, Hisuian Arcanine's Head Smash) are stored only on the prevo
+ * (Growlithe) in both Showdown and PokeAPI. Without the chain walk, those
+ * real Champions moves would be dropped by the form-correctness filter.
+ */
+function showdownLearnsetOf(slug, pageSlug) {
+  const moves = new Set();
+  const seen = new Set();
+  let id =
+    [stripId(slug.replace(/-breed$/, "")), stripId(pageSlug)].find(
+      (x) => showdownLearnsets[x] || showdownPokedex[x],
+    ) ?? null;
+  while (id && !seen.has(id)) {
+    seen.add(id);
+    for (const m of Object.keys(showdownLearnsets[id]?.learnset ?? {})) moves.add(m);
+    const prevo = showdownPokedex[id]?.prevo;
+    id = prevo ? stripId(prevo) : null;
+  }
+  return moves;
+}
+
 /** Human label for a Mega/Primal form, e.g. "charizard-mega-x" -> "Mega Charizard X". */
 function formLabel(formSlug, baseDisplay) {
   const megaMatch = formSlug.match(/-mega(?:-([xy]))?$/);
@@ -259,9 +410,27 @@ function formKind(formSlug) {
   return formSlug.endsWith("-primal") ? "primal" : "mega";
 }
 
+// Forms / whole entries from the last committed dataset, as a salvage source
+// when PokeAPI serves persistent 5xxs on some endpoints (it happens — e.g.
+// gardevoir-mega). Stats/types/movepools barely drift month to month, so a
+// salvaged entry is strictly better than a dropped one.
+let previousForms = new Map();
+let previousPokemon = new Map();
+
 /** Build a single Mega/Primal battle form from its /pokemon payload. */
 async function buildForm(formSlug, baseDisplay) {
-  const { data, notFound } = await getJson(`${API}/pokemon/${formSlug}`);
+  let payload;
+  try {
+    payload = await getJson(`${API}/pokemon/${formSlug}`);
+  } catch (err) {
+    const salvaged = previousForms.get(formSlug);
+    if (salvaged) {
+      console.warn(`  ~ ${formSlug}: PokeAPI kept failing (${err.message}) — reusing the committed dataset's entry`);
+      return salvaged;
+    }
+    throw err;
+  }
+  const { data, notFound } = payload;
   if (notFound || !data) return null;
   return {
     key: data.name,
@@ -322,13 +491,30 @@ async function buildPokemon(rosterSlug) {
     await Promise.all(altSlugs.map((s) => buildForm(s, displayName)))
   ).filter(Boolean);
 
-  // The Champions movepool is the source of truth; fall back to the current-gen
-  // PokeAPI movepool only if the Serebii page can't be read.
-  let moveSlugs = await fetchChampionsMoves(rosterSlug);
+  // The Champions movepool is the source of truth. Variant forms (Alolan
+  // Ninetales, Wash Rotom, …) have no Serebii page of their own — their moves
+  // live on the base species' page, which lists EVERY form's moves in one
+  // union. So when a page covers multiple roster forms, intersect it with the
+  // form's own learnset — PokeAPI's ∪ Showdown's incl. pre-evolutions, so one
+  // source's holes (or egg moves stored on the prevo) can't drop real moves.
+  // Moves PokeAPI has never heard of (Champions-new) survive the filter and
+  // resolve later against Showdown's move data.
+  const pageSlug = speciesPageSlug(slug);
+  let moveSlugs = await fetchChampionsMoves(pageSlug === slug ? rosterSlug : pageSlug);
+  if (moveSlugs.length && (speciesFormCount.get(pageSlug) ?? 1) > 1) {
+    const learnset = new Set(data.moves.map((m) => m.move.name));
+    const sdLearnset = showdownLearnsetOf(slug, pageSlug);
+    moveSlugs = moveSlugs.filter(
+      (s) =>
+        learnset.has(s) || sdLearnset.has(stripId(s)) || !knownPokeapiMoves.has(s),
+    );
+  }
   if (!moveSlugs.length) {
     console.warn(`  ~ ${rosterSlug}: no Champions moves from Serebii — using current-gen movepool`);
     moveSlugs = readMoveSlugs(data);
   }
+  // Champions has no Terastallization — Tera moves never exist there.
+  moveSlugs = moveSlugs.filter((s) => !EXCLUDED_MOVES.has(s));
 
   return {
     id: speciesData?.id ?? data.id,
@@ -352,7 +538,55 @@ async function main() {
   const { roster } = JSON.parse(await readFile(ROSTER_PATH, "utf8"));
   console.log(`Generating dataset for ${roster.length} roster entries…`);
 
-  const built = (await pooled(roster, buildPokemon)).filter(Boolean);
+  // How many roster forms share one Serebii species page (base + variants) —
+  // pages covering >1 form get the learnset intersection in buildPokemon.
+  speciesFormCount = new Map();
+  for (const r of roster) {
+    const page = speciesPageSlug(r.replace(/\./g, "-"));
+    speciesFormCount.set(page, (speciesFormCount.get(page) ?? 0) + 1);
+  }
+
+  // The last committed dataset, kept as a salvage source for endpoints PokeAPI
+  // persistently 5xxs on.
+  try {
+    const prev = JSON.parse(await readFile(OUT_PATH, "utf8"));
+    for (const p of prev.pokemon ?? []) {
+      previousPokemon.set(p.name, p);
+      for (const f of p.forms ?? []) previousForms.set(f.key, f);
+    }
+  } catch {
+    // First run — nothing to salvage from.
+  }
+
+  // PokeAPI's full move index + Showdown's data files, fetched once up front.
+  console.log("Fetching move indexes (PokeAPI + Showdown)…");
+  const [moveIndex, showdownMoves, sdLearnsets, sdPokedex] = await Promise.all([
+    getJson(`${API}/move?limit=3000`),
+    getJson(SHOWDOWN_MOVES_URL),
+    getJson(SHOWDOWN_LEARNSETS_URL),
+    getJson(SHOWDOWN_POKEDEX_URL),
+  ]);
+  knownPokeapiMoves = new Set(
+    (moveIndex.data?.results ?? []).map((m) => m.name),
+  );
+  const showdown = showdownMoves.data ?? {};
+  showdownLearnsets = sdLearnsets.data ?? {};
+  showdownPokedex = sdPokedex.data ?? {};
+
+  const built = (
+    await pooled(roster, async (rosterSlug) => {
+      try {
+        return await buildPokemon(rosterSlug);
+      } catch (err) {
+        const salvaged = previousPokemon.get(rosterSlug.replace(/\./g, "-"));
+        if (salvaged) {
+          console.warn(`  ~ ${rosterSlug}: PokeAPI kept failing (${err.message}) — reusing the committed dataset's entry`);
+          return salvaged;
+        }
+        throw err;
+      }
+    })
+  ).filter(Boolean);
   built.sort((a, b) => a.id - b.id);
 
   // Fetch every move once into a shared index, keyed by slug. Each Pokémon
@@ -360,25 +594,41 @@ async function main() {
   const allMoveSlugs = [...new Set(built.flatMap((p) => p.moveSlugs))].sort();
   console.log(`Fetching ${allMoveSlugs.length} unique moves…`);
   const moveList = (await pooled(allMoveSlugs, buildMove)).filter(Boolean);
+  // Flags (contact, sound, …) come from Showdown — PokeAPI has none.
+  for (const m of moveList) m.flags = showdownFlags(showdown[stripId(m.name)]);
   const moves = Object.fromEntries(moveList.map((m) => [m.name, m]));
 
-  // Drop any move slugs that failed to resolve so the app never dereferences a
-  // missing entry, and report them (Champions-exclusive moves PokeAPI lacks).
+  // Moves PokeAPI couldn't resolve (Champions-new) are built from Showdown
+  // data instead of being dropped; only moves missing from BOTH are dropped.
   const unresolved = allMoveSlugs.filter((s) => !moves[s]);
-  if (unresolved.length) {
-    console.warn(`  ! ${unresolved.length} move(s) didn't resolve on PokeAPI: ${unresolved.slice(0, 25).join(", ")}${unresolved.length > 25 ? "…" : ""}`);
+  const dropped = [];
+  for (const slug of unresolved) {
+    const recovered = buildMoveFromShowdown(slug, showdown[stripId(slug)]);
+    if (recovered) moves[slug] = recovered;
+    else dropped.push(slug);
+  }
+  if (unresolved.length - dropped.length > 0) {
+    console.log(`  + recovered ${unresolved.length - dropped.length} move(s) from Showdown data: ${unresolved.filter((s) => moves[s]).join(", ")}`);
+  }
+  if (dropped.length) {
+    console.warn(`  ! ${dropped.length} move(s) missing from PokeAPI AND Showdown (dropped): ${dropped.join(", ")}`);
   }
   for (const p of built) p.moveSlugs = p.moveSlugs.filter((s) => moves[s]);
 
   await mkdir(dirname(OUT_PATH), { recursive: true });
   await writeFile(
     OUT_PATH,
-    JSON.stringify({ pokemon: built, moves }, null, 2) + "\n",
+    JSON.stringify(
+      // generatedAt drives the home screen's "data updated" stamp.
+      { generatedAt: new Date().toISOString().slice(0, 10), pokemon: built, moves },
+      null,
+      2,
+    ) + "\n",
     "utf8",
   );
 
   console.log(
-    `✓ Wrote ${built.length} Pokémon and ${moveList.length} moves to ${OUT_PATH.replace(ROOT + "/", "")}`,
+    `✓ Wrote ${built.length} Pokémon and ${Object.keys(moves).length} moves to ${OUT_PATH.replace(ROOT + "/", "")}`,
   );
   if (built.length !== roster.length) {
     console.log(`  (${roster.length - built.length} roster entr(ies) were skipped — check slugs above)`);

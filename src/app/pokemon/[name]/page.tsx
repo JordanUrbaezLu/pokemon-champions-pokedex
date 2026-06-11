@@ -2,15 +2,17 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PokemonDetail } from "./PokemonDetail";
 import {
+  DATA_BRACKETS,
   getAllPokemon,
   getPokemonByName,
-  getMovesFor,
-  getMoveBySlug,
+  getUnionMoves,
   getCompetitiveByForm,
   getCompetitiveMeta,
   getItemDetail,
+  getThreatProfilesByForm,
 } from "@/lib/pokedex";
-import type { ItemDetail, MoveSummary } from "@/lib/types";
+import type { ThreatProfile } from "@/lib/threat";
+import type { CompetitiveProfile, DataBracket, ItemDetail } from "@/lib/types";
 
 // The roster is fixed and known, so prerender every page at build time and
 // 404 anything off-roster. Result: each detail screen is fully static — it
@@ -46,34 +48,33 @@ export default async function PokemonPage({
   const pokemon = getPokemonByName(name);
   if (!pokemon) notFound();
 
-  const competitiveByForm = getCompetitiveByForm(pokemon);
-
-  // Union the movepool with any move the ladder shows it running but that's
-  // missing from its movepool (e.g. Alolan Ninetales' Aurora Veil / Freeze-Dry),
-  // so the "Common" filter never hides a move it actually uses.
-  const movepool = getMovesFor(pokemon);
-  const have = new Set(movepool.map((m) => m.name));
-  const extra: MoveSummary[] = [];
-  for (const profile of Object.values(competitiveByForm)) {
-    for (const slug of Object.keys(profile.moveUsage)) {
-      if (!have.has(slug)) {
-        const m = getMoveBySlug(slug);
-        if (m) {
-          have.add(slug);
-          extra.push(m);
-        }
-      }
-    }
+  // BOTH data brackets are baked into the static page, so the Champion+/All
+  // toggle switches instantly with zero network.
+  const competitiveByBracket = {} as Record<
+    DataBracket,
+    Record<string, CompetitiveProfile>
+  >;
+  const threatByBracket = {} as Record<DataBracket, Record<string, ThreatProfile>>;
+  for (const bracket of DATA_BRACKETS) {
+    competitiveByBracket[bracket] = getCompetitiveByForm(pokemon, bracket);
+    // The per-form "what makes this dangerous" read, computed against that
+    // bracket's whole meta at build time — the page ships only the vectors.
+    threatByBracket[bracket] = getThreatProfilesByForm(pokemon, bracket);
   }
-  const moves = [...movepool, ...extra];
+
+  // Movepool unioned with any move the ladder shows it actually running
+  // (e.g. Alolan Ninetales' Aurora Veil), so "Common" never hides a real move.
+  const moves = getUnionMoves(pokemon);
 
   // Resolve full details for every item this Pokémon's sets use, for the modal.
   const itemDetails: Record<string, ItemDetail> = {};
-  for (const profile of Object.values(competitiveByForm)) {
-    for (const it of profile.items) {
-      if (it.slug && !itemDetails[it.slug]) {
-        const detail = getItemDetail(it.slug);
-        if (detail) itemDetails[it.slug] = detail;
+  for (const byForm of Object.values(competitiveByBracket)) {
+    for (const profile of Object.values(byForm)) {
+      for (const it of profile.items) {
+        if (it.slug && !itemDetails[it.slug]) {
+          const detail = getItemDetail(it.slug);
+          if (detail) itemDetails[it.slug] = detail;
+        }
       }
     }
   }
@@ -82,9 +83,10 @@ export default async function PokemonPage({
     <PokemonDetail
       pokemon={pokemon}
       moves={moves}
-      competitiveByForm={competitiveByForm}
+      competitiveByBracket={competitiveByBracket}
       competitiveMeta={getCompetitiveMeta()}
       itemDetails={itemDetails}
+      threatByBracket={threatByBracket}
     />
   );
 }

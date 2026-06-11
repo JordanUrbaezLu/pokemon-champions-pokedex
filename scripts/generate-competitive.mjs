@@ -23,11 +23,43 @@ const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
 const POKEMON_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
 const OUT_PATH = resolve(ROOT, "src/data/generated/competitive.json");
 
-// Monthly snapshot — bump when a newer month publishes.
-const MONTH = "2026-05";
 const FORMAT = "gen9championsvgc2026regma"; // Champions VGC doubles, Reg M-A
-const CUTOFF = "0"; // raw popularity; -1630 for a higher-skill picture
-const STATS_URL = `https://www.smogon.com/stats/${MONTH}/chaos/${FORMAT}-${CUTOFF}.json`;
+// The month is auto-detected at run time (newest published month that carries
+// this format), so every run is as fresh as Smogon allows. Pin a specific
+// snapshot with STATS_MONTH=YYYY-MM when needed.
+const MONTH_OVERRIDE = process.env.STATS_MONTH || null;
+// The app ships TWO complete brackets and toggles between them client-side:
+//  - champion: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
+//    top bracket lacks (a high-rated player's games appear in both files, so
+//    "primary + backfill" is the correct way to combine them — never add).
+//  - all: the whole-ladder file, every rank.
+const BRACKETS = {
+  champion: { cutoffs: ["1760", "1630"], label: "Champion+ (top ladder brackets)" },
+  all: { cutoffs: ["0"], label: "all ranks" },
+};
+const statsUrl = (month, cutoff) =>
+  `https://www.smogon.com/stats/${month}/chaos/${FORMAT}-${cutoff}.json`;
+
+/** The newest published Smogon month that actually carries this format. */
+async function resolveLatestMonth() {
+  if (MONTH_OVERRIDE) return MONTH_OVERRIDE;
+  const res = await fetch("https://www.smogon.com/stats/", {
+    headers: { "User-Agent": USER_AGENT },
+  });
+  if (!res.ok) throw new Error(`stats index: HTTP ${res.status}`);
+  const months = [...new Set(
+    [...(await res.text()).matchAll(/href="(\d{4}-\d{2})\//g)].map((m) => m[1]),
+  )].sort().reverse();
+  // Walk newest-first; a month can exist before this format publishes in it.
+  for (const month of months.slice(0, 6)) {
+    const probe = await fetch(statsUrl(month, BRACKETS.all.cutoffs[0]), {
+      method: "HEAD",
+      headers: { "User-Agent": USER_AGENT },
+    });
+    if (probe.ok) return month;
+  }
+  throw new Error(`no published stats found for ${FORMAT} in ${months.slice(0, 6).join(", ")}`);
+}
 const ITEMS_URL = "https://pokeapi.co/api/v2/item?limit=3000";
 
 const USER_AGENT = "Mozilla/5.0 (compatible; ChampionsPokedexBuild/1.0)";
@@ -53,8 +85,8 @@ async function getJson(url, attempt = 1) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return await res.json();
   } catch (err) {
-    if (attempt >= 3) throw err;
-    await new Promise((r) => setTimeout(r, 500 * attempt));
+    if (attempt >= 6) throw err;
+    await new Promise((r) => setTimeout(r, 700 * attempt));
     return getJson(url, attempt + 1);
   }
 }
@@ -105,14 +137,89 @@ function parseSpread(spreadKey) {
   return { nature, evs };
 }
 
+// Natures that lower Speed — the Trick Room tell in the spread distribution.
+const SPE_MINUS_NATURES = new Set(["Brave", "Relaxed", "Quiet", "Sassy"]);
+
+/**
+ * Distill the FULL spread distribution into how this Pokémon invests in Speed —
+ * catches bimodal mons (half max-Speed, half Trick-Room-min) that the single
+ * top spread misrepresents. Percentages of total weighted sets.
+ */
+function speedInvestOf(spreads) {
+  const acc = { max: 0, some: 0, none: 0, minus: 0 };
+  let total = 0;
+  for (const [key, weight] of Object.entries(spreads ?? {})) {
+    const [nature, evStr] = key.split(":");
+    const raw = (evStr ?? "").split("/").map(Number);
+    if (raw.length < 6 || raw.some(Number.isNaN)) continue;
+    const mult = Math.max(...raw) <= 32 ? 8 : 1; // EV/8 buckets
+    const spe = Math.min(252, raw[5] * mult);
+    total += weight;
+    if (SPE_MINUS_NATURES.has(nature)) acc.minus += weight;
+    else if (spe >= 252) acc.max += weight;
+    else if (spe > 0) acc.some += weight;
+    else acc.none += weight;
+  }
+  if (!total) return null;
+  const pct = (v) => Math.round((v / total) * 100);
+  return { max: pct(acc.max), some: pct(acc.some), none: pct(acc.none), minus: pct(acc.minus) };
+}
+
+// Item classes worth a tempo read mid-battle, beyond the top-3 item list.
+const ITEM_CLASS = (id) => {
+  if (id === "choicescarf") return ["scarf", "choice"];
+  if (id === "choiceband" || id === "choicespecs") return ["choice"];
+  if (id === "focussash") return ["sash"];
+  if (id === "lifeorb") return ["lifeOrb"];
+  if (id === "assaultvest") return ["av"];
+  if (id.endsWith("berry")) return ["berry"];
+  return [];
+};
+
+/** % of sets running each item class (scarf/choice/sash/…), from the FULL item table. */
+function itemClassesOf(items) {
+  const counts = {};
+  let total = 0;
+  for (const [id, c] of cleanEntries(items ?? {})) {
+    total += c;
+    for (const cls of ITEM_CLASS(id)) counts[cls] = (counts[cls] ?? 0) + c;
+  }
+  if (!total) return null;
+  const out = {};
+  for (const [cls, c] of Object.entries(counts)) {
+    const pct = Math.round((c / total) * 100);
+    if (pct > 0) out[cls] = pct;
+  }
+  return Object.keys(out).length ? out : null;
+}
+
 async function main() {
-  console.log(`Fetching Champions DOUBLES competitive stats (${FORMAT}, ${MONTH})…`);
-  const [stats, itemList, pokemonData] = await Promise.all([
-    getJson(STATS_URL),
+  const MONTH = await resolveLatestMonth();
+  const allCutoffs = [...new Set(Object.values(BRACKETS).flatMap((b) => b.cutoffs))];
+  console.log(`Fetching Champions DOUBLES competitive stats (${FORMAT}, ${MONTH}${MONTH_OVERRIDE ? " [pinned]" : " [latest published]"}, cutoffs ${allCutoffs.join("/")})…`);
+  const [chaosByCutoff, itemList, pokemonData] = await Promise.all([
+    Promise.all(allCutoffs.map((c) => getJson(statsUrl(MONTH, c)))).then((files) =>
+      Object.fromEntries(allCutoffs.map((c, i) => [c, files[i]])),
+    ),
     getJson(ITEMS_URL),
     readFile(POKEMON_PATH, "utf8").then(JSON.parse),
   ]);
   const { roster } = JSON.parse(await readFile(ROSTER_PATH, "utf8"));
+
+  /** Merge a bracket's cutoff files best-first: lower files only backfill. */
+  function mergeCutoffs(cutoffs) {
+    const data = { ...chaosByCutoff[cutoffs[0]].data };
+    let backfilled = 0;
+    for (const lower of cutoffs.slice(1)) {
+      for (const [key, value] of Object.entries(chaosByCutoff[lower].data)) {
+        if (!data[key]) {
+          data[key] = value;
+          backfilled++;
+        }
+      }
+    }
+    return { data, backfilled };
+  }
 
   // Display-name lookups keyed by stripped id (to render Smogon's ids). Abilities
   // are rendered by the UI from each Pokémon's own ability list, so only moves
@@ -140,43 +247,21 @@ async function main() {
     return rosterSlugs.has(base) ? base : null;
   };
 
-  // Index every Smogon key with its slug + usage, for form-aware resolution.
-  const keyIndex = Object.keys(stats.data).map((key) => ({
-    key,
-    slug: slugify(key),
-    usage: stats.data[key].usage ?? 0,
-  }));
-
   // Forms that are their own roster entry (regional, Rotom appliance) or a Mega.
   // These must NOT be grabbed as a base form's fallback — only default-form
   // naming (e.g. Gourgeist-Average, Lycanroc-Midday) may fall back.
   const EXCLUDE_FALLBACK =
     /-(mega(-[xy])?|primal|alola|galar|hisui|paldea|wash|heat|frost|mow|fan)$/;
 
-  /**
-   * Resolve a roster slug to its Smogon key. Prefers an EXACT slug match (so
-   * base Ninetales stays base Ninetales and Ninetales-Alola is its own entry),
-   * falling back only to a default-form-named variant when no exact key exists.
-   */
-  function bestKey(slug) {
-    // PokeAPI's "tauros-paldea-aqua-breed" maps to Smogon's "tauros-paldea-aqua".
-    for (const s of [slug, slug.replace(/-breed$/, "")]) {
-      const exact = keyIndex
-        .filter((c) => c.slug === s)
-        .sort((a, b) => b.usage - a.usage)[0];
-      if (exact) return exact;
-    }
-    return (
-      keyIndex
-        .filter((c) => c.slug.startsWith(`${slug}-`) && !EXCLUDE_FALLBACK.test(c.slug))
-        .sort((a, b) => b.usage - a.usage)[0] ?? null
-    );
-  }
-
-  function buildProfile(key, asForm) {
-    const m = stats.data[key];
+  function buildProfile(data, key, asForm) {
+    const m = data[key];
     const rawCount = m["Raw count"] || 1;
+    // "Raw count" is UNWEIGHTED, but Moves/Teammates/Spreads counts are
+    // weighted by the skill cutoff — at high cutoffs they're tiny fractions of
+    // it. The weighted number of sets = the Abilities sum (every set has
+    // exactly one ability), so that's the denominator for per-set rates.
     const abilSum = sum(m.Abilities) || 1;
+    const setCount = abilSum;
     const itemSum = sum(m.Items) || 1;
     const pct = (c, denom) => Math.min(100, Math.round((c / denom) * 100));
 
@@ -190,9 +275,9 @@ async function main() {
     if (!asForm) {
       for (const [id, c] of cleanEntries(m.Abilities)) abilityUsage[id] = pct(c, abilSum);
       for (const [id, c] of cleanEntries(m.Moves)) {
-        if (c / rawCount < 0.03) continue;
+        if (c / setCount < 0.03) continue;
         const md = moveOf(id);
-        if (md.slug) moveUsage[md.slug] = pct(c, rawCount);
+        if (md.slug) moveUsage[md.slug] = pct(c, setCount);
       }
     }
 
@@ -207,47 +292,92 @@ async function main() {
         slug: itemSlugOf(id),
         usagePct: pct(c, itemSum),
       })),
+      itemClasses: itemClassesOf(m.Items),
       spread: m.Spreads && Object.keys(m.Spreads).length
         ? parseSpread(topClean(m.Spreads, 1)[0]?.[0] ?? Object.keys(m.Spreads)[0])
         : null,
+      speedInvest: speedInvestOf(m.Spreads),
       teammates: Object.entries(m.Teammates)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3)
-        .map(([name, c]) => ({ displayName: name, slug: teammateSlug(name), usagePct: pct(c, rawCount) })),
+        .map(([name, c]) => ({ displayName: name, slug: teammateSlug(name), usagePct: pct(c, setCount) })),
       setupThreats: Object.entries(m.Moves)
-        .filter(([id, c]) => SETUP_MOVE_IDS.has(id) && c / rawCount >= SETUP_THRESHOLD)
+        .filter(([id, c]) => SETUP_MOVE_IDS.has(id) && c / setCount >= SETUP_THRESHOLD)
         .sort((a, b) => b[1] - a[1])
-        .map(([id, c]) => ({ displayName: moveOf(id).displayName, usagePct: pct(c, rawCount) })),
+        .map(([id, c]) => ({ displayName: moveOf(id).displayName, usagePct: pct(c, setCount) })),
     };
   }
 
-  const profiles = {};
-  const misses = [];
-  for (const p of pokemonData.pokemon) {
-    // asForm is set only for a genuinely different form (not a "-breed" naming
-    // artifact), so the same Pokémon keeps its real ability/move usage.
-    const norm = (s) => s.replace(/-breed$/, "");
-    // Base form (exact key, e.g. base Ninetales — not its Alolan variant).
-    const base = bestKey(p.name);
-    if (base) {
-      profiles[p.name] = buildProfile(base.key, base.slug !== norm(p.name) ? base.key : null);
-    } else {
-      misses.push(p.name);
+  /** Build one bracket's complete profile map from its merged chaos data. */
+  function buildBracket(data) {
+    // Index every Smogon key with its slug + usage, for form-aware resolution.
+    const keyIndex = Object.keys(data).map((key) => ({
+      key,
+      slug: slugify(key),
+      usage: data[key].usage ?? 0,
+    }));
+
+    // Resolve a roster slug to its Smogon key. Prefers an EXACT slug match (so
+    // base Ninetales stays base Ninetales and Ninetales-Alola is its own
+    // entry), falling back only to a default-form-named variant.
+    function bestKey(slug) {
+      // PokeAPI's "tauros-paldea-aqua-breed" maps to Smogon's "tauros-paldea-aqua".
+      for (const s of [slug, slug.replace(/-breed$/, "")]) {
+        const exact = keyIndex
+          .filter((c) => c.slug === s)
+          .sort((a, b) => b.usage - a.usage)[0];
+        if (exact) return exact;
+      }
+      return (
+        keyIndex
+          .filter((c) => c.slug.startsWith(`${slug}-`) && !EXCLUDE_FALLBACK.test(c.slug))
+          .sort((a, b) => b.usage - a.usage)[0] ?? null
+      );
     }
-    // Each Mega/Primal form, by its exact key.
-    for (const form of p.forms) {
-      const mega = bestKey(form.key);
-      if (mega) {
-        profiles[form.key] = buildProfile(mega.key, mega.slug !== norm(form.key) ? mega.key : null);
+
+    const profiles = {};
+    const misses = [];
+    for (const p of pokemonData.pokemon) {
+      // asForm is set only for a genuinely different form (not a "-breed"
+      // naming artifact), so the same Pokémon keeps its real usage tables.
+      const norm = (s) => s.replace(/-breed$/, "");
+      // Base form (exact key, e.g. base Ninetales — not its Alolan variant).
+      const base = bestKey(p.name);
+      if (base) {
+        profiles[p.name] = buildProfile(data, base.key, base.slug !== norm(p.name) ? base.key : null);
+      } else {
+        misses.push(p.name);
+      }
+      // Each Mega/Primal form, by its exact key.
+      for (const form of p.forms) {
+        const mega = bestKey(form.key);
+        if (mega) {
+          profiles[form.key] = buildProfile(data, mega.key, mega.slug !== norm(form.key) ? mega.key : null);
+        }
       }
     }
+    return { profiles, misses };
   }
 
-  // Fetch details for every item that shows up in a typical set, for the item modal.
+  const brackets = {};
+  for (const [name, def] of Object.entries(BRACKETS)) {
+    const { data, backfilled } = mergeCutoffs(def.cutoffs);
+    const { profiles, misses } = buildBracket(data);
+    brackets[name] = { profiles, misses };
+    console.log(
+      `  ${name}: ${Object.keys(profiles).length} profiles` +
+        (backfilled ? ` (${backfilled} backfilled from ${def.cutoffs.slice(1).join("/")})` : "") +
+        (misses.length ? ` · no data for: ${misses.join(", ")}` : ""),
+    );
+  }
+
+  // Fetch details for every item that shows up in ANY bracket's typical sets.
   const itemSlugs = [
     ...new Set(
-      Object.values(profiles).flatMap((p) =>
-        p.items.map((it) => it.slug).filter(Boolean),
+      Object.values(brackets).flatMap(({ profiles }) =>
+        Object.values(profiles).flatMap((p) =>
+          p.items.map((it) => it.slug).filter(Boolean),
+        ),
       ),
     ),
   ];
@@ -282,23 +412,30 @@ async function main() {
     for (const r of results) if (r) itemIndex[r[0]] = r[1];
   }
 
+  const battles = chaosByCutoff[BRACKETS.all.cutoffs[0]].info["number of battles"];
   const out = {
     meta: {
       format: FORMAT,
       formatLabel: "Champions VGC (doubles), Reg M-A",
       month: MONTH,
-      battles: stats.info["number of battles"],
-      source: STATS_URL,
+      battles,
+      source: statsUrl(MONTH, BRACKETS.champion.cutoffs[0]),
+      generatedAt: new Date().toISOString().slice(0, 10),
+      bracketLabels: Object.fromEntries(
+        Object.entries(BRACKETS).map(([name, def]) => [name, def.label]),
+      ),
     },
-    pokemon: profiles,
+    brackets: Object.fromEntries(
+      Object.entries(brackets).map(([name, b]) => [name, b.profiles]),
+    ),
     itemIndex,
   };
   await writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
 
-  const baseCovered = pokemonData.pokemon.filter((p) => profiles[p.name]).length;
-  console.log(`✓ Wrote ${Object.keys(profiles).length} profiles (${baseCovered}/${roster.length} base + Mega forms)`);
-  console.log(`  Source: ${FORMAT} ${MONTH} (${stats.info["number of battles"].toLocaleString()} battles)`);
-  if (misses.length) console.log(`  No competitive data for: ${misses.join(", ")}`);
+  const champ = brackets.champion.profiles;
+  const baseCovered = pokemonData.pokemon.filter((p) => champ[p.name]).length;
+  console.log(`✓ Wrote ${Object.keys(BRACKETS).length} brackets (champion: ${Object.keys(champ).length} profiles, ${baseCovered}/${roster.length} base covered)`);
+  console.log(`  Source: ${FORMAT} ${MONTH} (${battles.toLocaleString()} battles)`);
 }
 
 main().catch((err) => {

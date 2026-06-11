@@ -10,20 +10,24 @@ import { StatBars } from "@/components/StatBars";
 import { AbilityList } from "@/components/AbilityList";
 import { MovesSection } from "@/components/MovesSection";
 import { ItemModal } from "@/components/ItemModal";
-import { RoleModal } from "@/components/RoleModal";
+import { MoveModal } from "@/components/MoveModal";
+import { ThreatProfileCard } from "@/components/ThreatProfileCard";
+import { TypeMatchups } from "@/components/TypeMatchups";
+import { useBracket } from "@/lib/bracket";
 import { TYPE_COLORS } from "@/lib/type-meta";
-import { getDoublesRoles, ROLE_TONE, type DoublesRole } from "@/lib/battle";
 import {
   dexNumber,
   formatPickRate,
   formatSpread,
   natureEffect,
 } from "@/lib/format";
+import type { ThreatProfile } from "@/lib/threat";
 import type {
   BattleForm,
   ChampionPokemon,
   CompetitiveMeta,
   CompetitiveProfile,
+  DataBracket,
   ItemDetail,
   MoveSummary,
 } from "@/lib/types";
@@ -59,15 +63,17 @@ function shortFormLabel(form: BattleForm, baseDisplayName: string): string {
 export function PokemonDetail({
   pokemon,
   moves,
-  competitiveByForm,
+  competitiveByBracket,
   competitiveMeta,
   itemDetails,
+  threatByBracket,
 }: {
   pokemon: ChampionPokemon;
   moves: MoveSummary[];
-  competitiveByForm: Record<string, CompetitiveProfile>;
+  competitiveByBracket: Record<DataBracket, Record<string, CompetitiveProfile>>;
   competitiveMeta: CompetitiveMeta;
   itemDetails: Record<string, ItemDetail>;
+  threatByBracket: Record<DataBracket, Record<string, ThreatProfile>>;
 }) {
   // Unify the base form and any Mega/Primal forms into one toggle list.
   const baseForm: BattleForm = {
@@ -84,11 +90,13 @@ export function PokemonDetail({
 
   const router = useRouter();
   // Default to the form that has ladder data — e.g. base Meganium has none but
-  // Mega Meganium does. Kept SSR-deterministic (no window) so it never causes a
+  // Mega Meganium does. Uses the default bracket's map so it stays
+  // SSR-deterministic (no window, no stored state) and never causes a
   // hydration mismatch; the ?form= deep-link is applied in the layout effect below.
   const [activeIndex, setActiveIndex] = useState(() => {
-    if (competitiveByForm[pokemon.name]) return 0;
-    const i = pokemon.forms.findIndex((f) => competitiveByForm[f.key]);
+    const defaultByForm = competitiveByBracket.champion;
+    if (defaultByForm[pokemon.name]) return 0;
+    const i = pokemon.forms.findIndex((f) => defaultByForm[f.key]);
     return i >= 0 ? i + 1 : 0;
   });
   // Deep-link: ?form=<key> (e.g. tapping the home Mega badge) opens straight on
@@ -104,10 +112,14 @@ export function PokemonDetail({
     item: ItemDetail;
     usagePct: number;
   } | null>(null);
-  const [selectedRole, setSelectedRole] = useState<DoublesRole | null>(null);
+  const [selectedMove, setSelectedMove] = useState<MoveSummary | null>(null);
+  const [bracket] = useBracket();
   const active = forms[activeIndex];
   const tint = TYPE_COLORS[active.types[0]];
-  const comp = competitiveByForm[active.key];
+  const comp = competitiveByBracket[bracket][active.key];
+  const threat = threatByBracket[bracket][active.key];
+  // For the "no data here, but the other bracket has it" hint.
+  const compInAll = competitiveByBracket.all[active.key];
 
   return (
     <main className="flex min-h-dvh flex-col">
@@ -195,36 +207,20 @@ export function PokemonDetail({
       </div>
 
       <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1">
-        {comp &&
-          (() => {
-            const roles = getDoublesRoles(comp);
-            return roles.length > 0 ? (
-              <div className="flex flex-wrap gap-1.5">
-                {roles.map((r) => (
-                  <button
-                    key={r.label}
-                    type="button"
-                    onClick={() => setSelectedRole(r)}
-                    className="flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-bold active:opacity-70"
-                    style={{
-                      backgroundColor: `${ROLE_TONE[r.tone]}22`,
-                      color: ROLE_TONE[r.tone],
-                    }}
-                  >
-                    {r.label}
-                    <span className="opacity-60" aria-hidden>
-                      ⓘ
-                    </span>
-                  </button>
-                ))}
-              </div>
-            ) : null;
-          })()}
-
         {!comp && (
           <p className="px-1 text-xs text-muted">
-            No Champions ladder data for this form yet.
+            {bracket === "champion" && compInAll
+              ? "Too rare at Champion+ level for meaningful data — switch to All ranks on the home screen for the whole-ladder read."
+              : "No Champions ladder data for this form yet."}
           </p>
+        )}
+
+        {threat && (
+          <ThreatProfileCard
+            profile={threat}
+            moves={moves}
+            onOpenMove={setSelectedMove}
+          />
         )}
 
         <Section title="Base Stats">
@@ -310,32 +306,6 @@ export function PokemonDetail({
           </Section>
         )}
 
-        {comp && comp.setupThreats.length > 0 && (
-          <div className="rounded-2xl border border-amber-500/40 bg-amber-500/10 p-3.5">
-            <div className="flex items-center gap-2">
-              <span
-                className="flex size-4 items-center justify-center rounded-full bg-amber-500 text-[10px] font-black text-black"
-                aria-hidden
-              >
-                !
-              </span>
-              <h2 className="text-xs font-black uppercase tracking-wider text-amber-200/90">
-                Watch for set-up
-              </h2>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {comp.setupThreats.map((s) => (
-                <span
-                  key={s.displayName}
-                  className="rounded-full bg-amber-500/20 px-2.5 py-0.5 text-xs font-bold text-amber-100"
-                >
-                  {s.displayName} {s.usagePct}%
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
         <MovesSection key={active.key} moves={moves} usage={comp?.moveUsage} />
 
         {comp && comp.teammates.length > 0 && (
@@ -370,14 +340,22 @@ export function PokemonDetail({
           </Section>
         )}
 
+        <TypeMatchups types={active.types} />
+
         {comp && (
           <p className="px-1 text-[11px] leading-snug text-muted/80">
             {comp.asForm && `Competitive data shown for ${comp.asForm}. `}
-            Smogon {competitiveMeta.formatLabel} · {competitiveMeta.month} ·{" "}
-            {competitiveMeta.battles.toLocaleString()} ladder battles.
+            Smogon {competitiveMeta.formatLabel} ·{" "}
+            {competitiveMeta.bracketLabels?.[bracket] ?? bracket} ·{" "}
+            {competitiveMeta.month} · {competitiveMeta.battles.toLocaleString()}{" "}
+            ladder battles.
           </p>
         )}
       </div>
+
+      {selectedMove && (
+        <MoveModal move={selectedMove} onClose={() => setSelectedMove(null)} />
+      )}
 
       {selectedItem && (
         <ItemModal
@@ -387,9 +365,6 @@ export function PokemonDetail({
         />
       )}
 
-      {selectedRole && (
-        <RoleModal role={selectedRole} onClose={() => setSelectedRole(null)} />
-      )}
     </main>
   );
 }

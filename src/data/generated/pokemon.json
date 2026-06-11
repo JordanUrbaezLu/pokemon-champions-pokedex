@@ -1,4 +1,5 @@
 {
+  "generatedAt": "2026-06-11",
   "pokemon": [
     {
       "id": 3,
@@ -964,11 +965,9 @@
         "charge",
         "charge-beam",
         "charm",
-        "dazzling-gleam",
         "dig",
         "discharge",
         "double-team",
-        "drain-punch",
         "draining-kiss",
         "eerie-impulse",
         "electric-terrain",
@@ -977,7 +976,6 @@
         "encore",
         "endeavor",
         "endure",
-        "expanding-force",
         "facade",
         "fake-out",
         "fake-tears",
@@ -993,16 +991,11 @@
         "iron-tail",
         "knock-off",
         "light-screen",
-        "magic-room",
         "mega-kick",
         "nasty-plot",
         "nuzzle",
         "play-rough",
         "protect",
-        "psychic",
-        "psychic-noise",
-        "psychic-terrain",
-        "psyshock",
         "quick-attack",
         "rain-dance",
         "reflect",
@@ -1010,11 +1003,9 @@
         "reversal",
         "rising-voltage",
         "round",
-        "skill-swap",
         "sleep-talk",
         "snore",
         "speed-swap",
-        "stored-power",
         "substitute",
         "surf",
         "sweet-kiss",
@@ -1086,21 +1077,24 @@
         "endure",
         "expanding-force",
         "facade",
+        "fake-out",
+        "fake-tears",
         "feint",
+        "flail",
         "fling",
         "focus-blast",
         "focus-punch",
         "giga-impact",
         "grass-knot",
-        "growl",
         "helping-hand",
         "hyper-beam",
         "iron-tail",
         "knock-off",
         "light-screen",
+        "magic-room",
+        "mega-kick",
         "nasty-plot",
         "nuzzle",
-        "play-nice",
         "play-rough",
         "protect",
         "psychic",
@@ -1112,27 +1106,29 @@
         "reflect",
         "rest",
         "reversal",
+        "rising-voltage",
+        "round",
         "skill-swap",
         "sleep-talk",
-        "spark",
+        "snore",
+        "speed-swap",
         "stored-power",
         "substitute",
         "surf",
         "sweet-kiss",
-        "swift",
-        "tail-whip",
-        "take-down",
-        "tera-blast",
         "thief",
         "thunder",
         "thunder-punch",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
+        "tickle",
         "trailblaze",
         "upper-hand",
         "volt-switch",
-        "wild-charge"
+        "volt-tackle",
+        "wild-charge",
+        "wish",
+        "zap-cannon"
       ]
     },
     {
@@ -1339,23 +1335,17 @@
       "moveSlugs": [
         "agility",
         "attract",
-        "aurora-veil",
-        "avalanche",
         "baby-doll-eyes",
         "baton-pass",
-        "blizzard",
         "body-slam",
         "burning-jealousy",
         "calm-mind",
         "charm",
-        "chilling-water",
         "confuse-ray",
         "dark-pulse",
-        "dazzling-gleam",
         "dig",
         "disable",
         "double-edge",
-        "draining-kiss",
         "encore",
         "endure",
         "energy-ball",
@@ -1369,7 +1359,6 @@
         "flamethrower",
         "flare-blitz",
         "foul-play",
-        "freeze-dry",
         "giga-impact",
         "healing-wish",
         "heat-wave",
@@ -1378,29 +1367,21 @@
         "howl",
         "hyper-beam",
         "hypnosis",
-        "ice-beam",
-        "ice-shard",
-        "icicle-spear",
-        "icy-wind",
         "imprison",
         "inferno",
         "iron-tail",
         "memento",
-        "misty-terrain",
-        "moonblast",
         "mystical-fire",
         "nasty-plot",
         "night-shade",
         "overheat",
         "pain-split",
         "payback",
-        "play-rough",
         "power-swap",
         "protect",
         "psych-up",
         "psyshock",
         "quick-attack",
-        "rain-dance",
         "rest",
         "roar",
         "round",
@@ -1410,17 +1391,14 @@
         "sleep-talk",
         "snarl",
         "snore",
-        "snowscape",
         "solar-beam",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
         "tail-slap",
-        "triple-axel",
         "weather-ball",
         "will-o-wisp",
-        "wonder-room",
         "zen-headbutt"
       ]
     },
@@ -1463,6 +1441,8 @@
       "forms": [],
       "moveSlugs": [
         "agility",
+        "attract",
+        "aurora-veil",
         "avalanche",
         "baby-doll-eyes",
         "baton-pass",
@@ -1475,15 +1455,18 @@
         "dark-pulse",
         "dazzling-gleam",
         "dig",
-        "disarming-voice",
+        "disable",
         "double-edge",
         "draining-kiss",
         "encore",
         "endure",
+        "energy-ball",
+        "extrasensory",
         "facade",
         "fake-tears",
         "flail",
         "foul-play",
+        "freeze-dry",
         "giga-impact",
         "helping-hand",
         "hex",
@@ -1491,31 +1474,37 @@
         "hyper-beam",
         "hypnosis",
         "ice-beam",
+        "ice-shard",
         "icicle-spear",
         "icy-wind",
         "imprison",
+        "iron-tail",
         "misty-terrain",
         "moonblast",
         "nasty-plot",
         "pain-split",
+        "payback",
         "play-rough",
+        "power-swap",
         "protect",
         "psych-up",
         "psyshock",
         "rain-dance",
         "rest",
         "roar",
+        "round",
+        "safeguard",
         "sleep-talk",
+        "snore",
         "snowscape",
+        "solar-beam",
         "spite",
         "stored-power",
         "substitute",
-        "swift",
-        "tail-whip",
-        "take-down",
-        "tera-blast",
+        "tail-slap",
         "triple-axel",
         "weather-ball",
+        "wonder-room",
         "zen-headbutt"
       ]
     },
@@ -1586,7 +1575,6 @@
         "flamethrower",
         "flare-blitz",
         "giga-impact",
-        "head-smash",
         "heat-crash",
         "heat-wave",
         "helping-hand",
@@ -1599,28 +1587,19 @@
         "outrage",
         "overheat",
         "play-rough",
-        "power-gem",
         "protect",
         "psychic-fangs",
         "raging-fury",
         "rest",
         "reversal",
         "roar",
-        "rock-blast",
-        "rock-slide",
-        "rock-tomb",
         "round",
-        "sandstorm",
         "scary-face",
         "scorching-sands",
         "sleep-talk",
-        "smack-down",
-        "smart-strike",
         "snarl",
         "snore",
         "solar-beam",
-        "stealth-rock",
-        "stone-edge",
         "substitute",
         "sunny-day",
         "temper-flare",
@@ -1681,11 +1660,11 @@
         "body-slam",
         "bulldoze",
         "close-combat",
+        "covet",
         "crunch",
         "dig",
         "double-edge",
         "dragon-pulse",
-        "ember",
         "endure",
         "extreme-speed",
         "facade",
@@ -1693,10 +1672,10 @@
         "fire-fang",
         "fire-spin",
         "flame-charge",
-        "flame-wheel",
         "flamethrower",
         "flare-blitz",
         "giga-impact",
+        "head-smash",
         "heat-crash",
         "heat-wave",
         "helping-hand",
@@ -1704,20 +1683,20 @@
         "hyper-beam",
         "hyper-voice",
         "iron-head",
-        "leer",
+        "iron-tail",
+        "morning-sun",
         "outrage",
         "overheat",
+        "play-rough",
         "power-gem",
         "protect",
         "psychic-fangs",
         "raging-fury",
         "rest",
-        "retaliate",
         "reversal",
         "roar",
         "rock-blast",
         "rock-slide",
-        "rock-throw",
         "rock-tomb",
         "sandstorm",
         "scary-face",
@@ -1731,10 +1710,9 @@
         "stone-edge",
         "substitute",
         "sunny-day",
-        "take-down",
         "temper-flare",
-        "tera-blast",
         "thief",
+        "thrash",
         "thunder-fang",
         "wild-charge",
         "will-o-wisp"
@@ -2184,7 +2162,6 @@
         }
       ],
       "moveSlugs": [
-        "acid-spray",
         "amnesia",
         "avalanche",
         "belch",
@@ -2216,14 +2193,11 @@
         "future-sight",
         "giga-impact",
         "grass-knot",
-        "gunk-shot",
-        "haze",
         "heal-pulse",
         "helping-hand",
         "hydro-pump",
         "hyper-beam",
         "ice-beam",
-        "ice-fang",
         "ice-punch",
         "icy-wind",
         "imprison",
@@ -2234,8 +2208,6 @@
         "mud-shot",
         "muddy-water",
         "nasty-plot",
-        "poison-jab",
-        "power-gem",
         "protect",
         "psych-up",
         "psychic",
@@ -2245,20 +2217,13 @@
         "rain-dance",
         "razor-shell",
         "rest",
-        "rock-blast",
         "round",
         "safeguard",
-        "sandstorm",
         "scald",
-        "scary-face",
         "shadow-ball",
-        "shell-side-arm",
         "skill-swap",
         "slack-off",
         "sleep-talk",
-        "sludge-bomb",
-        "sludge-wave",
-        "smack-down",
         "snore",
         "snowscape",
         "stored-power",
@@ -2267,11 +2232,9 @@
         "surf",
         "thunder-wave",
         "toxic",
-        "toxic-spikes",
         "tri-attack",
         "trick",
         "trick-room",
-        "venoshock",
         "water-pulse",
         "waterfall",
         "weather-ball",
@@ -2325,21 +2288,23 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10165.png",
       "forms": [],
       "moveSlugs": [
-        "acid",
         "acid-spray",
         "amnesia",
         "avalanche",
+        "belch",
+        "belly-drum",
         "blizzard",
+        "block",
         "body-press",
         "body-slam",
         "brick-break",
         "bulldoze",
         "calm-mind",
         "chilling-water",
-        "confusion",
         "curse",
         "dig",
         "disable",
+        "dive",
         "double-edge",
         "drain-punch",
         "earthquake",
@@ -2351,12 +2316,11 @@
         "fling",
         "focus-blast",
         "foul-play",
+        "future-sight",
         "giga-impact",
         "grass-knot",
-        "growl",
         "gunk-shot",
         "haze",
-        "headbutt",
         "heal-pulse",
         "helping-hand",
         "hydro-pump",
@@ -2367,24 +2331,27 @@
         "icy-wind",
         "imprison",
         "iron-defense",
+        "iron-tail",
         "light-screen",
         "liquidation",
-        "metronome",
         "mud-shot",
         "muddy-water",
         "nasty-plot",
         "poison-jab",
         "power-gem",
         "protect",
-        "psybeam",
         "psych-up",
         "psychic",
         "psychic-terrain",
         "psyshock",
         "rain-dance",
+        "razor-shell",
         "rest",
         "rock-blast",
+        "round",
+        "safeguard",
         "sandstorm",
+        "scald",
         "scary-face",
         "shadow-ball",
         "shell-side-arm",
@@ -2394,17 +2361,15 @@
         "sludge-bomb",
         "sludge-wave",
         "smack-down",
+        "snore",
         "snowscape",
         "stored-power",
         "substitute",
         "sunny-day",
         "surf",
-        "swift",
-        "tackle",
-        "take-down",
-        "tera-blast",
         "thunder-wave",
         "toxic",
+        "tri-attack",
         "trick",
         "trick-room",
         "venoshock",
@@ -2412,7 +2377,7 @@
         "waterfall",
         "weather-ball",
         "whirlpool",
-        "withdraw",
+        "wonder-room",
         "yawn",
         "zen-headbutt"
       ]
@@ -3003,42 +2968,31 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/128.png",
       "forms": [],
       "moveSlugs": [
-        "aqua-jet",
         "assurance",
         "blizzard",
-        "body-press",
         "body-slam",
-        "bulk-up",
         "bulldoze",
-        "chilling-water",
         "close-combat",
         "curse",
         "dig",
         "double-edge",
-        "drill-run",
         "earthquake",
         "endeavor",
         "endure",
         "facade",
         "fire-blast",
-        "fire-spin",
-        "flame-charge",
         "flamethrower",
-        "flare-blitz",
         "giga-impact",
         "helping-hand",
         "high-horsepower",
-        "hydro-pump",
         "hyper-beam",
         "ice-beam",
         "icy-wind",
         "iron-head",
         "iron-tail",
         "lash-out",
-        "liquidation",
         "megahorn",
         "outrage",
-        "overheat",
         "payback",
         "protect",
         "raging-bull",
@@ -3061,7 +3015,6 @@
         "sunny-day",
         "surf",
         "swagger",
-        "temper-flare",
         "thief",
         "thrash",
         "throat-chop",
@@ -3070,10 +3023,8 @@
         "trailblaze",
         "uproar",
         "water-pulse",
-        "wave-crash",
         "whirlpool",
         "wild-charge",
-        "will-o-wisp",
         "zen-headbutt"
       ]
     },
@@ -3131,14 +3082,12 @@
         "curse",
         "dig",
         "double-edge",
-        "double-kick",
         "drill-run",
         "earthquake",
         "endeavor",
         "endure",
         "facade",
         "giga-impact",
-        "headbutt",
         "high-horsepower",
         "hydro-pump",
         "hyper-beam",
@@ -3162,10 +3111,6 @@
         "substitute",
         "surf",
         "swagger",
-        "tackle",
-        "tail-whip",
-        "take-down",
-        "tera-blast",
         "thief",
         "thrash",
         "trailblaze",
@@ -3173,7 +3118,6 @@
         "wave-crash",
         "whirlpool",
         "wild-charge",
-        "work-up",
         "zen-headbutt"
       ]
     },
@@ -4260,13 +4204,11 @@
         "hex",
         "howl",
         "hyper-beam",
-        "infernal-parade",
         "inferno",
         "iron-head",
         "lava-plume",
         "low-kick",
         "mega-kick",
-        "mystical-fire",
         "night-shade",
         "overheat",
         "play-rough",
@@ -4340,26 +4282,25 @@
         "body-slam",
         "brick-break",
         "bulldoze",
+        "burn-up",
         "burning-jealousy",
         "calm-mind",
         "confuse-ray",
+        "covet",
         "curse",
-        "defense-curl",
         "dig",
         "double-edge",
         "earthquake",
-        "ember",
         "endeavor",
         "endure",
         "eruption",
+        "extrasensory",
         "facade",
         "fire-blast",
         "fire-fang",
-        "fire-pledge",
         "fire-punch",
         "fire-spin",
         "flame-charge",
-        "flame-wheel",
         "flamethrower",
         "flare-blitz",
         "focus-blast",
@@ -4368,13 +4309,14 @@
         "gyro-ball",
         "heat-wave",
         "hex",
+        "howl",
         "hyper-beam",
         "infernal-parade",
         "inferno",
         "iron-head",
         "lava-plume",
-        "leer",
         "low-kick",
+        "mystical-fire",
         "night-shade",
         "overheat",
         "play-rough",
@@ -4385,21 +4327,17 @@
         "reversal",
         "roar",
         "rock-slide",
-        "rollout",
+        "round",
         "shadow-ball",
         "shadow-claw",
         "sleep-talk",
-        "smokescreen",
+        "snore",
         "solar-beam",
         "spite",
         "stomping-tantrum",
         "substitute",
         "sunny-day",
-        "swift",
-        "tackle",
-        "take-down",
         "temper-flare",
-        "tera-blast",
         "thunder-punch",
         "wild-charge",
         "will-o-wisp",
@@ -4633,7 +4571,7 @@
         "poison-jab",
         "pounce",
         "protect",
-        "psychic-fangs",
+        "psychic",
         "rage-powder",
         "rest",
         "round",
@@ -4994,7 +4932,6 @@
         "mud-slap",
         "muddy-water",
         "perish-song",
-        "pound",
         "protect",
         "psych-up",
         "psychic",
@@ -5271,7 +5208,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/199.png",
       "forms": [],
       "moveSlugs": [
-        "acid-spray",
         "amnesia",
         "avalanche",
         "belch",
@@ -5290,7 +5226,6 @@
         "dive",
         "drain-punch",
         "earthquake",
-        "eerie-spell",
         "endure",
         "expanding-force",
         "facade",
@@ -5304,10 +5239,8 @@
         "future-sight",
         "giga-impact",
         "grass-knot",
-        "gunk-shot",
         "heal-pulse",
         "helping-hand",
-        "hex",
         "hydro-pump",
         "hyper-beam",
         "ice-beam",
@@ -5318,11 +5251,9 @@
         "iron-tail",
         "light-screen",
         "liquidation",
-        "low-sweep",
         "mud-shot",
         "muddy-water",
         "nasty-plot",
-        "poison-jab",
         "power-gem",
         "protect",
         "psych-up",
@@ -5339,31 +5270,23 @@
         "round",
         "safeguard",
         "scald",
-        "scary-face",
         "shadow-ball",
         "skill-swap",
         "slack-off",
         "sleep-talk",
-        "sludge-bomb",
-        "sludge-wave",
-        "snarl",
         "snore",
         "snowscape",
-        "stomping-tantrum",
         "stored-power",
         "substitute",
         "sunny-day",
         "surf",
         "swagger",
-        "taunt",
         "thunder-punch",
         "thunder-wave",
         "toxic",
-        "toxic-spikes",
         "tri-attack",
         "trick",
         "trick-room",
-        "venoshock",
         "water-pulse",
         "waterfall",
         "weather-ball",
@@ -5417,21 +5340,23 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10172.png",
       "forms": [],
       "moveSlugs": [
-        "acid",
         "acid-spray",
         "amnesia",
         "avalanche",
+        "belch",
+        "belly-drum",
         "blizzard",
+        "block",
         "body-slam",
         "brick-break",
         "bulldoze",
         "calm-mind",
         "chilling-water",
         "chilly-reception",
-        "confusion",
         "curse",
         "dig",
         "disable",
+        "dive",
         "drain-punch",
         "earthquake",
         "eerie-spell",
@@ -5447,35 +5372,38 @@
         "future-sight",
         "giga-impact",
         "grass-knot",
-        "growl",
         "gunk-shot",
-        "headbutt",
         "heal-pulse",
+        "helping-hand",
         "hex",
         "hydro-pump",
         "hyper-beam",
         "ice-beam",
+        "ice-punch",
         "icy-wind",
         "imprison",
         "iron-defense",
+        "iron-tail",
         "light-screen",
         "liquidation",
         "low-sweep",
-        "metronome",
         "mud-shot",
         "muddy-water",
         "nasty-plot",
         "poison-jab",
         "power-gem",
         "protect",
-        "psybeam",
         "psych-up",
         "psychic",
         "psychic-noise",
         "psychic-terrain",
         "psyshock",
         "rain-dance",
+        "razor-shell",
         "rest",
+        "round",
+        "safeguard",
+        "scald",
         "scary-face",
         "shadow-ball",
         "skill-swap",
@@ -5484,21 +5412,20 @@
         "sludge-bomb",
         "sludge-wave",
         "snarl",
+        "snore",
+        "snowscape",
         "stomping-tantrum",
         "stored-power",
         "substitute",
         "sunny-day",
         "surf",
         "swagger",
-        "swift",
-        "tackle",
-        "take-down",
         "taunt",
-        "tera-blast",
         "thunder-punch",
         "thunder-wave",
         "toxic",
         "toxic-spikes",
+        "tri-attack",
         "trick",
         "trick-room",
         "venoshock",
@@ -5506,6 +5433,7 @@
         "waterfall",
         "weather-ball",
         "whirlpool",
+        "wonder-room",
         "yawn",
         "zen-headbutt"
       ]
@@ -11199,8 +11127,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/479.png",
       "forms": [],
       "moveSlugs": [
-        "air-slash",
-        "blizzard",
         "charge",
         "charge-beam",
         "confuse-ray",
@@ -11216,13 +11142,10 @@
         "foul-play",
         "helping-hand",
         "hex",
-        "hydro-pump",
         "hyper-voice",
-        "leaf-storm",
         "light-screen",
         "nasty-plot",
         "night-shade",
-        "overheat",
         "pain-split",
         "poltergeist",
         "protect",
@@ -11280,7 +11203,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10009.png",
       "forms": [],
       "moveSlugs": [
-        "astonish",
         "charge",
         "charge-beam",
         "confuse-ray",
@@ -11307,18 +11229,17 @@
         "rain-dance",
         "reflect",
         "rest",
+        "rising-voltage",
+        "round",
         "shadow-ball",
-        "shock-wave",
         "sleep-talk",
+        "snore",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
-        "swift",
-        "tera-blast",
         "thief",
         "thunder",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
         "trick",
@@ -11359,7 +11280,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10008.png",
       "forms": [],
       "moveSlugs": [
-        "astonish",
         "charge",
         "charge-beam",
         "confuse-ray",
@@ -11386,18 +11306,17 @@
         "rain-dance",
         "reflect",
         "rest",
+        "rising-voltage",
+        "round",
         "shadow-ball",
-        "shock-wave",
         "sleep-talk",
+        "snore",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
-        "swift",
-        "tera-blast",
         "thief",
         "thunder",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
         "trick",
@@ -11438,7 +11357,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10010.png",
       "forms": [],
       "moveSlugs": [
-        "astonish",
         "blizzard",
         "charge",
         "charge-beam",
@@ -11465,18 +11383,17 @@
         "rain-dance",
         "reflect",
         "rest",
+        "rising-voltage",
+        "round",
         "shadow-ball",
-        "shock-wave",
         "sleep-talk",
+        "snore",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
-        "swift",
-        "tera-blast",
         "thief",
         "thunder",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
         "trick",
@@ -11517,7 +11434,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10012.png",
       "forms": [],
       "moveSlugs": [
-        "astonish",
         "charge",
         "charge-beam",
         "confuse-ray",
@@ -11544,18 +11460,17 @@
         "rain-dance",
         "reflect",
         "rest",
+        "rising-voltage",
+        "round",
         "shadow-ball",
-        "shock-wave",
         "sleep-talk",
+        "snore",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
-        "swift",
-        "tera-blast",
         "thief",
         "thunder",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
         "trick",
@@ -11597,7 +11512,6 @@
       "forms": [],
       "moveSlugs": [
         "air-slash",
-        "astonish",
         "charge",
         "charge-beam",
         "confuse-ray",
@@ -11623,18 +11537,17 @@
         "rain-dance",
         "reflect",
         "rest",
+        "rising-voltage",
+        "round",
         "shadow-ball",
-        "shock-wave",
         "sleep-talk",
+        "snore",
         "spite",
         "stored-power",
         "substitute",
         "sunny-day",
-        "swift",
-        "tera-blast",
         "thief",
         "thunder",
-        "thunder-shock",
         "thunder-wave",
         "thunderbolt",
         "trick",
@@ -11931,7 +11844,6 @@
         "body-slam",
         "brick-break",
         "bulldoze",
-        "ceaseless-edge",
         "chilling-water",
         "copycat",
         "dark-pulse",
@@ -11974,7 +11886,6 @@
         "snowscape",
         "soak",
         "substitute",
-        "sucker-punch",
         "superpower",
         "surf",
         "swords-dance",
@@ -12029,8 +11940,10 @@
       "moveSlugs": [
         "aerial-ace",
         "air-slash",
+        "aqua-cutter",
         "aqua-jet",
         "aqua-tail",
+        "assurance",
         "avalanche",
         "blizzard",
         "body-slam",
@@ -12038,17 +11951,18 @@
         "bulldoze",
         "ceaseless-edge",
         "chilling-water",
+        "copycat",
         "dark-pulse",
+        "detect",
         "dig",
+        "dive",
         "drill-run",
         "encore",
         "endure",
         "facade",
-        "false-swipe",
         "fling",
         "flip-turn",
         "focus-energy",
-        "fury-cutter",
         "giga-impact",
         "grass-knot",
         "helping-hand",
@@ -12057,37 +11971,35 @@
         "hyper-beam",
         "ice-beam",
         "icy-wind",
+        "iron-tail",
         "knock-off",
         "lash-out",
         "liquidation",
         "megahorn",
+        "night-slash",
         "protect",
         "rain-dance",
         "razor-shell",
         "rest",
-        "retaliate",
+        "round",
+        "sacred-sword",
         "scary-face",
-        "slash",
+        "screech",
         "sleep-talk",
         "smart-strike",
         "snarl",
+        "snore",
         "snowscape",
+        "soak",
         "substitute",
         "sucker-punch",
         "surf",
-        "swift",
         "swords-dance",
-        "tackle",
-        "tail-whip",
-        "take-down",
         "taunt",
-        "tera-blast",
         "thief",
         "throat-chop",
         "upper-hand",
         "vacuum-wave",
-        "water-gun",
-        "water-pledge",
         "water-pulse",
         "waterfall",
         "whirlpool",
@@ -13391,17 +13303,14 @@
         "aerial-ace",
         "agility",
         "assurance",
-        "bitter-malice",
         "body-slam",
         "bounce",
         "brick-break",
         "burning-jealousy",
         "calm-mind",
-        "comeuppance",
         "confuse-ray",
         "counter",
         "crunch",
-        "curse",
         "dark-pulse",
         "detect",
         "dig",
@@ -13413,7 +13322,6 @@
         "flamethrower",
         "fling",
         "focus-blast",
-        "focus-punch",
         "foul-play",
         "giga-impact",
         "grass-knot",
@@ -13421,7 +13329,6 @@
         "hex",
         "hyper-beam",
         "hyper-voice",
-        "icy-wind",
         "imprison",
         "knock-off",
         "lash-out",
@@ -13435,8 +13342,6 @@
         "night-slash",
         "pain-split",
         "payback",
-        "phantom-force",
-        "poltergeist",
         "protect",
         "psych-up",
         "psychic",
@@ -13447,13 +13352,11 @@
         "scary-face",
         "shadow-ball",
         "shadow-claw",
-        "shadow-sneak",
         "skitter-smack",
         "sleep-talk",
         "sludge-bomb",
         "snarl",
         "snore",
-        "snowscape",
         "spite",
         "substitute",
         "sucker-punch",
@@ -13466,8 +13369,7 @@
         "toxic",
         "trick",
         "u-turn",
-        "uproar",
-        "will-o-wisp"
+        "uproar"
       ]
     },
     {
@@ -13509,12 +13411,15 @@
         "brick-break",
         "burning-jealousy",
         "calm-mind",
+        "comeuppance",
         "confuse-ray",
         "crunch",
         "curse",
         "dark-pulse",
+        "detect",
         "dig",
         "endure",
+        "extrasensory",
         "facade",
         "fake-tears",
         "flamethrower",
@@ -13526,16 +13431,15 @@
         "grass-knot",
         "helping-hand",
         "hex",
-        "hone-claws",
         "hyper-beam",
         "hyper-voice",
         "icy-wind",
         "imprison",
         "knock-off",
         "lash-out",
-        "leer",
         "low-kick",
         "low-sweep",
+        "memento",
         "nasty-plot",
         "night-shade",
         "pain-split",
@@ -13548,7 +13452,6 @@
         "rest",
         "roar",
         "scary-face",
-        "scratch",
         "shadow-ball",
         "shadow-claw",
         "shadow-sneak",
@@ -13559,11 +13462,8 @@
         "snowscape",
         "spite",
         "substitute",
-        "swift",
         "swords-dance",
-        "take-down",
         "taunt",
-        "tera-blast",
         "thief",
         "throat-chop",
         "torment",
@@ -14149,12 +14049,9 @@
       "forms": [],
       "moveSlugs": [
         "attract",
-        "bind",
         "bounce",
         "bulldoze",
         "charge",
-        "counter",
-        "crunch",
         "curse",
         "dig",
         "discharge",
@@ -14167,12 +14064,8 @@
         "facade",
         "fissure",
         "flail",
-        "flash-cannon",
         "foul-play",
-        "ice-fang",
-        "iron-defense",
         "lash-out",
-        "metal-sound",
         "mud-shot",
         "mud-slap",
         "muddy-water",
@@ -14187,21 +14080,17 @@
         "round",
         "sandstorm",
         "scald",
-        "screech",
         "sleep-talk",
         "sludge-bomb",
         "sludge-wave",
-        "snap-trap",
         "snore",
         "spite",
         "stealth-rock",
-        "steel-beam",
         "stomping-tantrum",
         "stone-edge",
         "substitute",
         "sucker-punch",
         "surf",
-        "terrain-pulse",
         "thunder",
         "thunder-wave",
         "thunderbolt",
@@ -14241,7 +14130,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10180.png",
       "forms": [],
       "moveSlugs": [
-        "astonish",
         "attract",
         "bind",
         "bounce",
@@ -14261,7 +14149,6 @@
         "ice-fang",
         "iron-defense",
         "lash-out",
-        "metal-claw",
         "metal-sound",
         "mud-shot",
         "mud-slap",
@@ -14272,7 +14159,6 @@
         "rain-dance",
         "reflect-type",
         "rest",
-        "revenge",
         "rock-slide",
         "rock-tomb",
         "round",
@@ -14292,11 +14178,9 @@
         "substitute",
         "sucker-punch",
         "surf",
-        "tackle",
         "terrain-pulse",
         "thunder-wave",
         "uproar",
-        "water-gun",
         "yawn"
       ]
     },
@@ -16925,7 +16809,6 @@
       "moveSlugs": [
         "acid-armor",
         "acid-spray",
-        "ancient-power",
         "aqua-tail",
         "assurance",
         "blizzard",
@@ -16951,21 +16834,14 @@
         "fire-punch",
         "flail",
         "flamethrower",
-        "flash-cannon",
         "focus-blast",
         "focus-punch",
-        "giga-drain",
         "giga-impact",
-        "gyro-ball",
-        "heavy-slam",
         "hydro-pump",
         "hyper-beam",
         "ice-beam",
-        "ice-spinner",
-        "iron-head",
         "iron-tail",
         "knock-off",
-        "lash-out",
         "life-dew",
         "mega-kick",
         "mud-shot",
@@ -16976,18 +16852,13 @@
         "rain-dance",
         "rest",
         "rock-slide",
-        "rock-tomb",
         "round",
-        "sandstorm",
         "scald",
-        "scary-face",
-        "shelter",
         "skitter-smack",
         "sleep-talk",
         "sludge-bomb",
         "sludge-wave",
         "snore",
-        "steel-beam",
         "stomping-tantrum",
         "substitute",
         "sunny-day",
@@ -17046,7 +16917,7 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png",
       "forms": [],
       "moveSlugs": [
-        "absorb",
+        "acid-armor",
         "acid-spray",
         "blizzard",
         "body-press",
@@ -17055,9 +16926,9 @@
         "bulldoze",
         "charm",
         "chilling-water",
+        "counter",
         "curse",
         "draco-meteor",
-        "dragon-breath",
         "dragon-cheer",
         "dragon-claw",
         "dragon-pulse",
@@ -17082,6 +16953,7 @@
         "iron-tail",
         "knock-off",
         "lash-out",
+        "life-dew",
         "mud-shot",
         "muddy-water",
         "outrage",
@@ -17090,6 +16962,7 @@
         "rest",
         "rock-slide",
         "rock-tomb",
+        "round",
         "sandstorm",
         "scary-face",
         "shelter",
@@ -17097,19 +16970,17 @@
         "sleep-talk",
         "sludge-bomb",
         "sludge-wave",
+        "snore",
         "steel-beam",
         "stomping-tantrum",
         "substitute",
         "sunny-day",
         "surf",
-        "tackle",
-        "take-down",
         "tearful-look",
-        "tera-blast",
         "thunder",
         "thunder-punch",
         "thunderbolt",
-        "water-gun",
+        "toxic",
         "water-pulse",
         "weather-ball"
       ]
@@ -17465,7 +17336,6 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/713.png",
       "forms": [],
       "moveSlugs": [
-        "ancient-power",
         "aurora-veil",
         "avalanche",
         "bite",
@@ -17476,7 +17346,6 @@
         "chilling-water",
         "crunch",
         "curse",
-        "dig",
         "double-edge",
         "earthquake",
         "endure",
@@ -17485,7 +17354,6 @@
         "frost-breath",
         "giga-impact",
         "gyro-ball",
-        "hard-press",
         "heavy-slam",
         "high-horsepower",
         "hydro-pump",
@@ -17498,24 +17366,19 @@
         "icy-wind",
         "iron-defense",
         "iron-head",
-        "meteor-beam",
         "mirror-coat",
-        "mountain-gale",
         "protect",
         "rain-dance",
         "rapid-spin",
         "recover",
         "rest",
-        "rock-blast",
         "rock-slide",
         "rock-tomb",
         "round",
-        "sandstorm",
         "scary-face",
         "sleep-talk",
         "snore",
         "snowscape",
-        "stealth-rock",
         "stomping-tantrum",
         "stone-edge",
         "substitute",
@@ -17568,6 +17431,7 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10243.png",
       "forms": [],
       "moveSlugs": [
+        "aurora-veil",
         "avalanche",
         "bite",
         "blizzard",
@@ -17582,10 +17446,11 @@
         "earthquake",
         "endure",
         "facade",
+        "flash-cannon",
+        "frost-breath",
         "giga-impact",
         "gyro-ball",
         "hard-press",
-        "harden",
         "heavy-slam",
         "high-horsepower",
         "hyper-beam",
@@ -17597,8 +17462,8 @@
         "iron-defense",
         "iron-head",
         "meteor-beam",
+        "mirror-coat",
         "mountain-gale",
-        "powder-snow",
         "protect",
         "rain-dance",
         "rapid-spin",
@@ -17607,17 +17472,17 @@
         "rock-blast",
         "rock-slide",
         "rock-tomb",
+        "round",
         "sandstorm",
         "scary-face",
         "sleep-talk",
+        "snore",
         "snowscape",
         "stealth-rock",
         "stomping-tantrum",
         "stone-edge",
         "substitute",
-        "tackle",
-        "take-down",
-        "tera-blast",
+        "surf",
         "wide-guard"
       ]
     },
@@ -17845,7 +17710,6 @@
         "tailwind",
         "taunt",
         "trailblaze",
-        "triple-arrows",
         "u-turn",
         "upper-hand"
       ]
@@ -17900,13 +17764,13 @@
         "close-combat",
         "coaching",
         "confuse-ray",
+        "curse",
         "defog",
         "double-team",
         "dual-wingbeat",
         "endure",
         "energy-ball",
         "facade",
-        "false-swipe",
         "feather-dance",
         "focus-blast",
         "focus-punch",
@@ -17914,50 +17778,44 @@
         "giga-drain",
         "giga-impact",
         "grass-knot",
-        "grass-pledge",
         "grassy-glide",
         "grassy-terrain",
-        "growl",
         "haze",
         "helping-hand",
         "hyper-beam",
         "knock-off",
         "leaf-blade",
         "leaf-storm",
-        "leafage",
         "light-screen",
         "low-kick",
         "low-sweep",
-        "magical-leaf",
         "nasty-plot",
         "night-shade",
-        "peck",
         "pluck",
         "protect",
+        "psycho-cut",
         "rain-dance",
-        "razor-leaf",
         "rest",
         "reversal",
         "rock-tomb",
         "roost",
+        "round",
         "scary-face",
         "seed-bomb",
         "shadow-claw",
         "shadow-sneak",
         "sleep-talk",
         "smack-down",
+        "snore",
         "solar-beam",
+        "steel-wing",
         "substitute",
         "sucker-punch",
         "sunny-day",
-        "swift",
         "swords-dance",
         "synthesis",
-        "tackle",
         "tailwind",
-        "take-down",
         "taunt",
-        "tera-blast",
         "trailblaze",
         "triple-arrows",
         "u-turn",
@@ -22980,29 +22838,6 @@
     }
   ],
   "moves": {
-    "absorb": {
-      "name": "absorb",
-      "displayName": "Absorb",
-      "type": "grass",
-      "damageClass": "special",
-      "power": 20,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Drains half the damage inflicted to heal the user.",
-      "effect": "Inflicts regular damage. Drains half the damage inflicted to heal the user.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 50,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
-    },
     "accelerock": {
       "name": "accelerock",
       "displayName": "Accelerock",
@@ -23024,35 +22859,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "acid": {
-      "name": "acid",
-      "displayName": "Acid",
-      "type": "poison",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Has a chance to lower the target’s Special Defense by one stage.",
-      "effect": "Inflicts regular damage. Has a chance to lower the target’s Special Defense by one stage.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "special-defense",
-          "change": -1
-        }
-      ],
-      "statChance": 10,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "acid-armor": {
       "name": "acid-armor",
@@ -23080,7 +22890,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "acid-spray": {
       "name": "acid-spray",
@@ -23108,7 +22919,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "acrobatics": {
       "name": "acrobatics",
@@ -23131,7 +22945,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "acupressure": {
       "name": "acupressure",
@@ -23154,7 +22971,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aerial-ace": {
       "name": "aerial-ace",
@@ -23177,7 +22995,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "after-you": {
       "name": "after-you",
@@ -23200,7 +23022,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "agility": {
       "name": "agility",
@@ -23228,7 +23051,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "air-cutter": {
       "name": "air-cutter",
@@ -23251,7 +23075,11 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "slicing",
+        "wind"
+      ]
     },
     "air-slash": {
       "name": "air-slash",
@@ -23274,7 +23102,10 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "slicing"
+      ]
     },
     "alluring-voice": {
       "name": "alluring-voice",
@@ -23297,7 +23128,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "ally-switch": {
       "name": "ally-switch",
@@ -23320,7 +23154,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "amnesia": {
       "name": "amnesia",
@@ -23348,7 +23183,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "ancient-power": {
       "name": "ancient-power",
@@ -23392,7 +23228,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "apple-acid": {
       "name": "apple-acid",
@@ -23420,7 +23257,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aqua-cutter": {
       "name": "aqua-cutter",
@@ -23443,7 +23281,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "slicing"
+      ]
     },
     "aqua-jet": {
       "name": "aqua-jet",
@@ -23466,7 +23307,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "aqua-ring": {
       "name": "aqua-ring",
@@ -23489,7 +23333,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aqua-step": {
       "name": "aqua-step",
@@ -23517,7 +23362,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "aqua-tail": {
       "name": "aqua-tail",
@@ -23540,7 +23388,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "armor-cannon": {
       "name": "armor-cannon",
@@ -23572,7 +23423,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aromatic-mist": {
       "name": "aromatic-mist",
@@ -23600,7 +23452,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "assurance": {
       "name": "assurance",
@@ -23623,30 +23476,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "astonish": {
-      "name": "astonish",
-      "displayName": "Astonish",
-      "type": "ghost",
-      "damageClass": "physical",
-      "power": 30,
-      "accuracy": 100,
-      "pp": 15,
-      "priority": 0,
-      "shortEffect": "Has a chance to make the target flinch.",
-      "effect": "Inflicts regular damage. Has a chance to make the target flinch.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 30,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "attract": {
       "name": "attract",
@@ -23669,7 +23502,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aura-sphere": {
       "name": "aura-sphere",
@@ -23692,7 +23526,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet",
+        "pulse"
+      ]
     },
     "aura-wheel": {
       "name": "aura-wheel",
@@ -23720,7 +23558,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "aurora-veil": {
       "name": "aurora-veil",
@@ -23743,7 +23582,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "avalanche": {
       "name": "avalanche",
@@ -23766,7 +23606,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "axe-kick": {
       "name": "axe-kick",
@@ -23789,7 +23632,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "baby-doll-eyes": {
       "name": "baby-doll-eyes",
@@ -23817,7 +23663,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "baneful-bunker": {
       "name": "baneful-bunker",
@@ -23840,7 +23687,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "baton-pass": {
       "name": "baton-pass",
@@ -23863,7 +23711,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "beak-blast": {
       "name": "beak-blast",
@@ -23886,7 +23735,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "beat-up": {
       "name": "beat-up",
@@ -23909,7 +23761,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 6,
-      "maxHits": 6
+      "maxHits": 6,
+      "flags": []
     },
     "belch": {
       "name": "belch",
@@ -23932,7 +23785,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "belly-drum": {
       "name": "belly-drum",
@@ -23955,7 +23809,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "bind": {
       "name": "bind",
@@ -23978,7 +23833,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "bite": {
       "name": "bite",
@@ -24001,7 +23859,11 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "bitter-blade": {
       "name": "bitter-blade",
@@ -24024,7 +23886,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "bitter-malice": {
       "name": "bitter-malice",
@@ -24047,7 +23913,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "blast-burn": {
       "name": "blast-burn",
@@ -24070,7 +23937,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "blaze-kick": {
       "name": "blaze-kick",
@@ -24093,7 +23961,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "blizzard": {
       "name": "blizzard",
@@ -24116,7 +23987,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "block": {
       "name": "block",
@@ -24139,7 +24013,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "body-press": {
       "name": "body-press",
@@ -24162,7 +24037,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "body-slam": {
       "name": "body-slam",
@@ -24185,7 +24063,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "bone-rush": {
       "name": "bone-rush",
@@ -24208,7 +24089,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": []
     },
     "boomburst": {
       "name": "boomburst",
@@ -24231,7 +24113,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "bounce": {
       "name": "bounce",
@@ -24254,7 +24139,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "brave-bird": {
       "name": "brave-bird",
@@ -24277,7 +24165,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "breaking-swipe": {
       "name": "breaking-swipe",
@@ -24305,7 +24196,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "brick-break": {
       "name": "brick-break",
@@ -24328,7 +24222,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "brutal-swing": {
       "name": "brutal-swing",
@@ -24351,7 +24248,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "bug-bite": {
       "name": "bug-bite",
@@ -24374,7 +24274,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "bug-buzz": {
       "name": "bug-buzz",
@@ -24402,7 +24305,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "bulk-up": {
       "name": "bulk-up",
@@ -24434,7 +24340,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "bulldoze": {
       "name": "bulldoze",
@@ -24462,7 +24369,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "bullet-punch": {
       "name": "bullet-punch",
@@ -24485,7 +24393,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "bullet-seed": {
       "name": "bullet-seed",
@@ -24508,7 +24420,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": [
+        "bullet"
+      ]
     },
     "burn-up": {
       "name": "burn-up",
@@ -24531,7 +24446,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "burning-jealousy": {
       "name": "burning-jealousy",
@@ -24554,7 +24470,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "calm-mind": {
       "name": "calm-mind",
@@ -24586,7 +24503,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "ceaseless-edge": {
       "name": "ceaseless-edge",
@@ -24609,7 +24527,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "charge": {
       "name": "charge",
@@ -24637,7 +24559,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "charge-beam": {
       "name": "charge-beam",
@@ -24665,7 +24588,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "charm": {
       "name": "charm",
@@ -24693,7 +24617,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "chilling-water": {
       "name": "chilling-water",
@@ -24721,7 +24646,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "chilly-reception": {
       "name": "chilly-reception",
@@ -24744,7 +24670,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "circle-throw": {
       "name": "circle-throw",
@@ -24767,7 +24694,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "clanging-scales": {
       "name": "clanging-scales",
@@ -24795,7 +24725,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "clangorous-soul": {
       "name": "clangorous-soul",
@@ -24839,7 +24772,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "clear-smog": {
       "name": "clear-smog",
@@ -24862,7 +24798,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "close-combat": {
       "name": "close-combat",
@@ -24894,7 +24831,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "coaching": {
       "name": "coaching",
@@ -24926,7 +24866,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "coil": {
       "name": "coil",
@@ -24962,7 +24903,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "comeuppance": {
       "name": "comeuppance",
@@ -24985,7 +24927,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "confuse-ray": {
       "name": "confuse-ray",
@@ -25008,30 +24953,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "confusion": {
-      "name": "confusion",
-      "displayName": "Confusion",
-      "type": "psychic",
-      "damageClass": "special",
-      "power": 50,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Has a chance to confuse the target.",
-      "effect": "Inflicts regular damage. Has a chance to confuse the target.",
-      "target": "selected-pokemon",
-      "ailment": "confusion",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "copycat": {
       "name": "copycat",
@@ -25054,7 +24977,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "corrosive-gas": {
       "name": "corrosive-gas",
@@ -25077,7 +25001,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "cosmic-power": {
       "name": "cosmic-power",
@@ -25109,7 +25034,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "cotton-guard": {
       "name": "cotton-guard",
@@ -25137,7 +25063,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "cotton-spore": {
       "name": "cotton-spore",
@@ -25165,7 +25092,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "counter": {
       "name": "counter",
@@ -25188,7 +25116,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "covet": {
       "name": "covet",
@@ -25211,7 +25142,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "crabhammer": {
       "name": "crabhammer",
@@ -25234,7 +25168,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "cross-chop": {
       "name": "cross-chop",
@@ -25257,7 +25194,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "cross-poison": {
       "name": "cross-poison",
@@ -25280,7 +25220,11 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "crunch": {
       "name": "crunch",
@@ -25308,7 +25252,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "crush-claw": {
       "name": "crush-claw",
@@ -25336,7 +25284,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "curse": {
       "name": "curse",
@@ -25359,7 +25310,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dark-pulse": {
       "name": "dark-pulse",
@@ -25382,7 +25334,10 @@
       "flinchChance": 20,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "pulse"
+      ]
     },
     "darkest-lariat": {
       "name": "darkest-lariat",
@@ -25405,7 +25360,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "dazzling-gleam": {
       "name": "dazzling-gleam",
@@ -25428,7 +25386,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "decorate": {
       "name": "decorate",
@@ -25460,35 +25419,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "defense-curl": {
-      "name": "defense-curl",
-      "displayName": "Defense Curl",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 40,
-      "priority": 0,
-      "shortEffect": "Raises user’s Defense by one stage.",
-      "effect": "Raises user’s Defense by one stage. After this move is used, the power of Ice Ball and Rollout are doubled until the user leaves the field.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "defense",
-          "change": 1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "defog": {
       "name": "defog",
@@ -25516,7 +25448,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "destiny-bond": {
       "name": "destiny-bond",
@@ -25539,7 +25472,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "detect": {
       "name": "detect",
@@ -25562,7 +25496,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dig": {
       "name": "dig",
@@ -25585,7 +25520,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "dire-claw": {
       "name": "dire-claw",
@@ -25608,7 +25546,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "disable": {
       "name": "disable",
@@ -25631,30 +25572,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "disarming-voice": {
-      "name": "disarming-voice",
-      "displayName": "Disarming Voice",
-      "type": "fairy",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": null,
-      "pp": 15,
-      "priority": 0,
-      "shortEffect": "Never misses.",
-      "effect": "Inflicts regular damage. Ignores accuracy and evasion.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "discharge": {
       "name": "discharge",
@@ -25677,7 +25596,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dive": {
       "name": "dive",
@@ -25700,7 +25620,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "double-edge": {
       "name": "double-edge",
@@ -25723,7 +25646,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "double-hit": {
       "name": "double-hit",
@@ -25746,30 +25672,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 2
-    },
-    "double-kick": {
-      "name": "double-kick",
-      "displayName": "Double Kick",
-      "type": "fighting",
-      "damageClass": "physical",
-      "power": 30,
-      "accuracy": 100,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Hits twice in one turn.",
-      "effect": "Inflicts regular damage. Hits twice in one turn.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": 2,
-      "maxHits": 2
+      "maxHits": 2,
+      "flags": [
+        "contact"
+      ]
     },
     "double-team": {
       "name": "double-team",
@@ -25797,7 +25703,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "draco-meteor": {
       "name": "draco-meteor",
@@ -25825,30 +25732,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "dragon-breath": {
-      "name": "dragon-breath",
-      "displayName": "Dragon Breath",
-      "type": "dragon",
-      "damageClass": "special",
-      "power": 60,
-      "accuracy": 100,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Has a chance to paralyze the target.",
-      "effect": "Inflicts regular damage. Has a chance to paralyze the target.",
-      "target": "selected-pokemon",
-      "ailment": "paralysis",
-      "ailmentChance": 30,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dragon-cheer": {
       "name": "dragon-cheer",
@@ -25871,7 +25756,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dragon-claw": {
       "name": "dragon-claw",
@@ -25894,7 +25780,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "dragon-dance": {
       "name": "dragon-dance",
@@ -25926,7 +25815,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "dragon-darts": {
       "name": "dragon-darts",
@@ -25949,7 +25839,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 2
+      "maxHits": 2,
+      "flags": []
     },
     "dragon-pulse": {
       "name": "dragon-pulse",
@@ -25972,7 +25863,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "pulse"
+      ]
     },
     "dragon-rush": {
       "name": "dragon-rush",
@@ -25995,7 +25889,10 @@
       "flinchChance": 20,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "dragon-tail": {
       "name": "dragon-tail",
@@ -26018,7 +25915,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "drain-punch": {
       "name": "drain-punch",
@@ -26041,7 +25941,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "draining-kiss": {
       "name": "draining-kiss",
@@ -26064,7 +25968,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "drill-peck": {
       "name": "drill-peck",
@@ -26087,7 +25994,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "drill-run": {
       "name": "drill-run",
@@ -26110,7 +26020,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "dual-wingbeat": {
       "name": "dual-wingbeat",
@@ -26133,7 +26046,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 2
+      "maxHits": 2,
+      "flags": [
+        "contact"
+      ]
     },
     "dynamic-punch": {
       "name": "dynamic-punch",
@@ -26156,7 +26072,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "earth-power": {
       "name": "earth-power",
@@ -26184,7 +26104,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "earthquake": {
       "name": "earthquake",
@@ -26207,7 +26128,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "eerie-impulse": {
       "name": "eerie-impulse",
@@ -26235,7 +26157,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "eerie-spell": {
       "name": "eerie-spell",
@@ -26258,7 +26181,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "electric-terrain": {
       "name": "electric-terrain",
@@ -26281,7 +26207,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "electrify": {
       "name": "electrify",
@@ -26304,7 +26231,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "electro-ball": {
       "name": "electro-ball",
@@ -26327,7 +26255,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "electro-shot": {
       "name": "electro-shot",
@@ -26355,7 +26286,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "electroweb": {
       "name": "electroweb",
@@ -26383,30 +26315,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "ember": {
-      "name": "ember",
-      "displayName": "Ember",
-      "type": "fire",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Has a chance to burn the target.",
-      "effect": "Inflicts regular damage. Has a chance to burn the target.",
-      "target": "selected-pokemon",
-      "ailment": "burn",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "encore": {
       "name": "encore",
@@ -26429,7 +26339,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "endeavor": {
       "name": "endeavor",
@@ -26452,7 +26363,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "endure": {
       "name": "endure",
@@ -26475,7 +26389,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "energy-ball": {
       "name": "energy-ball",
@@ -26503,7 +26418,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "entrainment": {
       "name": "entrainment",
@@ -26526,7 +26444,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "eruption": {
       "name": "eruption",
@@ -26549,7 +26468,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "expanding-force": {
       "name": "expanding-force",
@@ -26572,7 +26492,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "explosion": {
       "name": "explosion",
@@ -26595,7 +26516,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "extrasensory": {
       "name": "extrasensory",
@@ -26618,7 +26540,8 @@
       "flinchChance": 10,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "extreme-speed": {
       "name": "extreme-speed",
@@ -26641,7 +26564,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "facade": {
       "name": "facade",
@@ -26664,7 +26590,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "fairy-lock": {
       "name": "fairy-lock",
@@ -26687,7 +26616,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fake-out": {
       "name": "fake-out",
@@ -26710,7 +26640,10 @@
       "flinchChance": 100,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "fake-tears": {
       "name": "fake-tears",
@@ -26738,30 +26671,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "false-swipe": {
-      "name": "false-swipe",
-      "displayName": "False Swipe",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 40,
-      "priority": 0,
-      "shortEffect": "Cannot lower the target’s HP below 1.",
-      "effect": "Inflicts regular damage. Will not reduce the target’s HP below 1.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "feather-dance": {
       "name": "feather-dance",
@@ -26789,7 +26700,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "feint": {
       "name": "feint",
@@ -26812,7 +26724,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fell-stinger": {
       "name": "fell-stinger",
@@ -26835,7 +26748,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "fickle-beam": {
       "name": "fickle-beam",
@@ -26858,7 +26774,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fiery-dance": {
       "name": "fiery-dance",
@@ -26886,7 +26803,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "final-gambit": {
       "name": "final-gambit",
@@ -26909,7 +26827,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fire-blast": {
       "name": "fire-blast",
@@ -26932,7 +26851,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fire-fang": {
       "name": "fire-fang",
@@ -26955,7 +26875,11 @@
       "flinchChance": 10,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "fire-lash": {
       "name": "fire-lash",
@@ -26983,30 +26907,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "fire-pledge": {
-      "name": "fire-pledge",
-      "displayName": "Fire Pledge",
-      "type": "fire",
-      "damageClass": "special",
-      "power": 80,
-      "accuracy": 100,
-      "pp": 10,
-      "priority": 0,
-      "shortEffect": "With Water Pledge, doubles the effect chance of friendly Pokémon’s moves for four turns.",
-      "effect": "Inflicts regular damage. If a friendly Pokémon used Water Pledge earlier this turn, moves used by any friendly Pokémon have doubled effect chance for four turns (including this one).",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "fire-punch": {
       "name": "fire-punch",
@@ -27029,7 +26933,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "fire-spin": {
       "name": "fire-spin",
@@ -27052,7 +26960,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "first-impression": {
       "name": "first-impression",
@@ -27075,7 +26984,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "fissure": {
       "name": "fissure",
@@ -27098,7 +27010,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "flail": {
       "name": "flail",
@@ -27121,7 +27034,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "flame-charge": {
       "name": "flame-charge",
@@ -27149,30 +27065,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "flame-wheel": {
-      "name": "flame-wheel",
-      "displayName": "Flame Wheel",
-      "type": "fire",
-      "damageClass": "physical",
-      "power": 60,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Has a chance to burn the target. Lets frozen Pokémon thaw themselves.",
-      "effect": "Inflicts regular damage. Has a chance to burn the target. Frozen Pokémon may use this move, in which case they will thaw.",
-      "target": "selected-pokemon",
-      "ailment": "burn",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "flamethrower": {
       "name": "flamethrower",
@@ -27195,7 +27091,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "flare-blitz": {
       "name": "flare-blitz",
@@ -27218,7 +27115,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "flash-cannon": {
       "name": "flash-cannon",
@@ -27246,7 +27146,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "flatter": {
       "name": "flatter",
@@ -27274,7 +27175,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fling": {
       "name": "fling",
@@ -27297,7 +27199,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "flip-turn": {
       "name": "flip-turn",
@@ -27320,7 +27223,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "flower-trick": {
       "name": "flower-trick",
@@ -27343,7 +27249,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "fly": {
       "name": "fly",
@@ -27366,7 +27273,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "flying-press": {
       "name": "flying-press",
@@ -27389,7 +27299,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "focus-blast": {
       "name": "focus-blast",
@@ -27417,7 +27330,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "focus-energy": {
       "name": "focus-energy",
@@ -27440,7 +27356,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "focus-punch": {
       "name": "focus-punch",
@@ -27463,7 +27380,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "follow-me": {
       "name": "follow-me",
@@ -27486,7 +27407,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "foul-play": {
       "name": "foul-play",
@@ -27509,7 +27431,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "freeze-dry": {
       "name": "freeze-dry",
@@ -27532,7 +27457,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "frenzy-plant": {
       "name": "frenzy-plant",
@@ -27555,7 +27481,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "frost-breath": {
       "name": "frost-breath",
@@ -27578,30 +27505,8 @@
       "flinchChance": 0,
       "critRate": 6,
       "minHits": null,
-      "maxHits": null
-    },
-    "fury-cutter": {
-      "name": "fury-cutter",
-      "displayName": "Fury Cutter",
-      "type": "bug",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 95,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Power doubles every turn this move is used in succession after the first, maxing out after five turns.",
-      "effect": "Inflicts regular damage. Power doubles after every time this move is used, whether consecutively or not, maxing out at 16x. If this move misses or the user leaves the field, power resets.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "future-sight": {
       "name": "future-sight",
@@ -27624,7 +27529,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "gastro-acid": {
       "name": "gastro-acid",
@@ -27647,7 +27553,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "giga-drain": {
       "name": "giga-drain",
@@ -27670,7 +27577,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "giga-impact": {
       "name": "giga-impact",
@@ -27693,7 +27601,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "gigaton-hammer": {
       "name": "gigaton-hammer",
@@ -27716,7 +27627,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "glare": {
       "name": "glare",
@@ -27739,7 +27651,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "grass-knot": {
       "name": "grass-knot",
@@ -27762,30 +27675,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "grass-pledge": {
-      "name": "grass-pledge",
-      "displayName": "Grass Pledge",
-      "type": "grass",
-      "damageClass": "special",
-      "power": 80,
-      "accuracy": 100,
-      "pp": 10,
-      "priority": 0,
-      "shortEffect": "With Fire Pledge, damages opposing Pokémon for 1/8 their max HP every turn for four turns.",
-      "effect": "Inflicts regular damage. If a friendly Pokémon used Fire Pledge earlier this turn, all opposing Pokémon will take 1/8 their max HP in damage at the end of every turn for four turns (including this one).",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "grassy-glide": {
       "name": "grassy-glide",
@@ -27808,7 +27701,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "grassy-terrain": {
       "name": "grassy-terrain",
@@ -27831,7 +27727,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "grav-apple": {
       "name": "grav-apple",
@@ -27859,7 +27756,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "gravity": {
       "name": "gravity",
@@ -27882,35 +27780,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "growl": {
-      "name": "growl",
-      "displayName": "Growl",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": 100,
-      "pp": 40,
-      "priority": 0,
-      "shortEffect": "Lowers the target’s Attack by one stage.",
-      "effect": "Lowers the target’s Attack by one stage.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": -1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "growth": {
       "name": "growth",
@@ -27942,7 +27813,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "guard-split": {
       "name": "guard-split",
@@ -27965,7 +27837,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "guard-swap": {
       "name": "guard-swap",
@@ -27988,7 +27861,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "guillotine": {
       "name": "guillotine",
@@ -28011,7 +27885,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "gunk-shot": {
       "name": "gunk-shot",
@@ -28034,7 +27911,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "gyro-ball": {
       "name": "gyro-ball",
@@ -28057,7 +27935,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bullet"
+      ]
     },
     "hammer-arm": {
       "name": "hammer-arm",
@@ -28085,7 +27967,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "hard-press": {
       "name": "hard-press",
@@ -28108,35 +27994,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "harden": {
-      "name": "harden",
-      "displayName": "Harden",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Raises the user’s Defense by one stage.",
-      "effect": "Raises the user’s Defense by one stage.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "defense",
-          "change": 1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "haze": {
       "name": "haze",
@@ -28159,7 +28020,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "head-smash": {
       "name": "head-smash",
@@ -28182,30 +28044,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "headbutt": {
-      "name": "headbutt",
-      "displayName": "Headbutt",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 70,
-      "accuracy": 100,
-      "pp": 15,
-      "priority": 0,
-      "shortEffect": "Has a chance to make the target flinch.",
-      "effect": "Inflicts regular damage. Has a chance to make the target flinch.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 30,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "headlong-rush": {
       "name": "headlong-rush",
@@ -28228,7 +28070,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "heal-bell": {
       "name": "heal-bell",
@@ -28251,7 +28097,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "heal-pulse": {
       "name": "heal-pulse",
@@ -28274,7 +28123,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "pulse"
+      ]
     },
     "healing-wish": {
       "name": "healing-wish",
@@ -28297,7 +28149,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "heat-crash": {
       "name": "heat-crash",
@@ -28320,7 +28173,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "heat-wave": {
       "name": "heat-wave",
@@ -28343,7 +28199,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "heavy-slam": {
       "name": "heavy-slam",
@@ -28366,7 +28225,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "helping-hand": {
       "name": "helping-hand",
@@ -28389,7 +28251,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "hex": {
       "name": "hex",
@@ -28412,7 +28275,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "high-horsepower": {
       "name": "high-horsepower",
@@ -28435,7 +28299,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "high-jump-kick": {
       "name": "high-jump-kick",
@@ -28458,39 +28325,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "hone-claws": {
-      "name": "hone-claws",
-      "displayName": "Hone Claws",
-      "type": "dark",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 15,
-      "priority": 0,
-      "shortEffect": "Raises the user’s Attack and accuracy by one stage.",
-      "effect": "Raises the user’s Attack and accuracy by one stage.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": 1
-        },
-        {
-          "stat": "accuracy",
-          "change": 1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "horn-drill": {
       "name": "horn-drill",
@@ -28513,7 +28351,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "horn-leech": {
       "name": "horn-leech",
@@ -28536,7 +28377,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "howl": {
       "name": "howl",
@@ -28564,7 +28408,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "hurricane": {
       "name": "hurricane",
@@ -28587,7 +28434,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "hydro-cannon": {
       "name": "hydro-cannon",
@@ -28610,7 +28460,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "hydro-pump": {
       "name": "hydro-pump",
@@ -28633,7 +28484,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "hyper-beam": {
       "name": "hyper-beam",
@@ -28656,7 +28508,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "hyper-voice": {
       "name": "hyper-voice",
@@ -28679,7 +28532,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "hypnosis": {
       "name": "hypnosis",
@@ -28702,7 +28558,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "ice-beam": {
       "name": "ice-beam",
@@ -28725,7 +28582,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "ice-fang": {
       "name": "ice-fang",
@@ -28748,7 +28606,11 @@
       "flinchChance": 10,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "ice-hammer": {
       "name": "ice-hammer",
@@ -28776,7 +28638,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "ice-punch": {
       "name": "ice-punch",
@@ -28799,7 +28665,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "ice-shard": {
       "name": "ice-shard",
@@ -28822,7 +28692,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "ice-spinner": {
       "name": "ice-spinner",
@@ -28845,7 +28716,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "icicle-crash": {
       "name": "icicle-crash",
@@ -28868,7 +28742,8 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "icicle-spear": {
       "name": "icicle-spear",
@@ -28891,7 +28766,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": []
     },
     "icy-wind": {
       "name": "icy-wind",
@@ -28919,7 +28795,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "imprison": {
       "name": "imprison",
@@ -28942,7 +28821,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "infernal-parade": {
       "name": "infernal-parade",
@@ -28965,7 +28845,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "inferno": {
       "name": "inferno",
@@ -28988,7 +28869,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "infestation": {
       "name": "infestation",
@@ -29011,7 +28893,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "ingrain": {
       "name": "ingrain",
@@ -29034,7 +28919,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "instruct": {
       "name": "instruct",
@@ -29057,7 +28943,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "iron-defense": {
       "name": "iron-defense",
@@ -29085,7 +28972,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "iron-head": {
       "name": "iron-head",
@@ -29108,7 +28996,10 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "iron-tail": {
       "name": "iron-tail",
@@ -29136,7 +29027,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "jet-punch": {
       "name": "jet-punch",
@@ -29159,7 +29053,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "knock-off": {
       "name": "knock-off",
@@ -29182,7 +29080,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "kowtow-cleave": {
       "name": "kowtow-cleave",
@@ -29205,7 +29106,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "lash-out": {
       "name": "lash-out",
@@ -29228,7 +29133,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "last-resort": {
       "name": "last-resort",
@@ -29251,7 +29159,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "last-respects": {
       "name": "last-respects",
@@ -29274,7 +29185,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "lava-plume": {
       "name": "lava-plume",
@@ -29297,7 +29209,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "leaf-blade": {
       "name": "leaf-blade",
@@ -29320,7 +29233,11 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "leaf-storm": {
       "name": "leaf-storm",
@@ -29348,30 +29265,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "leafage": {
-      "name": "leafage",
-      "displayName": "Leafage",
-      "type": "grass",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 40,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "leech-life": {
       "name": "leech-life",
@@ -29394,7 +29289,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "leech-seed": {
       "name": "leech-seed",
@@ -29417,35 +29315,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "leer": {
-      "name": "leer",
-      "displayName": "Leer",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": 100,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Lowers the target’s Defense by one stage.",
-      "effect": "Lowers the target’s Defense by one stage.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "defense",
-          "change": -1
-        }
-      ],
-      "statChance": 100,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "life-dew": {
       "name": "life-dew",
@@ -29468,7 +29339,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "light-of-ruin": {
       "name": "light-of-ruin",
@@ -29491,7 +29363,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "light-screen": {
       "name": "light-screen",
@@ -29514,7 +29387,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "liquidation": {
       "name": "liquidation",
@@ -29542,7 +29416,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "lock-on": {
       "name": "lock-on",
@@ -29565,7 +29442,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "low-kick": {
       "name": "low-kick",
@@ -29588,7 +29466,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "low-sweep": {
       "name": "low-sweep",
@@ -29616,7 +29497,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "lumina-crash": {
       "name": "lumina-crash",
@@ -29644,7 +29528,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "lunge": {
       "name": "lunge",
@@ -29672,7 +29557,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "mach-punch": {
       "name": "mach-punch",
@@ -29695,7 +29583,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "magic-powder": {
       "name": "magic-powder",
@@ -29718,7 +29610,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "magic-room": {
       "name": "magic-room",
@@ -29741,30 +29634,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "magical-leaf": {
-      "name": "magical-leaf",
-      "displayName": "Magical Leaf",
-      "type": "grass",
-      "damageClass": "special",
-      "power": 60,
-      "accuracy": null,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Never misses.",
-      "effect": "Inflicts regular damage. Ignores accuracy and evasion modifiers.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "magnet-rise": {
       "name": "magnet-rise",
@@ -29787,7 +29658,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "magnetic-flux": {
       "name": "magnetic-flux",
@@ -29819,7 +29691,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "matcha-gotcha": {
       "name": "matcha-gotcha",
@@ -29842,7 +29715,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mean-look": {
       "name": "mean-look",
@@ -29865,7 +29739,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mega-kick": {
       "name": "mega-kick",
@@ -29888,7 +29763,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "megahorn": {
       "name": "megahorn",
@@ -29911,7 +29789,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "memento": {
       "name": "memento",
@@ -29943,7 +29824,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "metal-burst": {
       "name": "metal-burst",
@@ -29966,35 +29848,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "metal-claw": {
-      "name": "metal-claw",
-      "displayName": "Metal Claw",
-      "type": "steel",
-      "damageClass": "physical",
-      "power": 50,
-      "accuracy": 95,
-      "pp": 35,
-      "priority": 0,
-      "shortEffect": "Has a chance to raise the user’s Attack by one stage.",
-      "effect": "Inflicts regular damage. Has a chance to raise the user’s Attack one stage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": 1
-        }
-      ],
-      "statChance": 10,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "metal-sound": {
       "name": "metal-sound",
@@ -30022,7 +29877,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "meteor-beam": {
       "name": "meteor-beam",
@@ -30045,7 +29903,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "meteor-mash": {
       "name": "meteor-mash",
@@ -30073,30 +29932,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "metronome": {
-      "name": "metronome",
-      "displayName": "Metronome",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 10,
-      "priority": 0,
-      "shortEffect": "Randomly selects and uses any move in the game.",
-      "effect": "Selects any move at random and uses it. Moves the user already knows are not eligible. Assist, meta, protection, and reflection moves are also not eligible; specifically, Assist, Chatter, Copycat, Counter, Covet, Destiny Bond, Detect, Endure, Feint, Focus Punch, Follow Me, Helping Hand, Me First, Metronome, Mimic, Mirror Coat, Mirror Move, Protect, Quick Guard, Sketch, Sleep Talk, Snatch, Struggle, Switcheroo, Thief, Trick, and Wide Guard will not be selected by this move. This move cannot be copied by Mimic or Mirror Move, nor selected by Assist, Metronome, or Sleep Talk.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "minimize": {
       "name": "minimize",
@@ -30124,7 +29964,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mirror-coat": {
       "name": "mirror-coat",
@@ -30147,7 +29988,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "misty-explosion": {
       "name": "misty-explosion",
@@ -30170,7 +30012,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "misty-terrain": {
       "name": "misty-terrain",
@@ -30193,7 +30036,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "moonblast": {
       "name": "moonblast",
@@ -30221,7 +30065,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "moonlight": {
       "name": "moonlight",
@@ -30244,7 +30089,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "morning-sun": {
       "name": "morning-sun",
@@ -30267,7 +30113,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mortal-spin": {
       "name": "mortal-spin",
@@ -30290,7 +30137,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "mountain-gale": {
       "name": "mountain-gale",
@@ -30313,7 +30163,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mud-shot": {
       "name": "mud-shot",
@@ -30341,7 +30192,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mud-slap": {
       "name": "mud-slap",
@@ -30369,7 +30221,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "muddy-water": {
       "name": "muddy-water",
@@ -30397,7 +30250,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "mystical-fire": {
       "name": "mystical-fire",
@@ -30425,7 +30279,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "nasty-plot": {
       "name": "nasty-plot",
@@ -30453,7 +30308,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "night-daze": {
       "name": "night-daze",
@@ -30481,7 +30337,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "night-shade": {
       "name": "night-shade",
@@ -30504,7 +30361,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "night-slash": {
       "name": "night-slash",
@@ -30527,7 +30385,11 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "noble-roar": {
       "name": "noble-roar",
@@ -30559,7 +30421,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "nuzzle": {
       "name": "nuzzle",
@@ -30582,7 +30447,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "outrage": {
       "name": "outrage",
@@ -30605,7 +30473,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "overheat": {
       "name": "overheat",
@@ -30633,7 +30504,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "pain-split": {
       "name": "pain-split",
@@ -30656,7 +30528,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "parabolic-charge": {
       "name": "parabolic-charge",
@@ -30679,7 +30552,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "parting-shot": {
       "name": "parting-shot",
@@ -30711,7 +30585,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "payback": {
       "name": "payback",
@@ -30734,30 +30611,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "peck": {
-      "name": "peck",
-      "displayName": "Peck",
-      "type": "flying",
-      "damageClass": "physical",
-      "power": 35,
-      "accuracy": 100,
-      "pp": 35,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "perish-song": {
       "name": "perish-song",
@@ -30780,7 +30637,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "petal-blizzard": {
       "name": "petal-blizzard",
@@ -30803,7 +30663,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "petal-dance": {
       "name": "petal-dance",
@@ -30826,7 +30689,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "phantom-force": {
       "name": "phantom-force",
@@ -30849,7 +30715,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "pin-missile": {
       "name": "pin-missile",
@@ -30872,35 +30741,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
-    },
-    "play-nice": {
-      "name": "play-nice",
-      "displayName": "Play Nice",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Lowers the target’s Attack by one stage.",
-      "effect": "Lowers the target’s Attack by one stage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": -1
-        }
-      ],
-      "statChance": 100,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": 5,
+      "flags": []
     },
     "play-rough": {
       "name": "play-rough",
@@ -30928,7 +30770,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "pluck": {
       "name": "pluck",
@@ -30951,7 +30796,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "poison-fang": {
       "name": "poison-fang",
@@ -30974,7 +30822,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "poison-jab": {
       "name": "poison-jab",
@@ -30997,7 +30849,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "poison-powder": {
       "name": "poison-powder",
@@ -31020,7 +30875,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "pollen-puff": {
       "name": "pollen-puff",
@@ -31043,7 +30899,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "poltergeist": {
       "name": "poltergeist",
@@ -31066,7 +30925,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "population-bomb": {
       "name": "population-bomb",
@@ -31089,7 +30949,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "pounce": {
       "name": "pounce",
@@ -31117,53 +30981,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "pound": {
-      "name": "pound",
-      "displayName": "Pound",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 35,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
-    },
-    "powder-snow": {
-      "name": "powder-snow",
-      "displayName": "Powder Snow",
-      "type": "ice",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Has a chance to freeze the target.",
-      "effect": "Inflicts regular damage. Has a chance to freeze the target.",
-      "target": "all-opponents",
-      "ailment": "freeze",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "power-gem": {
       "name": "power-gem",
@@ -31186,7 +31007,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "power-split": {
       "name": "power-split",
@@ -31209,7 +31031,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "power-swap": {
       "name": "power-swap",
@@ -31232,7 +31055,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "power-trick": {
       "name": "power-trick",
@@ -31255,7 +31079,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "power-trip": {
       "name": "power-trip",
@@ -31278,7 +31103,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "power-whip": {
       "name": "power-whip",
@@ -31301,7 +31129,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "protect": {
       "name": "protect",
@@ -31324,30 +31155,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "psybeam": {
-      "name": "psybeam",
-      "displayName": "Psybeam",
-      "type": "psychic",
-      "damageClass": "special",
-      "power": 65,
-      "accuracy": 100,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Has a chance to confuse the target.",
-      "effect": "Inflicts regular damage. Has a chance to confuse the target.",
-      "target": "selected-pokemon",
-      "ailment": "confusion",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "psych-up": {
       "name": "psych-up",
@@ -31370,7 +31179,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "psychic": {
       "name": "psychic",
@@ -31398,7 +31208,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "psychic-fangs": {
       "name": "psychic-fangs",
@@ -31421,7 +31232,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "psychic-noise": {
       "name": "psychic-noise",
@@ -31444,7 +31259,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "psychic-terrain": {
       "name": "psychic-terrain",
@@ -31467,7 +31285,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "psycho-cut": {
       "name": "psycho-cut",
@@ -31490,7 +31309,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "slicing"
+      ]
     },
     "psyshield-bash": {
       "name": "psyshield-bash",
@@ -31513,7 +31335,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "psyshock": {
       "name": "psyshock",
@@ -31536,7 +31361,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "quash": {
       "name": "quash",
@@ -31559,7 +31385,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "quick-attack": {
       "name": "quick-attack",
@@ -31582,7 +31409,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "quick-guard": {
       "name": "quick-guard",
@@ -31605,7 +31435,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "quiver-dance": {
       "name": "quiver-dance",
@@ -31641,7 +31472,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rage-powder": {
       "name": "rage-powder",
@@ -31664,7 +31496,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "raging-bull": {
       "name": "raging-bull",
@@ -31687,7 +31520,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "raging-fury": {
       "name": "raging-fury",
@@ -31710,7 +31546,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rain-dance": {
       "name": "rain-dance",
@@ -31733,7 +31570,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rapid-spin": {
       "name": "rapid-spin",
@@ -31761,30 +31599,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "razor-leaf": {
-      "name": "razor-leaf",
-      "displayName": "Razor Leaf",
-      "type": "grass",
-      "damageClass": "physical",
-      "power": 55,
-      "accuracy": 95,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Has an increased chance for a critical hit.",
-      "effect": "Inflicts regular damage. User’s critical hit rate is one level higher when using this move.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 1,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "razor-shell": {
       "name": "razor-shell",
@@ -31812,7 +31630,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "recover": {
       "name": "recover",
@@ -31835,7 +31657,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "recycle": {
       "name": "recycle",
@@ -31858,7 +31681,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "reflect": {
       "name": "reflect",
@@ -31881,7 +31705,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "reflect-type": {
       "name": "reflect-type",
@@ -31904,7 +31729,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rest": {
       "name": "rest",
@@ -31927,53 +31753,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "retaliate": {
-      "name": "retaliate",
-      "displayName": "Retaliate",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 70,
-      "accuracy": 100,
-      "pp": 5,
-      "priority": 0,
-      "shortEffect": "Has double power if a friendly Pokémon fainted last turn.",
-      "effect": "Inflicts regular damage. If a friendly Pokémon fainted on the previous turn, this move has double power.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
-    },
-    "revenge": {
-      "name": "revenge",
-      "displayName": "Revenge",
-      "type": "fighting",
-      "damageClass": "physical",
-      "power": 60,
-      "accuracy": 100,
-      "pp": 10,
-      "priority": -4,
-      "shortEffect": "Inflicts double damage if the user takes damage before attacking this turn.",
-      "effect": "Inflicts regular damage. If the target damaged the user this turn and was the last to do so, this move has double power. Pain Split does not count as damaging the user.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "reversal": {
       "name": "reversal",
@@ -31996,7 +31777,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "rising-voltage": {
       "name": "rising-voltage",
@@ -32019,7 +31803,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "roar": {
       "name": "roar",
@@ -32042,7 +31827,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "rock-blast": {
       "name": "rock-blast",
@@ -32065,7 +31853,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": [
+        "bullet"
+      ]
     },
     "rock-polish": {
       "name": "rock-polish",
@@ -32093,7 +31884,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rock-slide": {
       "name": "rock-slide",
@@ -32116,30 +31908,8 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "rock-throw": {
-      "name": "rock-throw",
-      "displayName": "Rock Throw",
-      "type": "rock",
-      "damageClass": "physical",
-      "power": 50,
-      "accuracy": 90,
-      "pp": 15,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rock-tomb": {
       "name": "rock-tomb",
@@ -32167,7 +31937,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "rock-wrecker": {
       "name": "rock-wrecker",
@@ -32190,7 +31961,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "role-play": {
       "name": "role-play",
@@ -32213,30 +31987,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "rollout": {
-      "name": "rollout",
-      "displayName": "Rollout",
-      "type": "rock",
-      "damageClass": "physical",
-      "power": 30,
-      "accuracy": 90,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Power doubles every turn this move is used in succession after the first, resetting after five turns.",
-      "effect": "Inflicts regular damage. User is forced to use this move for five turns. Power doubles every time this move is used in succession to a maximum of 16x, and resets to normal after the lock-in ends. If this move misses or becomes unusable, the lock-in ends. If the user has used Defense Curl since entering the field, this move has double power.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "roost": {
       "name": "roost",
@@ -32259,7 +32011,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "round": {
       "name": "round",
@@ -32282,7 +32035,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "sacred-sword": {
       "name": "sacred-sword",
@@ -32305,7 +32061,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "safeguard": {
       "name": "safeguard",
@@ -32328,7 +32088,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "salt-cure": {
       "name": "salt-cure",
@@ -32351,7 +32112,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sand-tomb": {
       "name": "sand-tomb",
@@ -32374,7 +32136,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sandstorm": {
       "name": "sandstorm",
@@ -32397,7 +32160,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "scald": {
       "name": "scald",
@@ -32420,7 +32186,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "scale-shot": {
       "name": "scale-shot",
@@ -32443,7 +32210,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": []
     },
     "scary-face": {
       "name": "scary-face",
@@ -32471,7 +32239,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "scorching-sands": {
       "name": "scorching-sands",
@@ -32494,30 +32263,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "scratch": {
-      "name": "scratch",
-      "displayName": "Scratch",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 35,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "screech": {
       "name": "screech",
@@ -32545,7 +32292,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "seed-bomb": {
       "name": "seed-bomb",
@@ -32568,7 +32318,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "seismic-toss": {
       "name": "seismic-toss",
@@ -32591,7 +32344,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "self-destruct": {
       "name": "self-destruct",
@@ -32614,7 +32370,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "shadow-ball": {
       "name": "shadow-ball",
@@ -32642,7 +32399,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "shadow-claw": {
       "name": "shadow-claw",
@@ -32665,7 +32425,10 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "shadow-punch": {
       "name": "shadow-punch",
@@ -32688,7 +32451,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "shadow-sneak": {
       "name": "shadow-sneak",
@@ -32711,7 +32478,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "shed-tail": {
       "name": "shed-tail",
@@ -32734,7 +32504,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sheer-cold": {
       "name": "sheer-cold",
@@ -32757,7 +32528,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "shell-side-arm": {
       "name": "shell-side-arm",
@@ -32780,7 +32552,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "shell-smash": {
       "name": "shell-smash",
@@ -32824,7 +32597,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "shelter": {
       "name": "shelter",
@@ -32847,30 +32621,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "shock-wave": {
-      "name": "shock-wave",
-      "displayName": "Shock Wave",
-      "type": "electric",
-      "damageClass": "special",
-      "power": 60,
-      "accuracy": null,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Never misses.",
-      "effect": "Inflicts regular damage. Ignores accuracy and evasion modifiers.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "simple-beam": {
       "name": "simple-beam",
@@ -32893,7 +32645,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sing": {
       "name": "sing",
@@ -32916,7 +32669,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "skill-swap": {
       "name": "skill-swap",
@@ -32939,7 +32695,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "skitter-smack": {
       "name": "skitter-smack",
@@ -32967,7 +32724,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "sky-attack": {
       "name": "sky-attack",
@@ -32990,7 +32750,8 @@
       "flinchChance": 30,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "slack-off": {
       "name": "slack-off",
@@ -33013,30 +32774,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "slash": {
-      "name": "slash",
-      "displayName": "Slash",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 70,
-      "accuracy": 100,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Has an increased chance for a critical hit.",
-      "effect": "Inflicts regular damage. User’s critical hit rate is one level higher when using this move.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 1,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sleep-powder": {
       "name": "sleep-powder",
@@ -33059,7 +32798,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sleep-talk": {
       "name": "sleep-talk",
@@ -33082,7 +32822,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sludge-bomb": {
       "name": "sludge-bomb",
@@ -33105,7 +32846,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "sludge-wave": {
       "name": "sludge-wave",
@@ -33128,7 +32872,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "smack-down": {
       "name": "smack-down",
@@ -33151,7 +32896,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "smart-strike": {
       "name": "smart-strike",
@@ -33174,35 +32920,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "smokescreen": {
-      "name": "smokescreen",
-      "displayName": "Smokescreen",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": 100,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Lowers the target’s accuracy by one stage.",
-      "effect": "Lowers the target’s accuracy by one stage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "accuracy",
-          "change": -1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "snap-trap": {
       "name": "snap-trap",
@@ -33225,7 +32946,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "snarl": {
       "name": "snarl",
@@ -33253,7 +32977,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "snore": {
       "name": "snore",
@@ -33276,7 +33003,10 @@
       "flinchChance": 30,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "snowscape": {
       "name": "snowscape",
@@ -33299,7 +33029,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "soak": {
       "name": "soak",
@@ -33322,7 +33053,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "solar-beam": {
       "name": "solar-beam",
@@ -33345,7 +33077,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "solar-blade": {
       "name": "solar-blade",
@@ -33368,30 +33101,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "spark": {
-      "name": "spark",
-      "displayName": "Spark",
-      "type": "electric",
-      "damageClass": "physical",
-      "power": 65,
-      "accuracy": 100,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Has a chance to paralyze the target.",
-      "effect": "Inflicts regular damage. Has a chance to paralyze the target.",
-      "target": "selected-pokemon",
-      "ailment": "paralysis",
-      "ailmentChance": 30,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "sparkling-aria": {
       "name": "sparkling-aria",
@@ -33414,7 +33128,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "speed-swap": {
       "name": "speed-swap",
@@ -33437,7 +33154,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spicy-extract": {
       "name": "spicy-extract",
@@ -33469,7 +33187,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spikes": {
       "name": "spikes",
@@ -33492,7 +33211,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spiky-shield": {
       "name": "spiky-shield",
@@ -33515,7 +33235,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spirit-shackle": {
       "name": "spirit-shackle",
@@ -33538,7 +33259,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spit-up": {
       "name": "spit-up",
@@ -33561,7 +33283,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "spite": {
       "name": "spite",
@@ -33584,7 +33307,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stealth-rock": {
       "name": "stealth-rock",
@@ -33607,7 +33331,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "steel-beam": {
       "name": "steel-beam",
@@ -33630,7 +33355,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "steel-roller": {
       "name": "steel-roller",
@@ -33653,7 +33379,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "steel-wing": {
       "name": "steel-wing",
@@ -33681,7 +33410,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "sticky-web": {
       "name": "sticky-web",
@@ -33704,7 +33436,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stockpile": {
       "name": "stockpile",
@@ -33736,7 +33469,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stomping-tantrum": {
       "name": "stomping-tantrum",
@@ -33759,7 +33493,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "stone-axe": {
       "name": "stone-axe",
@@ -33782,7 +33519,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "stone-edge": {
       "name": "stone-edge",
@@ -33805,7 +33546,8 @@
       "flinchChance": 0,
       "critRate": 1,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stored-power": {
       "name": "stored-power",
@@ -33828,7 +33570,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "storm-throw": {
       "name": "storm-throw",
@@ -33851,7 +33594,10 @@
       "flinchChance": 0,
       "critRate": 6,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "strength-sap": {
       "name": "strength-sap",
@@ -33879,7 +33625,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "string-shot": {
       "name": "string-shot",
@@ -33907,7 +33654,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "struggle-bug": {
       "name": "struggle-bug",
@@ -33935,7 +33683,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stuff-cheeks": {
       "name": "stuff-cheeks",
@@ -33963,7 +33712,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "stun-spore": {
       "name": "stun-spore",
@@ -33986,7 +33736,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "substitute": {
       "name": "substitute",
@@ -34009,7 +33760,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sucker-punch": {
       "name": "sucker-punch",
@@ -34032,7 +33784,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "sunny-day": {
       "name": "sunny-day",
@@ -34055,7 +33810,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "super-fang": {
       "name": "super-fang",
@@ -34078,7 +33834,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "supercell-slam": {
       "name": "supercell-slam",
@@ -34101,7 +33860,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "superpower": {
       "name": "superpower",
@@ -34133,7 +33895,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "surf": {
       "name": "surf",
@@ -34156,7 +33921,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "swagger": {
       "name": "swagger",
@@ -34184,7 +33950,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "swallow": {
       "name": "swallow",
@@ -34207,7 +33974,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sweet-kiss": {
       "name": "sweet-kiss",
@@ -34230,7 +33998,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "sweet-scent": {
       "name": "sweet-scent",
@@ -34258,30 +34027,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "swift": {
-      "name": "swift",
-      "displayName": "Swift",
-      "type": "normal",
-      "damageClass": "special",
-      "power": 60,
-      "accuracy": null,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "Never misses.",
-      "effect": "Inflicts regular damage. Ignores accuracy and evasion modifiers.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "switcheroo": {
       "name": "switcheroo",
@@ -34304,7 +34051,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "swords-dance": {
       "name": "swords-dance",
@@ -34332,7 +34080,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "synthesis": {
       "name": "synthesis",
@@ -34355,7 +34104,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "syrup-bomb": {
       "name": "syrup-bomb",
@@ -34383,30 +34133,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "tackle": {
-      "name": "tackle",
-      "displayName": "Tackle",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 35,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "tail-slap": {
       "name": "tail-slap",
@@ -34429,35 +34159,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
-    },
-    "tail-whip": {
-      "name": "tail-whip",
-      "displayName": "Tail Whip",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": 100,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Lowers the target’s Defense by one stage.",
-      "effect": "Lowers the target’s Defense by one stage.",
-      "target": "all-opponents",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "defense",
-          "change": -1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": 5,
+      "flags": [
+        "contact"
+      ]
     },
     "tailwind": {
       "name": "tailwind",
@@ -34480,30 +34185,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "take-down": {
-      "name": "take-down",
-      "displayName": "Take Down",
-      "type": "normal",
-      "damageClass": "physical",
-      "power": 90,
-      "accuracy": 85,
-      "pp": 20,
-      "priority": 0,
-      "shortEffect": "User receives 1/4 the damage it inflicts in recoil.",
-      "effect": "Inflicts regular damage. User takes 1/4 the damage it inflicts in recoil.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": -25,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "taunt": {
       "name": "taunt",
@@ -34526,7 +34211,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "tearful-look": {
       "name": "tearful-look",
@@ -34558,7 +34244,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "teatime": {
       "name": "teatime",
@@ -34581,7 +34268,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "teeter-dance": {
       "name": "teeter-dance",
@@ -34604,7 +34292,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "temper-flare": {
       "name": "temper-flare",
@@ -34627,39 +34316,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "tera-blast": {
-      "name": "tera-blast",
-      "displayName": "Tera Blast",
-      "type": "normal",
-      "damageClass": "special",
-      "power": 80,
-      "accuracy": 100,
-      "pp": 10,
-      "priority": 0,
-      "shortEffect": "If the user has Terastallized, it unleashes energy of its Tera Type. This move inflicts damage using the Attack or Sp. Atk stat—whichever is higher for the user.",
-      "effect": "If the user has Terastallized, it unleashes energy of its Tera Type. This move inflicts damage using the Attack or Sp. Atk stat—whichever is higher for the user.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": -1
-        },
-        {
-          "stat": "special-attack",
-          "change": -1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "terrain-pulse": {
       "name": "terrain-pulse",
@@ -34682,7 +34342,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "pulse"
+      ]
     },
     "thief": {
       "name": "thief",
@@ -34705,7 +34368,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "thrash": {
       "name": "thrash",
@@ -34728,7 +34394,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "throat-chop": {
       "name": "throat-chop",
@@ -34751,7 +34420,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "thunder": {
       "name": "thunder",
@@ -34774,7 +34446,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "thunder-fang": {
       "name": "thunder-fang",
@@ -34797,7 +34470,11 @@
       "flinchChance": 10,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "bite"
+      ]
     },
     "thunder-punch": {
       "name": "thunder-punch",
@@ -34820,30 +34497,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "thunder-shock": {
-      "name": "thunder-shock",
-      "displayName": "Thunder Shock",
-      "type": "electric",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Has a chance to paralyze the target.",
-      "effect": "Inflicts regular damage. Has a chance to paralyze the target.",
-      "target": "selected-pokemon",
-      "ailment": "paralysis",
-      "ailmentChance": 10,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "thunder-wave": {
       "name": "thunder-wave",
@@ -34866,7 +34524,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "thunderbolt": {
       "name": "thunderbolt",
@@ -34889,7 +34548,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "tickle": {
       "name": "tickle",
@@ -34921,7 +34581,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "tidy-up": {
       "name": "tidy-up",
@@ -34953,7 +34614,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "torch-song": {
       "name": "torch-song",
@@ -34981,7 +34643,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "torment": {
       "name": "torment",
@@ -35004,7 +34669,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "toxic": {
       "name": "toxic",
@@ -35027,7 +34693,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "toxic-spikes": {
       "name": "toxic-spikes",
@@ -35050,7 +34717,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "toxic-thread": {
       "name": "toxic-thread",
@@ -35078,7 +34746,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "trailblaze": {
       "name": "trailblaze",
@@ -35106,7 +34775,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "transform": {
       "name": "transform",
@@ -35129,7 +34801,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "tri-attack": {
       "name": "tri-attack",
@@ -35152,7 +34825,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "trick": {
       "name": "trick",
@@ -35175,7 +34849,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "trick-or-treat": {
       "name": "trick-or-treat",
@@ -35198,7 +34873,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "trick-room": {
       "name": "trick-room",
@@ -35221,7 +34897,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "triple-arrows": {
       "name": "triple-arrows",
@@ -35244,7 +34921,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "triple-axel": {
       "name": "triple-axel",
@@ -35267,7 +34945,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 3,
-      "maxHits": 3
+      "maxHits": 3,
+      "flags": [
+        "contact"
+      ]
     },
     "trop-kick": {
       "name": "trop-kick",
@@ -35295,7 +34976,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "twin-beam": {
       "name": "twin-beam",
@@ -35318,7 +35002,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "u-turn": {
       "name": "u-turn",
@@ -35341,7 +35026,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "upper-hand": {
       "name": "upper-hand",
@@ -35364,7 +35052,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "uproar": {
       "name": "uproar",
@@ -35387,7 +35078,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "sound"
+      ]
     },
     "vacuum-wave": {
       "name": "vacuum-wave",
@@ -35410,7 +35104,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "venoshock": {
       "name": "venoshock",
@@ -35433,7 +35128,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "volt-switch": {
       "name": "volt-switch",
@@ -35456,7 +35152,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "volt-tackle": {
       "name": "volt-tackle",
@@ -35479,53 +35176,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "water-gun": {
-      "name": "water-gun",
-      "displayName": "Water Gun",
-      "type": "water",
-      "damageClass": "special",
-      "power": 40,
-      "accuracy": 100,
-      "pp": 25,
-      "priority": 0,
-      "shortEffect": "Inflicts regular damage with no additional effect.",
-      "effect": "Inflicts regular damage.",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
-    },
-    "water-pledge": {
-      "name": "water-pledge",
-      "displayName": "Water Pledge",
-      "type": "water",
-      "damageClass": "special",
-      "power": 80,
-      "accuracy": 100,
-      "pp": 10,
-      "priority": 0,
-      "shortEffect": "With Grass Pledge, halves opposing Pokémon’s Speed for four turns.",
-      "effect": "Inflicts regular damage. If a friendly Pokémon used Grass Pledge earlier this turn, all opposing Pokémon have halved Speed for four turns (including this one).",
-      "target": "selected-pokemon",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "water-pulse": {
       "name": "water-pulse",
@@ -35548,7 +35202,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "pulse"
+      ]
     },
     "water-shuriken": {
       "name": "water-shuriken",
@@ -35571,7 +35228,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": 2,
-      "maxHits": 5
+      "maxHits": 5,
+      "flags": []
     },
     "water-spout": {
       "name": "water-spout",
@@ -35594,7 +35252,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "waterfall": {
       "name": "waterfall",
@@ -35617,7 +35276,10 @@
       "flinchChance": 20,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "wave-crash": {
       "name": "wave-crash",
@@ -35640,7 +35302,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "weather-ball": {
       "name": "weather-ball",
@@ -35663,7 +35328,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "whirlpool": {
       "name": "whirlpool",
@@ -35686,7 +35354,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "whirlwind": {
       "name": "whirlwind",
@@ -35709,7 +35378,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "wind"
+      ]
     },
     "wide-guard": {
       "name": "wide-guard",
@@ -35732,7 +35404,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "wild-charge": {
       "name": "wild-charge",
@@ -35755,7 +35428,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "will-o-wisp": {
       "name": "will-o-wisp",
@@ -35778,7 +35454,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "wish": {
       "name": "wish",
@@ -35801,35 +35478,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "withdraw": {
-      "name": "withdraw",
-      "displayName": "Withdraw",
-      "type": "water",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 40,
-      "priority": 0,
-      "shortEffect": "Raises the user’s Defense by one stage.",
-      "effect": "Raises the user’s Defense by one stage.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "defense",
-          "change": 1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "wonder-room": {
       "name": "wonder-room",
@@ -35852,7 +35502,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "wood-hammer": {
       "name": "wood-hammer",
@@ -35875,39 +35526,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
-    },
-    "work-up": {
-      "name": "work-up",
-      "displayName": "Work Up",
-      "type": "normal",
-      "damageClass": "status",
-      "power": null,
-      "accuracy": null,
-      "pp": 30,
-      "priority": 0,
-      "shortEffect": "Raises the user’s Attack and Special Attack by one stage each.",
-      "effect": "Raises the user’s Attack and Special Attack by one stage each.",
-      "target": "user",
-      "ailment": null,
-      "ailmentChance": 0,
-      "statChanges": [
-        {
-          "stat": "attack",
-          "change": 1
-        },
-        {
-          "stat": "special-attack",
-          "change": 1
-        }
-      ],
-      "statChance": 0,
-      "healing": 0,
-      "drain": 0,
-      "flinchChance": 0,
-      "critRate": 0,
-      "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "worry-seed": {
       "name": "worry-seed",
@@ -35930,7 +35552,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "wrap": {
       "name": "wrap",
@@ -35953,7 +35576,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     },
     "x-scissor": {
       "name": "x-scissor",
@@ -35976,7 +35602,11 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "slicing"
+      ]
     },
     "yawn": {
       "name": "yawn",
@@ -35999,7 +35629,8 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": []
     },
     "zap-cannon": {
       "name": "zap-cannon",
@@ -36022,7 +35653,10 @@
       "flinchChance": 0,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "bullet"
+      ]
     },
     "zen-headbutt": {
       "name": "zen-headbutt",
@@ -36045,7 +35679,10 @@
       "flinchChance": 20,
       "critRate": 0,
       "minHits": null,
-      "maxHits": null
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
     }
   }
 }
