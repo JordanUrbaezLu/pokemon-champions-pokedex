@@ -19,7 +19,7 @@ import type {
   PokemonType,
 } from "./types";
 
-export const DATA_BRACKETS: DataBracket[] = ["champion", "all"];
+export const DATA_BRACKETS: DataBracket[] = ["master", "all"];
 
 /**
  * The baked dataset, imported statically so it ships in the bundle and is

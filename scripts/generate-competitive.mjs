@@ -30,12 +30,12 @@ const FORMAT = "gen9championsvgc2026regma"; // Champions VGC doubles, Reg M-A
 // snapshot with STATS_MONTH=YYYY-MM when needed.
 const MONTH_OVERRIDE = process.env.STATS_MONTH || null;
 // The app ships TWO complete brackets and toggles between them client-side:
-//  - champion: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
+//  - master: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
 //    top bracket lacks (a high-rated player's games appear in both files, so
 //    "primary + backfill" is the correct way to combine them — never add).
 //  - all: the whole-ladder file, every rank.
 const BRACKETS = {
-  champion: { cutoffs: ["1760", "1630"], label: "Champion+ (top ladder brackets)" },
+  master: { cutoffs: ["1760", "1630"], label: "Master+ (top ladder brackets)" },
   all: { cutoffs: ["0"], label: "all ranks" },
 };
 const statsUrl = (month, cutoff) =>
@@ -487,7 +487,7 @@ async function main() {
     );
   }
 
-  // Bake KO benchmarks for the default (champion) bracket — the answer a
+  // Bake KO benchmarks for the default (master) bracket — the answer a
   // damage calculator would give, with zero inputs, precomputed.
   {
     const abilityDisplayById = new Map();
@@ -500,7 +500,7 @@ async function main() {
     }
     const t0 = Date.now();
     const { baked, skipped, targetCount } = bakeBenchmarks(
-      brackets.champion.profiles,
+      brackets.master.profiles,
       pokemonData.moves,
       abilityDisplayById,
     );
@@ -557,7 +557,7 @@ async function main() {
       formatLabel: "Champions VGC (doubles), Reg M-A",
       month: MONTH,
       battles,
-      source: statsUrl(MONTH, BRACKETS.champion.cutoffs[0]),
+      source: statsUrl(MONTH, BRACKETS.master.cutoffs[0]),
       generatedAt: new Date().toISOString().slice(0, 10),
       bracketLabels: Object.fromEntries(
         Object.entries(BRACKETS).map(([name, def]) => [name, def.label]),
@@ -570,9 +570,9 @@ async function main() {
   };
   await writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
 
-  const champ = brackets.champion.profiles;
+  const champ = brackets.master.profiles;
   const baseCovered = pokemonData.pokemon.filter((p) => champ[p.name]).length;
-  console.log(`✓ Wrote ${Object.keys(BRACKETS).length} brackets (champion: ${Object.keys(champ).length} profiles, ${baseCovered}/${roster.length} base covered)`);
+  console.log(`✓ Wrote ${Object.keys(BRACKETS).length} brackets (master: ${Object.keys(champ).length} profiles, ${baseCovered}/${roster.length} base covered)`);
   console.log(`  Source: ${FORMAT} ${MONTH} (${battles.toLocaleString()} battles)`);
 }
 

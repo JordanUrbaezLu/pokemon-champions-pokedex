@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
   // App shortcuts (long-press the home-screen icon): jump straight to the
   // top threats — the mons you're most likely to be staring down.
   const top = [...getRosterEntries()]
-    .sort((a, b) => (b.usage.champion ?? -1) - (a.usage.champion ?? -1))
+    .sort((a, b) => (b.usage.master ?? -1) - (a.usage.master ?? -1))
     .slice(0, 3);
 
   return {

@@ -1,10 +1,39 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { PokemonCard } from "./PokemonCard";
 import { BracketToggle } from "./BracketToggle";
 import { useBracket } from "@/lib/bracket";
 import type { RosterEntry } from "@/lib/pokedex";
+
+// Session-scoped search query, shared across mounts of this screen.
+const QUERY_KEY = "cpx:query";
+const queryListeners = new Set<() => void>();
+let queryCache: string | null = null;
+
+function readQuery(): string {
+  if (queryCache === null) {
+    queryCache = window.sessionStorage.getItem(QUERY_KEY) ?? "";
+  }
+  return queryCache;
+}
+
+function subscribeQuery(callback: () => void) {
+  queryListeners.add(callback);
+  return () => {
+    queryListeners.delete(callback);
+  };
+}
+
+function writeQuery(q: string) {
+  queryCache = q;
+  try {
+    window.sessionStorage.setItem(QUERY_KEY, q);
+  } catch {
+    // Private mode — search still works, just doesn't persist.
+  }
+  for (const callback of queryListeners) callback();
+}
 
 /**
  * The home screen's beating heart: type a name and the roster filters
@@ -13,21 +42,12 @@ import type { RosterEntry } from "@/lib/pokedex";
  * and re-labels pick rates from the other baked data set, just as instantly.
  */
 export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
-  // The team-preview loop is type → tap → read → back → next mon. Restoring
-  // the query on back-navigation means the trainer keeps their place instead
-  // of retyping; sessionStorage scopes it to this battle session.
-  const [query, setQuery] = useState(() => {
-    if (typeof window === "undefined") return "";
-    return window.sessionStorage.getItem("cpx:query") ?? "";
-  });
-  const updateQuery = (q: string) => {
-    setQuery(q);
-    try {
-      window.sessionStorage.setItem("cpx:query", q);
-    } catch {
-      // Private mode — search still works, just doesn't persist.
-    }
-  };
+  // The team-preview loop is type → tap → read → back → next mon. The query
+  // lives in a tiny sessionStorage-backed store so back-navigation restores
+  // it (the trainer keeps their place instead of retyping), hydration stays
+  // deterministic (server snapshot is ""), and no effects are involved.
+  const query = useSyncExternalStore(subscribeQuery, readQuery, () => "");
+  const updateQuery = writeQuery;
   const [bracket] = useBracket();
 
   const results = useMemo(() => {

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * The data-bracket toggle: "champion" (top ladder brackets — the default) vs
+ * The data-bracket toggle: "master" (top ladder brackets — the default) vs
  * "all" (whole ladder). Persisted on the device and shared by every screen
  * through a tiny subscribe pattern, so flipping it on one page flips the
  * whole app. Both brackets are baked into every prerendered page, so the
@@ -13,7 +13,7 @@ import type { DataBracket } from "./types";
 
 const KEY = "cpx:bracket:v1";
 const CHANGE_EVENT = "cpx:bracket-change";
-const DEFAULT_BRACKET: DataBracket = "champion";
+const DEFAULT_BRACKET: DataBracket = "master";
 
 function read(): DataBracket {
   if (typeof window === "undefined") return DEFAULT_BRACKET;

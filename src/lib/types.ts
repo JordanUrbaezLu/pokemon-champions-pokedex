@@ -226,16 +226,16 @@ export interface CompetitiveProfile {
   /**
    * Precomputed KO verdicts for its likely moves vs the top meta's common
    * sets (@smogon/calc at build time) — the damage-calculator answer with
-   * zero inputs. Champion bracket only.
+   * zero inputs. Master bracket only.
    */
   benchmarks?: MoveBenchmark[];
 }
 
 /**
- * The two data brackets the app toggles between: "champion" = Smogon's top
+ * The two data brackets the app toggles between: "master" = Smogon's top
  * skill cutoffs (1760, backfilled from 1630), "all" = the whole ladder.
  */
-export type DataBracket = "champion" | "all";
+export type DataBracket = "master" | "all";
 
 export interface CompetitiveMeta {
   format: string;
@@ -246,7 +246,7 @@ export interface CompetitiveMeta {
   source: string;
   /** ISO date the competitive snapshot was generated. */
   generatedAt?: string;
-  /** Footnote label per bracket, e.g. champion -> "Champion+ (top ladder brackets)". */
+  /** Footnote label per bracket, e.g. master -> "Master+ (top ladder brackets)". */
   bracketLabels?: Record<DataBracket, string>;
 }
 

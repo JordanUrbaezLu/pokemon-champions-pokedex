@@ -85,12 +85,12 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
   the move sheet. All computed server-side at build — zero extra client payload
 - ✅ **Type Matchups card** (bottom of the page, per request) — 4× called out loudly, weak /
   resists / immune; verified at 375×650 (stacked label block so nothing overlaps)
-- ✅ **Champion+ / All ranks toggle** — both brackets fully baked into every static page; a
-  persistent client-side toggle (home header + detail pages, **defaults to Champion+**) switches
+- ✅ **Master+ / All ranks toggle** — both brackets fully baked into every static page; a
+  persistent client-side toggle (home header + detail pages, **defaults to Master+**) switches
   pick rates, sort order, likely sets, spreads and threat profiles instantly with zero network.
-  Champion+ = 1760 backfilled from 1630 only (8 backfilled; 18 rare mons show a "switch to All"
+  Master+ = 1760 backfilled from 1630 only (8 backfilled; 18 rare mons show a "switch to All"
   hint); All = whole ladder. Top-bracket play reads genuinely differently (e.g. Incineroar:
-  "Disruption · Tank" at Champion+ vs "Wallbreaker" on the whole ladder)
+  "Disruption · Tank" at Master+ vs "Wallbreaker" on the whole ladder)
 - ✅ **Weighted-denominator fix** — high-cutoff chaos files weight the Moves/Teammates/Spreads
   tables but not "Raw count"; per-set rates now divide by the weighted set count (the Abilities
   sum), which the raw-count math had silently zeroed at 1760
@@ -107,6 +107,30 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
   card (their reads are now vectors: Intimidate, weather, screens, set-up). Scan-first redesign:
   colored short headline + one-line detail + a big right-rail number with caption ("99% run it",
   "93% of meta") + colored archetype chips — readable top-to-bottom in about a second
+
+## Wave 3 (go-to-app push: research-driven, in-battle only)
+- ✅ **Baked KO benchmarks** — @smogon/calc runs at BUILD time (dev-only dep): every likely move
+  of every mon precomputed vs the top-16 meta's common sets. Danger line in the Threat Profile
+  ("Play Rough OHKOs Garchomp +1 · 2HKOs 8 of the top meta") + full OHKO/2HKO lists in the move
+  sheet. The damage-calculator answer with **zero inputs** — no competitor has this
+- ✅ **Battle-compact hero** — artwork demoted to recognition size; the Threat Profile (now with
+  likely-set usage bars, top ability/item line, kill-shot strip) + Speed panel fit one screen
+- ✅ **Speed panel** — provable Lv. 50 MIN/COMMON/MAX anchors, one-tap Icy/Scarf/TW/Para/TR
+  modifiers (TR highlights MIN — slower acts first), full-distribution speed-shape read
+- ✅ **Opponent tray + briefing** — pin their team at preview (hero button), persistent bottom
+  dock with 4× tags + current-page ring; "Their team" sheet: per-mon archetype + top threat,
+  speed order, best types into their team. localStorage only, zero network
+- ✅ **Search built for the preview loop** — prefix > type > substring ranking ("gambit" →
+  Kingambit, "ghost" → Ghosts), query survives back-navigation (sessionStorage)
+- ✅ **Installable PWA + offline** — real 192/512(+maskable) icons, `launch_handler:
+  focus-existing` (reopening mid-battle keeps your place), top-3-threat app shortcuts; service
+  worker: cache-first statics/sprites, network-first pages → instant + airplane-mode-capable
+  after first visit; preconnect to the sprite CDN
+- ✅ **Design discipline** — red = threat semantics only (neutral nav chrome), single-hue
+  luminance stat ramp (colorblind-safe), 10px type floor, 44px touch targets, numbers win the
+  hierarchy (17px right-rail stats)
+- ✅ **Freshness automation** — weekly GitHub Action re-bakes all data (auto-latest Smogon
+  month) and opens a PR on changes; the home header shows regulation + updated date
 
 ## Not available
 - ❌ **Checks & Counters** — the Champions doubles ladder dump ships none (empty for all mons)

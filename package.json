@@ -10,7 +10,9 @@
     "lint": "eslint",
     "data": "node scripts/generate-dataset.mjs",
     "data:comp": "node scripts/generate-competitive.mjs",
-    "data:all": "node scripts/generate-dataset.mjs && node scripts/generate-competitive.mjs"
+    "data:all": "node scripts/generate-dataset.mjs && node scripts/generate-competitive.mjs",
+    "status": "node scripts/status.mjs",
+    "shot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
     "next": "16.2.7",

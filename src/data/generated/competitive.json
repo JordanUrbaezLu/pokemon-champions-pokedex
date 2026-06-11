@@ -7,12 +7,12 @@
     "source": "https://www.smogon.com/stats/2026-05/chaos/gen9championsvgc2026regma-1760.json",
     "generatedAt": "2026-06-11",
     "bracketLabels": {
-      "champion": "Champion+ (top ladder brackets)",
+      "master": "Master+ (top ladder brackets)",
       "all": "all ranks"
     }
   },
   "brackets": {
-    "champion": {
+    "master": {
       "venusaur": {
         "usagePct": 2.1,
         "rawCount": 214292,

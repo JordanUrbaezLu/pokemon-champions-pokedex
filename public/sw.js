@@ -19,7 +19,13 @@ const IMAGE_CACHE = `cpx-images-${VERSION}`;
 const PAGE_CACHE = `cpx-pages-${VERSION}`;
 const IMAGE_CACHE_MAX = 900; // ~roster icons + artworks for visited pages
 
-self.addEventListener("install", () => {
+self.addEventListener("install", (event) => {
+  // Precache the home shell: the very first page is loaded BEFORE this worker
+  // controls anything, so without this an offline visit to an unvisited route
+  // would have no fallback.
+  event.waitUntil(
+    caches.open(PAGE_CACHE).then((cache) => cache.add("/")).catch(() => {}),
+  );
   self.skipWaiting();
 });
 

@@ -114,7 +114,7 @@ export function PokemonDetail({
   // SSR-deterministic (no window, no stored state) and never causes a
   // hydration mismatch; the ?form= deep-link is applied in the layout effect below.
   const [activeIndex, setActiveIndex] = useState(() => {
-    const defaultByForm = competitiveByBracket.champion;
+    const defaultByForm = competitiveByBracket.master;
     if (defaultByForm[pokemon.name]) return 0;
     const i = pokemon.forms.findIndex((f) => defaultByForm[f.key]);
     return i >= 0 ? i + 1 : 0;
@@ -272,8 +272,8 @@ export function PokemonDetail({
       <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1">
         {!comp && (
           <p className="px-1 text-xs text-muted">
-            {bracket === "champion" && compInAll
-              ? "Too rare at Champion+ level for meaningful data — switch to All ranks on the home screen for the whole-ladder read."
+            {bracket === "master" && compInAll
+              ? "Too rare at Master+ level for meaningful data — switch to All ranks on the home screen for the whole-ladder read."
               : "No Champions ladder data for this form yet."}
           </p>
         )}
