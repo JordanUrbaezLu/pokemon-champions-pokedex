@@ -63,6 +63,12 @@ export function natureEffect(nature: string): { up: string; down: string } | nul
   return NATURE_EFFECTS[nature] ?? null;
 }
 
+/** "Aerodactyl-Mega" -> "Mega Aerodactyl", "Charizard-Mega-Y" -> "Mega Charizard Y". */
+export function prettySmogonName(name: string): string {
+  const m = name.match(/^(.+)-Mega(-[XY])?$/);
+  return m ? `Mega ${m[1]}${m[2] ? ` ${m[2].slice(1)}` : ""}` : name;
+}
+
 /** Pick rate shown consistently: "26%", "<1%" for tiny shares, "0%" for none. */
 export function formatPickRate(pct: number): string {
   if (pct >= 1) return `${Math.round(pct)}%`;

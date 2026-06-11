@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { TypeBadge } from "./TypeBadge";
 import { CategoryPill, MoveModal } from "./MoveModal";
 import { spreadTag } from "@/lib/battle";
-import type { DamageClass, MoveSummary } from "@/lib/types";
+import type { DamageClass, MoveBenchmark, MoveSummary } from "@/lib/types";
 
 type Filter = "all" | "used" | DamageClass | "priority";
 
@@ -90,9 +90,11 @@ function MoveRow({
 export function MovesSection({
   moves,
   usage,
+  benchmarks,
 }: {
   moves: MoveSummary[];
   usage?: Record<string, number>;
+  benchmarks?: MoveBenchmark[];
 }) {
   const hasUsage = !!usage && Object.keys(usage).length > 0;
   const [open, setOpen] = useState(false);
@@ -223,7 +225,13 @@ export function MovesSection({
         </div>
       )}
 
-      {selected && <MoveModal move={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <MoveModal
+          move={selected}
+          benchmark={benchmarks?.find((b) => b.move === selected.name)}
+          onClose={() => setSelected(null)}
+        />
+      )}
     </section>
   );
 }

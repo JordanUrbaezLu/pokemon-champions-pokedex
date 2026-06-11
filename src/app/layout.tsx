@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Geist_Mono } from "next/font/google";
 import { OpponentTray } from "@/components/OpponentTray";
+import { ServiceWorkerRegistrar } from "@/components/ServiceWorkerRegistrar";
 import "./globals.css";
 
 // Manrope: smooth, rounded, and highly legible at small sizes — easy to read
@@ -45,6 +46,11 @@ export default function RootLayout({
       lang="en"
       className={`${appSans.variable} ${appMono.variable} h-full antialiased`}
     >
+      <head>
+        {/* Sprites come from this CDN; shaving the handshake makes the first
+            artwork paint noticeably sooner on cellular. */}
+        <link rel="preconnect" href="https://raw.githubusercontent.com" />
+      </head>
       <body className="min-h-full font-sans">
         {/* The app is mobile-only: pin content to a phone-width column so it
             stays focused and thumb-friendly even on larger screens. */}
@@ -54,6 +60,7 @@ export default function RootLayout({
               preview, get back to any of them in one tap all battle long. */}
           <OpponentTray />
         </div>
+        <ServiceWorkerRegistrar />
       </body>
     </html>
   );

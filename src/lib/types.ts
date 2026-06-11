@@ -179,10 +179,23 @@ export interface CompetitiveSpread {
  * How a Pokémon is actually played on the Champions ladder — distilled from
  * Smogon usage stats. This is what answers "what will my opponent be running?".
  */
+/** A build-time damage verdict: one likely move vs the top-meta common sets. */
+export interface MoveBenchmark {
+  /** move slug */
+  move: string;
+  ohkoCount: number;
+  twoCount: number;
+  /** example victims (Smogon display names), max 3 each */
+  ohko: string[];
+  two: string[];
+}
+
 export interface CompetitiveProfile {
   /** Usage: share of teams running this Pokémon. */
   usagePct: number;
   rawCount: number;
+  /** Smogon display name behind this profile (drives build-time tooling). */
+  smogonName?: string;
   /**
    * When the data is for a different form than the page's base (e.g. base Rotom
    * resolves to the doubles-relevant Rotom-Wash), the Smogon form name shown.
@@ -210,6 +223,12 @@ export interface CompetitiveProfile {
   teammates: CompetitiveTeammate[];
   /** Set-up moves (Swords Dance, Calm Mind, …) common enough to watch for. */
   setupThreats: { displayName: string; usagePct: number }[];
+  /**
+   * Precomputed KO verdicts for its likely moves vs the top meta's common
+   * sets (@smogon/calc at build time) — the damage-calculator answer with
+   * zero inputs. Champion bracket only.
+   */
+  benchmarks?: MoveBenchmark[];
 }
 
 /**

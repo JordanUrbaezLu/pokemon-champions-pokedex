@@ -1,6 +1,11 @@
 import { RosterSearch } from "@/components/RosterSearch";
 import { PokeballIcon } from "@/components/PokeballIcon";
-import { getRosterEntries, getRosterCount, getDataUpdatedAt } from "@/lib/pokedex";
+import {
+  getRosterEntries,
+  getRosterCount,
+  getDataUpdatedAt,
+  getCompetitiveMeta,
+} from "@/lib/pokedex";
 
 /** "2026-06-11" -> "Jun 11" — compact enough for the subtitle line. */
 function shortDate(iso: string): string {
@@ -22,7 +27,9 @@ export default function Home() {
             Champions Pokédex
           </h1>
           <p className="mt-1 text-sm text-muted">
-            Battle helper · {getRosterCount()} Pokémon
+            {/* Regulation visible at a glance — stale data is dead data. */}
+            {getCompetitiveMeta().formatLabel.match(/Reg [^,)]+/)?.[0] ?? "Doubles"} ·{" "}
+            {getRosterCount()} Pokémon
             {updatedAt && (
               <span className="whitespace-nowrap"> · updated {shortDate(updatedAt)}</span>
             )}

@@ -126,7 +126,7 @@ export function BriefingSheet({
                     </span>
                     {m.archetype[0] && (
                       <span
-                        className="shrink-0 rounded-full px-1.5 py-px text-[9px] font-bold"
+                        className="shrink-0 rounded-full px-1.5 py-px text-[10px] font-bold"
                         style={{
                           backgroundColor: `${m.archetype[0].tone}22`,
                           color: m.archetype[0].tone,
@@ -144,7 +144,7 @@ export function BriefingSheet({
                 </span>
                 {m.quad && (
                   <span
-                    className="shrink-0 rounded px-1 font-mono text-[9px] font-black leading-4 text-white"
+                    className="shrink-0 rounded px-1 font-mono text-[10px] font-black leading-4 text-white"
                     style={{ backgroundColor: TYPE_COLORS[m.quad] }}
                     title={`4× weak to ${m.quad}`}
                   >

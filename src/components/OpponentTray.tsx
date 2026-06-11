@@ -61,7 +61,7 @@ export function OpponentTray() {
                   )}
                   {m.quad && (
                     <span
-                      className="absolute -right-0.5 -top-0.5 rounded-full px-1 text-[8px] font-black leading-3.5 text-white"
+                      className="absolute -right-0.5 -top-0.5 rounded-full px-1 text-[10px] font-black leading-3.5 text-white"
                       style={{ backgroundColor: TYPE_COLORS[m.quad] }}
                       title={`4× weak to ${m.quad}`}
                     >

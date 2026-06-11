@@ -11,13 +11,17 @@ const STAT_ORDER: StatKey[] = [
   "speed",
 ];
 
-/** Color a stat by how good it is, for an instant read of the spread. */
+/**
+ * Single-hue luminance ramp: dim for weak stats, bright for monstrous ones.
+ * Reads instantly, survives colorblindness, and keeps red/green free for
+ * their real jobs (threat / opportunity).
+ */
 function statColor(value: number): string {
-  if (value < 60) return "#ef4444";
-  if (value < 90) return "#f59e0b";
-  if (value < 110) return "#eab308";
-  if (value < 130) return "#84cc16";
-  return "#22c55e";
+  if (value < 60) return "#7a6a3a";
+  if (value < 90) return "#a8893f";
+  if (value < 110) return "#d4ad45";
+  if (value < 130) return "#f4d23c";
+  return "#ffe66b";
 }
 
 // Bars are scaled against a visual max a touch above the highest practical base
@@ -48,7 +52,7 @@ export function StatBars({
     : null;
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-wide text-muted">
+      <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wide text-muted">
         <span className="w-9 shrink-0" />
         <span className="w-9 shrink-0 text-right">Base</span>
         <div className="flex-1" />

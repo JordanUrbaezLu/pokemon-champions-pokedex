@@ -1,8 +1,9 @@
 import { TypeBadge } from "./TypeBadge";
 import { defensiveProfile } from "@/lib/type-chart";
 import { TYPE_COLORS } from "@/lib/type-meta";
+import { prettySmogonName } from "@/lib/format";
 import type { ThreatProfile } from "@/lib/threat";
-import type { MoveSummary, PokemonType } from "@/lib/types";
+import type { MoveBenchmark, MoveSummary, PokemonType } from "@/lib/types";
 
 /**
  * The Threat Profile: what makes THIS Pokémon dangerous, ranked — and built to
@@ -17,12 +18,21 @@ export function ThreatProfileCard({
   moves,
   usage,
   types,
+  ability,
+  item,
+  benchmarks,
   onOpenMove,
 }: {
   profile: ThreatProfile;
   moves: MoveSummary[];
   usage: Record<string, number> | undefined;
   types: PokemonType[];
+  /** most-used ability, e.g. { label: "Defiant", pct: 92 } */
+  ability: { label: string; pct: number } | null;
+  /** most-used item, e.g. { label: "Focus Sash", pct: 41 } */
+  item: { label: string; pct: number } | null;
+  /** build-time KO verdicts for its likely moves */
+  benchmarks?: MoveBenchmark[];
   onOpenMove: (move: MoveSummary) => void;
 }) {
   if (profile.vectors.length === 0) return null;
@@ -39,6 +49,13 @@ export function ThreatProfileCard({
 
   // The counterplay: a 4× weakness is the fastest way to delete this threat.
   const quad = defensiveProfile(types).quad;
+
+  // The single most lethal precomputed verdict — a damage calc's answer with
+  // zero inputs ("Play Rough OHKOs Garchomp +1 · 2HKOs 8 of the top meta").
+  const danger = (benchmarks ?? [])
+    .map((b) => ({ b, score: b.ohkoCount * 2 + b.twoCount }))
+    .sort((a, z) => z.score - a.score)[0]?.b;
+  const dangerMove = danger ? moves.find((m) => m.name === danger.move) : undefined;
 
   return (
     <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
@@ -87,11 +104,11 @@ export function ThreatProfileCard({
               </span>
               {/* The one number worth scanning, big, on a steady right rail. */}
               {v.stat && (
-                <span className="flex w-12 shrink-0 flex-col items-end justify-center text-right">
-                  <span className="font-mono text-[15px] font-bold leading-none tabular-nums">
+                <span className="flex w-13 shrink-0 flex-col items-end justify-center text-right">
+                  <span className="text-[17px] font-extrabold leading-none tabular-nums">
                     {v.stat.value}
                   </span>
-                  <span className="mt-0.5 text-[8px] uppercase tracking-wide text-muted">
+                  <span className="mt-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
                     {v.stat.caption}
                   </span>
                 </span>
@@ -134,8 +151,18 @@ export function ThreatProfileCard({
                 key={m.name}
                 type="button"
                 onClick={() => onOpenMove(m)}
-                className="flex items-center gap-1.5 rounded-lg bg-surface px-2 py-1.5 text-left active:bg-surface-2"
+                className="relative flex items-center gap-1.5 overflow-hidden rounded-lg bg-surface px-2 py-1.5 text-left active:bg-surface-2"
               >
+                {/* Proportion bar: usage at a glance, behind the row. */}
+                <span
+                  className="absolute inset-y-0 left-0"
+                  style={{
+                    width: `${usage?.[m.name] ?? 0}%`,
+                    backgroundColor: TYPE_COLORS[m.type],
+                    opacity: 0.13,
+                  }}
+                  aria-hidden
+                />
                 <span
                   className="size-2 shrink-0 rounded-full"
                   style={{ backgroundColor: TYPE_COLORS[m.type] }}
@@ -150,6 +177,43 @@ export function ThreatProfileCard({
               </button>
             ))}
           </div>
+          {danger && dangerMove && (
+            <button
+              type="button"
+              onClick={() => onOpenMove(dangerMove)}
+              className="mt-1.5 w-full px-0.5 text-left text-[11px] leading-snug text-muted active:opacity-70"
+            >
+              <span className="font-bold text-accent">{dangerMove.displayName}</span>{" "}
+              {danger.ohkoCount > 0 && (
+                <>
+                  OHKOs{" "}
+                  <span className="font-semibold text-foreground/90">
+                    {prettySmogonName(danger.ohko[0])}
+                    {danger.ohkoCount > 1 ? ` +${danger.ohkoCount - 1}` : ""}
+                  </span>
+                  {danger.twoCount > 0 && " · "}
+                </>
+              )}
+              {danger.twoCount > 0 && <>2HKOs {danger.twoCount} of the top meta</>}
+              <span aria-hidden>{" ›"}</span>
+            </button>
+          )}
+          {(ability || item) && (
+            <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-0.5 px-0.5 text-[11px] text-muted">
+              {ability && (
+                <span>
+                  <span className="font-semibold text-foreground/90">{ability.label}</span>{" "}
+                  <span className="font-mono tabular-nums">{ability.pct}%</span>
+                </span>
+              )}
+              {item && (
+                <span>
+                  <span className="font-semibold text-foreground/90">{item.label}</span>{" "}
+                  <span className="font-mono tabular-nums">{item.pct}%</span>
+                </span>
+              )}
+            </div>
+          )}
         </div>
       )}
 

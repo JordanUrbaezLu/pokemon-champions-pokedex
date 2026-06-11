@@ -105,7 +105,7 @@ export function SpeedPanel({
               >
                 {a.value ?? "—"}
               </div>
-              <div className="text-[9px] uppercase tracking-wider text-muted">
+              <div className="text-[10px] uppercase tracking-wider text-muted">
                 {a.label}
                 {a.sp ? ` · ${a.sp}` : ""}
               </div>

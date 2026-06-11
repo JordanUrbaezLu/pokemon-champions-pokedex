@@ -64,6 +64,22 @@ function shortFormLabel(form: BattleForm, baseDisplayName: string): string {
   return form.label.replace(baseDisplayName, "").replace(/\s+/g, " ").trim();
 }
 
+const stripId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/** The most-used ability among this form's own abilities, with its %. */
+function topAbility(
+  abilities: BattleForm["abilities"],
+  usage: Record<string, number> | undefined,
+): { label: string; pct: number } | null {
+  if (!usage) return null;
+  let best: { label: string; pct: number } | null = null;
+  for (const a of abilities) {
+    const pct = usage[stripId(a.name)];
+    if (pct != null && (!best || pct > best.pct)) best = { label: a.displayName, pct };
+  }
+  return best;
+}
+
 export function PokemonDetail({
   pokemon,
   moves,
@@ -150,23 +166,24 @@ export function PokemonDetail({
     <main className="flex min-h-dvh flex-col">
       {/* Sticky top bar: back = previous Pokémon (e.g. after following a
           partner link), and a dedicated centered Home button. */}
-      <div className="sticky top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background/90 px-2 py-2 backdrop-blur">
+      <div className="sticky top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background/90 px-1 py-1.5 backdrop-blur">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Go back"
-          className="flex size-9 items-center justify-center justify-self-start rounded-full text-xl active:bg-surface-2"
+          className="flex size-11 items-center justify-center justify-self-start rounded-full text-xl active:bg-surface-2"
         >
           ‹
         </button>
+        {/* Neutral chrome: red is reserved for threat/selection semantics. */}
         <Link
           href="/"
           aria-label="Home"
-          className="flex size-9 items-center justify-center justify-self-center rounded-full border-2 border-accent text-accent active:bg-accent/15"
+          className="flex size-11 items-center justify-center justify-self-center rounded-full text-muted active:bg-surface-2"
         >
-          <HomeIcon className="size-4.5" />
+          <HomeIcon className="size-5" />
         </Link>
-        <span className="justify-self-end pr-2 font-mono text-xs text-muted">
+        <span className="justify-self-end pr-3 font-mono text-xs text-muted">
           {dexNumber(pokemon.id)}
         </span>
       </div>
@@ -217,7 +234,7 @@ export function PokemonDetail({
             onClick={togglePin}
             aria-pressed={isPinned}
             aria-label={isPinned ? "Unpin opponent" : "Pin as opponent"}
-            className={`flex size-11 shrink-0 flex-col items-center justify-center self-center rounded-full border text-center transition-colors ${
+            className={`flex size-11 shrink-0 flex-col items-center justify-center self-center rounded-full border transition-colors ${
               isPinned
                 ? "border-accent bg-accent/15 text-accent"
                 : "border-border bg-surface/70 text-muted active:bg-surface-2"
@@ -226,8 +243,8 @@ export function PokemonDetail({
             <span className="text-base leading-none" aria-hidden>
               {isPinned ? "✓" : "＋"}
             </span>
-            <span className="mt-px text-[7px] font-bold uppercase tracking-wide">
-              {isPinned ? "pinned" : "pin foe"}
+            <span className="mt-0.5 text-[10px] font-bold uppercase leading-none tracking-tight">
+              {isPinned ? "foe" : "pin"}
             </span>
           </button>
         </div>
@@ -267,6 +284,13 @@ export function PokemonDetail({
             moves={moves}
             usage={comp?.moveUsage}
             types={active.types}
+            ability={topAbility(active.abilities, comp?.abilityUsage)}
+            item={
+              comp?.items[0]
+                ? { label: comp.items[0].displayName, pct: comp.items[0].usagePct }
+                : null
+            }
+            benchmarks={comp?.benchmarks}
             onOpenMove={setSelectedMove}
           />
         )}
@@ -316,7 +340,7 @@ export function PokemonDetail({
                       {it.displayName}
                     </span>
                     {isTop && (
-                      <span className="shrink-0 rounded bg-accent/15 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wide text-accent">
+                      <span className="shrink-0 rounded bg-accent/15 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-accent">
                         Most used
                       </span>
                     )}
@@ -356,7 +380,12 @@ export function PokemonDetail({
           </Section>
         )}
 
-        <MovesSection key={active.key} moves={moves} usage={comp?.moveUsage} />
+        <MovesSection
+          key={active.key}
+          moves={moves}
+          usage={comp?.moveUsage}
+          benchmarks={comp?.benchmarks}
+        />
 
         {comp && comp.teammates.length > 0 && (
           <Section title="Common Partners">
@@ -404,7 +433,11 @@ export function PokemonDetail({
       </div>
 
       {selectedMove && (
-        <MoveModal move={selectedMove} onClose={() => setSelectedMove(null)} />
+        <MoveModal
+          move={selectedMove}
+          benchmark={comp?.benchmarks?.find((b) => b.move === selectedMove.name)}
+          onClose={() => setSelectedMove(null)}
+        />
       )}
 
       {selectedItem && (

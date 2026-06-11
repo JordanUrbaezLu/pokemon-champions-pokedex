@@ -13,7 +13,21 @@ import type { RosterEntry } from "@/lib/pokedex";
  * and re-labels pick rates from the other baked data set, just as instantly.
  */
 export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
-  const [query, setQuery] = useState("");
+  // The team-preview loop is type → tap → read → back → next mon. Restoring
+  // the query on back-navigation means the trainer keeps their place instead
+  // of retyping; sessionStorage scopes it to this battle session.
+  const [query, setQuery] = useState(() => {
+    if (typeof window === "undefined") return "";
+    return window.sessionStorage.getItem("cpx:query") ?? "";
+  });
+  const updateQuery = (q: string) => {
+    setQuery(q);
+    try {
+      window.sessionStorage.setItem("cpx:query", q);
+    } catch {
+      // Private mode — search still works, just doesn't persist.
+    }
+  };
   const [bracket] = useBracket();
 
   const results = useMemo(() => {
@@ -59,17 +73,17 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
             inputMode="search"
             autoFocus
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search a Pokémon by name…"
-            aria-label="Search the roster by name"
-            className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-10 text-base outline-none placeholder:text-muted focus:border-accent"
+            onChange={(e) => updateQuery(e.target.value)}
+            placeholder="Search name or type…"
+            aria-label="Search the roster by name or type"
+            className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-11 text-base outline-none placeholder:text-muted focus:border-accent"
           />
           {query && (
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onClick={() => updateQuery("")}
               aria-label="Clear search"
-              className="absolute right-2.5 top-1/2 size-7 -translate-y-1/2 rounded-full text-muted active:bg-surface-2"
+              className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full text-muted active:bg-surface-2"
             >
               ✕
             </button>

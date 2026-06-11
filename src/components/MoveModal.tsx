@@ -2,8 +2,8 @@
 
 import { useEffect, useId, useRef } from "react";
 import { TypeBadge } from "./TypeBadge";
-import { toDisplayName } from "@/lib/format";
-import type { DamageClass, MoveSummary } from "@/lib/types";
+import { prettySmogonName, toDisplayName } from "@/lib/format";
+import type { DamageClass, MoveBenchmark, MoveSummary } from "@/lib/types";
 
 const CATEGORY: Record<DamageClass, { label: string; color: string }> = {
   physical: { label: "Physical", color: "#e0683b" },
@@ -98,9 +98,12 @@ function moveFacts(move: MoveSummary): string[] {
 /** Bottom-sheet modal with a move's complete details. */
 export function MoveModal({
   move,
+  benchmark,
   onClose,
 }: {
   move: MoveSummary;
+  /** precomputed KO verdicts vs the top meta, when this mon's set runs it */
+  benchmark?: MoveBenchmark | null;
   onClose: () => void;
 }) {
   const titleId = useId();
@@ -163,6 +166,44 @@ export function MoveModal({
         </div>
 
         {target && <p className="mt-3 text-sm text-muted">{target}.</p>}
+
+        {benchmark && (benchmark.ohkoCount > 0 || benchmark.twoCount > 0) && (
+          <div className="mt-3 rounded-xl bg-surface-2/70 p-2.5">
+            <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+              Off its common set, vs the top meta
+            </p>
+            <div className="flex flex-col gap-1 text-xs">
+              {benchmark.ohkoCount > 0 && (
+                <p>
+                  <span className="font-black text-accent">OHKO</span>{" "}
+                  <span className="font-semibold">
+                    {benchmark.ohko.map(prettySmogonName).join(", ")}
+                  </span>
+                  {benchmark.ohkoCount > benchmark.ohko.length && (
+                    <span className="text-muted">
+                      {" "}
+                      +{benchmark.ohkoCount - benchmark.ohko.length} more
+                    </span>
+                  )}
+                </p>
+              )}
+              {benchmark.twoCount > 0 && (
+                <p>
+                  <span className="font-black text-amber-300">2HKO</span>{" "}
+                  <span className="font-semibold">
+                    {benchmark.two.map(prettySmogonName).join(", ")}
+                  </span>
+                  {benchmark.twoCount > benchmark.two.length && (
+                    <span className="text-muted">
+                      {" "}
+                      +{benchmark.twoCount - benchmark.two.length} more
+                    </span>
+                  )}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         {facts.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-1.5">

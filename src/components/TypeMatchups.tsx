@@ -53,7 +53,7 @@ export function TypeMatchups({ types }: { types: PokemonType[] }) {
                 {row.mult}
               </span>
               <span
-                className={`text-[9px] font-bold uppercase tracking-wide ${
+                className={`text-[10px] font-bold uppercase tracking-wide ${
                   row.accent === "quad" ? "text-accent/90" : "text-muted"
                 }`}
               >
