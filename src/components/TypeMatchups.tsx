@@ -26,7 +26,7 @@ export function TypeMatchups({ types }: { types: PokemonType[] }) {
   const rows = allRows.filter((r) => r.types.length > 0);
 
   return (
-    <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
+    <section className="rounded-2xl glass-quiet p-3.5">
       <h2 className="mb-2.5 text-xs font-black uppercase tracking-wider text-muted">
         Type Matchups
       </h2>

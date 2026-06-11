@@ -58,7 +58,7 @@ export function ThreatProfileCard({
   const dangerMove = danger ? moves.find((m) => m.name === danger.move) : undefined;
 
   return (
-    <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
+    <section className="rounded-2xl glass p-3.5">
       <div className="mb-2.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
         <h2 className="text-xs font-black uppercase tracking-wider text-muted">
           Threat Profile

@@ -392,16 +392,19 @@ export function speedAnchors(
 
 export interface SpeedMod {
   id: string;
+  /** spelled out — trainers read names, not codes */
   label: string;
+  /** the effect, shown as a quiet suffix ("×1.5", "−1 stage") */
+  effect: string;
   mult: number;
 }
 
 /** One-tap in-battle Speed modifiers, in the order the game applies them. */
 export const SPEED_MODS: SpeedMod[] = [
-  { id: "icywind", label: "Icy −1", mult: 2 / 3 },
-  { id: "scarf", label: "Scarf", mult: 1.5 },
-  { id: "tailwind", label: "TW ×2", mult: 2 },
-  { id: "para", label: "Para", mult: 0.5 },
+  { id: "icywind", label: "Icy Wind", effect: "−1", mult: 2 / 3 },
+  { id: "scarf", label: "Choice Scarf", effect: "×1.5", mult: 1.5 },
+  { id: "tailwind", label: "Tailwind", effect: "×2", mult: 2 },
+  { id: "para", label: "Paralysis", effect: "×½", mult: 0.5 },
 ];
 
 /** Apply active speed modifiers the way the game does — flooring at each step. */

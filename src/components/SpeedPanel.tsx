@@ -61,7 +61,7 @@ export function SpeedPanel({
   }, [invest]);
 
   return (
-    <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
+    <section className="rounded-2xl glass p-3.5">
       <div className="flex items-baseline justify-between">
         <h2 className="text-xs font-black uppercase tracking-wider text-muted">Speed</h2>
         <span className="text-[10px] text-muted">
@@ -114,7 +114,8 @@ export function SpeedPanel({
         })}
       </div>
 
-      <div className="no-scrollbar -mx-3.5 mt-2.5 flex gap-1.5 overflow-x-auto px-3.5">
+      {/* What changes its Speed — spelled out, one tap each, wraps naturally. */}
+      <div className="mt-2.5 flex flex-wrap gap-1.5">
         {SPEED_MODS.map((mod) => {
           const on = active.has(mod.id);
           const isScarfTell = mod.id === "scarf" && scarfPct >= 25;
@@ -124,7 +125,7 @@ export function SpeedPanel({
               type="button"
               onClick={() => toggle(mod.id)}
               aria-pressed={on}
-              className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
                 on
                   ? "bg-accent text-white"
                   : isScarfTell
@@ -132,10 +133,10 @@ export function SpeedPanel({
                     : "bg-surface-2 text-muted"
               }`}
             >
-              {mod.label}
-              {isScarfTell && !on && (
-                <span className="font-mono tabular-nums"> {scarfPct}%</span>
-              )}
+              {mod.label}{" "}
+              <span className={on ? "text-white/70" : "opacity-60"}>
+                {isScarfTell && !on ? `${scarfPct}%` : mod.effect}
+              </span>
             </button>
           );
         })}
@@ -143,11 +144,11 @@ export function SpeedPanel({
           type="button"
           onClick={() => setTrickRoom((t) => !t)}
           aria-pressed={trickRoom}
-          className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+          className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
             trickRoom ? "bg-sky-500 text-white" : "bg-surface-2 text-muted"
           }`}
         >
-          TR
+          Trick Room
         </button>
       </div>
 

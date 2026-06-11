@@ -62,7 +62,7 @@ export function PokemonCard({
       ref={cardRef}
       // `isolate` keeps the Mega badge's z-index contained to this card so it
       // can't paint over the sticky search bar while scrolling.
-      className="relative isolate flex items-center gap-3 overflow-hidden rounded-2xl border border-border bg-surface px-2.5 py-2 transition-colors active:bg-surface-2"
+      className="glass-quiet relative isolate flex items-center gap-3 overflow-hidden rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
       style={{ borderLeft: `3px solid ${accent}` }}
     >
       {/* Whole-card tap target → base form. Stretched behind the content so the

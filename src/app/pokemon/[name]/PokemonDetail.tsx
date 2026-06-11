@@ -50,7 +50,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
+    <section className="rounded-2xl glass-quiet p-3.5">
       <h2 className="mb-2.5 text-xs font-black uppercase tracking-wider text-muted">
         {title}
       </h2>
@@ -175,11 +175,10 @@ export function PokemonDetail({
         >
           ‹
         </button>
-        {/* Neutral chrome: red is reserved for threat/selection semantics. */}
         <Link
           href="/"
           aria-label="Home"
-          className="flex size-11 items-center justify-center justify-self-center rounded-full text-muted active:bg-surface-2"
+          className="flex size-11 items-center justify-center justify-self-center rounded-full border-2 border-accent text-accent active:bg-accent/15"
         >
           <HomeIcon className="size-5" />
         </Link>
@@ -422,12 +421,10 @@ export function PokemonDetail({
         <TypeMatchups types={active.types} />
 
         {comp && (
-          <p className="px-1 text-[11px] leading-snug text-muted/80">
+          <p className="px-1 text-[11px] leading-snug text-muted/70">
             {comp.asForm && `Competitive data shown for ${comp.asForm}. `}
-            Smogon {competitiveMeta.formatLabel} ·{" "}
-            {competitiveMeta.bracketLabels?.[bracket] ?? bracket} ·{" "}
-            {competitiveMeta.month} · {competitiveMeta.battles.toLocaleString()}{" "}
-            ladder battles.
+            Smogon doubles ladder · {bracket === "master" ? "Master+" : "all ranks"} ·{" "}
+            {competitiveMeta.month}
           </p>
         )}
       </div>

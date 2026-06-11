@@ -54,7 +54,9 @@ export default function RootLayout({
       <body className="min-h-full font-sans">
         {/* The app is mobile-only: pin content to a phone-width column so it
             stays focused and thumb-friendly even on larger screens. */}
-        <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-background">
+        {/* Transparent column so the body's fixed ambient glow shows through
+            the glass panels. */}
+        <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col">
           {children}
           {/* The opponent dock survives every navigation — pin their team at
               preview, get back to any of them in one tap all battle long. */}
