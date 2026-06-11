@@ -1,5 +1,8 @@
+import { TypeBadge } from "./TypeBadge";
+import { defensiveProfile } from "@/lib/type-chart";
+import { TYPE_COLORS } from "@/lib/type-meta";
 import type { ThreatProfile } from "@/lib/threat";
-import type { MoveSummary } from "@/lib/types";
+import type { MoveSummary, PokemonType } from "@/lib/types";
 
 /**
  * The Threat Profile: what makes THIS Pokémon dangerous, ranked — and built to
@@ -12,13 +15,30 @@ import type { MoveSummary } from "@/lib/types";
 export function ThreatProfileCard({
   profile,
   moves,
+  usage,
+  types,
   onOpenMove,
 }: {
   profile: ThreatProfile;
   moves: MoveSummary[];
+  usage: Record<string, number> | undefined;
+  types: PokemonType[];
   onOpenMove: (move: MoveSummary) => void;
 }) {
   if (profile.vectors.length === 0) return null;
+
+  // The 4 moves it's actually clicking — the "what's coming" read, right
+  // inside the profile so the whole threat picture lives in one card.
+  const likely =
+    usage && Object.keys(usage).length
+      ? [...moves]
+          .filter((m) => usage[m.name] != null)
+          .sort((a, b) => (usage[b.name] ?? 0) - (usage[a.name] ?? 0))
+          .slice(0, 4)
+      : [];
+
+  // The counterplay: a 4× weakness is the fastest way to delete this threat.
+  const quad = defensiveProfile(types).quad;
 
   return (
     <section className="rounded-2xl border border-border bg-surface/60 p-3.5">
@@ -102,6 +122,52 @@ export function ThreatProfileCard({
           );
         })}
       </div>
+
+      {likely.length > 0 && (
+        <div className="mt-2.5 border-t border-border pt-2">
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+            Likely set
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            {likely.map((m) => (
+              <button
+                key={m.name}
+                type="button"
+                onClick={() => onOpenMove(m)}
+                className="flex items-center gap-1.5 rounded-lg bg-surface px-2 py-1.5 text-left active:bg-surface-2"
+              >
+                <span
+                  className="size-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: TYPE_COLORS[m.type] }}
+                  aria-hidden
+                />
+                <span className="min-w-0 flex-1 truncate text-[12.5px] font-semibold leading-tight">
+                  {m.displayName}
+                </span>
+                <span className="shrink-0 font-mono text-[10.5px] font-bold tabular-nums text-muted">
+                  {usage?.[m.name]}%
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {quad.length > 0 && (
+        <div className="mt-2 flex items-center gap-2 rounded-xl border border-green-500/40 bg-green-500/10 px-2.5 py-1.5">
+          <span className="text-[11px] font-black uppercase tracking-wide text-green-300">
+            Kill shot
+          </span>
+          <span className="text-[11px] font-semibold text-green-100/90">
+            4× weak to
+          </span>
+          <span className="flex gap-1">
+            {quad.map((t) => (
+              <TypeBadge key={t} type={t} size="sm" />
+            ))}
+          </span>
+        </div>
+      )}
     </section>
   );
 }

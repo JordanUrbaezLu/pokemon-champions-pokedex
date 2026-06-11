@@ -372,6 +372,47 @@ const TRAP_ABILITIES: Record<string, { warning: string; tone: "red" | "amber" }>
   unaware: { warning: "Ignores your stat boosts when it attacks or defends", tone: "amber" },
 };
 
+// --- Speed math ----------------------------------------------------------------
+
+/**
+ * Lv-50 Speed anchors. Champions fixes IVs at 31 and doubles is played at L50,
+ * so MAX (252 EVs, +Spe nature) and MIN (0 EVs, −Spe nature) are provable
+ * bounds, not estimates; COMMON is the ladder's most-used spread.
+ */
+export function speedAnchors(
+  stats: PokemonStats,
+  spread: CompetitiveSpread | null | undefined,
+): { max: number; common: number | null; min: number } {
+  return {
+    max: lv50Stats(stats, { nature: "Timid", evs: { spe: 252 } }).speed,
+    common: spread ? lv50Stats(stats, spread).speed : null,
+    min: lv50Stats(stats, { nature: "Brave", evs: {} }).speed,
+  };
+}
+
+export interface SpeedMod {
+  id: string;
+  label: string;
+  mult: number;
+}
+
+/** One-tap in-battle Speed modifiers, in the order the game applies them. */
+export const SPEED_MODS: SpeedMod[] = [
+  { id: "icywind", label: "Icy −1", mult: 2 / 3 },
+  { id: "scarf", label: "Scarf", mult: 1.5 },
+  { id: "tailwind", label: "TW ×2", mult: 2 },
+  { id: "para", label: "Para", mult: 0.5 },
+];
+
+/** Apply active speed modifiers the way the game does — flooring at each step. */
+export function applySpeedMods(speed: number, active: ReadonlySet<string>): number {
+  let out = speed;
+  for (const mod of SPEED_MODS) {
+    if (active.has(mod.id)) out = Math.floor(out * mod.mult);
+  }
+  return out;
+}
+
 /**
  * The ability traps this form can spring, weighted by ladder usage when known.
  * Traps are intrinsic to the ability — they're worth a warning even with no

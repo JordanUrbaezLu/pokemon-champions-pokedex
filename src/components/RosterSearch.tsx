@@ -18,22 +18,29 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    // Mid-battle, every keystroke counts: rank prefix matches first (what
+    // autocomplete muscle-memory expects), then substring matches ("gambit" →
+    // Kingambit, "chomp" → Garchomp). A type name as the query filters by
+    // type ("ghost" → every Ghost), since that's how trainers think too.
+    const score = (e: RosterEntry): number => {
+      if (!q) return 1;
+      const name = e.displayName.toLowerCase();
+      if (name.startsWith(q) || e.species.startsWith(q)) return 3;
+      if (e.types.some((t) => t === q || (q.length >= 3 && t.startsWith(q)))) return 2;
+      if (name.includes(q)) return 1;
+      return 0;
+    };
     return entries
-      // Prefix match on the name OR its base species, so "p" shows Pokémon
-      // starting with P and "ninetales" finds Alolan Ninetales too.
-      .filter(
-        (e) =>
-          !q ||
-          e.displayName.toLowerCase().startsWith(q) ||
-          e.species.startsWith(q),
-      )
-      // Most-used (most likely to face) first, Dex no. to break ties.
+      .map((e) => ({ e, s: score(e) }))
+      .filter(({ s }) => s > 0)
       .sort((a, b) => {
-        const au = a.usage[bracket] ?? -1;
-        const bu = b.usage[bracket] ?? -1;
+        if (a.s !== b.s) return b.s - a.s;
+        const au = a.e.usage[bracket] ?? -1;
+        const bu = b.e.usage[bracket] ?? -1;
         if (au !== bu) return bu - au;
-        return a.id - b.id;
-      });
+        return a.e.id - b.e.id;
+      })
+      .map(({ e }) => e);
   }, [entries, query, bracket]);
 
   return (

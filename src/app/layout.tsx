@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Geist_Mono } from "next/font/google";
+import { OpponentTray } from "@/components/OpponentTray";
 import "./globals.css";
 
 // Manrope: smooth, rounded, and highly legible at small sizes — easy to read
@@ -49,6 +50,9 @@ export default function RootLayout({
             stays focused and thumb-friendly even on larger screens. */}
         <div className="mx-auto flex min-h-dvh w-full max-w-md flex-col bg-background">
           {children}
+          {/* The opponent dock survives every navigation — pin their team at
+              preview, get back to any of them in one tap all battle long. */}
+          <OpponentTray />
         </div>
       </body>
     </html>
