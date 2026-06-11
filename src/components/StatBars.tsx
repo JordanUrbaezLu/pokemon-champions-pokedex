@@ -48,7 +48,7 @@ export function StatBars({
     : null;
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-wide text-muted">
+      <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wide text-muted">
         <span className="w-9 shrink-0" />
         <span className="w-9 shrink-0 text-right">Base</span>
         <div className="flex-1" />

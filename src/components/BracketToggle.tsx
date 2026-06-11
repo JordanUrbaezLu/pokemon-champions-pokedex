@@ -4,12 +4,12 @@ import { useBracket } from "@/lib/bracket";
 import type { DataBracket } from "@/lib/types";
 
 const OPTIONS: { key: DataBracket; label: string }[] = [
-  { key: "champion", label: "Champion+" },
+  { key: "master", label: "Master+" },
   { key: "all", label: "All ranks" },
 ];
 
 /**
- * The data-source switch: Champion+ (top ladder brackets, the default) vs the
+ * The data-source switch: Master+ (top ladder brackets, the default) vs the
  * whole ladder. One control, app-wide effect — pick rates, sort order, likely
  * sets, spreads and threat profiles all follow it.
  */

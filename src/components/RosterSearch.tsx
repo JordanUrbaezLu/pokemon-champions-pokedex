@@ -1,10 +1,39 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { PokemonCard } from "./PokemonCard";
 import { BracketToggle } from "./BracketToggle";
 import { useBracket } from "@/lib/bracket";
 import type { RosterEntry } from "@/lib/pokedex";
+
+// Session-scoped search query, shared across mounts of this screen.
+const QUERY_KEY = "cpx:query";
+const queryListeners = new Set<() => void>();
+let queryCache: string | null = null;
+
+function readQuery(): string {
+  if (queryCache === null) {
+    queryCache = window.sessionStorage.getItem(QUERY_KEY) ?? "";
+  }
+  return queryCache;
+}
+
+function subscribeQuery(callback: () => void) {
+  queryListeners.add(callback);
+  return () => {
+    queryListeners.delete(callback);
+  };
+}
+
+function writeQuery(q: string) {
+  queryCache = q;
+  try {
+    window.sessionStorage.setItem(QUERY_KEY, q);
+  } catch {
+    // Private mode — search still works, just doesn't persist.
+  }
+  for (const callback of queryListeners) callback();
+}
 
 /**
  * The home screen's beating heart: type a name and the roster filters
@@ -13,27 +42,39 @@ import type { RosterEntry } from "@/lib/pokedex";
  * and re-labels pick rates from the other baked data set, just as instantly.
  */
 export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
-  const [query, setQuery] = useState("");
+  // The team-preview loop is type → tap → read → back → next mon. The query
+  // lives in a tiny sessionStorage-backed store so back-navigation restores
+  // it (the trainer keeps their place instead of retyping), hydration stays
+  // deterministic (server snapshot is ""), and no effects are involved.
+  const query = useSyncExternalStore(subscribeQuery, readQuery, () => "");
+  const updateQuery = writeQuery;
   const [bracket] = useBracket();
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    // Mid-battle, every keystroke counts: rank prefix matches first (what
+    // autocomplete muscle-memory expects), then substring matches ("gambit" →
+    // Kingambit, "chomp" → Garchomp). A type name as the query filters by
+    // type ("ghost" → every Ghost), since that's how trainers think too.
+    const score = (e: RosterEntry): number => {
+      if (!q) return 1;
+      const name = e.displayName.toLowerCase();
+      if (name.startsWith(q) || e.species.startsWith(q)) return 3;
+      if (e.types.some((t) => t === q || (q.length >= 3 && t.startsWith(q)))) return 2;
+      if (name.includes(q)) return 1;
+      return 0;
+    };
     return entries
-      // Prefix match on the name OR its base species, so "p" shows Pokémon
-      // starting with P and "ninetales" finds Alolan Ninetales too.
-      .filter(
-        (e) =>
-          !q ||
-          e.displayName.toLowerCase().startsWith(q) ||
-          e.species.startsWith(q),
-      )
-      // Most-used (most likely to face) first, Dex no. to break ties.
+      .map((e) => ({ e, s: score(e) }))
+      .filter(({ s }) => s > 0)
       .sort((a, b) => {
-        const au = a.usage[bracket] ?? -1;
-        const bu = b.usage[bracket] ?? -1;
+        if (a.s !== b.s) return b.s - a.s;
+        const au = a.e.usage[bracket] ?? -1;
+        const bu = b.e.usage[bracket] ?? -1;
         if (au !== bu) return bu - au;
-        return a.id - b.id;
-      });
+        return a.e.id - b.e.id;
+      })
+      .map(({ e }) => e);
   }, [entries, query, bracket]);
 
   return (
@@ -52,17 +93,17 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
             inputMode="search"
             autoFocus
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search a Pokémon by name…"
-            aria-label="Search the roster by name"
-            className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-10 text-base outline-none placeholder:text-muted focus:border-accent"
+            onChange={(e) => updateQuery(e.target.value)}
+            placeholder="Search name or type…"
+            aria-label="Search the roster by name or type"
+            className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-11 text-base outline-none placeholder:text-muted focus:border-accent"
           />
           {query && (
             <button
               type="button"
-              onClick={() => setQuery("")}
+              onClick={() => updateQuery("")}
               aria-label="Clear search"
-              className="absolute right-2.5 top-1/2 size-7 -translate-y-1/2 rounded-full text-muted active:bg-surface-2"
+              className="absolute right-1 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full text-muted active:bg-surface-2"
             >
               ✕
             </button>

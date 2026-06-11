@@ -1,0 +1,43 @@
+# Keeps the baked data fresh without anyone remembering to: re-runs the
+# generators weekly (the competitive script auto-detects the newest published
+# Smogon month) and opens a PR when anything changed. Merge = redeploy.
+name: Refresh battle data
+
+on:
+  schedule:
+    # Mondays 09:00 UTC — Smogon publishes monthly stats in the first days of
+    # the month, so a weekly cadence catches new months within a week and
+    # picks up roster/movepool corrections in between.
+    - cron: "0 9 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run data:all
+      - name: Open PR if data changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Refresh baked battle data"
+          title: "Data refresh: latest Smogon snapshot + movepools"
+          body: |
+            Automated weekly refresh of `src/data/generated/*` —
+            re-fetched from Smogon (latest published month, both brackets),
+            Serebii, PokeAPI and Showdown, with KO benchmarks rebaked.
+
+            Review the generator log in the action run before merging.
+          branch: auto/data-refresh
+          delete-branch: true
+          add-paths: |
+            src/data/generated/*.json

@@ -17,6 +17,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
@@ -29,12 +30,12 @@ const FORMAT = "gen9championsvgc2026regma"; // Champions VGC doubles, Reg M-A
 // snapshot with STATS_MONTH=YYYY-MM when needed.
 const MONTH_OVERRIDE = process.env.STATS_MONTH || null;
 // The app ships TWO complete brackets and toggles between them client-side:
-//  - champion: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
+//  - master: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
 //    top bracket lacks (a high-rated player's games appear in both files, so
 //    "primary + backfill" is the correct way to combine them — never add).
 //  - all: the whole-ladder file, every rank.
 const BRACKETS = {
-  champion: { cutoffs: ["1760", "1630"], label: "Champion+ (top ladder brackets)" },
+  master: { cutoffs: ["1760", "1630"], label: "Master+ (top ladder brackets)" },
   all: { cutoffs: ["0"], label: "all ranks" },
 };
 const statsUrl = (month, cutoff) =>
@@ -193,6 +194,118 @@ function itemClassesOf(items) {
   return Object.keys(out).length ? out : null;
 }
 
+// --- Build-time KO benchmarks ----------------------------------------------------
+// Champions fixes Lv 50 / 31 IVs and the ladder tells us the common spreads,
+// so damage is PRECOMPUTABLE: instead of shipping a calculator that needs six
+// inputs mid-battle, we bake "this move OHKOs X / 2HKOs Y" verdicts against
+// the top meta at generation time. Powered by @smogon/calc (dev-only).
+
+const GEN = Generations.get(9);
+const BENCH_FIELD = new Field({ gameType: "Doubles" });
+const SPREAD_TARGETS = new Set(["all-opponents", "all-other-pokemon"]);
+const TOP_TARGETS = 16; // benchmark against the mons you actually face
+// Items that change damage math meaningfully and that @smogon/calc models.
+const DAMAGE_ITEMS = new Set([
+  "Life Orb", "Choice Band", "Choice Specs", "Expert Belt", "Assault Vest",
+  "Eviolite", "Sitrus Berry",
+]);
+
+/** A @smogon/calc Pokemon from a profile (common spread, top item/ability). */
+function calcMon(profile, abilityNameOf) {
+  const evs = {};
+  for (const [k, v] of Object.entries(profile.spread?.evs ?? {})) evs[k] = v;
+  const item = profile.items[0]?.displayName;
+  return new Pokemon(GEN, profile.smogonName, {
+    level: 50,
+    nature: profile.spread?.nature ?? "Hardy",
+    evs,
+    ability: abilityNameOf(profile),
+    item: item && DAMAGE_ITEMS.has(item) ? item : undefined,
+  });
+}
+
+/**
+ * For each attacker profile: its likely damaging moves vs the top meta mons,
+ * condensed to OHKO / 2HKO lists. Mutates the profile with `benchmarks`.
+ */
+function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
+  const abilityNameOf = (profile) => {
+    let best = null;
+    let bestPct = -1;
+    for (const [id, pct] of Object.entries(profile.abilityUsage ?? {})) {
+      if (pct > bestPct) {
+        best = id;
+        bestPct = pct;
+      }
+    }
+    return best ? abilityDisplayById.get(best) : undefined;
+  };
+
+  const targets = Object.values(profiles)
+    .filter((p) => !p.asForm && p.spread)
+    .sort((a, b) => b.usagePct - a.usagePct)
+    .slice(0, TOP_TARGETS);
+
+  let baked = 0;
+  let skipped = 0;
+  for (const profile of Object.values(profiles)) {
+    if (profile.asForm || !profile.spread) continue;
+    const moves = Object.entries(profile.moveUsage)
+      .sort((a, b) => b[1] - a[1])
+      .map(([slug]) => ({ slug, meta: moveIndex[slug] }))
+      .filter(({ meta }) => meta && meta.damageClass !== "status" && meta.power)
+      .slice(0, 4);
+    if (!moves.length) continue;
+
+    let attacker;
+    try {
+      attacker = calcMon(profile, abilityNameOf);
+    } catch {
+      skipped++;
+      continue; // species name @smogon/calc doesn't know — skip quietly
+    }
+
+    const benchmarks = [];
+    for (const { slug, meta } of moves) {
+      let move;
+      try {
+        move = new Move(GEN, meta.displayName);
+      } catch {
+        continue;
+      }
+      if (SPREAD_TARGETS.has(meta.target)) move.spreadHit = true;
+      const ohko = [];
+      const two = [];
+      for (const target of targets) {
+        if (target.smogonName === profile.smogonName) continue;
+        try {
+          const result = calculate(GEN, attacker, calcMon(target, abilityNameOf), move, BENCH_FIELD);
+          const [min, max] = result.range();
+          const hp = result.defender.maxHP();
+          if (min >= hp) ohko.push(target.smogonName);
+          else if (max * 2 >= hp && min * 2 >= hp) two.push(target.smogonName);
+        } catch {
+          // one bad target shouldn't kill the move's row
+        }
+      }
+      if (ohko.length || two.length) {
+        benchmarks.push({
+          move: slug,
+          ohkoCount: ohko.length,
+          twoCount: two.length,
+          ohko: ohko.slice(0, 3),
+          two: two.slice(0, 3),
+        });
+      }
+    }
+    if (benchmarks.length) {
+      profile.benchmarks = benchmarks;
+      baked++;
+    }
+  }
+  return { baked, skipped, targetCount: targets.length };
+}
+
 async function main() {
   const MONTH = await resolveLatestMonth();
   const allCutoffs = [...new Set(Object.values(BRACKETS).flatMap((b) => b.cutoffs))];
@@ -284,6 +397,9 @@ async function main() {
     return {
       usagePct: Math.round(m.usage * 1000) / 10,
       rawCount,
+      // The Smogon display name behind this profile — drives the build-time
+      // damage benchmarks (@smogon/calc resolves species by this name).
+      smogonName: key,
       asForm,
       abilityUsage,
       moveUsage,
@@ -371,6 +487,28 @@ async function main() {
     );
   }
 
+  // Bake KO benchmarks for the default (master) bracket — the answer a
+  // damage calculator would give, with zero inputs, precomputed.
+  {
+    const abilityDisplayById = new Map();
+    for (const p of pokemonData.pokemon) {
+      for (const f of [p, ...(p.forms ?? [])]) {
+        for (const a of f.abilities ?? []) {
+          abilityDisplayById.set(stripId(a.name), a.displayName);
+        }
+      }
+    }
+    const t0 = Date.now();
+    const { baked, skipped, targetCount } = bakeBenchmarks(
+      brackets.master.profiles,
+      pokemonData.moves,
+      abilityDisplayById,
+    );
+    console.log(
+      `  benchmarks: ${baked} attackers vs top ${targetCount} (${skipped} species unknown to @smogon/calc) in ${Date.now() - t0}ms`,
+    );
+  }
+
   // Fetch details for every item that shows up in ANY bracket's typical sets.
   const itemSlugs = [
     ...new Set(
@@ -419,7 +557,7 @@ async function main() {
       formatLabel: "Champions VGC (doubles), Reg M-A",
       month: MONTH,
       battles,
-      source: statsUrl(MONTH, BRACKETS.champion.cutoffs[0]),
+      source: statsUrl(MONTH, BRACKETS.master.cutoffs[0]),
       generatedAt: new Date().toISOString().slice(0, 10),
       bracketLabels: Object.fromEntries(
         Object.entries(BRACKETS).map(([name, def]) => [name, def.label]),
@@ -432,9 +570,9 @@ async function main() {
   };
   await writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
 
-  const champ = brackets.champion.profiles;
+  const champ = brackets.master.profiles;
   const baseCovered = pokemonData.pokemon.filter((p) => champ[p.name]).length;
-  console.log(`✓ Wrote ${Object.keys(BRACKETS).length} brackets (champion: ${Object.keys(champ).length} profiles, ${baseCovered}/${roster.length} base covered)`);
+  console.log(`✓ Wrote ${Object.keys(BRACKETS).length} brackets (master: ${Object.keys(champ).length} profiles, ${baseCovered}/${roster.length} base covered)`);
   console.log(`  Source: ${FORMAT} ${MONTH} (${battles.toLocaleString()} battles)`);
 }
 

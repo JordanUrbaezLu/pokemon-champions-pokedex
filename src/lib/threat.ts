@@ -467,8 +467,12 @@ export function getThreatProfile(
     }
   }
 
-  // --- Ability traps (Defiant, Levitate, absorbs…).
-  for (const trap of getTrapWarnings(form.abilities, comp).slice(0, 2)) {
+  // --- Ability traps (Defiant, Levitate, absorbs…). One row is usually the
+  // story; a second only earns its slot when it's actually run (≥25%).
+  const traps = getTrapWarnings(form.abilities, comp);
+  for (const trap of traps.filter(
+    (t, i) => i === 0 || (t.pct ?? 0) >= 25,
+  ).slice(0, 2)) {
     vectors.push({
       kind: "trap",
       headline: trap.label,

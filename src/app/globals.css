@@ -31,6 +31,41 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* Ambient depth behind the glass panels — FIXED, so it costs nothing while
+   scrolling. Faint type-flavored glows: ember top-left, sky right, violet low. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(56% 38% at 12% -4%, rgba(255, 83, 80, 0.09), transparent 62%),
+    radial-gradient(44% 30% at 96% 12%, rgba(92, 198, 239, 0.07), transparent 60%),
+    radial-gradient(70% 44% at 50% 104%, rgba(180, 156, 240, 0.07), transparent 65%);
+}
+
+/* Glass panels: translucent surface over the ambient glow, lit from the top
+   edge, hairline border. Deliberately NO backdrop-filter on scroll content —
+   blur is reserved for the few sticky bars, so frame rate never pays for it.
+   `.glass` = the battle zone (prominent); `.glass-quiet` = reference sections. */
+.glass {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.012) 40%, rgba(255, 255, 255, 0)),
+    rgba(21, 27, 35, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 10px 28px rgba(0, 0, 0, 0.28);
+}
+.glass-quiet {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0) 45%),
+    rgba(21, 27, 35, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
 /* Hide the browser's native search clear (X) — we render our own. */
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;

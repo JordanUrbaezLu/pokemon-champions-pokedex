@@ -10,7 +10,9 @@
     "lint": "eslint",
     "data": "node scripts/generate-dataset.mjs",
     "data:comp": "node scripts/generate-competitive.mjs",
-    "data:all": "node scripts/generate-dataset.mjs && node scripts/generate-competitive.mjs"
+    "data:all": "node scripts/generate-dataset.mjs && node scripts/generate-competitive.mjs",
+    "status": "node scripts/status.mjs",
+    "shot": "node scripts/screenshot.mjs"
   },
   "dependencies": {
     "next": "16.2.7",
@@ -18,6 +20,7 @@
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@smogon/calc": "^0.11.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

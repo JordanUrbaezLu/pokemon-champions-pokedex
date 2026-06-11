@@ -48,7 +48,7 @@ export default async function PokemonPage({
   const pokemon = getPokemonByName(name);
   if (!pokemon) notFound();
 
-  // BOTH data brackets are baked into the static page, so the Champion+/All
+  // BOTH data brackets are baked into the static page, so the Master+/All
   // toggle switches instantly with zero network.
   const competitiveByBracket = {} as Record<
     DataBracket,

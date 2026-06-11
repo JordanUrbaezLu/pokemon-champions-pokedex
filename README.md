@@ -9,27 +9,38 @@ opens instantly and keeps working on flaky venue Wi-Fi.
 
 ## Features
 
-- **Instant search** over the roster — prefix match on a Pokémon's name *or* its base species,
-  so `rotom` finds every Rotom form and `ninetales` finds Alolan Ninetales too. The list is
-  sorted by **doubles pick rate**, so you open straight into the threats you're most likely to face.
+- **Instant search built for the team-preview loop** — prefix, type, and substring matching
+  (`gambit` finds Kingambit, `ghost` lists every Ghost), sorted by **doubles pick rate**, with
+  the query surviving back-navigation. A **Master+ / All ranks** toggle switches the entire
+  app between top-bracket and whole-ladder data instantly.
 - **Threat Profile** — the headline read on every detail page: what makes THIS Pokémon
   dangerous, computed per-form from the ladder data. Set-up sweeps with the post-boost stats
   worked out ("One Swords Dance from sweeping — Atk 205→410"), raw damage as a percentile of the
-  whole meta, Trick Room/Tailwind plans, priority revenge-killing, sleep/disruption, and ability
-  traps that punish standard plays (Defiant vs Intimidate, Levitate vs Earthquake). Every
-  Pokémon's card is different because every Pokémon threatens differently.
+  whole meta, Trick Room/Tailwind plans, priority revenge-killing, sleep/disruption, weather and
+  screens, and ability traps that punish standard plays (Defiant vs Intimidate, Levitate vs
+  Earthquake) — plus the **likely set** with usage bars, top ability/item, and a green
+  **kill-shot strip** when a 4× weakness exists. Every Pokémon's card is different because
+  every Pokémon threatens differently.
+- **Baked KO benchmarks** — Champions fixes Lv 50 / 31 IVs and the ladder publishes the common
+  spreads, so damage is *precomputable*: at build time every likely move runs through the
+  Showdown calc engine vs the top meta's common sets. The card shows the danger line ("Play
+  Rough OHKOs Garchomp +1 · 2HKOs 8 of the top meta"); tapping any move shows its full
+  OHKO/2HKO lists. A damage calculator's answer with zero inputs.
+- **Speed panel** — provable Lv. 50 MIN / COMMON / MAX anchors with one-tap Icy Wind / Scarf /
+  Tailwind / paralysis / Trick Room modifiers, plus a speed-shape read of the full spread
+  distribution ("86% run a −Spe nature — expect Trick Room pace").
+- **Opponent tray + briefing** — pin their six at team preview; a persistent dock makes every
+  later lookup one tap, and the briefing sheet compresses the preview checklist (per-mon
+  archetype + top threat, speed order, best attacking types into their team) to one screen.
 - **Type Matchups** — what it's weak to (4× called out), what it resists, what it's
-  immune to. The fastest answer to "what move do I click?".
-- **Base stats** with a colored read of the spread, plus the **common EV spread + nature**
+  immune to.
+- **Base stats** with a luminance-ramp read of the spread, plus the **common EV spread + nature**
   (e.g. *Jolly — Spe↑ SpA↓*).
 - **Abilities** annotated with ladder usage %, with the meta-standard one flagged **Most used**.
 - **Common items** (top 3 with %, the top one flagged) — tap any for a full description.
-- **Moves** = the actual **Champions movepool**. A **Common** filter (default) surfaces what the
-  Pokémon actually runs, with per-move usage %. Tap any move for a detail sheet showing power,
-  accuracy, priority, **target** (single / both foes / spread), and exact secondary chances
-  (e.g. *30% flinch*, *20% −1 Def*).
-- **Watch for set-up** — an at-a-glance warning when the opponent commonly runs Swords Dance,
-  Calm Mind, Dragon Dance, etc.
+- **Moves** = the actual **Champions movepool**. A **Common** filter surfaces what the
+  Pokémon actually runs, with per-move usage %. Tap any move for power, accuracy, priority,
+  **target**, exact secondary chances — and its baked KO verdicts vs the top meta.
 - **Common partners** — who it's usually brought alongside (linked).
 - **Mega & form toggle** — switch to Mega Evolutions (with their own doubles data); regional and
   Rotom forms are first-class roster entries with their own typing/stats/competitive data.
@@ -38,6 +49,12 @@ opens instantly and keeps working on flaky venue Wi-Fi.
 
 - **Next.js 16** (App Router, Turbopack) · **React 19** · **TypeScript** · **Tailwind v4**
 - Mobile-only layout, dark theme, fully **static** (every page prerendered via `generateStaticParams`)
+- **Installable PWA** with a service worker — instant opens and full offline after the first
+  visit (cache-first hashed assets/sprites, network-first pages); `launch_handler:
+  focus-existing` keeps your place when reopening mid-battle; app shortcuts jump to the top
+  three threats
+- **@smogon/calc** as a build-time (dev-only) dependency powering the baked KO benchmarks —
+  it never ships to the client
 
 ## Getting started
 
@@ -68,8 +85,8 @@ Run both with `npm run data:all`.
   Megas, and each Pokémon's Champions movepool.
 - **Smogon** Champions VGC doubles ladder (`gen9championsvgc2026regma` "chaos" stats) — usage,
   common abilities/items/moves/spreads, set-up threats, and teammates. **Two complete brackets
-  are baked** and the app toggles between them client-side (Champion+ is the default):
-  - **Champion+** — the top skill cutoff (1760), backfilled per-mon from 1630 only. Mons too
+  are baked** and the app toggles between them client-side (Master+ is the default):
+  - **Master+** — the top skill cutoff (1760), backfilled per-mon from 1630 only. Mons too
     rare for top-bracket data say so and point at the All toggle.
   - **All ranks** — the whole-ladder file.
 - **Pokémon Showdown data files** — move flags, per-form learnsets (incl. pre-evolution chains,
