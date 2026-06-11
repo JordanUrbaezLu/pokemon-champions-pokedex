@@ -1,9 +1,17 @@
 import { RosterSearch } from "@/components/RosterSearch";
 import { PokeballIcon } from "@/components/PokeballIcon";
-import { getRosterEntries, getRosterCount } from "@/lib/pokedex";
+import { getRosterEntries, getRosterCount, getDataUpdatedAt } from "@/lib/pokedex";
+
+/** "2026-06-11" -> "Jun 11" — compact enough for the subtitle line. */
+function shortDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${months[(m ?? 1) - 1]} ${d}${y !== new Date().getFullYear() ? ` ${y}` : ""}`;
+}
 
 export default function Home() {
   const entries = getRosterEntries();
+  const updatedAt = getDataUpdatedAt();
 
   return (
     <main className="flex min-h-dvh flex-col">
@@ -14,7 +22,10 @@ export default function Home() {
             Champions Pokédex
           </h1>
           <p className="mt-1 text-sm text-muted">
-            Battle helper · {getRosterCount()} Pokémon in the roster
+            Battle helper · {getRosterCount()} Pokémon
+            {updatedAt && (
+              <span className="whitespace-nowrap"> · updated {shortDate(updatedAt)}</span>
+            )}
           </p>
         </div>
       </header>

@@ -73,6 +73,41 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
 - ✅ Fixed duplicate-key bug (forms share dex numbers) and form-bleed in competitive data
 - ✅ Fixed the Mega badge painting over the sticky search bar (`isolate` contains its z-index)
 
+## Wave 2 (threat detection + fresh data)
+- ✅ **Threat Profile card** — a per-Pokémon threat read at the top of every detail page. An
+  engine (`src/lib/threat.ts`) classifies each form's threat vectors from the ladder data and
+  fires only what's true for THAT Pokémon, ranked by severity: set-up sweeps (post-boost stats
+  actually computed, e.g. "Atk 205→410"), raw damage as a **meta percentile** ("hits harder than
+  83% of the meta"), Trick Room / Tailwind / speed drops, priority revenge-killing, disruption
+  (sleep, Fake Out, Encore, redirection, item theft), **ability traps** (Defiant / Levitate /
+  Magic Bounce / absorbs — the anti-misclick layer), tank profiles, and Scarf/speed tiers. Each
+  card gets an archetype line ("Revenge killer · Punisher") and move-backed rows tap through to
+  the move sheet. All computed server-side at build — zero extra client payload
+- ✅ **Type Matchups card** (bottom of the page, per request) — 4× called out loudly, weak /
+  resists / immune; verified at 375×650 (stacked label block so nothing overlaps)
+- ✅ **Champion+ / All ranks toggle** — both brackets fully baked into every static page; a
+  persistent client-side toggle (home header + detail pages, **defaults to Champion+**) switches
+  pick rates, sort order, likely sets, spreads and threat profiles instantly with zero network.
+  Champion+ = 1760 backfilled from 1630 only (8 backfilled; 18 rare mons show a "switch to All"
+  hint); All = whole ladder. Top-bracket play reads genuinely differently (e.g. Incineroar:
+  "Disruption · Tank" at Champion+ vs "Wallbreaker" on the whole ladder)
+- ✅ **Weighted-denominator fix** — high-cutoff chaos files weight the Moves/Teammates/Spreads
+  tables but not "Raw count"; per-set rates now divide by the weighted set count (the Abilities
+  sum), which the raw-count math had silently zeroed at 1760
+- ✅ **Form-correct movepools** — variants scrape the base species' Serebii page intersected with
+  the form's learnset from PokeAPI ∪ Showdown **including pre-evolutions** (egg/prevo moves like
+  Hisuian Arcanine's Head Smash survive); Tera moves excluded; Champions-new moves recovered from
+  Showdown; move flags baked; pipeline salvages from the committed dataset when PokeAPI 5xxs
+- ✅ **Freshness stamp** — both generated files carry `generatedAt`; the home header shows
+  "204 Pokémon · updated Jun 11"
+- ✅ **Always-fresh snapshots** — `npm run data:comp` auto-detects the newest published Smogon
+  month (pin with `STATS_MONTH=YYYY-MM`); freshness audit 2026-06-11 confirmed 2026-05 is the
+  latest published month and the roster matches Serebii's index exactly (186 = 186 species pages)
+- ✅ **Threat Profile is THE summary** — replaced the role chips and the "Watch for set-up"
+  card (their reads are now vectors: Intimidate, weather, screens, set-up). Scan-first redesign:
+  colored short headline + one-line detail + a big right-rail number with caption ("99% run it",
+  "93% of meta") + colored archetype chips — readable top-to-bottom in about a second
+
 ## Not available
 - ❌ **Checks & Counters** — the Champions doubles ladder dump ships none (empty for all mons)
 - ❌ **Tera** — Champions has no Terastallization

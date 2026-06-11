@@ -2,15 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { PokemonCard } from "./PokemonCard";
+import { BracketToggle } from "./BracketToggle";
+import { useBracket } from "@/lib/bracket";
 import type { RosterEntry } from "@/lib/pokedex";
 
 /**
  * The home screen's beating heart: type a name and the roster filters
  * instantly. No network, no debounce lag — the whole roster is already in
- * memory, so results update on every keystroke.
+ * memory, so results update on every keystroke. The bracket toggle re-sorts
+ * and re-labels pick rates from the other baked data set, just as instantly.
  */
 export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
   const [query, setQuery] = useState("");
+  const [bracket] = useBracket();
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -25,12 +29,12 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
       )
       // Most-used (most likely to face) first, Dex no. to break ties.
       .sort((a, b) => {
-        const au = a.usagePct ?? -1;
-        const bu = b.usagePct ?? -1;
+        const au = a.usage[bracket] ?? -1;
+        const bu = b.usage[bracket] ?? -1;
         if (au !== bu) return bu - au;
         return a.id - b.id;
       });
-  }, [entries, query]);
+  }, [entries, query, bracket]);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -67,7 +71,10 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
       </div>
 
       <div className="flex-1 px-4 pb-8 pt-3">
-        <p className="mb-2 px-1 text-xs text-muted">{results.length} Pokémon</p>
+        <div className="mb-2 flex items-center justify-between gap-2 px-1">
+          <p className="text-xs text-muted">{results.length} Pokémon</p>
+          <BracketToggle />
+        </div>
 
         {results.length === 0 ? (
           <div className="mt-16 text-center text-muted">
@@ -79,7 +86,11 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
         ) : (
           <div className="flex flex-col gap-2">
             {results.map((entry) => (
-              <PokemonCard key={entry.name} entry={entry} />
+              <PokemonCard
+                key={entry.name}
+                entry={entry}
+                usagePct={entry.usage[bracket]}
+              />
             ))}
           </div>
         )}

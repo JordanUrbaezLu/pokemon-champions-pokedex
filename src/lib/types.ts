@@ -144,10 +144,17 @@ export interface MoveSummary {
   critRate: number;
   minHits: number | null;
   maxHits: number | null;
+  /**
+   * Showdown move flags worth surfacing ("contact", "punch", "sound",
+   * "bullet", "bite", "slicing", "wind", "pulse").
+   */
+  flags?: string[];
 }
 
 /** The full baked dataset: the roster plus a shared move index. */
 export interface PokedexDataset {
+  /** ISO date the dataset was generated — the home screen's freshness stamp. */
+  generatedAt?: string;
   pokemon: ChampionPokemon[];
   moves: Record<string, MoveSummary>;
 }
@@ -186,11 +193,30 @@ export interface CompetitiveProfile {
   /** Usage % per move, keyed by move slug — woven into the movepool list. */
   moveUsage: Record<string, number>;
   items: { displayName: string; slug: string | null; usagePct: number }[];
+  /**
+   * % of sets running each item CLASS, from the full item table (not just the
+   * top 3): "scarf", "choice" (band/specs/scarf), "sash", "lifeOrb", "av",
+   * "berry".
+   */
+  itemClasses?: Record<string, number> | null;
   spread: CompetitiveSpread | null;
+  /**
+   * How the FULL spread distribution invests in Speed — catches bimodal mons
+   * the single top spread misrepresents. Percentages of weighted sets:
+   * max (252 Spe), some, none (0 Spe, neutral nature), minus (a −Spe nature —
+   * the Trick Room tell).
+   */
+  speedInvest?: { max: number; some: number; none: number; minus: number } | null;
   teammates: CompetitiveTeammate[];
   /** Set-up moves (Swords Dance, Calm Mind, …) common enough to watch for. */
   setupThreats: { displayName: string; usagePct: number }[];
 }
+
+/**
+ * The two data brackets the app toggles between: "champion" = Smogon's top
+ * skill cutoffs (1760, backfilled from 1630), "all" = the whole ladder.
+ */
+export type DataBracket = "champion" | "all";
 
 export interface CompetitiveMeta {
   format: string;
@@ -199,6 +225,10 @@ export interface CompetitiveMeta {
   month: string;
   battles: number;
   source: string;
+  /** ISO date the competitive snapshot was generated. */
+  generatedAt?: string;
+  /** Footnote label per bracket, e.g. champion -> "Champion+ (top ladder brackets)". */
+  bracketLabels?: Record<DataBracket, string>;
 }
 
 /** Full details for a held item, for the item modal. */
@@ -214,7 +244,8 @@ export interface ItemDetail {
 
 export interface CompetitiveDataset {
   meta: CompetitiveMeta;
-  pokemon: Record<string, CompetitiveProfile>;
+  /** Complete profile maps per data bracket — the toggle switches between them. */
+  brackets: Record<DataBracket, Record<string, CompetitiveProfile>>;
   /** Item details keyed by slug, for items referenced in typical sets. */
   itemIndex: Record<string, ItemDetail>;
 }

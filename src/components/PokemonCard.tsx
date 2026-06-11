@@ -42,12 +42,19 @@ function useArtworkPrefetch(srcs: (string | null)[]) {
 /**
  * A tappable roster row built for fast scanning: a type-colored accent + tinted
  * icon tile let a trainer recognize a Pokémon by color before reading the name.
- * The Mega mark and doubles pick rate sit together on the right. Prefetch is
- * left to Next's default scheduler, which warms the rows in view.
+ * The Mega mark and the active bracket's doubles pick rate sit together on the
+ * right. Prefetch is left to Next's default scheduler, which warms the rows in
+ * view.
  */
-export function PokemonCard({ entry }: { entry: RosterEntry }) {
+export function PokemonCard({
+  entry,
+  usagePct,
+}: {
+  entry: RosterEntry;
+  usagePct: number | null;
+}) {
   const accent = TYPE_COLORS[entry.types[0]];
-  const showUsage = entry.usagePct != null && entry.usagePct >= 0.1;
+  const showUsage = usagePct != null && usagePct >= 0.1;
   const cardRef = useArtworkPrefetch([entry.artwork, entry.megaArtwork]);
 
   return (
@@ -113,7 +120,7 @@ export function PokemonCard({ entry }: { entry: RosterEntry }) {
         {showUsage && (
           <div className="text-right">
             <div className="font-mono text-[15px] font-bold tabular-nums">
-              {formatPickRate(entry.usagePct!)}
+              {formatPickRate(usagePct!)}
             </div>
             <div className="text-[10px] uppercase tracking-wide text-muted">
               pick
