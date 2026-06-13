@@ -7,7 +7,6 @@ import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
 import { formatPickRate } from "@/lib/format";
 import { TYPE_COLORS } from "@/lib/type-meta";
-import { defensiveProfile } from "@/lib/type-chart";
 import { useOpponents } from "@/lib/opponents";
 import type { RosterEntry } from "@/lib/pokedex";
 
@@ -65,23 +64,11 @@ export function PokemonCard({
   const { opponents, pin, unpin } = useOpponents();
   const isPinned = opponents.some((o) => o.slug === entry.name);
   const togglePin = () => {
-    if (isPinned) {
-      unpin(entry.name);
-      return;
-    }
-    // A quick base-form pin from the list — identity + its 4× kill shot. Open
-    // the Pokémon to upgrade it to a Mega-specific pin (same slug replaces).
-    pin({
-      slug: entry.name,
-      formKey: null,
-      displayName: entry.displayName,
-      icon: entry.icon,
-      types: entry.types,
-      quad: defensiveProfile(entry.types).quad[0] ?? null,
-      speed: null,
-      archetype: [],
-      headline: null,
-    });
+    if (isPinned) unpin(entry.name);
+    // Full pin payload (the most-played form's archetype / top threat / speed),
+    // precomputed at build time — so the briefing reads the same as a pin made
+    // on the detail page.
+    else pin(entry.pin);
   };
 
   return (
