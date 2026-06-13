@@ -24,6 +24,7 @@ import {
   formatPickRate,
   formatSpread,
   natureEffect,
+  prettySmogonName,
 } from "@/lib/format";
 import type { ThreatProfile } from "@/lib/threat";
 import type {
@@ -405,7 +406,7 @@ export function PokemonDetail({
                 }`;
                 const inner = (
                   <>
-                    {t.displayName}{" "}
+                    {prettySmogonName(t.displayName)}{" "}
                     <span className="font-mono text-xs text-muted">{t.usagePct}%</span>
                   </>
                 );

@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
-import { dexNumber, formatPickRate } from "@/lib/format";
+import { formatPickRate } from "@/lib/format";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { defensiveProfile } from "@/lib/type-chart";
 import { useOpponents } from "@/lib/opponents";
@@ -87,33 +87,21 @@ export function PokemonCard({
   return (
     <div
       ref={cardRef}
-      // `isolate` keeps the Mega badge's z-index contained to this card so it
-      // can't paint over the sticky search bar while scrolling.
-      className="glass-quiet relative isolate flex items-center gap-2.5 overflow-hidden rounded-2xl py-2 pl-1 pr-2 transition-colors active:bg-surface-2"
+      // `isolate` contains the card's stacking context so nothing paints over
+      // the sticky search bar while scrolling.
+      className="glass-quiet relative isolate flex items-center gap-2.5 overflow-hidden rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
       style={{ borderLeft: `3px solid ${accent}` }}
     >
       {/* Whole-card tap target → base form. Stretched behind the content so the
-          Mega badge, pin, etc. can sit above it without nesting. */}
+          Mega badge and pin can sit above it without nesting. */}
       <Link
         href={`/pokemon/${entry.name}`}
         aria-label={entry.displayName}
         className="absolute inset-0 z-0"
       />
 
-      {/* Pick-rate rank — stays with the Pokémon even while the list is
-          filtered, so "is this a top threat?" reads at a glance. */}
-      <div className="w-6 shrink-0 text-center">
-        {rank != null ? (
-          <span className="font-mono text-base font-black tabular-nums text-muted">
-            {rank}
-          </span>
-        ) : (
-          <span className="text-muted/40">·</span>
-        )}
-      </div>
-
       <div
-        className="flex size-16 shrink-0 items-center justify-center rounded-xl"
+        className="flex size-18.5 shrink-0 items-center justify-center rounded-xl"
         style={{
           background: `radial-gradient(circle at 50% 35%, ${accent}33, ${accent}0d)`,
         }}
@@ -122,62 +110,67 @@ export function PokemonCard({
           <Image
             src={entry.icon}
             alt=""
-            width={64}
-            height={64}
-            className="size-16 object-contain"
+            width={74}
+            height={74}
+            className="size-18.5 object-contain"
           />
         ) : null}
       </div>
 
       <div className="min-w-0 flex-1">
-        <span className="font-mono text-xs text-muted">
-          {dexNumber(entry.id)}
-        </span>
+        {/* Pick-rate rank in place of the National Dex # — the number a trainer
+            actually cares about. Holds through search filtering; top-3 glow
+            accent. */}
+        {rank != null ? (
+          <span
+            className={`font-mono text-xs font-bold tabular-nums ${
+              rank <= 3 ? "text-accent" : "text-muted"
+            }`}
+          >
+            #{rank}
+          </span>
+        ) : (
+          <span className="font-mono text-xs text-muted/50">·</span>
+        )}
         <p className="truncate text-[17px] font-bold leading-tight">
           {entry.displayName}
         </p>
-        <div className="mt-1.5 flex flex-wrap gap-1">
+        {/* nowrap: long dual types (Dragon/Ground) stay on one line. */}
+        <div className="mt-1.5 flex gap-1 overflow-hidden">
           {entry.types.map((t) => (
             <TypeBadge key={t} type={t} size="sm" />
           ))}
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-2 pr-0.5">
+      <div className="flex shrink-0 items-center gap-1.5">
         {entry.hasMega && entry.megaKey && (
           <Link
             href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
             aria-label={`${entry.displayName} Mega Evolution`}
-            className="relative z-10 rounded-full p-1 active:bg-surface-2"
+            className="relative z-10 active:opacity-70"
           >
-            {/* The white glow is a PAINTED radial halo behind the badge, not a
-                drop-shadow filter. iOS Safari composites a filtered element
-                onto its own GPU layer and clips the filter to that layer's
-                rectangular raster bounds, boxing the glow until a repaint (the
-                "boxed aura, fixes on tap" bug). A background gradient has no
-                such layer, so it can never box. The coin fills its box, so the
-                bright ring is tuned to sit just OUTSIDE the coin's edge. */}
-            <span className="relative grid size-7.5 place-items-center">
+            {/* The white glow is a box-shadow on a coin-sized round disc behind
+                the badge — same soft circular glow as the original drop-shadow,
+                but box-shadow is NOT a composited filter layer, so iOS Safari's
+                tight filter-raster bounds can never box it (the bug that clipped
+                the old drop-shadow into a square). */}
+            <span className="relative grid size-6 place-items-center">
               <span
                 aria-hidden
-                className="pointer-events-none absolute size-12 rounded-full"
+                className="absolute size-5 rounded-full"
                 style={{
-                  background:
-                    "radial-gradient(circle, rgba(255,255,255,0) 58%, rgba(255,255,255,0.95) 72%, rgba(255,255,255,0.45) 84%, rgba(255,255,255,0) 97%)",
+                  boxShadow:
+                    "0 0 4px 0 rgba(255,255,255,1), 0 0 8px 1px rgba(255,255,255,0.6)",
                 }}
               />
-              <MegaIcon className="relative size-7.5" />
+              <MegaIcon className="relative size-6" />
             </span>
           </Link>
         )}
         {showUsage && (
-          <div className="text-right">
-            <div className="font-mono text-[15px] font-bold tabular-nums">
-              {formatPickRate(usagePct!)}
-            </div>
-            <div className="text-[10px] uppercase tracking-wide text-muted">
-              pick
-            </div>
+          <div className="text-right font-mono text-sm font-bold tabular-nums">
+            {formatPickRate(usagePct!)}
           </div>
         )}
         {/* Pin as opponent — same store the detail page and tray use. */}
@@ -186,7 +179,7 @@ export function PokemonCard({
           onClick={togglePin}
           aria-pressed={isPinned}
           aria-label={isPinned ? `Unpin ${entry.displayName}` : `Pin ${entry.displayName} as opponent`}
-          className={`relative z-10 flex size-9 shrink-0 items-center justify-center rounded-full border text-sm transition-colors ${
+          className={`relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full border text-xs transition-colors ${
             isPinned
               ? "border-accent bg-accent/15 text-accent"
               : "border-border bg-surface/60 text-muted active:bg-surface-2"

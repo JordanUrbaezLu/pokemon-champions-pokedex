@@ -15,20 +15,28 @@ const OPTIONS: { key: DataBracket; label: string }[] = [
  */
 export function BracketToggle({ className = "" }: { className?: string }) {
   const [bracket, setBracket] = useBracket();
+  const activeIndex = OPTIONS.findIndex((o) => o.key === bracket);
   return (
     <div
       role="group"
       aria-label="Ladder data bracket"
-      className={`flex shrink-0 rounded-full border border-border bg-surface-2 p-0.5 ${className}`}
+      className={`relative isolate inline-flex shrink-0 rounded-full border border-border bg-surface-2 p-0.5 ${className}`}
     >
+      {/* Sliding accent thumb — each segment is equal width, so translating by
+          its own width (100%) lands it exactly on the next option. */}
+      <span
+        aria-hidden
+        className="absolute inset-y-0.5 left-0.5 -z-10 w-[calc(50%-2px)] rounded-full bg-accent transition-transform duration-200 ease-out"
+        style={{ transform: `translateX(${activeIndex * 100}%)` }}
+      />
       {OPTIONS.map((o) => (
         <button
           key={o.key}
           type="button"
           onClick={() => setBracket(o.key)}
           aria-pressed={bracket === o.key}
-          className={`rounded-full px-2.5 py-1 text-[11px] font-bold whitespace-nowrap transition-colors ${
-            bracket === o.key ? "bg-accent text-white" : "text-muted active:bg-surface"
+          className={`flex-1 basis-0 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors duration-200 ${
+            bracket === o.key ? "text-white" : "text-muted"
           }`}
         >
           {o.label}
