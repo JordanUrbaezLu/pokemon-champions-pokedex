@@ -142,18 +142,27 @@ export function PokemonDetail({
   const compInAll = competitiveByBracket.all[active.key];
 
   // Opponent pinning: one tap at team preview → one-tap return all battle.
+  // Form-aware: a base pin can be upgraded to its Mega in one tap (and vice
+  // versa), since the tray keys one slot per species.
   const { opponents, pin, unpin } = useOpponents();
-  const isPinned = opponents.some((o) => o.slug === pokemon.name);
+  const pinned = opponents.find((o) => o.slug === pokemon.name);
+  const pinnedFormKey = pinned ? pinned.formKey ?? pokemon.name : null;
+  const isPinned = pinnedFormKey === active.key;
   const togglePin = () => {
     if (isPinned) {
       unpin(pokemon.name);
       return;
     }
+    const isBase = active.key === pokemon.name;
     pin({
       slug: pokemon.name,
-      formKey: active.key === pokemon.name ? null : active.key,
-      displayName: pokemon.displayName,
-      icon: pokemon.home ?? pokemon.sprite,
+      formKey: isBase ? null : active.key,
+      // Identify the form you'll actually face — "Mega Charizard Y", not just
+      // "Charizard" — so the tray and briefing name the real threat.
+      displayName: active.label,
+      icon: isBase
+        ? pokemon.home ?? pokemon.sprite
+        : active.artwork ?? active.sprite ?? pokemon.home ?? pokemon.sprite,
       types: active.types,
       quad: defensiveProfile(active.types).quad[0] ?? null,
       speed: comp ? speedAnchors(active.stats, comp.spread).common : null,

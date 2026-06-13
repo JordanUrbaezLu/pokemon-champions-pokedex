@@ -77,6 +77,21 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
       .map(({ e }) => e);
   }, [entries, query, bracket]);
 
+  // Pick-rate rank across the WHOLE roster for the active bracket — so a
+  // Pokémon shows its true "#3 most-used" rank even when the list is filtered
+  // down to a single search result. Mons with no ladder data get no rank.
+  const rankByName = useMemo(() => {
+    const ranked = entries
+      .filter((e) => e.usage[bracket] != null)
+      .sort((a, b) => {
+        const d = (b.usage[bracket] ?? 0) - (a.usage[bracket] ?? 0);
+        return d !== 0 ? d : a.id - b.id;
+      });
+    const map = new Map<string, number>();
+    ranked.forEach((e, i) => map.set(e.name, i + 1));
+    return map;
+  }, [entries, bracket]);
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Sticky search controls so they stay reachable while results scroll. */}
@@ -131,6 +146,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
                 key={entry.name}
                 entry={entry}
                 usagePct={entry.usage[bracket]}
+                rank={rankByName.get(entry.name) ?? null}
               />
             ))}
           </div>

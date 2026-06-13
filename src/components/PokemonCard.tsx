@@ -7,6 +7,8 @@ import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
 import { dexNumber, formatPickRate } from "@/lib/format";
 import { TYPE_COLORS } from "@/lib/type-meta";
+import { defensiveProfile } from "@/lib/type-chart";
+import { useOpponents } from "@/lib/opponents";
 import type { RosterEntry } from "@/lib/pokedex";
 
 /**
@@ -49,32 +51,69 @@ function useArtworkPrefetch(srcs: (string | null)[]) {
 export function PokemonCard({
   entry,
   usagePct,
+  rank,
 }: {
   entry: RosterEntry;
   usagePct: number | null;
+  /** Pick-rate rank across the whole roster (1 = most-used); null if no data. */
+  rank: number | null;
 }) {
   const accent = TYPE_COLORS[entry.types[0]];
   const showUsage = usagePct != null && usagePct >= 0.1;
   const cardRef = useArtworkPrefetch([entry.artwork, entry.megaArtwork]);
+
+  const { opponents, pin, unpin } = useOpponents();
+  const isPinned = opponents.some((o) => o.slug === entry.name);
+  const togglePin = () => {
+    if (isPinned) {
+      unpin(entry.name);
+      return;
+    }
+    // A quick base-form pin from the list — identity + its 4× kill shot. Open
+    // the Pokémon to upgrade it to a Mega-specific pin (same slug replaces).
+    pin({
+      slug: entry.name,
+      formKey: null,
+      displayName: entry.displayName,
+      icon: entry.icon,
+      types: entry.types,
+      quad: defensiveProfile(entry.types).quad[0] ?? null,
+      speed: null,
+      archetype: [],
+      headline: null,
+    });
+  };
 
   return (
     <div
       ref={cardRef}
       // `isolate` keeps the Mega badge's z-index contained to this card so it
       // can't paint over the sticky search bar while scrolling.
-      className="glass-quiet relative isolate flex items-center gap-3 overflow-hidden rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
+      className="glass-quiet relative isolate flex items-center gap-2.5 overflow-hidden rounded-2xl py-2 pl-1 pr-2 transition-colors active:bg-surface-2"
       style={{ borderLeft: `3px solid ${accent}` }}
     >
       {/* Whole-card tap target → base form. Stretched behind the content so the
-          Mega badge can link to its own Mega-toggled view without nesting. */}
+          Mega badge, pin, etc. can sit above it without nesting. */}
       <Link
         href={`/pokemon/${entry.name}`}
         aria-label={entry.displayName}
         className="absolute inset-0 z-0"
       />
 
+      {/* Pick-rate rank — stays with the Pokémon even while the list is
+          filtered, so "is this a top threat?" reads at a glance. */}
+      <div className="w-6 shrink-0 text-center">
+        {rank != null ? (
+          <span className="font-mono text-base font-black tabular-nums text-muted">
+            {rank}
+          </span>
+        ) : (
+          <span className="text-muted/40">·</span>
+        )}
+      </div>
+
       <div
-        className="flex size-18.5 shrink-0 items-center justify-center rounded-xl"
+        className="flex size-16 shrink-0 items-center justify-center rounded-xl"
         style={{
           background: `radial-gradient(circle at 50% 35%, ${accent}33, ${accent}0d)`,
         }}
@@ -83,9 +122,9 @@ export function PokemonCard({
           <Image
             src={entry.icon}
             alt=""
-            width={74}
-            height={74}
-            className="size-18.5 object-contain"
+            width={64}
+            height={64}
+            className="size-16 object-contain"
           />
         ) : null}
       </div>
@@ -104,24 +143,30 @@ export function PokemonCard({
         </div>
       </div>
 
-      {/* Mega mark sits left of the doubles pick rate. The larger gap keeps its
-          white glow from crowding (or getting clipped against) the % element.
-          Tapping it jumps straight to the Mega-toggled detail view. */}
-      <div className="flex shrink-0 items-center gap-3.5 pr-1">
+      <div className="flex shrink-0 items-center gap-2 pr-0.5">
         {entry.hasMega && entry.megaKey && (
           <Link
             href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
             aria-label={`${entry.displayName} Mega Evolution`}
-            className="relative z-10 -m-1 rounded-full p-1 active:bg-surface-2"
+            className="relative z-10 rounded-full p-1 active:bg-surface-2"
           >
-            {/* The glow filter lives on a PADDED wrapper (12px ≥ the shadow's
-                reach), so the whole glow stays inside the element's own box.
-                Browsers sometimes rasterize filtered layers with tight bounds
-                (ignoring filter bleed), which clipped the glow top/right until
-                a repaint — containment makes that bug class impossible. The
-                negative margin keeps layout identical. */}
-            <span className="-m-3 block p-3 filter-[drop-shadow(0_0_4px_rgba(255,255,255,1))_drop-shadow(0_0_8px_rgba(255,255,255,0.6))]">
-              <MegaIcon className="size-7.5" />
+            {/* The white glow is a PAINTED radial halo behind the badge, not a
+                drop-shadow filter. iOS Safari composites a filtered element
+                onto its own GPU layer and clips the filter to that layer's
+                rectangular raster bounds, boxing the glow until a repaint (the
+                "boxed aura, fixes on tap" bug). A background gradient has no
+                such layer, so it can never box. The coin fills its box, so the
+                bright ring is tuned to sit just OUTSIDE the coin's edge. */}
+            <span className="relative grid size-7.5 place-items-center">
+              <span
+                aria-hidden
+                className="pointer-events-none absolute size-12 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(255,255,255,0) 58%, rgba(255,255,255,0.95) 72%, rgba(255,255,255,0.45) 84%, rgba(255,255,255,0) 97%)",
+                }}
+              />
+              <MegaIcon className="relative size-7.5" />
             </span>
           </Link>
         )}
@@ -135,6 +180,20 @@ export function PokemonCard({
             </div>
           </div>
         )}
+        {/* Pin as opponent — same store the detail page and tray use. */}
+        <button
+          type="button"
+          onClick={togglePin}
+          aria-pressed={isPinned}
+          aria-label={isPinned ? `Unpin ${entry.displayName}` : `Pin ${entry.displayName} as opponent`}
+          className={`relative z-10 flex size-9 shrink-0 items-center justify-center rounded-full border text-sm transition-colors ${
+            isPinned
+              ? "border-accent bg-accent/15 text-accent"
+              : "border-border bg-surface/60 text-muted active:bg-surface-2"
+          }`}
+        >
+          <span aria-hidden>{isPinned ? "✓" : "＋"}</span>
+        </button>
       </div>
     </div>
   );

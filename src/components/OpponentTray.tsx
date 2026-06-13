@@ -52,6 +52,8 @@ export function OpponentTray() {
                       width={40}
                       height={40}
                       className="size-10 object-contain"
+                      // Few, always visible — load now, no lazy pop-in.
+                      loading="eager"
                       unoptimized
                     />
                   ) : (
