@@ -89,8 +89,17 @@ export function PokemonCard({
       ref={cardRef}
       // `isolate` contains the card's stacking context so nothing paints over
       // the sticky search bar while scrolling.
-      className="glass-quiet relative isolate flex items-center gap-2.5 overflow-hidden rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
-      style={{ borderLeft: `3px solid ${accent}` }}
+      className="glass-quiet relative isolate flex items-center gap-2.5 rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
+      style={{
+        borderLeft: `3px solid ${accent}`,
+        // Mega-capable Pokémon get a soft white halo around the whole card —
+        // a second, card-level cue (beyond the inline Mega mark) that this one
+        // has a Mega Evolution in play.
+        ...(entry.hasMega && {
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(255,255,255,0.45), 0 0 20px 1px rgba(255,255,255,0.5)",
+        }),
+      }}
     >
       {/* Whole-card tap target → base form. Stretched behind the content so the
           Mega badge and pin can sit above it without nesting. */}
