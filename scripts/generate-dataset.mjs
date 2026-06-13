@@ -410,6 +410,30 @@ function formKind(formSlug) {
   return formSlug.endsWith("-primal") ? "primal" : "mega";
 }
 
+/**
+ * In-battle form changes whose alternate has a meaningfully different STAT
+ * LINE — worth a toggle like Mega — but that Smogon does NOT track separately.
+ * Keyed by base roster slug. Each alternate shares the base's competitive
+ * profile (same Smogon entry), so its threat profile recomputes on the
+ * alternate's stats. `base` is the short label for the default form's tab.
+ * (Morpeko/Mimikyu are intentionally absent — their form change leaves stats
+ * unchanged, so a stat toggle would show nothing.)
+ */
+const EXTRA_BATTLE_FORMS = {
+  aegislash: {
+    base: "Shield",
+    forms: [{ slug: "aegislash-blade", label: "Aegislash (Blade Forme)", tab: "Blade", kind: "stance" }],
+  },
+  palafin: {
+    base: "Zero",
+    forms: [{ slug: "palafin-hero", label: "Palafin (Hero)", tab: "Hero", kind: "form" }],
+  },
+  basculegion: {
+    base: "Male",
+    forms: [{ slug: "basculegion-female", label: "Basculegion (Female)", tab: "Female", kind: "form" }],
+  },
+};
+
 // Forms / whole entries from the last committed dataset, as a salvage source
 // when PokeAPI serves persistent 5xxs on some endpoints (it happens — e.g.
 // gardevoir-mega). Stats/types/movepools barely drift month to month, so a
@@ -417,8 +441,12 @@ function formKind(formSlug) {
 let previousForms = new Map();
 let previousPokemon = new Map();
 
-/** Build a single Mega/Primal battle form from its /pokemon payload. */
-async function buildForm(formSlug, baseDisplay) {
+/**
+ * Build a single battle form (Mega/Primal, or an EXTRA_BATTLE_FORMS stance/
+ * form) from its /pokemon payload. `override` supplies label/tab/kind for the
+ * extra forms; Megas/Primals derive those from the slug.
+ */
+async function buildForm(formSlug, baseDisplay, override = null) {
   let payload;
   try {
     payload = await getJson(`${API}/pokemon/${formSlug}`);
@@ -434,8 +462,9 @@ async function buildForm(formSlug, baseDisplay) {
   if (notFound || !data) return null;
   return {
     key: data.name,
-    label: formLabel(data.name, baseDisplay),
-    kind: formKind(data.name),
+    label: override?.label ?? formLabel(data.name, baseDisplay),
+    ...(override?.tab ? { tab: override.tab } : {}),
+    kind: override?.kind ?? formKind(data.name),
     types: readTypes(data),
     stats: readStats(data),
     abilities: await readAbilities(data),
@@ -491,6 +520,16 @@ async function buildPokemon(rosterSlug) {
     await Promise.all(altSlugs.map((s) => buildForm(s, displayName)))
   ).filter(Boolean);
 
+  // In-battle stance / form changes (Aegislash Blade, Palafin Hero, …) with
+  // their own stat line, toggled like a Mega on the detail page.
+  const extra = EXTRA_BATTLE_FORMS[slug];
+  if (extra) {
+    const built = (
+      await Promise.all(extra.forms.map((f) => buildForm(f.slug, displayName, f)))
+    ).filter(Boolean);
+    forms.push(...built);
+  }
+
   // The Champions movepool is the source of truth. Variant forms (Alolan
   // Ninetales, Wash Rotom, …) have no Serebii page of their own — their moves
   // live on the base species' page, which lists EVERY form's moves in one
@@ -530,6 +569,9 @@ async function buildPokemon(rosterSlug) {
     // Clean Pokémon HOME render — the nice, uniform list icon.
     home: data.sprites?.other?.home?.front_default ?? null,
     forms,
+    // For stance/form mons, the default form has a real name (Shield, Zero,
+    // Male) — used as the first toggle tab instead of a generic "Base".
+    ...(extra ? { baseFormLabel: extra.base } : {}),
     moveSlugs,
   };
 }
