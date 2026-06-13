@@ -132,9 +132,36 @@ export function PokemonCard({
         ) : (
           <span className="font-mono text-xs text-muted/50">·</span>
         )}
-        <p className="truncate text-[17px] font-bold leading-tight">
-          {entry.displayName}
-        </p>
+        {/* Name with the Mega mark inline to its right — the glow flags "has a
+            Mega" right where the eye already is. */}
+        <div className="flex min-w-0 items-center gap-1.5">
+          <p className="min-w-0 truncate text-[17px] font-bold leading-tight">
+            {entry.displayName}
+          </p>
+          {entry.hasMega && entry.megaKey && (
+            <Link
+              href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
+              aria-label={`${entry.displayName} Mega Evolution`}
+              className="relative z-10 shrink-0 active:opacity-70"
+            >
+              {/* White glow = box-shadow on a round disc behind the badge — the
+                  soft circular glow of the original drop-shadow, but box-shadow
+                  is NOT a composited filter, so iOS Safari's tight filter-raster
+                  bounds can never box it (the bug that squared off the glow). */}
+              <span className="relative grid size-6 place-items-center">
+                <span
+                  aria-hidden
+                  className="absolute size-5 rounded-full"
+                  style={{
+                    boxShadow:
+                      "0 0 4px 0 rgba(255,255,255,1), 0 0 8px 1px rgba(255,255,255,0.6)",
+                  }}
+                />
+                <MegaIcon className="relative size-6" />
+              </span>
+            </Link>
+          )}
+        </div>
         {/* nowrap: long dual types (Dragon/Ground) stay on one line. */}
         <div className="mt-1.5 flex gap-1 overflow-hidden">
           {entry.types.map((t) => (
@@ -143,34 +170,16 @@ export function PokemonCard({
         </div>
       </div>
 
-      <div className="flex shrink-0 items-center gap-1.5">
-        {entry.hasMega && entry.megaKey && (
-          <Link
-            href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
-            aria-label={`${entry.displayName} Mega Evolution`}
-            className="relative z-10 active:opacity-70"
-          >
-            {/* The white glow is a box-shadow on a coin-sized round disc behind
-                the badge — same soft circular glow as the original drop-shadow,
-                but box-shadow is NOT a composited filter layer, so iOS Safari's
-                tight filter-raster bounds can never box it (the bug that clipped
-                the old drop-shadow into a square). */}
-            <span className="relative grid size-6 place-items-center">
-              <span
-                aria-hidden
-                className="absolute size-5 rounded-full"
-                style={{
-                  boxShadow:
-                    "0 0 4px 0 rgba(255,255,255,1), 0 0 8px 1px rgba(255,255,255,0.6)",
-                }}
-              />
-              <MegaIcon className="relative size-6" />
-            </span>
-          </Link>
-        )}
+      {/* Mega moved inline, so pick rate and pin get the room to grow. */}
+      <div className="flex shrink-0 items-center gap-3 pr-0.5">
         {showUsage && (
-          <div className="text-right font-mono text-sm font-bold tabular-nums">
-            {formatPickRate(usagePct!)}
+          <div className="text-right leading-none">
+            <div className="font-mono text-xl font-bold tabular-nums">
+              {formatPickRate(usagePct!)}
+            </div>
+            <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted">
+              pick
+            </div>
           </div>
         )}
         {/* Pin as opponent — same store the detail page and tray use. */}
@@ -179,7 +188,7 @@ export function PokemonCard({
           onClick={togglePin}
           aria-pressed={isPinned}
           aria-label={isPinned ? `Unpin ${entry.displayName}` : `Pin ${entry.displayName} as opponent`}
-          className={`relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full border text-xs transition-colors ${
+          className={`relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border text-lg transition-colors ${
             isPinned
               ? "border-accent bg-accent/15 text-accent"
               : "border-border bg-surface/60 text-muted active:bg-surface-2"
