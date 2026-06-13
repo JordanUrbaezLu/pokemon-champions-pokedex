@@ -97,7 +97,7 @@ export function PokemonCard({
         // has a Mega Evolution in play.
         ...(entry.hasMega && {
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.08), 0 0 0 1px rgba(255,255,255,0.45), 0 0 14px 0 rgba(255,255,255,0.5)",
+            "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.56), 0 0 14px 0 rgba(255,255,255,0.63)",
         }),
       }}
     >
