@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
+import { PinButton } from "./PinButton";
 import { formatPickRate } from "@/lib/format";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { useOpponents } from "@/lib/opponents";
@@ -63,17 +64,12 @@ export function PokemonCard({
 
   const { opponents, pin, unpin } = useOpponents();
   const isPinned = opponents.some((o) => o.slug === entry.name);
-  const [pinPop, setPinPop] = useState(0);
   const togglePin = () => {
-    if (isPinned) {
-      unpin(entry.name);
-      return;
-    }
+    if (isPinned) unpin(entry.name);
     // Full pin payload (the most-played form's archetype / top threat / speed),
     // precomputed at build time — so the briefing reads the same as a pin made
     // on the detail page.
-    setPinPop((n) => n + 1);
-    pin(entry.pin);
+    else pin(entry.pin);
   };
 
   return (
@@ -183,23 +179,14 @@ export function PokemonCard({
             </div>
           </div>
         )}
-        {/* Pin as opponent — same store the detail page and tray use. */}
-        <button
-          key={pinPop}
-          type="button"
-          onClick={togglePin}
-          aria-pressed={isPinned}
-          aria-label={isPinned ? `Unpin ${entry.displayName}` : `Pin ${entry.displayName} as opponent`}
-          className={`relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border text-lg transition-colors ${
-            pinPop ? "animate-[popPin_.34s_ease-out]" : ""
-          } ${
-            isPinned
-              ? "border-accent bg-accent/15 text-accent"
-              : "border-border bg-surface/60 text-muted active:bg-surface-2"
-          }`}
-        >
-          <span aria-hidden>{isPinned ? "✓" : "＋"}</span>
-        </button>
+        {/* Pin as opponent — shared component, same store/animation as detail. */}
+        <PinButton
+          pinned={isPinned}
+          onToggle={togglePin}
+          pinLabel={`Pin ${entry.displayName} as opponent`}
+          unpinLabel={`Unpin ${entry.displayName}`}
+          className="size-10 text-lg"
+        />
       </div>
     </div>
   );

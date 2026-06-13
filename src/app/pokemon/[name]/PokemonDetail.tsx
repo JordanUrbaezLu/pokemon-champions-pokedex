@@ -11,6 +11,7 @@ import { AbilityList } from "@/components/AbilityList";
 import { MovesSection } from "@/components/MovesSection";
 import { ItemModal } from "@/components/ItemModal";
 import { MoveModal } from "@/components/MoveModal";
+import { PinButton } from "@/components/PinButton";
 import { SpeedPanel } from "@/components/SpeedPanel";
 import { ThreatProfileCard } from "@/components/ThreatProfileCard";
 import { TypeMatchups } from "@/components/TypeMatchups";
@@ -149,14 +150,11 @@ export function PokemonDetail({
   const pinned = opponents.find((o) => o.slug === pokemon.name);
   const pinnedFormKey = pinned ? pinned.formKey ?? pokemon.name : null;
   const isPinned = pinnedFormKey === active.key;
-  // One-shot pop animation when a pin lands (not on unpin).
-  const [pinPop, setPinPop] = useState(0);
   const togglePin = () => {
     if (isPinned) {
       unpin(pokemon.name);
       return;
     }
-    setPinPop((n) => n + 1);
     const isBase = active.key === pokemon.name;
     pin({
       slug: pokemon.name,
@@ -241,27 +239,14 @@ export function PokemonDetail({
             </div>
           </div>
           {/* Pin as opponent: tap at team preview, return in one tap all battle. */}
-          <button
-            key={pinPop}
-            type="button"
-            onClick={togglePin}
-            aria-pressed={isPinned}
-            aria-label={isPinned ? "Unpin opponent" : "Pin as opponent"}
-            className={`flex size-11 shrink-0 flex-col items-center justify-center self-center rounded-full border transition-colors ${
-              pinPop ? "animate-[popPin_.34s_ease-out]" : ""
-            } ${
-              isPinned
-                ? "border-accent bg-accent/15 text-accent"
-                : "border-border bg-surface/70 text-muted active:bg-surface-2"
-            }`}
-          >
-            <span className="text-base leading-none" aria-hidden>
-              {isPinned ? "✓" : "＋"}
-            </span>
-            <span className="mt-0.5 text-[10px] font-bold uppercase leading-none tracking-tight">
-              {isPinned ? "foe" : "pin"}
-            </span>
-          </button>
+          <PinButton
+            pinned={isPinned}
+            onToggle={togglePin}
+            pinLabel="Pin as opponent"
+            unpinLabel="Unpin opponent"
+            caption
+            className="size-11 self-center text-base"
+          />
         </div>
 
         {forms.length > 1 && (
