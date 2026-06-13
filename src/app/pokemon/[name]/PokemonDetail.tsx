@@ -149,11 +149,14 @@ export function PokemonDetail({
   const pinned = opponents.find((o) => o.slug === pokemon.name);
   const pinnedFormKey = pinned ? pinned.formKey ?? pokemon.name : null;
   const isPinned = pinnedFormKey === active.key;
+  // One-shot pop animation when a pin lands (not on unpin).
+  const [pinPop, setPinPop] = useState(0);
   const togglePin = () => {
     if (isPinned) {
       unpin(pokemon.name);
       return;
     }
+    setPinPop((n) => n + 1);
     const isBase = active.key === pokemon.name;
     pin({
       slug: pokemon.name,
@@ -201,7 +204,7 @@ export function PokemonDetail({
           tight block — the Threat Profile is the star, so it must clear the
           fold. The artwork is for recognition, not admiration. */}
       <div
-        className="px-4 pb-2 pt-1.5"
+        className="px-4 pb-2 pt-1.5 animate-[fadeUp_.3s_ease-out]"
         style={{
           background: `radial-gradient(130% 90% at 0% 0%, ${tint}38, transparent 62%)`,
         }}
@@ -239,11 +242,14 @@ export function PokemonDetail({
           </div>
           {/* Pin as opponent: tap at team preview, return in one tap all battle. */}
           <button
+            key={pinPop}
             type="button"
             onClick={togglePin}
             aria-pressed={isPinned}
             aria-label={isPinned ? "Unpin opponent" : "Pin as opponent"}
             className={`flex size-11 shrink-0 flex-col items-center justify-center self-center rounded-full border transition-colors ${
+              pinPop ? "animate-[popPin_.34s_ease-out]" : ""
+            } ${
               isPinned
                 ? "border-accent bg-accent/15 text-accent"
                 : "border-border bg-surface/70 text-muted active:bg-surface-2"
@@ -280,7 +286,7 @@ export function PokemonDetail({
         )}
       </div>
 
-      <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1">
+      <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1 animate-[fadeUp_.34s_ease-out_.05s_both]">
         {!comp && (
           <p className="px-1 text-xs text-muted">
             {bracket === "master" && compInAll

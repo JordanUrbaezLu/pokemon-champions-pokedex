@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
@@ -63,12 +63,17 @@ export function PokemonCard({
 
   const { opponents, pin, unpin } = useOpponents();
   const isPinned = opponents.some((o) => o.slug === entry.name);
+  const [pinPop, setPinPop] = useState(0);
   const togglePin = () => {
-    if (isPinned) unpin(entry.name);
+    if (isPinned) {
+      unpin(entry.name);
+      return;
+    }
     // Full pin payload (the most-played form's archetype / top threat / speed),
     // precomputed at build time — so the briefing reads the same as a pin made
     // on the detail page.
-    else pin(entry.pin);
+    setPinPop((n) => n + 1);
+    pin(entry.pin);
   };
 
   return (
@@ -180,11 +185,14 @@ export function PokemonCard({
         )}
         {/* Pin as opponent — same store the detail page and tray use. */}
         <button
+          key={pinPop}
           type="button"
           onClick={togglePin}
           aria-pressed={isPinned}
           aria-label={isPinned ? `Unpin ${entry.displayName}` : `Pin ${entry.displayName} as opponent`}
           className={`relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border text-lg transition-colors ${
+            pinPop ? "animate-[popPin_.34s_ease-out]" : ""
+          } ${
             isPinned
               ? "border-accent bg-accent/15 text-accent"
               : "border-border bg-surface/60 text-muted active:bg-surface-2"

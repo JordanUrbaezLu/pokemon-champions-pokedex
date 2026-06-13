@@ -138,7 +138,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Sticky search controls so they stay reachable while results scroll. */}
-      <div className="sticky top-0 z-10 border-b border-border bg-background/90 px-4 pb-3 pt-2 backdrop-blur">
+      <div className="sticky top-0 z-20 border-b border-border bg-background/90 px-4 pb-3 pt-2 backdrop-blur">
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <span
@@ -202,7 +202,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
         </div>
 
         {filterOpen && (
-          <div className="mt-2 max-h-[52dvh] overflow-y-auto rounded-2xl border border-border bg-surface p-3">
+          <div className="absolute inset-x-4 top-full z-30 mt-1 max-h-[60dvh] origin-top overflow-y-auto rounded-2xl border border-border bg-surface p-3 shadow-2xl animate-[dropdownIn_.16s_ease-out]">
             <div className="mb-1.5 flex items-center justify-between">
               <span className="text-[11px] font-black uppercase tracking-wider text-muted">
                 Type
@@ -286,6 +286,18 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
           </div>
         )}
       </div>
+
+      {/* Dim backdrop — rendered outside the blurred sticky header (which would
+          otherwise contain a fixed child) so it covers the whole list; tapping
+          it dismisses the filter popover. Sits below the header so the search
+          bar and the popover stay crisp above it. */}
+      {filterOpen && (
+        <div
+          className="fixed inset-0 z-10 bg-black/40 animate-[fadeIn_.16s_ease-out]"
+          onClick={() => setFilterOpen(false)}
+          aria-hidden
+        />
+      )}
 
       <div className="flex-1 px-4 pb-8 pt-3">
         <div className="mb-2 flex items-center justify-between gap-2 px-1">
