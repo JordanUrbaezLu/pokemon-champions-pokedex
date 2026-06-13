@@ -5,7 +5,7 @@
     "month": "2026-05",
     "battles": 3355619,
     "source": "https://www.smogon.com/stats/2026-05/chaos/gen9championsvgc2026regma-1760.json",
-    "generatedAt": "2026-06-11",
+    "generatedAt": "2026-06-13",
     "bracketLabels": {
       "master": "Master+ (top ladder brackets)",
       "all": "all ranks"
@@ -20098,6 +20098,125 @@
         ],
         "setupThreats": []
       },
+      "aegislash-blade": {
+        "usagePct": 7.5,
+        "rawCount": 449513,
+        "smogonName": "Aegislash-Blade",
+        "asForm": null,
+        "abilityUsage": {
+          "stancechange": 100
+        },
+        "moveUsage": {
+          "shadow-ball": 6,
+          "flash-cannon": 5,
+          "wide-guard": 31,
+          "shadow-sneak": 90,
+          "sacred-sword": 28,
+          "poltergeist": 89,
+          "iron-head": 36,
+          "close-combat": 34
+        },
+        "items": [
+          {
+            "displayName": "Spell Tag",
+            "slug": "spell-tag",
+            "usagePct": 44
+          },
+          {
+            "displayName": "Focus Sash",
+            "slug": "focus-sash",
+            "usagePct": 36
+          },
+          {
+            "displayName": "Colbur Berry",
+            "slug": "colbur-berry",
+            "usagePct": 8
+          }
+        ],
+        "itemClasses": {
+          "sash": 36,
+          "berry": 13
+        },
+        "spread": {
+          "nature": "Adamant",
+          "evs": {
+            "hp": 4,
+            "atk": 252,
+            "spe": 252
+          }
+        },
+        "speedInvest": {
+          "max": 33,
+          "some": 42,
+          "none": 16,
+          "minus": 9
+        },
+        "teammates": [
+          {
+            "displayName": "Garchomp",
+            "slug": "garchomp",
+            "usagePct": 69
+          },
+          {
+            "displayName": "Charizard-Mega-Y",
+            "slug": "charizard",
+            "usagePct": 51
+          },
+          {
+            "displayName": "Incineroar",
+            "slug": "incineroar",
+            "usagePct": 48
+          }
+        ],
+        "setupThreats": [],
+        "benchmarks": [
+          {
+            "move": "shadow-sneak",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "poltergeist",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "iron-head",
+            "ohkoCount": 4,
+            "twoCount": 2,
+            "ohko": [
+              "Floette-Mega",
+              "Sylveon",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sneasler",
+              "Sableye"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon",
+              "Aerodactyl-Mega"
+            ]
+          }
+        ]
+      },
       "aromatisse": {
         "usagePct": 0.1,
         "rawCount": 22350,
@@ -25945,6 +26064,125 @@
           }
         ]
       },
+      "basculegion-female": {
+        "usagePct": 0.7,
+        "rawCount": 40679,
+        "smogonName": "Basculegion-F",
+        "asForm": null,
+        "abilityUsage": {
+          "swiftswim": 5,
+          "adaptability": 94,
+          "moldbreaker": 0
+        },
+        "moveUsage": {
+          "muddy-water": 77,
+          "shadow-ball": 91,
+          "protect": 43,
+          "hydro-pump": 19,
+          "hex": 8,
+          "flip-turn": 12,
+          "ice-beam": 67,
+          "icy-wind": 14,
+          "wave-crash": 4,
+          "last-respects": 5,
+          "aqua-jet": 36,
+          "surf": 18
+        },
+        "items": [
+          {
+            "displayName": "Mystic Water",
+            "slug": "mystic-water",
+            "usagePct": 41
+          },
+          {
+            "displayName": "Choice Scarf",
+            "slug": "choice-scarf",
+            "usagePct": 37
+          },
+          {
+            "displayName": "Focus Sash",
+            "slug": "focus-sash",
+            "usagePct": 9
+          }
+        ],
+        "itemClasses": {
+          "sash": 9,
+          "scarf": 37,
+          "choice": 37,
+          "berry": 9
+        },
+        "spread": {
+          "nature": "Modest",
+          "evs": {
+            "def": 96,
+            "spa": 252,
+            "spe": 160
+          }
+        },
+        "speedInvest": {
+          "max": 40,
+          "some": 58,
+          "none": 2,
+          "minus": 0
+        },
+        "teammates": [
+          {
+            "displayName": "Garchomp",
+            "slug": "garchomp",
+            "usagePct": 33
+          },
+          {
+            "displayName": "Floette-Mega",
+            "slug": "floette",
+            "usagePct": 32
+          },
+          {
+            "displayName": "Kingambit",
+            "slug": "kingambit",
+            "usagePct": 25
+          }
+        ],
+        "setupThreats": [],
+        "benchmarks": [
+          {
+            "move": "shadow-ball",
+            "ohkoCount": 1,
+            "twoCount": 8,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Garchomp",
+              "Sneasler",
+              "Sinistcha"
+            ]
+          },
+          {
+            "move": "muddy-water",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y",
+              "Sneasler",
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Aerodactyl-Mega"
+            ]
+          }
+        ]
+      },
       "sneasler": {
         "usagePct": 28.6,
         "rawCount": 1849286,
@@ -27585,6 +27823,135 @@
             "ohko": [],
             "two": [
               "Kingambit"
+            ]
+          }
+        ]
+      },
+      "palafin-hero": {
+        "usagePct": 1.8,
+        "rawCount": 154081,
+        "smogonName": "Palafin-Hero",
+        "asForm": null,
+        "abilityUsage": {
+          "zerotohero": 100
+        },
+        "moveUsage": {
+          "wave-crash": 96,
+          "close-combat": 16,
+          "jet-punch": 97,
+          "protect": 92,
+          "flip-turn": 20,
+          "drain-punch": 6,
+          "bulk-up": 61
+        },
+        "items": [
+          {
+            "displayName": "Leftovers",
+            "slug": "leftovers",
+            "usagePct": 50
+          },
+          {
+            "displayName": "Mystic Water",
+            "slug": "mystic-water",
+            "usagePct": 40
+          },
+          {
+            "displayName": "Choice Scarf",
+            "slug": "choice-scarf",
+            "usagePct": 4
+          }
+        ],
+        "itemClasses": {
+          "scarf": 4,
+          "choice": 4,
+          "berry": 4
+        },
+        "spread": {
+          "nature": "Adamant",
+          "evs": {
+            "hp": 252,
+            "atk": 248,
+            "spd": 8
+          }
+        },
+        "speedInvest": {
+          "max": 12,
+          "some": 32,
+          "none": 56,
+          "minus": 0
+        },
+        "teammates": [
+          {
+            "displayName": "Incineroar",
+            "slug": "incineroar",
+            "usagePct": 79
+          },
+          {
+            "displayName": "Sneasler",
+            "slug": "sneasler",
+            "usagePct": 68
+          },
+          {
+            "displayName": "Kingambit",
+            "slug": "kingambit",
+            "usagePct": 63
+          }
+        ],
+        "setupThreats": [
+          {
+            "displayName": "Bulk Up",
+            "usagePct": 61
+          }
+        ],
+        "benchmarks": [
+          {
+            "move": "jet-punch",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y",
+              "Sneasler",
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "wave-crash",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Charizard-Mega-Y",
+              "Sneasler",
+              "Incineroar"
+            ],
+            "two": [
+              "Kingambit",
+              "Garchomp",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y",
+              "Sneasler",
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon",
+              "Aerodactyl-Mega"
             ]
           }
         ]
@@ -44085,6 +44452,85 @@
           }
         ]
       },
+      "aegislash-blade": {
+        "usagePct": 6.7,
+        "rawCount": 449513,
+        "smogonName": "Aegislash-Blade",
+        "asForm": null,
+        "abilityUsage": {
+          "stancechange": 100
+        },
+        "moveUsage": {
+          "shadow-ball": 16,
+          "flash-cannon": 15,
+          "wide-guard": 25,
+          "shadow-sneak": 68,
+          "sacred-sword": 36,
+          "poltergeist": 62,
+          "iron-head": 49,
+          "close-combat": 15,
+          "shadow-claw": 3,
+          "swords-dance": 7
+        },
+        "items": [
+          {
+            "displayName": "Spell Tag",
+            "slug": "spell-tag",
+            "usagePct": 38
+          },
+          {
+            "displayName": "Leftovers",
+            "slug": "leftovers",
+            "usagePct": 18
+          },
+          {
+            "displayName": "Focus Sash",
+            "slug": "focus-sash",
+            "usagePct": 11
+          }
+        ],
+        "itemClasses": {
+          "sash": 11,
+          "berry": 22
+        },
+        "spread": {
+          "nature": "Adamant",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spd": 4
+          }
+        },
+        "speedInvest": {
+          "max": 12,
+          "some": 31,
+          "none": 37,
+          "minus": 21
+        },
+        "teammates": [
+          {
+            "displayName": "Garchomp",
+            "slug": "garchomp",
+            "usagePct": 37
+          },
+          {
+            "displayName": "Incineroar",
+            "slug": "incineroar",
+            "usagePct": 27
+          },
+          {
+            "displayName": "Rotom-Wash",
+            "slug": "rotom-wash",
+            "usagePct": 21
+          }
+        ],
+        "setupThreats": [
+          {
+            "displayName": "Swords Dance",
+            "usagePct": 7
+          }
+        ]
+      },
       "aromatisse": {
         "usagePct": 0.3,
         "rawCount": 22350,
@@ -48489,6 +48935,88 @@
         ],
         "setupThreats": []
       },
+      "basculegion-female": {
+        "usagePct": 0.6,
+        "rawCount": 40679,
+        "smogonName": "Basculegion-F",
+        "asForm": null,
+        "abilityUsage": {
+          "swiftswim": 25,
+          "adaptability": 74,
+          "moldbreaker": 1
+        },
+        "moveUsage": {
+          "muddy-water": 50,
+          "shadow-ball": 74,
+          "psychic-fangs": 6,
+          "protect": 40,
+          "hydro-pump": 30,
+          "hex": 18,
+          "flip-turn": 35,
+          "ice-beam": 39,
+          "icy-wind": 13,
+          "wave-crash": 15,
+          "last-respects": 22,
+          "aqua-jet": 24,
+          "surf": 13,
+          "blizzard": 4
+        },
+        "items": [
+          {
+            "displayName": "Choice Scarf",
+            "slug": "choice-scarf",
+            "usagePct": 50
+          },
+          {
+            "displayName": "Mystic Water",
+            "slug": "mystic-water",
+            "usagePct": 23
+          },
+          {
+            "displayName": "Focus Sash",
+            "slug": "focus-sash",
+            "usagePct": 10
+          }
+        ],
+        "itemClasses": {
+          "sash": 10,
+          "scarf": 50,
+          "choice": 50,
+          "berry": 10
+        },
+        "spread": {
+          "nature": "Modest",
+          "evs": {
+            "hp": 4,
+            "spa": 252,
+            "spe": 252
+          }
+        },
+        "speedInvest": {
+          "max": 69,
+          "some": 22,
+          "none": 6,
+          "minus": 3
+        },
+        "teammates": [
+          {
+            "displayName": "Pelipper",
+            "slug": "pelipper",
+            "usagePct": 30
+          },
+          {
+            "displayName": "Archaludon",
+            "slug": "archaludon",
+            "usagePct": 26
+          },
+          {
+            "displayName": "Incineroar",
+            "slug": "incineroar",
+            "usagePct": 25
+          }
+        ],
+        "setupThreats": []
+      },
       "sneasler": {
         "usagePct": 27.6,
         "rawCount": 1849286,
@@ -49552,6 +50080,90 @@
         "usagePct": 2.3,
         "rawCount": 154081,
         "smogonName": "Palafin",
+        "asForm": null,
+        "abilityUsage": {
+          "zerotohero": 100
+        },
+        "moveUsage": {
+          "wave-crash": 73,
+          "close-combat": 44,
+          "jet-punch": 78,
+          "protect": 56,
+          "flip-turn": 61,
+          "ice-punch": 18,
+          "iron-head": 3,
+          "encore": 4,
+          "drain-punch": 19,
+          "bulk-up": 12,
+          "aqua-jet": 3,
+          "throat-chop": 4,
+          "liquidation": 6
+        },
+        "items": [
+          {
+            "displayName": "Mystic Water",
+            "slug": "mystic-water",
+            "usagePct": 63
+          },
+          {
+            "displayName": "Choice Scarf",
+            "slug": "choice-scarf",
+            "usagePct": 19
+          },
+          {
+            "displayName": "Leftovers",
+            "slug": "leftovers",
+            "usagePct": 5
+          }
+        ],
+        "itemClasses": {
+          "scarf": 19,
+          "choice": 19,
+          "berry": 6,
+          "sash": 1
+        },
+        "spread": {
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "spd": 4,
+            "spe": 252
+          }
+        },
+        "speedInvest": {
+          "max": 55,
+          "some": 27,
+          "none": 18,
+          "minus": 1
+        },
+        "teammates": [
+          {
+            "displayName": "Incineroar",
+            "slug": "incineroar",
+            "usagePct": 35
+          },
+          {
+            "displayName": "Pelipper",
+            "slug": "pelipper",
+            "usagePct": 28
+          },
+          {
+            "displayName": "Sinistcha",
+            "slug": "sinistcha",
+            "usagePct": 26
+          }
+        ],
+        "setupThreats": [
+          {
+            "displayName": "Bulk Up",
+            "usagePct": 12
+          }
+        ]
+      },
+      "palafin-hero": {
+        "usagePct": 2.3,
+        "rawCount": 154081,
+        "smogonName": "Palafin-Hero",
         "asForm": null,
         "abilityUsage": {
           "zerotohero": 100

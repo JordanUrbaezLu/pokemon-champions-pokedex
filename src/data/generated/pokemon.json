@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-11",
+  "generatedAt": "2026-06-13",
   "pokemon": [
     {
       "id": 3,
@@ -15815,7 +15815,38 @@
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/681.png",
       "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/681.png",
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/681.png",
-      "forms": [],
+      "forms": [
+        {
+          "key": "aegislash-blade",
+          "label": "Aegislash (Blade Forme)",
+          "tab": "Blade",
+          "kind": "stance",
+          "types": [
+            "steel",
+            "ghost"
+          ],
+          "stats": {
+            "hp": 60,
+            "attack": 140,
+            "defense": 50,
+            "specialAttack": 140,
+            "specialDefense": 50,
+            "speed": 60,
+            "total": 500
+          },
+          "abilities": [
+            {
+              "name": "stance-change",
+              "displayName": "Stance Change",
+              "isHidden": false,
+              "shortEffect": "Changes Aegislash to Blade Forme before using a damaging move, or Shield Forme before using King’s Shield."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10026.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10026.png"
+        }
+      ],
+      "baseFormLabel": "Shield",
       "moveSlugs": [
         "aerial-ace",
         "air-slash",
@@ -20822,7 +20853,50 @@
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/902.png",
       "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/902.png",
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
-      "forms": [],
+      "forms": [
+        {
+          "key": "basculegion-female",
+          "label": "Basculegion (Female)",
+          "tab": "Female",
+          "kind": "form",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "stats": {
+            "hp": 120,
+            "attack": 92,
+            "defense": 65,
+            "specialAttack": 100,
+            "specialDefense": 75,
+            "speed": 78,
+            "total": 530
+          },
+          "abilities": [
+            {
+              "name": "swift-swim",
+              "displayName": "Swift Swim",
+              "isHidden": false,
+              "shortEffect": "Doubles Speed during rain."
+            },
+            {
+              "name": "adaptability",
+              "displayName": "Adaptability",
+              "isHidden": false,
+              "shortEffect": "Increases the same-type attack bonus from 1.5× to 2×."
+            },
+            {
+              "name": "mold-breaker",
+              "displayName": "Mold Breaker",
+              "isHidden": true,
+              "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10248.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10248.png"
+        }
+      ],
+      "baseFormLabel": "Male",
       "moveSlugs": [
         "agility",
         "aqua-jet",
@@ -22097,7 +22171,37 @@
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/964.png",
       "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/964.png",
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/964.png",
-      "forms": [],
+      "forms": [
+        {
+          "key": "palafin-hero",
+          "label": "Palafin (Hero)",
+          "tab": "Hero",
+          "kind": "form",
+          "types": [
+            "water"
+          ],
+          "stats": {
+            "hp": 100,
+            "attack": 160,
+            "defense": 97,
+            "specialAttack": 106,
+            "specialDefense": 87,
+            "speed": 100,
+            "total": 650
+          },
+          "abilities": [
+            {
+              "name": "zero-to-hero",
+              "displayName": "Zero To Hero",
+              "isHidden": false,
+              "shortEffect": "Transforms into its Hero Form when switching out."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10256.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10256.png"
+        }
+      ],
+      "baseFormLabel": "Zero",
       "moveSlugs": [
         "acrobatics",
         "agility",

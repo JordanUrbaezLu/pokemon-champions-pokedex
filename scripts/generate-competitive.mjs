@@ -110,6 +110,22 @@ function slugify(name) {
     .replace(/\s+/g, "-");
 }
 
+// In-battle STANCE/form changes (one Pokémon, one set, stats change mid-battle)
+// share the base's Smogon set but need their own @smogon/calc species name for
+// KO benchmarks.
+const STANCE_CALC_NAME = {
+  "aegislash-blade": "Aegislash-Blade",
+  "palafin-hero": "Palafin-Hero",
+};
+
+// Forms that are a genuinely DIFFERENT Pokémon with their OWN Smogon profile
+// (different moves/items/spreads) — built from their own chaos key, never
+// copied from the base. Basculegion-M is a physical Last Respects attacker;
+// Basculegion-F is a special Shadow Ball / Muddy Water attacker.
+const FORM_OWN_SMOGON_KEY = {
+  "basculegion-female": "Basculegion-F",
+};
+
 const sum = (obj) => Object.values(obj).reduce((a, b) => a + b, 0);
 const cleanEntries = (obj) => Object.entries(obj).filter(([id]) => id && id !== "nothing");
 const topClean = (obj, n) => cleanEntries(obj).sort((a, b) => b[1] - a[1]).slice(0, n);
@@ -464,8 +480,29 @@ async function main() {
       } else {
         misses.push(p.name);
       }
-      // Each Mega/Primal form, by its exact key.
       for (const form of p.forms) {
+        if (form.kind === "stance" || form.kind === "form") {
+          // A genuinely different Pokémon (Basculegion-F) — its own Smogon set.
+          const ownKey = FORM_OWN_SMOGON_KEY[form.key];
+          if (ownKey && data[ownKey]) {
+            profiles[form.key] = buildProfile(data, ownKey, null);
+            continue;
+          }
+          // An in-battle stance/form change (Aegislash Blade, Palafin Hero) —
+          // Smogon doesn't split it, so it shares the base's set. The threat
+          // profile (computed from the form's own stats + this set) then reads
+          // correctly for the alternate stat line; smogonName is the calc
+          // species so KO benchmarks use the right form.
+          const baseProfile = profiles[p.name];
+          if (baseProfile) {
+            profiles[form.key] = {
+              ...baseProfile,
+              smogonName: STANCE_CALC_NAME[form.key] ?? baseProfile.smogonName,
+            };
+          }
+          continue;
+        }
+        // Each Mega/Primal form, by its exact Smogon key.
         const mega = bestKey(form.key);
         if (mega) {
           profiles[form.key] = buildProfile(data, mega.key, mega.slug !== norm(form.key) ? mega.key : null);

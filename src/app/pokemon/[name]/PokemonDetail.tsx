@@ -11,6 +11,7 @@ import { AbilityList } from "@/components/AbilityList";
 import { MovesSection } from "@/components/MovesSection";
 import { ItemModal } from "@/components/ItemModal";
 import { MoveModal } from "@/components/MoveModal";
+import { PinButton } from "@/components/PinButton";
 import { SpeedPanel } from "@/components/SpeedPanel";
 import { ThreatProfileCard } from "@/components/ThreatProfileCard";
 import { TypeMatchups } from "@/components/TypeMatchups";
@@ -24,6 +25,7 @@ import {
   formatPickRate,
   formatSpread,
   natureEffect,
+  prettySmogonName,
 } from "@/lib/format";
 import type { ThreatProfile } from "@/lib/threat";
 import type {
@@ -142,18 +144,27 @@ export function PokemonDetail({
   const compInAll = competitiveByBracket.all[active.key];
 
   // Opponent pinning: one tap at team preview → one-tap return all battle.
+  // Form-aware: a base pin can be upgraded to its Mega in one tap (and vice
+  // versa), since the tray keys one slot per species.
   const { opponents, pin, unpin } = useOpponents();
-  const isPinned = opponents.some((o) => o.slug === pokemon.name);
+  const pinned = opponents.find((o) => o.slug === pokemon.name);
+  const pinnedFormKey = pinned ? pinned.formKey ?? pokemon.name : null;
+  const isPinned = pinnedFormKey === active.key;
   const togglePin = () => {
     if (isPinned) {
       unpin(pokemon.name);
       return;
     }
+    const isBase = active.key === pokemon.name;
     pin({
       slug: pokemon.name,
-      formKey: active.key === pokemon.name ? null : active.key,
-      displayName: pokemon.displayName,
-      icon: pokemon.home ?? pokemon.sprite,
+      formKey: isBase ? null : active.key,
+      // Identify the form you'll actually face — "Mega Charizard Y", not just
+      // "Charizard" — so the tray and briefing name the real threat.
+      displayName: active.label,
+      icon: isBase
+        ? pokemon.home ?? pokemon.sprite
+        : active.artwork ?? active.sprite ?? pokemon.home ?? pokemon.sprite,
       types: active.types,
       quad: defensiveProfile(active.types).quad[0] ?? null,
       speed: comp ? speedAnchors(active.stats, comp.spread).common : null,
@@ -191,7 +202,7 @@ export function PokemonDetail({
           tight block — the Threat Profile is the star, so it must clear the
           fold. The artwork is for recognition, not admiration. */}
       <div
-        className="px-4 pb-2 pt-1.5"
+        className="px-4 pb-2 pt-1.5 animate-[fadeUp_.3s_ease-out]"
         style={{
           background: `radial-gradient(130% 90% at 0% 0%, ${tint}38, transparent 62%)`,
         }}
@@ -202,9 +213,9 @@ export function PokemonDetail({
               key={active.key}
               src={active.artwork}
               alt={active.label}
-              width={192}
-              height={192}
-              className="size-24 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
+              width={240}
+              height={240}
+              className="size-30 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
               priority
               // Served straight from the CDN (no on-demand optimizer step) so the
               // URL is stable and can be warmed by the home list's prefetch.
@@ -228,24 +239,14 @@ export function PokemonDetail({
             </div>
           </div>
           {/* Pin as opponent: tap at team preview, return in one tap all battle. */}
-          <button
-            type="button"
-            onClick={togglePin}
-            aria-pressed={isPinned}
-            aria-label={isPinned ? "Unpin opponent" : "Pin as opponent"}
-            className={`flex size-11 shrink-0 flex-col items-center justify-center self-center rounded-full border transition-colors ${
-              isPinned
-                ? "border-accent bg-accent/15 text-accent"
-                : "border-border bg-surface/70 text-muted active:bg-surface-2"
-            }`}
-          >
-            <span className="text-base leading-none" aria-hidden>
-              {isPinned ? "✓" : "＋"}
-            </span>
-            <span className="mt-0.5 text-[10px] font-bold uppercase leading-none tracking-tight">
-              {isPinned ? "foe" : "pin"}
-            </span>
-          </button>
+          <PinButton
+            pinned={isPinned}
+            onToggle={togglePin}
+            pinLabel="Pin as opponent"
+            unpinLabel="Unpin opponent"
+            caption
+            className="size-11 self-center text-base"
+          />
         </div>
 
         {forms.length > 1 && (
@@ -261,14 +262,16 @@ export function PokemonDetail({
                     : "text-muted active:bg-surface"
                 }`}
               >
-                {i === 0 ? "Base" : shortFormLabel(form, pokemon.displayName)}
+                {i === 0
+                  ? pokemon.baseFormLabel ?? "Base"
+                  : form.tab ?? shortFormLabel(form, pokemon.displayName)}
               </button>
             ))}
           </div>
         )}
       </div>
 
-      <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1">
+      <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1 animate-[fadeUp_.34s_ease-out_.05s_both]">
         {!comp && (
           <p className="px-1 text-xs text-muted">
             {bracket === "master" && compInAll
@@ -396,7 +399,7 @@ export function PokemonDetail({
                 }`;
                 const inner = (
                   <>
-                    {t.displayName}{" "}
+                    {prettySmogonName(t.displayName)}{" "}
                     <span className="font-mono text-xs text-muted">{t.usagePct}%</span>
                   </>
                 );

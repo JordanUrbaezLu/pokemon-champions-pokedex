@@ -25,7 +25,7 @@ export function OpponentTray() {
     <>
       <nav
         aria-label="Pinned opponents"
-        className="sticky bottom-0 z-30 border-t border-border bg-background/95 px-3 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur"
+        className="sticky bottom-0 z-30 border-t border-border bg-background/95 px-3 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur animate-[slideUp_.22s_ease-out]"
       >
         <div className="flex items-center gap-1.5">
           <div className="no-scrollbar flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto">
@@ -37,7 +37,7 @@ export function OpponentTray() {
                   href={`/pokemon/${m.slug}${m.formKey ? `?form=${m.formKey}` : ""}`}
                   aria-label={m.displayName}
                   aria-current={here ? "page" : undefined}
-                  className="relative shrink-0 rounded-xl p-0.5 active:opacity-70"
+                  className="relative shrink-0 rounded-xl p-0.5 transition-opacity active:opacity-70 animate-[chipIn_.26s_ease-out]"
                   style={{
                     background: `radial-gradient(circle at 50% 40%, ${TYPE_COLORS[m.types[0]]}40, ${TYPE_COLORS[m.types[0]]}12)`,
                     boxShadow: here
@@ -52,6 +52,8 @@ export function OpponentTray() {
                       width={40}
                       height={40}
                       className="size-10 object-contain"
+                      // Few, always visible — load now, no lazy pop-in.
+                      loading="eager"
                       unoptimized
                     />
                   ) : (

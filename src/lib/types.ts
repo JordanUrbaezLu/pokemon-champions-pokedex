@@ -52,19 +52,24 @@ export interface PokemonAbility {
   shortEffect: string;
 }
 
-/** What kind of in-battle form this is. */
-export type FormKind = "mega" | "primal";
+/**
+ * What kind of in-battle form this is — a Mega/Primal, or a stance/form change
+ * (Aegislash Blade, Palafin Hero, …) that shares the base's competitive data.
+ */
+export type FormKind = "mega" | "primal" | "stance" | "form";
 
 /**
- * An alternate in-battle form (Mega Evolution / Primal Reversion) with its own
- * battle profile. A trainer toggles to these on the detail screen to see how
- * the threat changes — different typing, stats, and ability.
+ * An alternate in-battle form (Mega Evolution / Primal Reversion / stance /
+ * form change) with its own battle profile. A trainer toggles to these on the
+ * detail screen to see how the threat changes — different typing, stats, ability.
  */
 export interface BattleForm {
   /** PokeAPI slug of the form, e.g. "charizard-mega-x". */
   key: string;
   /** Display label, e.g. "Mega Charizard X". */
   label: string;
+  /** Short label for the form toggle tab (defaults to a stripped `label`). */
+  tab?: string;
   kind: FormKind;
   types: PokemonType[];
   stats: PokemonStats;
@@ -99,8 +104,13 @@ export interface ChampionPokemon {
   artwork: string | null;
   /** Clean Pokémon HOME render — the preferred list icon. */
   home: string | null;
-  /** Alternate in-battle forms (Mega/Primal). Empty for most Pokémon. */
+  /** Alternate in-battle forms (Mega/Primal/stance/form). Empty for most Pokémon. */
   forms: BattleForm[];
+  /**
+   * For stance/form mons, the default form's real name (e.g. "Shield",
+   * "Zero", "Male") shown as the first toggle tab instead of "Base".
+   */
+  baseFormLabel?: string;
   /**
    * Slugs of the moves this Pokémon can learn (current-generation movepool),
    * resolved against the dataset's shared move index. Kept as slugs to avoid

@@ -6,6 +6,9 @@ import {
   type MetaDistribution,
   type ThreatProfile,
 } from "./threat";
+import { speedAnchors } from "./battle";
+import { defensiveProfile } from "./type-chart";
+import type { PinnedOpponent } from "./opponents";
 import type {
   BattleForm,
   ChampionPokemon,
@@ -238,12 +241,68 @@ export interface RosterEntry {
   usage: Record<DataBracket, number | null>;
   /** Base species slug, so "ninetales" matches "Alolan Ninetales" in search. */
   species: string;
+  /**
+   * The complete opponent-pin payload for the form a trainer most likely
+   * faces (highest-usage form in the top bracket), precomputed at build time
+   * so pinning from the home list is as informative in the briefing as
+   * pinning from the detail page.
+   */
+  pin: PinnedOpponent;
 }
 
 // Strip a form suffix to the base species so forms are findable by base name.
 const FORM_SUFFIX = /-(alola|galar|hisui|paldea|wash|heat|frost|mow|fan)(-.*)?$/;
 function baseSpecies(slug: string): string {
   return slug.replace(FORM_SUFFIX, "");
+}
+
+/**
+ * The full opponent-pin payload for the form a trainer most likely faces —
+ * the highest-usage form in the top (master) bracket. Lets a pin from the
+ * home list carry the same archetype / top-threat / speed read as a pin made
+ * on the detail page, so the briefing is never sparse.
+ */
+function buildBestPin(p: ChampionPokemon): PinnedOpponent {
+  // Pick the form most worth pinning: highest ladder usage, and on a tie the
+  // bigger offensive stat — so stance/form mons that share usage across forms
+  // (Aegislash Shield/Blade, Palafin Zero/Hero) pin as the threatening form.
+  const offense = (key: string) => {
+    if (key === p.name) return Math.max(p.stats.attack, p.stats.specialAttack);
+    const f = p.forms.find((x) => x.key === key);
+    return f ? Math.max(f.stats.attack, f.stats.specialAttack) : 0;
+  };
+  let bestKey = p.name;
+  let bestUsage = -1;
+  let bestOffense = -1;
+  for (const key of [p.name, ...p.forms.map((f) => f.key)]) {
+    const u = profilesOf("master")[key]?.usagePct ?? -1;
+    if (u < 0) continue;
+    const o = offense(key);
+    if (u > bestUsage || (u === bestUsage && o > bestOffense)) {
+      bestUsage = u;
+      bestOffense = o;
+      bestKey = key;
+    }
+  }
+  const isBase = bestKey === p.name;
+  const form = isBase ? null : p.forms.find((f) => f.key === bestKey);
+  const types = form ? form.types : p.types;
+  const stats = form ? form.stats : p.stats;
+  const comp = profilesOf("master")[bestKey];
+  const threat = getThreatProfilesByForm(p, "master")[bestKey];
+  return {
+    slug: p.name,
+    formKey: isBase ? null : bestKey,
+    displayName: form ? form.label : p.displayName,
+    icon: form
+      ? form.artwork ?? form.sprite ?? p.home ?? p.sprite
+      : p.home ?? p.sprite,
+    types,
+    quad: defensiveProfile(types).quad[0] ?? null,
+    speed: comp ? speedAnchors(stats, comp.spread).common : null,
+    archetype: threat?.archetype ?? [],
+    headline: threat?.vectors[0]?.headline ?? null,
+  };
 }
 
 /** Lean roster projection for the home search screen. */
@@ -259,6 +318,8 @@ export function getRosterEntries(): RosterEntry[] {
         .filter((u): u is number => u != null);
       usage[bracket] = usages.length ? Math.max(...usages) : null;
     }
+    const megaForm =
+      p.forms.find((f) => f.kind === "mega" || f.kind === "primal") ?? null;
     return {
       id: p.id,
       name: p.name,
@@ -266,12 +327,15 @@ export function getRosterEntries(): RosterEntry[] {
       types: p.types,
       icon: p.home ?? p.artwork ?? p.sprite,
       artwork: p.artwork ?? p.home ?? p.sprite,
-      megaArtwork: p.forms[0]?.artwork ?? null,
+      megaArtwork: megaForm?.artwork ?? null,
       bst: p.stats.total,
-      hasMega: p.forms.length > 0,
-      megaKey: p.forms[0]?.key ?? null,
+      // Mega badge/glow are for actual Megas (or Primals) — not stance/form
+      // changes like Aegislash Blade.
+      hasMega: megaForm != null,
+      megaKey: megaForm?.key ?? null,
       usage,
       species: baseSpecies(p.name),
+      pin: buildBestPin(p),
     };
   });
 }

@@ -115,6 +115,7 @@ export function BriefingSheet({
                       width={38}
                       height={38}
                       className="size-9.5 object-contain"
+                      loading="eager"
                       unoptimized
                     />
                   )}

@@ -5,8 +5,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
-import { dexNumber, formatPickRate } from "@/lib/format";
+import { PinButton } from "./PinButton";
+import { formatPickRate } from "@/lib/format";
 import { TYPE_COLORS } from "@/lib/type-meta";
+import { useOpponents } from "@/lib/opponents";
 import type { RosterEntry } from "@/lib/pokedex";
 
 /**
@@ -49,24 +51,46 @@ function useArtworkPrefetch(srcs: (string | null)[]) {
 export function PokemonCard({
   entry,
   usagePct,
+  rank,
 }: {
   entry: RosterEntry;
   usagePct: number | null;
+  /** Pick-rate rank across the whole roster (1 = most-used); null if no data. */
+  rank: number | null;
 }) {
   const accent = TYPE_COLORS[entry.types[0]];
   const showUsage = usagePct != null && usagePct >= 0.1;
   const cardRef = useArtworkPrefetch([entry.artwork, entry.megaArtwork]);
 
+  const { opponents, pin, unpin } = useOpponents();
+  const isPinned = opponents.some((o) => o.slug === entry.name);
+  const togglePin = () => {
+    if (isPinned) unpin(entry.name);
+    // Full pin payload (the most-played form's archetype / top threat / speed),
+    // precomputed at build time — so the briefing reads the same as a pin made
+    // on the detail page.
+    else pin(entry.pin);
+  };
+
   return (
     <div
       ref={cardRef}
-      // `isolate` keeps the Mega badge's z-index contained to this card so it
-      // can't paint over the sticky search bar while scrolling.
-      className="glass-quiet relative isolate flex items-center gap-3 overflow-hidden rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
-      style={{ borderLeft: `3px solid ${accent}` }}
+      // `isolate` contains the card's stacking context so nothing paints over
+      // the sticky search bar while scrolling.
+      className="glass-quiet relative isolate flex items-center gap-2.5 rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
+      style={{
+        borderLeft: `3px solid ${accent}`,
+        // Mega-capable Pokémon get a soft white halo around the whole card —
+        // a second, card-level cue (beyond the inline Mega mark) that this one
+        // has a Mega Evolution in play.
+        ...(entry.hasMega && {
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.56), 0 0 14px 0 rgba(255,255,255,0.63)",
+        }),
+      }}
     >
       {/* Whole-card tap target → base form. Stretched behind the content so the
-          Mega badge can link to its own Mega-toggled view without nesting. */}
+          Mega badge and pin can sit above it without nesting. */}
       <Link
         href={`/pokemon/${entry.name}`}
         aria-label={entry.displayName}
@@ -91,50 +115,78 @@ export function PokemonCard({
       </div>
 
       <div className="min-w-0 flex-1">
-        <span className="font-mono text-xs text-muted">
-          {dexNumber(entry.id)}
-        </span>
-        <p className="truncate text-[17px] font-bold leading-tight">
-          {entry.displayName}
-        </p>
-        <div className="mt-1.5 flex flex-wrap gap-1">
+        {/* Pick-rate rank in place of the National Dex # — the number a trainer
+            actually cares about. Holds through search filtering; top-3 glow
+            accent. */}
+        {rank != null ? (
+          <span
+            className={`font-mono text-xs font-bold tabular-nums ${
+              rank <= 3 ? "text-accent" : "text-muted"
+            }`}
+          >
+            #{rank}
+          </span>
+        ) : (
+          <span className="font-mono text-xs text-muted/50">·</span>
+        )}
+        {/* Name with the Mega mark inline to its right — the glow flags "has a
+            Mega" right where the eye already is. */}
+        <div className="flex min-w-0 items-center gap-1.5">
+          <p className="min-w-0 truncate text-[17px] font-bold leading-tight">
+            {entry.displayName}
+          </p>
+          {entry.hasMega && entry.megaKey && (
+            <Link
+              href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
+              aria-label={`${entry.displayName} Mega Evolution`}
+              className="relative z-10 shrink-0 active:opacity-70"
+            >
+              {/* White glow = box-shadow on a round disc behind the badge — the
+                  soft circular glow of the original drop-shadow, but box-shadow
+                  is NOT a composited filter, so iOS Safari's tight filter-raster
+                  bounds can never box it (the bug that squared off the glow). */}
+              <span className="relative grid size-6 place-items-center">
+                <span
+                  aria-hidden
+                  className="absolute size-5 rounded-full"
+                  style={{
+                    boxShadow:
+                      "0 0 4px 0 rgba(255,255,255,1), 0 0 8px 1px rgba(255,255,255,0.6)",
+                  }}
+                />
+                <MegaIcon className="relative size-6" />
+              </span>
+            </Link>
+          )}
+        </div>
+        {/* nowrap: long dual types (Dragon/Ground) stay on one line. */}
+        <div className="mt-1.5 flex gap-1 overflow-hidden">
           {entry.types.map((t) => (
             <TypeBadge key={t} type={t} size="sm" />
           ))}
         </div>
       </div>
 
-      {/* Mega mark sits left of the doubles pick rate. The larger gap keeps its
-          white glow from crowding (or getting clipped against) the % element.
-          Tapping it jumps straight to the Mega-toggled detail view. */}
-      <div className="flex shrink-0 items-center gap-3.5 pr-1">
-        {entry.hasMega && entry.megaKey && (
-          <Link
-            href={`/pokemon/${entry.name}?form=${entry.megaKey}`}
-            aria-label={`${entry.displayName} Mega Evolution`}
-            className="relative z-10 -m-1 rounded-full p-1 active:bg-surface-2"
-          >
-            {/* The glow filter lives on a PADDED wrapper (12px ≥ the shadow's
-                reach), so the whole glow stays inside the element's own box.
-                Browsers sometimes rasterize filtered layers with tight bounds
-                (ignoring filter bleed), which clipped the glow top/right until
-                a repaint — containment makes that bug class impossible. The
-                negative margin keeps layout identical. */}
-            <span className="-m-3 block p-3 filter-[drop-shadow(0_0_4px_rgba(255,255,255,1))_drop-shadow(0_0_8px_rgba(255,255,255,0.6))]">
-              <MegaIcon className="size-7.5" />
-            </span>
-          </Link>
-        )}
+      {/* Mega moved inline, so pick rate and pin get the room to grow. */}
+      <div className="flex shrink-0 items-center gap-3 pr-0.5">
         {showUsage && (
-          <div className="text-right">
-            <div className="font-mono text-[15px] font-bold tabular-nums">
+          <div className="text-right leading-none">
+            <div className="font-mono text-xl font-bold tabular-nums">
               {formatPickRate(usagePct!)}
             </div>
-            <div className="text-[10px] uppercase tracking-wide text-muted">
+            <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted">
               pick
             </div>
           </div>
         )}
+        {/* Pin as opponent — shared component, same store/animation as detail. */}
+        <PinButton
+          pinned={isPinned}
+          onToggle={togglePin}
+          pinLabel={`Pin ${entry.displayName} as opponent`}
+          unpinLabel={`Unpin ${entry.displayName}`}
+          className="size-10 text-lg"
+        />
       </div>
     </div>
   );
