@@ -110,11 +110,19 @@ function slugify(name) {
     .replace(/\s+/g, "-");
 }
 
-// @smogon/calc species names for the stance/form alternates (they share the
-// base's Smogon set but need their own calc species for KO benchmarks).
+// In-battle STANCE/form changes (one Pokémon, one set, stats change mid-battle)
+// share the base's Smogon set but need their own @smogon/calc species name for
+// KO benchmarks.
 const STANCE_CALC_NAME = {
   "aegislash-blade": "Aegislash-Blade",
   "palafin-hero": "Palafin-Hero",
+};
+
+// Forms that are a genuinely DIFFERENT Pokémon with their OWN Smogon profile
+// (different moves/items/spreads) — built from their own chaos key, never
+// copied from the base. Basculegion-M is a physical Last Respects attacker;
+// Basculegion-F is a special Shadow Ball / Muddy Water attacker.
+const FORM_OWN_SMOGON_KEY = {
   "basculegion-female": "Basculegion-F",
 };
 
@@ -473,12 +481,18 @@ async function main() {
         misses.push(p.name);
       }
       for (const form of p.forms) {
-        // Stance/form changes (Aegislash Blade, Palafin Hero, …) aren't tracked
-        // separately by Smogon — they share the base's set, so copy its profile.
-        // The threat profile (computed from the form's own stats + this set)
-        // then reads correctly for the alternate stat line; smogonName is the
-        // calc species so KO benchmarks use the right form.
         if (form.kind === "stance" || form.kind === "form") {
+          // A genuinely different Pokémon (Basculegion-F) — its own Smogon set.
+          const ownKey = FORM_OWN_SMOGON_KEY[form.key];
+          if (ownKey && data[ownKey]) {
+            profiles[form.key] = buildProfile(data, ownKey, null);
+            continue;
+          }
+          // An in-battle stance/form change (Aegislash Blade, Palafin Hero) —
+          // Smogon doesn't split it, so it shares the base's set. The threat
+          // profile (computed from the form's own stats + this set) then reads
+          // correctly for the alternate stat line; smogonName is the calc
+          // species so KO benchmarks use the right form.
           const baseProfile = profiles[p.name];
           if (baseProfile) {
             profiles[form.key] = {
