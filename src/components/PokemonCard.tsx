@@ -126,6 +126,12 @@ export function PokemonCard({
           >
             #{rank}
           </span>
+        ) : entry.isNew ? (
+          // Recently added to Champions, no ladder rank yet — flag it so trainers
+          // notice the mon they haven't faced. Cyan, not red (red = threat only).
+          <span className="rounded bg-sky-400/15 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/30">
+            New
+          </span>
         ) : (
           <span className="font-mono text-xs text-muted/50">·</span>
         )}

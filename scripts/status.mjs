@@ -37,6 +37,12 @@ const checks = [
   ["Wash Rotom doesn't carry Heat Rotom's Overheat", !(byName.get("rotom-wash")?.moveSlugs.includes("overheat") ?? true)],
   ["master bracket present with usable move data", Object.values(comp.brackets.master ?? {}).some((p) => Object.keys(p.moveUsage).length > 3)],
   ["both data files agree on generation date", dex.generatedAt === comp.meta.generatedAt],
+  // Every Mega/Primal form must carry its ability — PokeAPI serves some
+  // Champions-original Megas ability-less, and a Mega's ability is its single
+  // most battle-defining fact (Mega Mawile's Huge Power, Mega Eelektross's Eelevate).
+  ["every battle form carries an ability", mons.every((p) => (p.forms ?? []).every((f) => f.abilities?.length > 0 && f.abilities.every((a) => a.shortEffect)))],
+  // Newcomers (no ladder data yet) are flagged so the NEW badge + filter work.
+  ["new-to-Champions mons are flagged isNew", mons.some((p) => p.isNew)],
 ];
 
 console.log("");

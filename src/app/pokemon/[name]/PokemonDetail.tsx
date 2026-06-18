@@ -236,6 +236,13 @@ export function PokemonDetail({
                   {formatPickRate(comp.usagePct)} pick
                 </span>
               )}
+              {pokemon.isNew && (
+                // Newly added to Champions — flag it so a trainer who's never
+                // faced this mon knows to read its kit. Cyan (red = threat only).
+                <span className="rounded-full bg-sky-400/15 px-2 py-0.5 text-[11px] font-bold text-sky-300 ring-1 ring-inset ring-sky-400/30">
+                  New to Champions
+                </span>
+              )}
             </div>
           </div>
           {/* Pin as opponent: tap at team preview, return in one tap all battle. */}

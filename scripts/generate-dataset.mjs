@@ -347,6 +347,9 @@ function buildMoveFromShowdown(slug, sd) {
 }
 
 // Populated in main() before any Pokémon is built.
+/** Recently-added species (from roster.json `newcomers`) — stamped `isNew` so
+ * the app can flag them with a NEW badge + filter while they have no ladder data. */
+let newcomers = new Set();
 /** roster forms per Serebii species page, to know when a page is a multi-form union. */
 let speciesFormCount = new Map();
 /** every move slug PokeAPI serves, to tell "other form's move" from "Champions-new move". */
@@ -442,6 +445,55 @@ let previousForms = new Map();
 let previousPokemon = new Map();
 
 /**
+ * Champions Mega forms whose abilities this PokeAPI dataset serves EMPTY — the
+ * Champions-original Megas (Mega Staraptor, Mega Eelektross, …) the mainline
+ * games never had. Their real abilities come from Serebii's Champions pages and
+ * are curated here so a Mega never ships without the single most battle-defining
+ * fact about it. Abilities PokeAPI knows (tough-claws, contrary, …) get their
+ * effect text fetched live; Champions-original abilities (Eelevate, Fire Mane)
+ * carry their effect text inline since no PokeAPI entry exists.
+ * Verified against https://www.serebii.net/pokedex-champions/<mon>/ on 2026-06-17.
+ */
+const MEGA_FORM_ABILITIES = {
+  "barbaracle-mega": [{ name: "tough-claws" }],
+  "dragalge-mega": [{ name: "regenerator" }],
+  "eelektross-mega": [
+    {
+      name: "eelevate",
+      displayName: "Eelevate",
+      shortEffect:
+        "Floats off the ground — immune to Ground moves, Spikes, Toxic Spikes, and Sticky Web. On knocking out a target, its highest stat rises one stage.",
+    },
+  ],
+  "falinks-mega": [{ name: "defiant" }],
+  "malamar-mega": [{ name: "contrary" }],
+  "pyroar-mega": [
+    {
+      name: "fire-mane",
+      displayName: "Fire Mane",
+      shortEffect: "Boosts the power of the Pokémon's Fire-type moves by 50%.",
+    },
+  ],
+  "scolipede-mega": [{ name: "shell-armor" }],
+  "scrafty-mega": [{ name: "intimidate" }],
+  "staraptor-mega": [{ name: "contrary" }],
+};
+
+/** Curated Champions ability set for a form PokeAPI serves with none. */
+async function championsFormAbilities(formSlug) {
+  const ov = MEGA_FORM_ABILITIES[formSlug];
+  if (!ov) return [];
+  return Promise.all(
+    ov.map(async (a) => ({
+      name: a.name,
+      displayName: a.displayName ?? toDisplayName(a.name),
+      isHidden: false,
+      shortEffect: a.shortEffect ?? (await getAbilityEffect(a.name)),
+    })),
+  );
+}
+
+/**
  * Build a single battle form (Mega/Primal, or an EXTRA_BATTLE_FORMS stance/
  * form) from its /pokemon payload. `override` supplies label/tab/kind for the
  * extra forms; Megas/Primals derive those from the slug.
@@ -460,6 +512,15 @@ async function buildForm(formSlug, baseDisplay, override = null) {
   }
   const { data, notFound } = payload;
   if (notFound || !data) return null;
+  // PokeAPI serves several Champions-original Megas with NO abilities — fall back
+  // to the curated Champions ability set so a form never ships ability-less.
+  let abilities = await readAbilities(data);
+  if (!abilities.length) {
+    abilities = await championsFormAbilities(data.name);
+    if (!abilities.length) {
+      console.warn(`  ! ${data.name}: no abilities from PokeAPI and no curated Champions fallback`);
+    }
+  }
   return {
     key: data.name,
     label: override?.label ?? formLabel(data.name, baseDisplay),
@@ -467,7 +528,7 @@ async function buildForm(formSlug, baseDisplay, override = null) {
     kind: override?.kind ?? formKind(data.name),
     types: readTypes(data),
     stats: readStats(data),
-    abilities: await readAbilities(data),
+    abilities,
     sprite: data.sprites?.front_default ?? null,
     artwork: data.sprites?.other?.["official-artwork"]?.front_default ?? null,
   };
@@ -572,13 +633,21 @@ async function buildPokemon(rosterSlug) {
     // For stance/form mons, the default form has a real name (Shield, Zero,
     // Male) — used as the first toggle tab instead of a generic "Base".
     ...(extra ? { baseFormLabel: extra.base } : {}),
+    // Recently added to Champions (no ladder data yet) — drives the NEW badge/filter.
+    ...(newcomers.has(slug) ? { isNew: true } : {}),
     moveSlugs,
   };
 }
 
 async function main() {
-  const { roster } = JSON.parse(await readFile(ROSTER_PATH, "utf8"));
-  console.log(`Generating dataset for ${roster.length} roster entries…`);
+  const rosterFile = JSON.parse(await readFile(ROSTER_PATH, "utf8"));
+  const { roster } = rosterFile;
+  newcomers = new Set(rosterFile.newcomers ?? []);
+  console.log(
+    `Generating dataset for ${roster.length} roster entries` +
+      (newcomers.size ? ` (${newcomers.size} flagged new)` : "") +
+      "…",
+  );
 
   // How many roster forms share one Serebii species page (base + variants) —
   // pages covering >1 form get the learnset intersection in buildPokemon.

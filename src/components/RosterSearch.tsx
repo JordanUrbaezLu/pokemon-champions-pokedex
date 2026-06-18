@@ -58,7 +58,11 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
   const [types, setTypes] = useState<ReadonlySet<PokemonType>>(new Set());
   const [roles, setRoles] = useState<ReadonlySet<string>>(new Set());
   const [megaOnly, setMegaOnly] = useState(false);
-  const filterCount = types.size + roles.size + (megaOnly ? 1 : 0);
+  const [newOnly, setNewOnly] = useState(false);
+  const filterCount =
+    types.size + roles.size + (megaOnly ? 1 : 0) + (newOnly ? 1 : 0);
+  // Is anything in the roster flagged new? Hide the toggle entirely if not.
+  const hasNewcomers = useMemo(() => entries.some((e) => e.isNew), [entries]);
 
   // Battle roles available to filter on — the threat archetypes the data
   // actually produces, with their tone colors.
@@ -85,6 +89,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
     setTypes(new Set());
     setRoles(new Set());
     setMegaOnly(false);
+    setNewOnly(false);
   };
 
   const results = useMemo(() => {
@@ -104,6 +109,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
     const passesFilters = (e: RosterEntry) => {
       if (types.size && !e.types.some((t) => types.has(t))) return false;
       if (megaOnly && !e.hasMega) return false;
+      if (newOnly && !e.isNew) return false;
       if (roles.size && !e.pin.archetype.some((a) => roles.has(a.label))) return false;
       return true;
     };
@@ -118,7 +124,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
         return a.e.id - b.e.id;
       })
       .map(({ e }) => e);
-  }, [entries, query, bracket, types, roles, megaOnly]);
+  }, [entries, query, bracket, types, roles, megaOnly, newOnly]);
 
   // Pick-rate rank across the WHOLE roster for the active bracket — so a
   // Pokémon shows its true "#3 most-used" rank even when the list is filtered
@@ -271,18 +277,34 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
             <div className="mb-1.5 mt-3 text-[11px] font-black uppercase tracking-wider text-muted">
               Other
             </div>
-            <button
-              type="button"
-              onClick={() => setMegaOnly((m) => !m)}
-              aria-pressed={megaOnly}
-              className={`rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
-                megaOnly
-                  ? "border-accent bg-accent/15 text-accent"
-                  : "border-border bg-surface-2 text-muted"
-              }`}
-            >
-              Has Mega
-            </button>
+            <div className="flex flex-wrap gap-1.5">
+              <button
+                type="button"
+                onClick={() => setMegaOnly((m) => !m)}
+                aria-pressed={megaOnly}
+                className={`rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
+                  megaOnly
+                    ? "border-accent bg-accent/15 text-accent"
+                    : "border-border bg-surface-2 text-muted"
+                }`}
+              >
+                Has Mega
+              </button>
+              {hasNewcomers && (
+                <button
+                  type="button"
+                  onClick={() => setNewOnly((n) => !n)}
+                  aria-pressed={newOnly}
+                  className={`rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
+                    newOnly
+                      ? "border-sky-400 bg-sky-400/15 text-sky-300"
+                      : "border-border bg-surface-2 text-muted"
+                  }`}
+                >
+                  New to Champions
+                </button>
+              )}
+            </div>
           </div>
         )}
       </div>

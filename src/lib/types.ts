@@ -112,6 +112,12 @@ export interface ChampionPokemon {
    */
   baseFormLabel?: string;
   /**
+   * Recently added to Champions and not yet on the ladder (from roster.json
+   * `newcomers`). Surfaced as a NEW badge + a home-screen filter so trainers
+   * can find and learn the mons they haven't faced yet.
+   */
+  isNew?: boolean;
+  /**
    * Slugs of the moves this Pokémon can learn (current-generation movepool),
    * resolved against the dataset's shared move index. Kept as slugs to avoid
    * duplicating full move data across 180+ Pokémon.
