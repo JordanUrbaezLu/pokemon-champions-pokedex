@@ -37,6 +37,58 @@ function writeQuery(q: string) {
   for (const callback of queryListeners) callback();
 }
 
+// Session-scoped roster filters, shared across mounts and restored on
+// back-navigation — the same approach as the search query above. The home
+// screen unmounts while a detail page is open, so plain component state resets
+// on Back; sessionStorage (plus a module-level cache that keeps the snapshot
+// referentially stable for useSyncExternalStore) survives the round trip. The
+// server snapshot is the empty default, so hydration stays deterministic.
+const FILTERS_KEY = "cpx:filters";
+
+interface RosterFilters {
+  types: PokemonType[];
+  roles: string[];
+  megaOnly: boolean;
+  newOnly: boolean;
+}
+
+const EMPTY_FILTERS: RosterFilters = { types: [], roles: [], megaOnly: false, newOnly: false };
+const filterListeners = new Set<() => void>();
+let filtersCache: RosterFilters | null = null;
+
+function readFilters(): RosterFilters {
+  if (filtersCache === null) {
+    let parsed: RosterFilters = EMPTY_FILTERS;
+    try {
+      const raw = window.sessionStorage.getItem(FILTERS_KEY);
+      // Spread over the default so a stored payload from an older shape (missing
+      // a key) still yields a complete, valid filter object.
+      if (raw) parsed = { ...EMPTY_FILTERS, ...JSON.parse(raw) };
+    } catch {
+      parsed = EMPTY_FILTERS;
+    }
+    filtersCache = parsed;
+  }
+  return filtersCache;
+}
+
+function subscribeFilters(callback: () => void) {
+  filterListeners.add(callback);
+  return () => {
+    filterListeners.delete(callback);
+  };
+}
+
+function writeFilters(next: RosterFilters) {
+  filtersCache = next;
+  try {
+    window.sessionStorage.setItem(FILTERS_KEY, JSON.stringify(next));
+  } catch {
+    // Private mode — filters still work, just don't persist.
+  }
+  for (const callback of filterListeners) callback();
+}
+
 /**
  * The home screen's beating heart: type a name and the roster filters
  * instantly. No network, no debounce lag — the whole roster is already in
@@ -53,14 +105,16 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
   const updateQuery = writeQuery;
   const [bracket] = useBracket();
 
-  // Filters (ephemeral per session).
+  // Whether the popover is open is ephemeral UI state; the filter SELECTIONS
+  // persist (sessionStorage store above) so Back from a detail page restores the
+  // trainer's narrowed view instead of clearing it.
   const [filterOpen, setFilterOpen] = useState(false);
-  const [types, setTypes] = useState<ReadonlySet<PokemonType>>(new Set());
-  const [roles, setRoles] = useState<ReadonlySet<string>>(new Set());
-  const [megaOnly, setMegaOnly] = useState(false);
-  const [newOnly, setNewOnly] = useState(false);
+  const filters = useSyncExternalStore(subscribeFilters, readFilters, () => EMPTY_FILTERS);
+  const { megaOnly, newOnly } = filters;
+  const types = useMemo(() => new Set(filters.types), [filters.types]);
+  const roles = useMemo(() => new Set(filters.roles), [filters.roles]);
   const filterCount =
-    types.size + roles.size + (megaOnly ? 1 : 0) + (newOnly ? 1 : 0);
+    filters.types.length + filters.roles.length + (megaOnly ? 1 : 0) + (newOnly ? 1 : 0);
   // Is anything in the roster flagged new? Hide the toggle entirely if not.
   const hasNewcomers = useMemo(() => entries.some((e) => e.isNew), [entries]);
 
@@ -74,23 +128,23 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
     return [...m.entries()].sort((a, b) => a[0].localeCompare(b[0]));
   }, [entries]);
 
-  const toggleSet = <T,>(
-    set: ReadonlySet<T>,
-    value: T,
-    setter: (s: ReadonlySet<T>) => void,
-  ) => {
-    const next = new Set(set);
-    if (next.has(value)) next.delete(value);
-    else next.add(value);
-    setter(next);
-  };
-
-  const clearFilters = () => {
-    setTypes(new Set());
-    setRoles(new Set());
-    setMegaOnly(false);
-    setNewOnly(false);
-  };
+  const toggleType = (t: PokemonType) =>
+    writeFilters({
+      ...filters,
+      types: filters.types.includes(t)
+        ? filters.types.filter((x) => x !== t)
+        : [...filters.types, t],
+    });
+  const toggleRole = (label: string) =>
+    writeFilters({
+      ...filters,
+      roles: filters.roles.includes(label)
+        ? filters.roles.filter((x) => x !== label)
+        : [...filters.roles, label],
+    });
+  const toggleMega = () => writeFilters({ ...filters, megaOnly: !filters.megaOnly });
+  const toggleNew = () => writeFilters({ ...filters, newOnly: !filters.newOnly });
+  const clearFilters = () => writeFilters(EMPTY_FILTERS);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -230,7 +284,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
                   <button
                     key={t}
                     type="button"
-                    onClick={() => toggleSet(types, t, setTypes)}
+                    onClick={() => toggleType(t)}
                     aria-pressed={on}
                     className="rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide transition-opacity"
                     style={
@@ -257,7 +311,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
                       <button
                         key={label}
                         type="button"
-                        onClick={() => toggleSet(roles, label, setRoles)}
+                        onClick={() => toggleRole(label)}
                         aria-pressed={on}
                         className="rounded-full px-2.5 py-1 text-[11px] font-bold transition-opacity"
                         style={
@@ -280,7 +334,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
             <div className="flex flex-wrap gap-1.5">
               <button
                 type="button"
-                onClick={() => setMegaOnly((m) => !m)}
+                onClick={toggleMega}
                 aria-pressed={megaOnly}
                 className={`rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
                   megaOnly
@@ -293,7 +347,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
               {hasNewcomers && (
                 <button
                   type="button"
-                  onClick={() => setNewOnly((n) => !n)}
+                  onClick={toggleNew}
                   aria-pressed={newOnly}
                   className={`rounded-full border px-3 py-1 text-[11px] font-bold transition-colors ${
                     newOnly

@@ -215,7 +215,7 @@ export function PokemonDetail({
               alt={active.label}
               width={240}
               height={240}
-              className="size-30 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
+              className="size-37.5 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
               priority
               // Served straight from the CDN (no on-demand optimizer step) so the
               // URL is stable and can be warmed by the home list's prefetch.
