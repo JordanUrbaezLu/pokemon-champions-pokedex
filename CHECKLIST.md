@@ -16,6 +16,32 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
 - ✅ **Competitive data = Champions DOUBLES ladder** (`gen9championsvgc2026regma`, 2026-05,
   3.36M battles); per-form
 
+### Roster update — 2026-06-18 (22 new species)
+- ✅ **+22 species** Serebii added to Champions: annihilape, barbaracle, blaziken, dragalge,
+  eelektross, falinks, gholdengo, grimmsnarl, houndstone, malamar, mawile, metagross, musharna,
+  overqwil, pyroar, qwilfish, sceptile, scolipede, scrafty, staraptor, swampert, vileplume
+  (roster 204 → **226**). Found by re-diffing the Serebii roster page against `roster.json`.
+- ✅ **Movesets from the Champions source** — each mon's movepool verified to match its Serebii
+  `pokedex-champions` page **exactly** (count + every slug). Not mainline movepools.
+- ✅ **Megas checked, none missed** — 14 of the 22 carry a Mega (Barbaracle, Blaziken, Dragalge,
+  Eelektross, Falinks, Malamar, Mawile, Metagross, Pyroar, Sceptile, Scolipede, Scrafty,
+  Staraptor, Swampert); reconciled across Serebii + PokeAPI.
+- ✅ **Mega abilities recovered** — PokeAPI serves 9 Champions-original Megas ability-less;
+  `MEGA_FORM_ABILITIES` curates them from Serebii, incl. Champions-only **Eelevate** (Mega
+  Eelektross) and **Fire Mane** (Mega Pyroar). `status.mjs` now asserts every form has an
+  ability + effect text.
+- ✅ **No ladder data yet** (too new for Smogon) — the detail page shows stats/types/abilities/
+  full movepool/speed bounds/matchups with an honest "No Champions ladder data for this form yet."
+  note; no fabricated 0% anywhere (verified by a 25-agent adversarial pass).
+- ✅ **NEW badge + "New to Champions" filter** — `roster.json` `newcomers` → generator stamps
+  `isNew`; cyan badge on the home card (where the pick-rate rank sits) and the detail hero, and a
+  home filter that narrows to exactly the 22. Cyan, never red (red = threat only).
+- ✅ **Hisuian Qwilfish — confirmed NOT in Champions, correctly base-only.** The Serebii roster
+  page lists included regional forms by sprite suffix (`-h` Hisuian, `-a` Alolan); the 7 `-h`
+  sprites present (059/157/503/571/706/713/724) match the existing `-hisui` roster entries exactly.
+  Qwilfish (#211) has only `211.png`, no `211-h` → not in the game, so not added. Overqwil (#904,
+  its evolution) is its own species and is in.
+
 ## Home screen
 - ✅ Search — **prefix match on name or base species** (`rotom` → all Rotom forms)
 - ✅ **Sorted by doubles pick rate** (most likely to face first)

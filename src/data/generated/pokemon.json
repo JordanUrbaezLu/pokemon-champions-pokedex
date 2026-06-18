@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-13",
+  "generatedAt": "2026-06-18",
   "pokemon": [
     {
       "id": 3,
@@ -930,7 +930,14 @@
             "speed": 110,
             "total": 585
           },
-          "abilities": [],
+          "abilities": [
+            {
+              "name": "electric-surge",
+              "displayName": "Electric Surge",
+              "isHidden": false,
+              "shortEffect": "When this Pokémon enters battle, it changes the terrain to Electric Terrain."
+            }
+          ],
           "sprite": null,
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10304.png"
         },
@@ -950,7 +957,14 @@
             "speed": 130,
             "total": 585
           },
-          "abilities": [],
+          "abilities": [
+            {
+              "name": "no-guard",
+              "displayName": "No Guard",
+              "isHidden": false,
+              "shortEffect": "Ensures all moves used by and against the Pokémon hit."
+            }
+          ],
           "sprite": null,
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10305.png"
         }
@@ -1509,6 +1523,101 @@
       ]
     },
     {
+      "id": 45,
+      "name": "vileplume",
+      "displayName": "Vileplume",
+      "types": [
+        "grass",
+        "poison"
+      ],
+      "stats": {
+        "hp": 75,
+        "attack": 80,
+        "defense": 85,
+        "specialAttack": 110,
+        "specialDefense": 90,
+        "speed": 50,
+        "total": 490
+      },
+      "abilities": [
+        {
+          "name": "chlorophyll",
+          "displayName": "Chlorophyll",
+          "isHidden": false,
+          "shortEffect": "Doubles Speed during strong sunlight."
+        },
+        {
+          "name": "effect-spore",
+          "displayName": "Effect Spore",
+          "isHidden": true,
+          "shortEffect": "Has a 30% chance of inflcting either paralysis, poison, or sleep on attacking Pokémon on contact."
+        }
+      ],
+      "heightM": 1.2,
+      "weightKg": 18.6,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/45.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/45.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/45.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "after-you",
+        "attract",
+        "body-slam",
+        "bullet-seed",
+        "charm",
+        "corrosive-gas",
+        "dazzling-gleam",
+        "endure",
+        "energy-ball",
+        "facade",
+        "flail",
+        "fling",
+        "giga-drain",
+        "giga-impact",
+        "grass-knot",
+        "grassy-glide",
+        "grassy-terrain",
+        "growth",
+        "helping-hand",
+        "hyper-beam",
+        "ingrain",
+        "leaf-storm",
+        "leech-seed",
+        "moonblast",
+        "moonlight",
+        "petal-blizzard",
+        "petal-dance",
+        "poison-powder",
+        "pollen-puff",
+        "protect",
+        "rest",
+        "round",
+        "seed-bomb",
+        "sleep-powder",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "snore",
+        "solar-beam",
+        "solar-blade",
+        "strength-sap",
+        "stun-spore",
+        "substitute",
+        "sunny-day",
+        "sweet-scent",
+        "swords-dance",
+        "synthesis",
+        "teeter-dance",
+        "tickle",
+        "toxic",
+        "trailblaze",
+        "venoshock",
+        "weather-ball"
+      ]
+    },
+    {
       "id": 59,
       "name": "arcanine",
       "displayName": "Arcanine",
@@ -2043,6 +2152,7 @@
         "giga-impact",
         "grass-knot",
         "grassy-glide",
+        "grassy-terrain",
         "growth",
         "hyper-beam",
         "ingrain",
@@ -5689,6 +5799,117 @@
       ]
     },
     {
+      "id": 211,
+      "name": "qwilfish",
+      "displayName": "Qwilfish",
+      "types": [
+        "water",
+        "poison"
+      ],
+      "stats": {
+        "hp": 65,
+        "attack": 95,
+        "defense": 85,
+        "specialAttack": 55,
+        "specialDefense": 55,
+        "speed": 85,
+        "total": 440
+      },
+      "abilities": [
+        {
+          "name": "poison-point",
+          "displayName": "Poison Point",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of poisoning attacking Pokémon on contact."
+        },
+        {
+          "name": "swift-swim",
+          "displayName": "Swift Swim",
+          "isHidden": false,
+          "shortEffect": "Doubles Speed during rain."
+        },
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": true,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        }
+      ],
+      "heightM": 0.5,
+      "weightKg": 3.9,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/211.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/211.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/211.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "acupressure",
+        "agility",
+        "aqua-jet",
+        "aqua-tail",
+        "assurance",
+        "barb-barrage",
+        "blizzard",
+        "chilling-water",
+        "crunch",
+        "curse",
+        "destiny-bond",
+        "dive",
+        "double-edge",
+        "endure",
+        "facade",
+        "fell-stinger",
+        "flail",
+        "flip-turn",
+        "giga-impact",
+        "gunk-shot",
+        "gyro-ball",
+        "haze",
+        "hex",
+        "hydro-pump",
+        "ice-beam",
+        "icy-wind",
+        "liquidation",
+        "minimize",
+        "mud-shot",
+        "pain-split",
+        "payback",
+        "pin-missile",
+        "poison-jab",
+        "protect",
+        "rain-dance",
+        "rest",
+        "reversal",
+        "round",
+        "scale-shot",
+        "scary-face",
+        "self-destruct",
+        "shadow-ball",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "snore",
+        "spikes",
+        "spit-up",
+        "spite",
+        "steel-roller",
+        "stockpile",
+        "substitute",
+        "surf",
+        "swords-dance",
+        "taunt",
+        "throat-chop",
+        "thunder-wave",
+        "toxic",
+        "toxic-spikes",
+        "venoshock",
+        "water-pulse",
+        "waterfall",
+        "whirlpool"
+      ]
+    },
+    {
       "id": 212,
       "name": "scizor",
       "displayName": "Scizor",
@@ -6398,6 +6619,447 @@
       ]
     },
     {
+      "id": 254,
+      "name": "sceptile",
+      "displayName": "Sceptile",
+      "types": [
+        "grass"
+      ],
+      "stats": {
+        "hp": 70,
+        "attack": 85,
+        "defense": 65,
+        "specialAttack": 105,
+        "specialDefense": 85,
+        "speed": 120,
+        "total": 530
+      },
+      "abilities": [
+        {
+          "name": "overgrow",
+          "displayName": "Overgrow",
+          "isHidden": false,
+          "shortEffect": "Strengthens Grass moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        {
+          "name": "unburden",
+          "displayName": "Unburden",
+          "isHidden": true,
+          "shortEffect": "Doubles Speed upon using or losing a held item."
+        }
+      ],
+      "heightM": 1.7,
+      "weightKg": 52.2,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/254.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/254.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/254.png",
+      "forms": [
+        {
+          "key": "sceptile-mega",
+          "label": "Mega Sceptile",
+          "kind": "mega",
+          "types": [
+            "grass",
+            "dragon"
+          ],
+          "stats": {
+            "hp": 70,
+            "attack": 110,
+            "defense": 75,
+            "specialAttack": 145,
+            "specialDefense": 85,
+            "speed": 145,
+            "total": 630
+          },
+          "abilities": [
+            {
+              "name": "lightning-rod",
+              "displayName": "Lightning Rod",
+              "isHidden": false,
+              "shortEffect": "Redirects single-target Electric moves to this Pokémon where possible. Absorbs Electric moves, raising Special Attack one stage."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10065.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10065.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acrobatics",
+        "aerial-ace",
+        "agility",
+        "assurance",
+        "body-slam",
+        "breaking-swipe",
+        "brick-break",
+        "brutal-swing",
+        "bulldoze",
+        "bullet-seed",
+        "cross-poison",
+        "crunch",
+        "detect",
+        "dig",
+        "double-edge",
+        "double-team",
+        "dragon-cheer",
+        "dragon-claw",
+        "dragon-dance",
+        "dragon-pulse",
+        "dragon-rush",
+        "dragon-tail",
+        "drain-punch",
+        "earth-power",
+        "earthquake",
+        "endeavor",
+        "endure",
+        "energy-ball",
+        "facade",
+        "fling",
+        "focus-blast",
+        "focus-punch",
+        "frenzy-plant",
+        "giga-drain",
+        "giga-impact",
+        "grass-knot",
+        "grassy-glide",
+        "grassy-terrain",
+        "helping-hand",
+        "hyper-beam",
+        "iron-tail",
+        "leaf-blade",
+        "leaf-storm",
+        "leech-seed",
+        "low-kick",
+        "low-sweep",
+        "mega-kick",
+        "night-slash",
+        "outrage",
+        "protect",
+        "quick-attack",
+        "quick-guard",
+        "rest",
+        "roar",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "scale-shot",
+        "screech",
+        "seed-bomb",
+        "shed-tail",
+        "sleep-talk",
+        "snore",
+        "solar-beam",
+        "solar-blade",
+        "substitute",
+        "sunny-day",
+        "swords-dance",
+        "synthesis",
+        "thief",
+        "throat-chop",
+        "thunder-punch",
+        "trailblaze",
+        "upper-hand",
+        "vacuum-wave",
+        "worry-seed",
+        "x-scissor"
+      ]
+    },
+    {
+      "id": 257,
+      "name": "blaziken",
+      "displayName": "Blaziken",
+      "types": [
+        "fire",
+        "fighting"
+      ],
+      "stats": {
+        "hp": 80,
+        "attack": 120,
+        "defense": 70,
+        "specialAttack": 110,
+        "specialDefense": 70,
+        "speed": 80,
+        "total": 530
+      },
+      "abilities": [
+        {
+          "name": "blaze",
+          "displayName": "Blaze",
+          "isHidden": false,
+          "shortEffect": "Strengthens Fire moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        {
+          "name": "speed-boost",
+          "displayName": "Speed Boost",
+          "isHidden": true,
+          "shortEffect": "Raises Speed one stage after each turn."
+        }
+      ],
+      "heightM": 1.9,
+      "weightKg": 52,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/257.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/257.png",
+      "forms": [
+        {
+          "key": "blaziken-mega",
+          "label": "Mega Blaziken",
+          "kind": "mega",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "stats": {
+            "hp": 80,
+            "attack": 160,
+            "defense": 80,
+            "specialAttack": 130,
+            "specialDefense": 80,
+            "speed": 100,
+            "total": 630
+          },
+          "abilities": [
+            {
+              "name": "speed-boost",
+              "displayName": "Speed Boost",
+              "isHidden": false,
+              "shortEffect": "Raises Speed one stage after each turn."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10050.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10050.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acrobatics",
+        "aerial-ace",
+        "agility",
+        "assurance",
+        "aura-sphere",
+        "baton-pass",
+        "blast-burn",
+        "blaze-kick",
+        "body-slam",
+        "bounce",
+        "brave-bird",
+        "brick-break",
+        "bulk-up",
+        "bulldoze",
+        "close-combat",
+        "coaching",
+        "counter",
+        "crush-claw",
+        "curse",
+        "detect",
+        "dig",
+        "double-edge",
+        "earthquake",
+        "endure",
+        "facade",
+        "feather-dance",
+        "feint",
+        "fire-blast",
+        "fire-punch",
+        "fire-spin",
+        "flame-charge",
+        "flamethrower",
+        "flare-blitz",
+        "fling",
+        "focus-blast",
+        "focus-energy",
+        "focus-punch",
+        "giga-impact",
+        "heat-crash",
+        "heat-wave",
+        "helping-hand",
+        "high-jump-kick",
+        "hyper-beam",
+        "knock-off",
+        "last-resort",
+        "low-kick",
+        "low-sweep",
+        "mega-kick",
+        "mud-slap",
+        "night-slash",
+        "overheat",
+        "poison-jab",
+        "protect",
+        "quick-attack",
+        "rest",
+        "reversal",
+        "roar",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "scorching-sands",
+        "shadow-claw",
+        "sleep-talk",
+        "snore",
+        "solar-beam",
+        "stone-edge",
+        "substitute",
+        "sunny-day",
+        "superpower",
+        "swords-dance",
+        "temper-flare",
+        "thief",
+        "thunder-punch",
+        "u-turn",
+        "upper-hand",
+        "uproar",
+        "vacuum-wave",
+        "will-o-wisp"
+      ]
+    },
+    {
+      "id": 260,
+      "name": "swampert",
+      "displayName": "Swampert",
+      "types": [
+        "water",
+        "ground"
+      ],
+      "stats": {
+        "hp": 100,
+        "attack": 110,
+        "defense": 90,
+        "specialAttack": 85,
+        "specialDefense": 90,
+        "speed": 60,
+        "total": 535
+      },
+      "abilities": [
+        {
+          "name": "torrent",
+          "displayName": "Torrent",
+          "isHidden": false,
+          "shortEffect": "Strengthens Water moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        {
+          "name": "damp",
+          "displayName": "Damp",
+          "isHidden": true,
+          "shortEffect": "Prevents Self-Destruct, Explosion, and Aftermath from working while the Pokémon is in battle."
+        }
+      ],
+      "heightM": 1.5,
+      "weightKg": 81.9,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/260.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/260.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/260.png",
+      "forms": [
+        {
+          "key": "swampert-mega",
+          "label": "Mega Swampert",
+          "kind": "mega",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "stats": {
+            "hp": 100,
+            "attack": 150,
+            "defense": 110,
+            "specialAttack": 95,
+            "specialDefense": 110,
+            "speed": 70,
+            "total": 635
+          },
+          "abilities": [
+            {
+              "name": "swift-swim",
+              "displayName": "Swift Swim",
+              "isHidden": false,
+              "shortEffect": "Doubles Speed during rain."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10064.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10064.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "amnesia",
+        "ancient-power",
+        "aqua-ring",
+        "avalanche",
+        "bite",
+        "blizzard",
+        "body-press",
+        "body-slam",
+        "brick-break",
+        "bulk-up",
+        "bulldoze",
+        "chilling-water",
+        "counter",
+        "curse",
+        "dig",
+        "dive",
+        "double-edge",
+        "earth-power",
+        "earthquake",
+        "endeavor",
+        "endure",
+        "facade",
+        "fling",
+        "flip-turn",
+        "focus-blast",
+        "focus-punch",
+        "giga-impact",
+        "hammer-arm",
+        "hard-press",
+        "helping-hand",
+        "high-horsepower",
+        "hydro-cannon",
+        "hydro-pump",
+        "hyper-beam",
+        "ice-beam",
+        "ice-punch",
+        "icy-wind",
+        "iron-tail",
+        "knock-off",
+        "liquidation",
+        "low-kick",
+        "mega-kick",
+        "mirror-coat",
+        "mud-shot",
+        "mud-slap",
+        "muddy-water",
+        "outrage",
+        "poison-jab",
+        "protect",
+        "rain-dance",
+        "rest",
+        "roar",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "sand-tomb",
+        "scary-face",
+        "screech",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "smack-down",
+        "snore",
+        "stealth-rock",
+        "stomping-tantrum",
+        "stone-edge",
+        "substitute",
+        "superpower",
+        "surf",
+        "uproar",
+        "water-pulse",
+        "waterfall",
+        "wave-crash",
+        "weather-ball",
+        "whirlpool",
+        "wide-guard",
+        "yawn"
+      ]
+    },
+    {
       "id": 279,
       "name": "pelipper",
       "displayName": "Pelipper",
@@ -6812,6 +7474,153 @@
         "wonder-room",
         "x-scissor",
         "zen-headbutt"
+      ]
+    },
+    {
+      "id": 303,
+      "name": "mawile",
+      "displayName": "Mawile",
+      "types": [
+        "steel",
+        "fairy"
+      ],
+      "stats": {
+        "hp": 50,
+        "attack": 85,
+        "defense": 85,
+        "specialAttack": 55,
+        "specialDefense": 55,
+        "speed": 50,
+        "total": 380
+      },
+      "abilities": [
+        {
+          "name": "hyper-cutter",
+          "displayName": "Hyper Cutter",
+          "isHidden": false,
+          "shortEffect": "Prevents Attack from being lowered by other Pokémon."
+        },
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": false,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        },
+        {
+          "name": "sheer-force",
+          "displayName": "Sheer Force",
+          "isHidden": true,
+          "shortEffect": "Strengthens moves with extra effects to 1.3× their power, but prevents their extra effects."
+        }
+      ],
+      "heightM": 0.6,
+      "weightKg": 11.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/303.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/303.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/303.png",
+      "forms": [
+        {
+          "key": "mawile-mega",
+          "label": "Mega Mawile",
+          "kind": "mega",
+          "types": [
+            "steel",
+            "fairy"
+          ],
+          "stats": {
+            "hp": 50,
+            "attack": 105,
+            "defense": 125,
+            "specialAttack": 55,
+            "specialDefense": 95,
+            "speed": 50,
+            "total": 480
+          },
+          "abilities": [
+            {
+              "name": "huge-power",
+              "displayName": "Huge Power",
+              "isHidden": false,
+              "shortEffect": "Doubles Attack in battle."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10052.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10052.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "ancient-power",
+        "assurance",
+        "attract",
+        "baton-pass",
+        "bite",
+        "body-slam",
+        "brick-break",
+        "brutal-swing",
+        "charm",
+        "crunch",
+        "dark-pulse",
+        "double-edge",
+        "draining-kiss",
+        "dynamic-punch",
+        "endure",
+        "facade",
+        "fake-tears",
+        "fire-blast",
+        "fire-fang",
+        "flamethrower",
+        "flash-cannon",
+        "fling",
+        "focus-blast",
+        "foul-play",
+        "giga-impact",
+        "grass-knot",
+        "guard-swap",
+        "helping-hand",
+        "hyper-beam",
+        "ice-beam",
+        "ice-fang",
+        "ice-punch",
+        "icy-wind",
+        "iron-defense",
+        "iron-head",
+        "knock-off",
+        "mega-kick",
+        "misty-terrain",
+        "payback",
+        "play-rough",
+        "poison-fang",
+        "protect",
+        "psychic-fangs",
+        "rain-dance",
+        "rest",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "sandstorm",
+        "seismic-toss",
+        "shadow-ball",
+        "sleep-talk",
+        "sludge-bomb",
+        "snore",
+        "solar-beam",
+        "spit-up",
+        "stealth-rock",
+        "steel-beam",
+        "stockpile",
+        "stone-edge",
+        "substitute",
+        "sucker-punch",
+        "sunny-day",
+        "swagger",
+        "swallow",
+        "sweet-scent",
+        "swords-dance",
+        "taunt",
+        "thunder-fang",
+        "thunder-punch",
+        "tickle"
       ]
     },
     {
@@ -8457,6 +9266,144 @@
       ]
     },
     {
+      "id": 376,
+      "name": "metagross",
+      "displayName": "Metagross",
+      "types": [
+        "steel",
+        "psychic"
+      ],
+      "stats": {
+        "hp": 80,
+        "attack": 135,
+        "defense": 130,
+        "specialAttack": 95,
+        "specialDefense": 90,
+        "speed": 70,
+        "total": 600
+      },
+      "abilities": [
+        {
+          "name": "clear-body",
+          "displayName": "Clear Body",
+          "isHidden": false,
+          "shortEffect": "Prevents stats from being lowered by other Pokémon."
+        },
+        {
+          "name": "light-metal",
+          "displayName": "Light Metal",
+          "isHidden": true,
+          "shortEffect": "Halves the Pokémon's weight."
+        }
+      ],
+      "heightM": 1.6,
+      "weightKg": 550,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/376.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/376.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/376.png",
+      "forms": [
+        {
+          "key": "metagross-mega",
+          "label": "Mega Metagross",
+          "kind": "mega",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "stats": {
+            "hp": 80,
+            "attack": 145,
+            "defense": 150,
+            "specialAttack": 105,
+            "specialDefense": 110,
+            "speed": 110,
+            "total": 700
+          },
+          "abilities": [
+            {
+              "name": "tough-claws",
+              "displayName": "Tough Claws",
+              "isHidden": false,
+              "shortEffect": "Strengthens moves that make contact to 1.33× their power."
+            }
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10076.png",
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "aerial-ace",
+        "agility",
+        "body-press",
+        "body-slam",
+        "brick-break",
+        "brutal-swing",
+        "bulldoze",
+        "bullet-punch",
+        "cosmic-power",
+        "double-edge",
+        "earthquake",
+        "endure",
+        "expanding-force",
+        "explosion",
+        "facade",
+        "flash-cannon",
+        "focus-punch",
+        "future-sight",
+        "giga-impact",
+        "grass-knot",
+        "gravity",
+        "gyro-ball",
+        "hammer-arm",
+        "hard-press",
+        "hyper-beam",
+        "ice-punch",
+        "icy-wind",
+        "iron-defense",
+        "iron-head",
+        "light-screen",
+        "magnet-rise",
+        "meteor-beam",
+        "meteor-mash",
+        "mud-slap",
+        "protect",
+        "psych-up",
+        "psychic",
+        "psychic-fangs",
+        "psychic-noise",
+        "psycho-cut",
+        "psyshock",
+        "rain-dance",
+        "reflect",
+        "rest",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "sandstorm",
+        "scary-face",
+        "self-destruct",
+        "shadow-ball",
+        "shadow-claw",
+        "shadow-punch",
+        "sleep-talk",
+        "sludge-bomb",
+        "snore",
+        "stealth-rock",
+        "steel-beam",
+        "steel-roller",
+        "stomping-tantrum",
+        "stone-edge",
+        "substitute",
+        "sunny-day",
+        "swagger",
+        "thunder-punch",
+        "trailblaze",
+        "trick",
+        "zen-headbutt"
+      ]
+    },
+    {
       "id": 389,
       "name": "torterra",
       "displayName": "Torterra",
@@ -8808,6 +9755,119 @@
         "weather-ball",
         "whirlpool",
         "yawn"
+      ]
+    },
+    {
+      "id": 398,
+      "name": "staraptor",
+      "displayName": "Staraptor",
+      "types": [
+        "normal",
+        "flying"
+      ],
+      "stats": {
+        "hp": 85,
+        "attack": 120,
+        "defense": 70,
+        "specialAttack": 50,
+        "specialDefense": 60,
+        "speed": 100,
+        "total": 485
+      },
+      "abilities": [
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": false,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        },
+        {
+          "name": "reckless",
+          "displayName": "Reckless",
+          "isHidden": true,
+          "shortEffect": "Strengthens recoil moves to 1.2× their power."
+        }
+      ],
+      "heightM": 1.2,
+      "weightKg": 24.9,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/398.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/398.png",
+      "forms": [
+        {
+          "key": "staraptor-mega",
+          "label": "Mega Staraptor",
+          "kind": "mega",
+          "types": [
+            "fighting",
+            "flying"
+          ],
+          "stats": {
+            "hp": 85,
+            "attack": 140,
+            "defense": 100,
+            "specialAttack": 60,
+            "specialDefense": 90,
+            "speed": 110,
+            "total": 585
+          },
+          "abilities": [
+            {
+              "name": "contrary",
+              "displayName": "Contrary",
+              "isHidden": false,
+              "shortEffect": "Inverts stat changes."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10308.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acrobatics",
+        "aerial-ace",
+        "agility",
+        "air-cutter",
+        "air-slash",
+        "blaze-kick",
+        "brave-bird",
+        "brick-break",
+        "bulk-up",
+        "close-combat",
+        "double-edge",
+        "double-team",
+        "dual-wingbeat",
+        "endeavor",
+        "endure",
+        "facade",
+        "feather-dance",
+        "final-gambit",
+        "fly",
+        "focus-blast",
+        "giga-impact",
+        "heat-wave",
+        "helping-hand",
+        "hurricane",
+        "hyper-beam",
+        "protect",
+        "quick-attack",
+        "rain-dance",
+        "rest",
+        "roost",
+        "round",
+        "sky-attack",
+        "sleep-talk",
+        "snore",
+        "steel-wing",
+        "substitute",
+        "sunny-day",
+        "swagger",
+        "tailwind",
+        "thief",
+        "u-turn",
+        "uproar",
+        "whirlwind"
       ]
     },
     {
@@ -12483,6 +13543,102 @@
       ]
     },
     {
+      "id": 518,
+      "name": "musharna",
+      "displayName": "Musharna",
+      "types": [
+        "psychic"
+      ],
+      "stats": {
+        "hp": 116,
+        "attack": 55,
+        "defense": 85,
+        "specialAttack": 107,
+        "specialDefense": 95,
+        "speed": 29,
+        "total": 487
+      },
+      "abilities": [
+        {
+          "name": "forewarn",
+          "displayName": "Forewarn",
+          "isHidden": false,
+          "shortEffect": "Reveals the opponents' strongest move upon entering battle."
+        },
+        {
+          "name": "synchronize",
+          "displayName": "Synchronize",
+          "isHidden": false,
+          "shortEffect": "Copies burns, paralysis, and poison received onto the Pokémon that inflicted them."
+        },
+        {
+          "name": "telepathy",
+          "displayName": "Telepathy",
+          "isHidden": true,
+          "shortEffect": "Protects against friendly Pokémon's damaging moves."
+        }
+      ],
+      "heightM": 1.1,
+      "weightKg": 60.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/518.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/518.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/518.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "ally-switch",
+        "amnesia",
+        "attract",
+        "calm-mind",
+        "charge-beam",
+        "charm",
+        "curse",
+        "dazzling-gleam",
+        "double-team",
+        "endure",
+        "energy-ball",
+        "expanding-force",
+        "facade",
+        "future-sight",
+        "giga-impact",
+        "guard-swap",
+        "gyro-ball",
+        "healing-wish",
+        "helping-hand",
+        "hyper-beam",
+        "hypnosis",
+        "imprison",
+        "light-screen",
+        "misty-explosion",
+        "moonblast",
+        "moonlight",
+        "power-swap",
+        "protect",
+        "psychic",
+        "psychic-terrain",
+        "psyshock",
+        "rain-dance",
+        "reflect",
+        "rest",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "safeguard",
+        "shadow-ball",
+        "skill-swap",
+        "sleep-talk",
+        "snore",
+        "stored-power",
+        "substitute",
+        "thunder-wave",
+        "trick",
+        "trick-room",
+        "wonder-room",
+        "yawn",
+        "zen-headbutt"
+      ]
+    },
+    {
       "id": 530,
       "name": "excadrill",
       "displayName": "Excadrill",
@@ -12860,6 +14016,135 @@
       ]
     },
     {
+      "id": 545,
+      "name": "scolipede",
+      "displayName": "Scolipede",
+      "types": [
+        "bug",
+        "poison"
+      ],
+      "stats": {
+        "hp": 60,
+        "attack": 100,
+        "defense": 89,
+        "specialAttack": 55,
+        "specialDefense": 69,
+        "speed": 112,
+        "total": 485
+      },
+      "abilities": [
+        {
+          "name": "poison-point",
+          "displayName": "Poison Point",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of poisoning attacking Pokémon on contact."
+        },
+        {
+          "name": "swarm",
+          "displayName": "Swarm",
+          "isHidden": false,
+          "shortEffect": "Strengthens Bug moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        {
+          "name": "speed-boost",
+          "displayName": "Speed Boost",
+          "isHidden": true,
+          "shortEffect": "Raises Speed one stage after each turn."
+        }
+      ],
+      "heightM": 2.5,
+      "weightKg": 200.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/545.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/545.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/545.png",
+      "forms": [
+        {
+          "key": "scolipede-mega",
+          "label": "Mega Scolipede",
+          "kind": "mega",
+          "types": [
+            "bug",
+            "poison"
+          ],
+          "stats": {
+            "hp": 60,
+            "attack": 140,
+            "defense": 149,
+            "specialAttack": 75,
+            "specialDefense": 99,
+            "speed": 62,
+            "total": 585
+          },
+          "abilities": [
+            {
+              "name": "shell-armor",
+              "displayName": "Shell Armor",
+              "isHidden": false,
+              "shortEffect": "Protects against critical hits."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10288.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "agility",
+        "assurance",
+        "attract",
+        "baton-pass",
+        "bite",
+        "bug-bite",
+        "bulldoze",
+        "cross-poison",
+        "dig",
+        "double-edge",
+        "double-hit",
+        "earthquake",
+        "endure",
+        "facade",
+        "giga-impact",
+        "gunk-shot",
+        "gyro-ball",
+        "hex",
+        "hyper-beam",
+        "iron-defense",
+        "iron-tail",
+        "leech-life",
+        "megahorn",
+        "payback",
+        "pin-missile",
+        "poison-jab",
+        "pounce",
+        "protect",
+        "rest",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "screech",
+        "skitter-smack",
+        "sleep-talk",
+        "sludge-bomb",
+        "smart-strike",
+        "snore",
+        "solar-beam",
+        "spikes",
+        "steel-roller",
+        "stomping-tantrum",
+        "substitute",
+        "sunny-day",
+        "superpower",
+        "swords-dance",
+        "throat-chop",
+        "toxic",
+        "toxic-spikes",
+        "trailblaze",
+        "venoshock",
+        "x-scissor"
+      ]
+    },
+    {
       "id": 547,
       "name": "whimsicott",
       "displayName": "Whimsicott",
@@ -13082,6 +14367,164 @@
         "thunder-fang",
         "torment",
         "uproar"
+      ]
+    },
+    {
+      "id": 560,
+      "name": "scrafty",
+      "displayName": "Scrafty",
+      "types": [
+        "dark",
+        "fighting"
+      ],
+      "stats": {
+        "hp": 65,
+        "attack": 90,
+        "defense": 115,
+        "specialAttack": 45,
+        "specialDefense": 115,
+        "speed": 58,
+        "total": 488
+      },
+      "abilities": [
+        {
+          "name": "shed-skin",
+          "displayName": "Shed Skin",
+          "isHidden": false,
+          "shortEffect": "Has a 33% chance of curing any major status ailment after each turn."
+        },
+        {
+          "name": "moxie",
+          "displayName": "Moxie",
+          "isHidden": false,
+          "shortEffect": "Raises Attack one stage upon KOing a Pokémon."
+        },
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": true,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        }
+      ],
+      "heightM": 1.1,
+      "weightKg": 30,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/560.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/560.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/560.png",
+      "forms": [
+        {
+          "key": "scrafty-mega",
+          "label": "Mega Scrafty",
+          "kind": "mega",
+          "types": [
+            "dark",
+            "fighting"
+          ],
+          "stats": {
+            "hp": 65,
+            "attack": 130,
+            "defense": 135,
+            "specialAttack": 55,
+            "specialDefense": 135,
+            "speed": 68,
+            "total": 588
+          },
+          "abilities": [
+            {
+              "name": "intimidate",
+              "displayName": "Intimidate",
+              "isHidden": false,
+              "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10289.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "amnesia",
+        "assurance",
+        "beat-up",
+        "body-slam",
+        "brick-break",
+        "bulk-up",
+        "close-combat",
+        "coaching",
+        "counter",
+        "crunch",
+        "curse",
+        "dark-pulse",
+        "detect",
+        "dig",
+        "double-edge",
+        "dragon-claw",
+        "dragon-dance",
+        "dragon-pulse",
+        "dragon-tail",
+        "drain-punch",
+        "dynamic-punch",
+        "encore",
+        "endeavor",
+        "endure",
+        "facade",
+        "fake-out",
+        "fake-tears",
+        "fire-punch",
+        "fling",
+        "focus-blast",
+        "focus-punch",
+        "foul-play",
+        "giga-impact",
+        "grass-knot",
+        "head-smash",
+        "helping-hand",
+        "high-jump-kick",
+        "hyper-beam",
+        "ice-punch",
+        "iron-defense",
+        "iron-head",
+        "iron-tail",
+        "knock-off",
+        "lash-out",
+        "low-kick",
+        "low-sweep",
+        "mega-kick",
+        "outrage",
+        "payback",
+        "poison-jab",
+        "protect",
+        "quick-guard",
+        "rain-dance",
+        "rest",
+        "reversal",
+        "roar",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "scary-face",
+        "sleep-talk",
+        "sludge-bomb",
+        "smack-down",
+        "snarl",
+        "snore",
+        "spite",
+        "stone-edge",
+        "substitute",
+        "sunny-day",
+        "super-fang",
+        "swagger",
+        "swords-dance",
+        "taunt",
+        "thief",
+        "throat-chop",
+        "thunder-punch",
+        "torment",
+        "trailblaze",
+        "upper-hand",
+        "uproar",
+        "zen-headbutt"
       ]
     },
     {
@@ -13753,6 +15196,143 @@
         "u-turn",
         "volt-switch",
         "wild-charge"
+      ]
+    },
+    {
+      "id": 604,
+      "name": "eelektross",
+      "displayName": "Eelektross",
+      "types": [
+        "electric"
+      ],
+      "stats": {
+        "hp": 85,
+        "attack": 115,
+        "defense": 80,
+        "specialAttack": 105,
+        "specialDefense": 80,
+        "speed": 50,
+        "total": 515
+      },
+      "abilities": [
+        {
+          "name": "levitate",
+          "displayName": "Levitate",
+          "isHidden": false,
+          "shortEffect": "Evades Ground moves."
+        }
+      ],
+      "heightM": 2.1,
+      "weightKg": 80.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/604.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/604.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/604.png",
+      "forms": [
+        {
+          "key": "eelektross-mega",
+          "label": "Mega Eelektross",
+          "kind": "mega",
+          "types": [
+            "electric"
+          ],
+          "stats": {
+            "hp": 85,
+            "attack": 145,
+            "defense": 80,
+            "specialAttack": 135,
+            "specialDefense": 90,
+            "speed": 80,
+            "total": 615
+          },
+          "abilities": [
+            {
+              "name": "eelevate",
+              "displayName": "Eelevate",
+              "isHidden": false,
+              "shortEffect": "Floats off the ground — immune to Ground moves, Spikes, Toxic Spikes, and Sticky Web. On knocking out a target, its highest stat rises one stage."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10290.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "acrobatics",
+        "body-press",
+        "body-slam",
+        "bounce",
+        "brick-break",
+        "bulk-up",
+        "bulldoze",
+        "charge",
+        "charge-beam",
+        "close-combat",
+        "coil",
+        "confuse-ray",
+        "crunch",
+        "crush-claw",
+        "discharge",
+        "dragon-claw",
+        "dragon-pulse",
+        "dragon-tail",
+        "drain-punch",
+        "eerie-impulse",
+        "electric-terrain",
+        "electro-ball",
+        "electroweb",
+        "endure",
+        "facade",
+        "fire-punch",
+        "flamethrower",
+        "flash-cannon",
+        "focus-punch",
+        "gastro-acid",
+        "giga-drain",
+        "giga-impact",
+        "grass-knot",
+        "heavy-slam",
+        "hex",
+        "hyper-beam",
+        "iron-tail",
+        "knock-off",
+        "light-screen",
+        "liquidation",
+        "lunge",
+        "muddy-water",
+        "outrage",
+        "poison-fang",
+        "protect",
+        "psychic-fangs",
+        "rain-dance",
+        "rest",
+        "rising-voltage",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "scary-face",
+        "sleep-talk",
+        "snore",
+        "stomping-tantrum",
+        "substitute",
+        "sunny-day",
+        "super-fang",
+        "supercell-slam",
+        "superpower",
+        "thrash",
+        "throat-chop",
+        "thunder",
+        "thunder-fang",
+        "thunder-punch",
+        "thunder-wave",
+        "thunderbolt",
+        "u-turn",
+        "volt-switch",
+        "waterfall",
+        "wild-charge",
+        "zap-cannon",
+        "zen-headbutt"
       ]
     },
     {
@@ -15260,6 +16840,131 @@
       ]
     },
     {
+      "id": 668,
+      "name": "pyroar",
+      "displayName": "Pyroar",
+      "types": [
+        "fire",
+        "normal"
+      ],
+      "stats": {
+        "hp": 86,
+        "attack": 68,
+        "defense": 72,
+        "specialAttack": 109,
+        "specialDefense": 66,
+        "speed": 106,
+        "total": 507
+      },
+      "abilities": [
+        {
+          "name": "rivalry",
+          "displayName": "Rivalry",
+          "isHidden": false,
+          "shortEffect": "Increases damage inflicted to 1.25× against Pokémon of the same gender, but decreases damage to 0.75× against the opposite gender."
+        },
+        {
+          "name": "unnerve",
+          "displayName": "Unnerve",
+          "isHidden": false,
+          "shortEffect": "Prevents opposing Pokémon from eating held Berries."
+        },
+        {
+          "name": "moxie",
+          "displayName": "Moxie",
+          "isHidden": true,
+          "shortEffect": "Raises Attack one stage upon KOing a Pokémon."
+        }
+      ],
+      "heightM": 1.5,
+      "weightKg": 81.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/668.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/668.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/668.png",
+      "forms": [
+        {
+          "key": "pyroar-mega",
+          "label": "Mega Pyroar",
+          "kind": "mega",
+          "types": [
+            "fire",
+            "normal"
+          ],
+          "stats": {
+            "hp": 86,
+            "attack": 88,
+            "defense": 92,
+            "specialAttack": 129,
+            "specialDefense": 86,
+            "speed": 126,
+            "total": 607
+          },
+          "abilities": [
+            {
+              "name": "fire-mane",
+              "displayName": "Fire Mane",
+              "isHidden": false,
+              "shortEffect": "Boosts the power of the Pokémon's Fire-type moves by 50%."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10295.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acrobatics",
+        "body-slam",
+        "bulldoze",
+        "burning-jealousy",
+        "crunch",
+        "dark-pulse",
+        "dig",
+        "double-edge",
+        "endeavor",
+        "endure",
+        "entrainment",
+        "facade",
+        "fire-blast",
+        "fire-fang",
+        "fire-spin",
+        "flame-charge",
+        "flamethrower",
+        "flare-blitz",
+        "giga-impact",
+        "heat-wave",
+        "helping-hand",
+        "hyper-beam",
+        "hyper-voice",
+        "iron-tail",
+        "mud-slap",
+        "noble-roar",
+        "overheat",
+        "payback",
+        "protect",
+        "psychic-fangs",
+        "rain-dance",
+        "rest",
+        "roar",
+        "round",
+        "scorching-sands",
+        "sleep-talk",
+        "snarl",
+        "snore",
+        "solar-beam",
+        "substitute",
+        "sunny-day",
+        "taunt",
+        "temper-flare",
+        "thief",
+        "thunder-fang",
+        "trailblaze",
+        "wild-charge",
+        "will-o-wisp",
+        "yawn"
+      ]
+    },
+    {
       "id": 670,
       "name": "floette",
       "displayName": "Floette",
@@ -16060,6 +17765,425 @@
         "thunderbolt",
         "wish",
         "yawn"
+      ]
+    },
+    {
+      "id": 687,
+      "name": "malamar",
+      "displayName": "Malamar",
+      "types": [
+        "dark",
+        "psychic"
+      ],
+      "stats": {
+        "hp": 86,
+        "attack": 92,
+        "defense": 88,
+        "specialAttack": 68,
+        "specialDefense": 75,
+        "speed": 73,
+        "total": 482
+      },
+      "abilities": [
+        {
+          "name": "contrary",
+          "displayName": "Contrary",
+          "isHidden": false,
+          "shortEffect": "Inverts stat changes."
+        },
+        {
+          "name": "suction-cups",
+          "displayName": "Suction Cups",
+          "isHidden": false,
+          "shortEffect": "Prevents being forced out of battle by other Pokémon's moves."
+        },
+        {
+          "name": "infiltrator",
+          "displayName": "Infiltrator",
+          "isHidden": true,
+          "shortEffect": "Bypasses Light Screen, Reflect, and Safeguard."
+        }
+      ],
+      "heightM": 1.5,
+      "weightKg": 47,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/687.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/687.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/687.png",
+      "forms": [
+        {
+          "key": "malamar-mega",
+          "label": "Mega Malamar",
+          "kind": "mega",
+          "types": [
+            "dark",
+            "psychic"
+          ],
+          "stats": {
+            "hp": 86,
+            "attack": 102,
+            "defense": 88,
+            "specialAttack": 98,
+            "specialDefense": 120,
+            "speed": 88,
+            "total": 582
+          },
+          "abilities": [
+            {
+              "name": "contrary",
+              "displayName": "Contrary",
+              "isHidden": false,
+              "shortEffect": "Inverts stat changes."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10297.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acupressure",
+        "aerial-ace",
+        "baton-pass",
+        "brutal-swing",
+        "calm-mind",
+        "dark-pulse",
+        "destiny-bond",
+        "disable",
+        "double-hit",
+        "double-team",
+        "endure",
+        "expanding-force",
+        "facade",
+        "fake-tears",
+        "flamethrower",
+        "fling",
+        "foul-play",
+        "future-sight",
+        "giga-impact",
+        "gravity",
+        "guard-swap",
+        "helping-hand",
+        "hyper-beam",
+        "hypnosis",
+        "knock-off",
+        "lash-out",
+        "light-screen",
+        "liquidation",
+        "lunge",
+        "nasty-plot",
+        "night-slash",
+        "payback",
+        "pluck",
+        "poison-jab",
+        "protect",
+        "psych-up",
+        "psychic",
+        "psychic-noise",
+        "psycho-cut",
+        "psyshock",
+        "rain-dance",
+        "reflect",
+        "rest",
+        "reversal",
+        "rock-slide",
+        "round",
+        "scary-face",
+        "skill-swap",
+        "sleep-talk",
+        "snore",
+        "spite",
+        "stored-power",
+        "substitute",
+        "sunny-day",
+        "superpower",
+        "swagger",
+        "switcheroo",
+        "taunt",
+        "thief",
+        "throat-chop",
+        "thunderbolt",
+        "topsy-turvy",
+        "torment",
+        "trailblaze",
+        "trick",
+        "trick-room",
+        "wrap",
+        "zen-headbutt"
+      ]
+    },
+    {
+      "id": 689,
+      "name": "barbaracle",
+      "displayName": "Barbaracle",
+      "types": [
+        "rock",
+        "water"
+      ],
+      "stats": {
+        "hp": 72,
+        "attack": 105,
+        "defense": 115,
+        "specialAttack": 54,
+        "specialDefense": 86,
+        "speed": 68,
+        "total": 500
+      },
+      "abilities": [
+        {
+          "name": "tough-claws",
+          "displayName": "Tough Claws",
+          "isHidden": false,
+          "shortEffect": "Strengthens moves that make contact to 1.33× their power."
+        },
+        {
+          "name": "sniper",
+          "displayName": "Sniper",
+          "isHidden": false,
+          "shortEffect": "Strengthens critical hits to inflict 3× damage rather than 2×."
+        },
+        {
+          "name": "pickpocket",
+          "displayName": "Pickpocket",
+          "isHidden": true,
+          "shortEffect": "Steals attacking Pokémon's held items on contact."
+        }
+      ],
+      "heightM": 1.3,
+      "weightKg": 96,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/689.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/689.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/689.png",
+      "forms": [
+        {
+          "key": "barbaracle-mega",
+          "label": "Mega Barbaracle",
+          "kind": "mega",
+          "types": [
+            "rock",
+            "fighting"
+          ],
+          "stats": {
+            "hp": 72,
+            "attack": 140,
+            "defense": 130,
+            "specialAttack": 64,
+            "specialDefense": 106,
+            "speed": 88,
+            "total": 600
+          },
+          "abilities": [
+            {
+              "name": "tough-claws",
+              "displayName": "Tough Claws",
+              "isHidden": false,
+              "shortEffect": "Strengthens moves that make contact to 1.33× their power."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10298.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "ancient-power",
+        "aqua-cutter",
+        "assurance",
+        "attract",
+        "beat-up",
+        "blizzard",
+        "brick-break",
+        "brutal-swing",
+        "bulk-up",
+        "bulldoze",
+        "chilling-water",
+        "close-combat",
+        "cross-chop",
+        "dig",
+        "dive",
+        "double-hit",
+        "dragon-claw",
+        "earth-power",
+        "earthquake",
+        "endure",
+        "facade",
+        "fling",
+        "focus-blast",
+        "giga-impact",
+        "grass-knot",
+        "helping-hand",
+        "hyper-beam",
+        "ice-beam",
+        "icy-wind",
+        "iron-defense",
+        "liquidation",
+        "low-kick",
+        "meteor-beam",
+        "mud-shot",
+        "mud-slap",
+        "muddy-water",
+        "night-slash",
+        "payback",
+        "poison-jab",
+        "protect",
+        "rain-dance",
+        "razor-shell",
+        "rest",
+        "rock-blast",
+        "rock-polish",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "safeguard",
+        "sandstorm",
+        "scald",
+        "screech",
+        "shadow-claw",
+        "shell-smash",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "snore",
+        "stealth-rock",
+        "stone-edge",
+        "substitute",
+        "superpower",
+        "surf",
+        "switcheroo",
+        "swords-dance",
+        "taunt",
+        "thief",
+        "uproar",
+        "waterfall",
+        "whirlpool",
+        "x-scissor"
+      ]
+    },
+    {
+      "id": 691,
+      "name": "dragalge",
+      "displayName": "Dragalge",
+      "types": [
+        "poison",
+        "dragon"
+      ],
+      "stats": {
+        "hp": 65,
+        "attack": 75,
+        "defense": 90,
+        "specialAttack": 97,
+        "specialDefense": 123,
+        "speed": 44,
+        "total": 494
+      },
+      "abilities": [
+        {
+          "name": "poison-point",
+          "displayName": "Poison Point",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of poisoning attacking Pokémon on contact."
+        },
+        {
+          "name": "poison-touch",
+          "displayName": "Poison Touch",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of poisoning target Pokémon upon contact."
+        },
+        {
+          "name": "adaptability",
+          "displayName": "Adaptability",
+          "isHidden": true,
+          "shortEffect": "Increases the same-type attack bonus from 1.5× to 2×."
+        }
+      ],
+      "heightM": 1.8,
+      "weightKg": 81.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/691.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/691.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/691.png",
+      "forms": [
+        {
+          "key": "dragalge-mega",
+          "label": "Mega Dragalge",
+          "kind": "mega",
+          "types": [
+            "poison",
+            "dragon"
+          ],
+          "stats": {
+            "hp": 65,
+            "attack": 85,
+            "defense": 105,
+            "specialAttack": 132,
+            "specialDefense": 163,
+            "speed": 44,
+            "total": 594
+          },
+          "abilities": [
+            {
+              "name": "regenerator",
+              "displayName": "Regenerator",
+              "isHidden": false,
+              "shortEffect": "Heals for 1/3 max HP upon switching out."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10299.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-armor",
+        "acid-spray",
+        "aqua-tail",
+        "chilling-water",
+        "dive",
+        "double-team",
+        "draco-meteor",
+        "dragon-pulse",
+        "dragon-tail",
+        "endure",
+        "facade",
+        "flip-turn",
+        "focus-blast",
+        "giga-impact",
+        "gunk-shot",
+        "haze",
+        "hydro-pump",
+        "hyper-beam",
+        "icy-wind",
+        "iron-tail",
+        "liquidation",
+        "mud-shot",
+        "mud-slap",
+        "muddy-water",
+        "outrage",
+        "play-rough",
+        "poison-jab",
+        "protect",
+        "rain-dance",
+        "rest",
+        "round",
+        "scald",
+        "scale-shot",
+        "scary-face",
+        "shadow-ball",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "snore",
+        "snowscape",
+        "spite",
+        "substitute",
+        "surf",
+        "thief",
+        "thunder",
+        "thunderbolt",
+        "toxic",
+        "toxic-spikes",
+        "venoshock",
+        "water-pulse",
+        "waterfall",
+        "whirlpool"
       ]
     },
     {
@@ -20065,6 +22189,117 @@
       ]
     },
     {
+      "id": 861,
+      "name": "grimmsnarl",
+      "displayName": "Grimmsnarl",
+      "types": [
+        "dark",
+        "fairy"
+      ],
+      "stats": {
+        "hp": 95,
+        "attack": 120,
+        "defense": 65,
+        "specialAttack": 95,
+        "specialDefense": 75,
+        "speed": 60,
+        "total": 510
+      },
+      "abilities": [
+        {
+          "name": "prankster",
+          "displayName": "Prankster",
+          "isHidden": false,
+          "shortEffect": "Raises non-damaging moves' priority by one stage."
+        },
+        {
+          "name": "frisk",
+          "displayName": "Frisk",
+          "isHidden": false,
+          "shortEffect": "Reveals an opponent's held item upon entering battle."
+        },
+        {
+          "name": "pickpocket",
+          "displayName": "Pickpocket",
+          "isHidden": true,
+          "shortEffect": "Steals attacking Pokémon's held items on contact."
+        }
+      ],
+      "heightM": 1.5,
+      "weightKg": 61,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/861.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/861.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/861.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "assurance",
+        "bite",
+        "body-press",
+        "body-slam",
+        "brick-break",
+        "bulk-up",
+        "burning-jealousy",
+        "chilling-water",
+        "crunch",
+        "dark-pulse",
+        "dazzling-gleam",
+        "drain-punch",
+        "draining-kiss",
+        "endure",
+        "facade",
+        "fake-out",
+        "fake-tears",
+        "fire-punch",
+        "flatter",
+        "fling",
+        "focus-blast",
+        "focus-energy",
+        "focus-punch",
+        "foul-play",
+        "giga-impact",
+        "hammer-arm",
+        "hyper-beam",
+        "ice-punch",
+        "imprison",
+        "lash-out",
+        "leech-life",
+        "light-screen",
+        "low-kick",
+        "low-sweep",
+        "mega-kick",
+        "misty-terrain",
+        "nasty-plot",
+        "parting-shot",
+        "play-rough",
+        "power-swap",
+        "power-whip",
+        "protect",
+        "reflect",
+        "rest",
+        "round",
+        "scary-face",
+        "shadow-claw",
+        "sleep-talk",
+        "snore",
+        "spirit-break",
+        "stomping-tantrum",
+        "substitute",
+        "sucker-punch",
+        "superpower",
+        "swagger",
+        "taunt",
+        "thief",
+        "throat-chop",
+        "thunder-punch",
+        "torment",
+        "trailblaze",
+        "trick",
+        "uproar",
+        "wonder-room"
+      ]
+    },
+    {
       "id": 866,
       "name": "mr-rime",
       "displayName": "Mr Rime",
@@ -20392,6 +22627,125 @@
         "sweet-scent",
         "tri-attack",
         "wonder-room"
+      ]
+    },
+    {
+      "id": 870,
+      "name": "falinks",
+      "displayName": "Falinks",
+      "types": [
+        "fighting"
+      ],
+      "stats": {
+        "hp": 65,
+        "attack": 100,
+        "defense": 100,
+        "specialAttack": 70,
+        "specialDefense": 60,
+        "speed": 75,
+        "total": 470
+      },
+      "abilities": [
+        {
+          "name": "battle-armor",
+          "displayName": "Battle Armor",
+          "isHidden": false,
+          "shortEffect": "Protects against critical hits."
+        },
+        {
+          "name": "defiant",
+          "displayName": "Defiant",
+          "isHidden": true,
+          "shortEffect": "Raises Attack two stages upon having any stat lowered."
+        }
+      ],
+      "heightM": 3,
+      "weightKg": 62,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/870.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/870.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/870.png",
+      "forms": [
+        {
+          "key": "falinks-mega",
+          "label": "Mega Falinks",
+          "kind": "mega",
+          "types": [
+            "fighting"
+          ],
+          "stats": {
+            "hp": 65,
+            "attack": 135,
+            "defense": 135,
+            "specialAttack": 70,
+            "specialDefense": 65,
+            "speed": 100,
+            "total": 570
+          },
+          "abilities": [
+            {
+              "name": "defiant",
+              "displayName": "Defiant",
+              "isHidden": false,
+              "shortEffect": "Raises Attack two stages upon having any stat lowered."
+            }
+          ],
+          "sprite": null,
+          "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10303.png"
+        }
+      ],
+      "isNew": true,
+      "moveSlugs": [
+        "agility",
+        "assurance",
+        "beat-up",
+        "body-press",
+        "body-slam",
+        "brick-break",
+        "bulk-up",
+        "close-combat",
+        "coaching",
+        "counter",
+        "double-hit",
+        "endeavor",
+        "endure",
+        "facade",
+        "first-impression",
+        "focus-blast",
+        "focus-energy",
+        "giga-impact",
+        "helping-hand",
+        "high-horsepower",
+        "hyper-beam",
+        "iron-defense",
+        "iron-head",
+        "knock-off",
+        "lunge",
+        "megahorn",
+        "no-retreat",
+        "payback",
+        "poison-jab",
+        "protect",
+        "psych-up",
+        "rain-dance",
+        "rest",
+        "reversal",
+        "rock-slide",
+        "rock-tomb",
+        "round",
+        "screech",
+        "seed-bomb",
+        "sleep-talk",
+        "smart-strike",
+        "snore",
+        "substitute",
+        "sunny-day",
+        "superpower",
+        "swords-dance",
+        "throat-chop",
+        "trailblaze",
+        "upper-hand",
+        "uproar",
+        "zen-headbutt"
       ]
     },
     {
@@ -21054,6 +23408,113 @@
         "vacuum-wave",
         "venoshock",
         "x-scissor"
+      ]
+    },
+    {
+      "id": 904,
+      "name": "overqwil",
+      "displayName": "Overqwil",
+      "types": [
+        "dark",
+        "poison"
+      ],
+      "stats": {
+        "hp": 85,
+        "attack": 115,
+        "defense": 95,
+        "specialAttack": 65,
+        "specialDefense": 65,
+        "speed": 85,
+        "total": 510
+      },
+      "abilities": [
+        {
+          "name": "poison-point",
+          "displayName": "Poison Point",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of poisoning attacking Pokémon on contact."
+        },
+        {
+          "name": "swift-swim",
+          "displayName": "Swift Swim",
+          "isHidden": false,
+          "shortEffect": "Doubles Speed during rain."
+        },
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": true,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        }
+      ],
+      "heightM": 2.5,
+      "weightKg": 60.5,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/904.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/904.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/904.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "acid-spray",
+        "acupressure",
+        "agility",
+        "aqua-jet",
+        "aqua-tail",
+        "barb-barrage",
+        "bite",
+        "blizzard",
+        "chilling-water",
+        "crunch",
+        "curse",
+        "dark-pulse",
+        "destiny-bond",
+        "double-edge",
+        "endure",
+        "facade",
+        "fell-stinger",
+        "flail",
+        "giga-impact",
+        "gunk-shot",
+        "gyro-ball",
+        "haze",
+        "hex",
+        "hydro-pump",
+        "hyper-beam",
+        "ice-beam",
+        "icy-wind",
+        "lash-out",
+        "liquidation",
+        "minimize",
+        "mud-shot",
+        "pain-split",
+        "pin-missile",
+        "poison-jab",
+        "protect",
+        "rain-dance",
+        "rest",
+        "reversal",
+        "scale-shot",
+        "scary-face",
+        "self-destruct",
+        "shadow-ball",
+        "sleep-talk",
+        "sludge-bomb",
+        "sludge-wave",
+        "smart-strike",
+        "spikes",
+        "spit-up",
+        "spite",
+        "stockpile",
+        "substitute",
+        "surf",
+        "swords-dance",
+        "taunt",
+        "throat-chop",
+        "toxic",
+        "toxic-spikes",
+        "venoshock",
+        "water-pulse",
+        "waterfall"
       ]
     },
     {
@@ -22458,6 +24919,220 @@
       ]
     },
     {
+      "id": 972,
+      "name": "houndstone",
+      "displayName": "Houndstone",
+      "types": [
+        "ghost"
+      ],
+      "stats": {
+        "hp": 72,
+        "attack": 101,
+        "defense": 100,
+        "specialAttack": 50,
+        "specialDefense": 97,
+        "speed": 68,
+        "total": 488
+      },
+      "abilities": [
+        {
+          "name": "sand-rush",
+          "displayName": "Sand Rush",
+          "isHidden": false,
+          "shortEffect": "Doubles Speed during a sandstorm. Protects against sandstorm damage."
+        },
+        {
+          "name": "fluffy",
+          "displayName": "Fluffy",
+          "isHidden": true,
+          "shortEffect": "Damage from contact moves is halved. Damage from Fire moves is doubled."
+        }
+      ],
+      "heightM": 2,
+      "weightKg": 15,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/972.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/972.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/972.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "ally-switch",
+        "bite",
+        "body-press",
+        "bulldoze",
+        "charm",
+        "confuse-ray",
+        "crunch",
+        "destiny-bond",
+        "dig",
+        "disable",
+        "double-edge",
+        "endeavor",
+        "endure",
+        "facade",
+        "fire-fang",
+        "giga-impact",
+        "helping-hand",
+        "hex",
+        "howl",
+        "hyper-beam",
+        "ice-fang",
+        "last-respects",
+        "memento",
+        "mud-shot",
+        "mud-slap",
+        "night-shade",
+        "pain-split",
+        "phantom-force",
+        "play-rough",
+        "poltergeist",
+        "protect",
+        "psychic-fangs",
+        "rain-dance",
+        "rest",
+        "roar",
+        "sandstorm",
+        "scary-face",
+        "shadow-ball",
+        "shadow-sneak",
+        "sleep-talk",
+        "snarl",
+        "stomping-tantrum",
+        "substitute",
+        "sunny-day",
+        "swagger",
+        "thief",
+        "thunder-fang",
+        "trick",
+        "uproar",
+        "will-o-wisp",
+        "yawn",
+        "zen-headbutt"
+      ]
+    },
+    {
+      "id": 979,
+      "name": "annihilape",
+      "displayName": "Annihilape",
+      "types": [
+        "fighting",
+        "ghost"
+      ],
+      "stats": {
+        "hp": 110,
+        "attack": 115,
+        "defense": 80,
+        "specialAttack": 50,
+        "specialDefense": 90,
+        "speed": 90,
+        "total": 535
+      },
+      "abilities": [
+        {
+          "name": "vital-spirit",
+          "displayName": "Vital Spirit",
+          "isHidden": false,
+          "shortEffect": "Prevents sleep."
+        },
+        {
+          "name": "inner-focus",
+          "displayName": "Inner Focus",
+          "isHidden": false,
+          "shortEffect": "Prevents flinching."
+        },
+        {
+          "name": "defiant",
+          "displayName": "Defiant",
+          "isHidden": true,
+          "shortEffect": "Raises Attack two stages upon having any stat lowered."
+        }
+      ],
+      "heightM": 1.2,
+      "weightKg": 56,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/979.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/979.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/979.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "acrobatics",
+        "assurance",
+        "beat-up",
+        "body-slam",
+        "brick-break",
+        "bulk-up",
+        "bulldoze",
+        "close-combat",
+        "coaching",
+        "counter",
+        "cross-chop",
+        "curse",
+        "dig",
+        "double-edge",
+        "drain-punch",
+        "dynamic-punch",
+        "earthquake",
+        "encore",
+        "endeavor",
+        "endure",
+        "facade",
+        "fire-punch",
+        "fling",
+        "focus-blast",
+        "focus-energy",
+        "focus-punch",
+        "giga-impact",
+        "gunk-shot",
+        "helping-hand",
+        "hyper-beam",
+        "ice-punch",
+        "lash-out",
+        "low-kick",
+        "low-sweep",
+        "night-shade",
+        "night-slash",
+        "outrage",
+        "overheat",
+        "phantom-force",
+        "poison-jab",
+        "protect",
+        "rage-fist",
+        "rain-dance",
+        "rest",
+        "reversal",
+        "rock-slide",
+        "rock-tomb",
+        "scary-face",
+        "screech",
+        "seed-bomb",
+        "seismic-toss",
+        "shadow-ball",
+        "shadow-claw",
+        "shadow-punch",
+        "sleep-talk",
+        "smack-down",
+        "spite",
+        "stealth-rock",
+        "stomping-tantrum",
+        "stone-edge",
+        "storm-throw",
+        "substitute",
+        "sunny-day",
+        "swagger",
+        "taunt",
+        "thief",
+        "thrash",
+        "throat-chop",
+        "thunder",
+        "thunder-punch",
+        "thunderbolt",
+        "torment",
+        "u-turn",
+        "uproar",
+        "vacuum-wave"
+      ]
+    },
+    {
       "id": 981,
       "name": "farigiraf",
       "displayName": "Farigiraf",
@@ -22669,6 +25344,83 @@
         "torment",
         "x-scissor",
         "zen-headbutt"
+      ]
+    },
+    {
+      "id": 1000,
+      "name": "gholdengo",
+      "displayName": "Gholdengo",
+      "types": [
+        "steel",
+        "ghost"
+      ],
+      "stats": {
+        "hp": 87,
+        "attack": 60,
+        "defense": 95,
+        "specialAttack": 133,
+        "specialDefense": 91,
+        "speed": 84,
+        "total": 550
+      },
+      "abilities": [
+        {
+          "name": "good-as-gold",
+          "displayName": "Good As Gold",
+          "isHidden": false,
+          "shortEffect": "Gives immunity to status moves."
+        }
+      ],
+      "heightM": 1.2,
+      "weightKg": 30,
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1000.png",
+      "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1000.png",
+      "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1000.png",
+      "forms": [],
+      "isNew": true,
+      "moveSlugs": [
+        "charge-beam",
+        "confuse-ray",
+        "dazzling-gleam",
+        "electro-ball",
+        "endure",
+        "flash-cannon",
+        "fling",
+        "focus-blast",
+        "focus-punch",
+        "giga-impact",
+        "heavy-slam",
+        "hex",
+        "hyper-beam",
+        "iron-head",
+        "light-screen",
+        "low-kick",
+        "low-sweep",
+        "make-it-rain",
+        "memento",
+        "metal-sound",
+        "nasty-plot",
+        "night-shade",
+        "poltergeist",
+        "power-gem",
+        "protect",
+        "psychic",
+        "psyshock",
+        "recover",
+        "reflect",
+        "rest",
+        "sandstorm",
+        "shadow-ball",
+        "shadow-punch",
+        "sleep-talk",
+        "steel-beam",
+        "substitute",
+        "surf",
+        "thief",
+        "thunder",
+        "thunder-punch",
+        "thunderbolt",
+        "trick"
       ]
     },
     {
@@ -23782,6 +26534,30 @@
       "shortEffect": "Grants the user protection for the rest of the turn and poisons any Pokémon that tries to use a contact move on it.",
       "effect": "Grants the user protection for the rest of the turn. If a Pokémon attempts to use a move that makes contact with the user, that Pokémon will be poisoned. This move’s chance of success halves every time it’s used consecutively with any other protection move.",
       "target": "user",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [],
+      "statChance": 0,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": []
+    },
+    "barb-barrage": {
+      "name": "barb-barrage",
+      "displayName": "Barb Barrage",
+      "type": "poison",
+      "damageClass": "physical",
+      "power": 60,
+      "accuracy": 100,
+      "pp": 10,
+      "priority": 0,
+      "shortEffect": "The user launches countless toxic barbs to inflict damage. This may also poison the target. This move’s power is doubled if the target has a status condition.",
+      "effect": "The user launches countless toxic barbs to inflict damage. This may also poison the target. This move’s power is doubled if the target has a status condition.",
+      "target": "selected-pokemon",
       "ailment": null,
       "ailmentChance": 0,
       "statChanges": [],
@@ -29798,6 +32574,35 @@
       "maxHits": null,
       "flags": []
     },
+    "make-it-rain": {
+      "name": "make-it-rain",
+      "displayName": "Make It Rain",
+      "type": "steel",
+      "damageClass": "special",
+      "power": 120,
+      "accuracy": 100,
+      "pp": 5,
+      "priority": 0,
+      "shortEffect": "The user attacks by throwing out a mass of coins. This also lowers the user's Sp. Atk stat. Money is earned after the battle.",
+      "effect": "The user attacks by throwing out a mass of coins. This also lowers the user's Sp. Atk stat. Money is earned after the battle.",
+      "target": "all-opponents",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [
+        {
+          "stat": "special-attack",
+          "change": -1
+        }
+      ],
+      "statChance": 0,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": []
+    },
     "matcha-gotcha": {
       "name": "matcha-gotcha",
       "displayName": "Matcha Gotcha",
@@ -30494,6 +33299,51 @@
         "contact",
         "slicing"
       ]
+    },
+    "no-retreat": {
+      "name": "no-retreat",
+      "displayName": "No Retreat",
+      "type": "fighting",
+      "damageClass": "status",
+      "power": null,
+      "accuracy": null,
+      "pp": 5,
+      "priority": 0,
+      "shortEffect": "Hits twice in one turn, with a chance to make the target flinch.",
+      "effect": "Inflicts regular damage. Hits twice in one turn, with a chance to make the target flinch.",
+      "target": "user",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [
+        {
+          "stat": "attack",
+          "change": 1
+        },
+        {
+          "stat": "defense",
+          "change": 1
+        },
+        {
+          "stat": "special-attack",
+          "change": 1
+        },
+        {
+          "stat": "special-defense",
+          "change": 1
+        },
+        {
+          "stat": "speed",
+          "change": 1
+        }
+      ],
+      "statChance": 100,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": []
     },
     "noble-roar": {
       "name": "noble-roar",
@@ -31578,6 +34428,33 @@
       "minHits": null,
       "maxHits": null,
       "flags": []
+    },
+    "rage-fist": {
+      "name": "rage-fist",
+      "displayName": "Rage Fist",
+      "type": "ghost",
+      "damageClass": "physical",
+      "power": 50,
+      "accuracy": 100,
+      "pp": 10,
+      "priority": 0,
+      "shortEffect": "The user converts its rage into energy to attack. The more times the user has been hit by attacks, the greater the move's power.",
+      "effect": "The user converts its rage into energy to attack. The more times the user has been hit by attacks, the greater the move's power.",
+      "target": "selected-pokemon",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [],
+      "statChance": 0,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": [
+        "contact",
+        "punch"
+      ]
     },
     "rage-powder": {
       "name": "rage-powder",
@@ -33342,6 +36219,37 @@
       "maxHits": null,
       "flags": []
     },
+    "spirit-break": {
+      "name": "spirit-break",
+      "displayName": "Spirit Break",
+      "type": "fairy",
+      "damageClass": "physical",
+      "power": 75,
+      "accuracy": 100,
+      "pp": 15,
+      "priority": 0,
+      "shortEffect": "Has a chance to lower the target’s Special Attack by one stage.",
+      "effect": "Inflicts regular damage. Has a chance to lower the target’s Special Attack by one stage.",
+      "target": "selected-pokemon",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [
+        {
+          "stat": "special-attack",
+          "change": -1
+        }
+      ],
+      "statChance": 100,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": [
+        "contact"
+      ]
+    },
     "spirit-shackle": {
       "name": "spirit-shackle",
       "displayName": "Spirit Shackle",
@@ -34712,6 +37620,30 @@
           "change": 1
         }
       ],
+      "statChance": 0,
+      "healing": 0,
+      "drain": 0,
+      "flinchChance": 0,
+      "critRate": 0,
+      "minHits": null,
+      "maxHits": null,
+      "flags": []
+    },
+    "topsy-turvy": {
+      "name": "topsy-turvy",
+      "displayName": "Topsy Turvy",
+      "type": "dark",
+      "damageClass": "status",
+      "power": null,
+      "accuracy": null,
+      "pp": 20,
+      "priority": 0,
+      "shortEffect": "Inverts the target’s stat modifiers.",
+      "effect": "Inverts the target’s stat modifiers.",
+      "target": "selected-pokemon",
+      "ailment": null,
+      "ailmentChance": 0,
+      "statChanges": [],
       "statChance": 0,
       "healing": 0,
       "drain": 0,

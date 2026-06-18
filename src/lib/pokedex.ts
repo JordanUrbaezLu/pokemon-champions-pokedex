@@ -234,6 +234,8 @@ export interface RosterEntry {
   hasMega: boolean;
   /** First Mega/alternate form key, so the list can deep-link straight to it. */
   megaKey: string | null;
+  /** Recently added to Champions — drives the NEW badge and the "New" filter. */
+  isNew: boolean;
   /**
    * Doubles ladder pick rate (%) per data bracket, or null when it sees no
    * meaningful play there — the client toggle picks which one to show/sort by.
@@ -333,6 +335,7 @@ export function getRosterEntries(): RosterEntry[] {
       // changes like Aegislash Blade.
       hasMega: megaForm != null,
       megaKey: megaForm?.key ?? null,
+      isNew: p.isNew ?? false,
       usage,
       species: baseSpecies(p.name),
       pin: buildBestPin(p),

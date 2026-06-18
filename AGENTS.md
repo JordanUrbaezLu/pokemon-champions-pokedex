@@ -14,6 +14,8 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 - Mobile-only (375px first), dark theme, fully static: every page prerendered, **zero runtime
   API calls** (only the sprite CDN, which the service worker caches). Client JS stays small.
 - Data is baked at build into `src/data/generated/{pokemon,competitive}.json` (committed).
+  `roster.json` is the source of truth: `roster` = every species (PokeAPI slugs), `newcomers` =
+  recently-added species the generator stamps `isNew` on (drives the NEW badge + home filter).
 - Champions rules: doubles, Lv 50, fixed 31 IVs, Mega Evolution, **no Terastallization**.
 - The in-game top rank is **Master** — the top-bracket data set is called **Master+** in UI
   and `master` in code/data. Never "Champion rank" (Champions is the *game's* name).
@@ -52,6 +54,11 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
   from the committed dataset and logs it. Patient exponential backoff is already in place.
 - Serebii variant forms (Alolan, Rotom appliances) share the base species' page; the page is a
   multi-form union — hence the learnset intersection. Serebii HTML needs `grep -a` (stray bytes).
+- PokeAPI serves several **Champions-original Megas with `abilities: []`** (Mega Eelektross,
+  Staraptor, Pyroar, Scolipede, Dragalge, Malamar, Scrafty, Barbaracle, Falinks). A Mega's ability
+  is its single most battle-defining fact, so `MEGA_FORM_ABILITIES` in `generate-dataset.mjs`
+  curates them from Serebii (incl. Champions-only abilities **Eelevate**, **Fire Mane** that no
+  PokeAPI/Showdown entry has). `npm run status` asserts every battle form ships an ability+effect.
 - Puppeteer's `setOfflineMode` does NOT apply to service workers — to test offline for real,
   prime the cache, kill the server, then navigate.
 - Damage math foundation: lv50 formula in `battle.ts` (31 IVs); build-time verdicts use
@@ -60,12 +67,13 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 **Design system (keep the discipline)**
 - Tokens in `globals.css`: bg #0b0f14, surface(s), accent #ff5350, muted #93a1b0.
 - Red = threat semantics only (nav chrome is neutral); green = opportunity (kill shot);
-  stat bars use a single-hue amber luminance ramp (colorblind-safe).
+  stat bars use a single-hue amber luminance ramp (colorblind-safe); cyan/sky = "New to
+  Champions" (newcomer badge + filter) — deliberately NOT red, so a new mon never reads as a threat.
 - 10px type floor; numbers win the hierarchy (big right-rail stats with tiny captions);
   44px touch targets; one-thumb reach; no section earns its place without a mid-battle question
   it answers (the page order IS the priority order: Threat Profile → Speed → stats → … →
   Type Matchups at the bottom by owner request).
 
 **Verification bar for any change**
-`npx tsc --noEmit` + `npm run lint` + `npm run build` (210 static pages) must stay green, and
+`npx tsc --noEmit` + `npm run lint` + `npm run build` (232 static pages) must stay green, and
 visual changes get a `npm run shot` screenshot check at 375px before they're called done.
