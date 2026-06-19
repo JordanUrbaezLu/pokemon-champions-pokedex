@@ -5,7 +5,7 @@
     "month": "2026-05",
     "battles": 3355619,
     "source": "https://www.smogon.com/stats/2026-05/chaos/gen9championsvgc2026regma-1760.json",
-    "generatedAt": "2026-06-18",
+    "generatedAt": "2026-06-19",
     "bracketLabels": {
       "master": "Master+ (top ladder brackets)",
       "all": "all ranks"
@@ -1578,7 +1578,7 @@
         "items": [
           {
             "displayName": "Clefablite",
-            "slug": null,
+            "slug": "clefablite",
             "usagePct": 100
           }
         ],
@@ -2538,7 +2538,7 @@
         "items": [
           {
             "displayName": "Victreebelite",
-            "slug": null,
+            "slug": "victreebelite",
             "usagePct": 100
           }
         ],
@@ -3602,7 +3602,7 @@
         "items": [
           {
             "displayName": "Starminite",
-            "slug": null,
+            "slug": "starminite",
             "usagePct": 100
           }
         ],
@@ -5114,7 +5114,7 @@
         "items": [
           {
             "displayName": "Dragoninite",
-            "slug": null,
+            "slug": "dragoninite",
             "usagePct": 100
           }
         ],
@@ -5227,7 +5227,7 @@
         "items": [
           {
             "displayName": "Meganiumite",
-            "slug": null,
+            "slug": "meganiumite",
             "usagePct": 100
           }
         ],
@@ -5592,7 +5592,7 @@
         "items": [
           {
             "displayName": "Feraligite",
-            "slug": null,
+            "slug": "feraligite",
             "usagePct": 100
           }
         ],
@@ -7550,7 +7550,7 @@
         "items": [
           {
             "displayName": "Skarmorite",
-            "slug": null,
+            "slug": "skarmorite",
             "usagePct": 100
           }
         ],
@@ -10355,7 +10355,7 @@
         "items": [
           {
             "displayName": "Chimechite",
-            "slug": null,
+            "slug": "chimechite",
             "usagePct": 100
           }
         ],
@@ -14160,7 +14160,7 @@
         "items": [
           {
             "displayName": "Froslassite",
-            "slug": null,
+            "slug": "froslassite",
             "usagePct": 100
           }
         ],
@@ -15106,7 +15106,7 @@
         "items": [
           {
             "displayName": "Emboarite",
-            "slug": null,
+            "slug": "emboarite",
             "usagePct": 100
           }
         ],
@@ -15898,7 +15898,7 @@
         "items": [
           {
             "displayName": "Excadrite",
-            "slug": null,
+            "slug": "excadrite",
             "usagePct": 100
           }
         ],
@@ -17542,7 +17542,7 @@
         "items": [
           {
             "displayName": "Chandelurite",
-            "slug": null,
+            "slug": "chandelurite",
             "usagePct": 100
           }
         ],
@@ -18055,7 +18055,7 @@
         "items": [
           {
             "displayName": "Golurkite",
-            "slug": null,
+            "slug": "golurkite",
             "usagePct": 100
           }
         ],
@@ -18518,7 +18518,7 @@
         "items": [
           {
             "displayName": "Chesnaughtite",
-            "slug": null,
+            "slug": "chesnaughtite",
             "usagePct": 100
           }
         ],
@@ -18773,7 +18773,7 @@
         "items": [
           {
             "displayName": "Delphoxite",
-            "slug": null,
+            "slug": "delphoxite",
             "usagePct": 100
           }
         ],
@@ -19021,7 +19021,7 @@
         "items": [
           {
             "displayName": "Greninjite",
-            "slug": null,
+            "slug": "greninjite",
             "usagePct": 100
           }
         ],
@@ -19556,7 +19556,7 @@
         "items": [
           {
             "displayName": "Floettite",
-            "slug": null,
+            "slug": "floettite",
             "usagePct": 100
           }
         ],
@@ -21217,7 +21217,7 @@
         "items": [
           {
             "displayName": "Hawluchanite",
-            "slug": null,
+            "slug": "hawluchanite",
             "usagePct": 100
           }
         ],
@@ -22900,7 +22900,7 @@
         "items": [
           {
             "displayName": "Crabominite",
-            "slug": null,
+            "slug": "crabominite",
             "usagePct": 100
           }
         ],
@@ -24175,7 +24175,7 @@
         "items": [
           {
             "displayName": "Drampanite",
-            "slug": null,
+            "slug": "drampanite",
             "usagePct": 100
           }
         ],
@@ -27426,7 +27426,7 @@
         "items": [
           {
             "displayName": "Scovillainite",
-            "slug": null,
+            "slug": "scovillainite",
             "usagePct": 100
           }
         ],
@@ -28206,7 +28206,7 @@
         "items": [
           {
             "displayName": "Glimmoranite",
-            "slug": null,
+            "slug": "glimmoranite",
             "usagePct": 100
           }
         ],
@@ -30228,7 +30228,7 @@
         "items": [
           {
             "displayName": "Clefablite",
-            "slug": null,
+            "slug": "clefablite",
             "usagePct": 100
           }
         ],
@@ -31001,7 +31001,7 @@
         "items": [
           {
             "displayName": "Victreebelite",
-            "slug": null,
+            "slug": "victreebelite",
             "usagePct": 100
           }
         ],
@@ -31738,7 +31738,7 @@
         "items": [
           {
             "displayName": "Starminite",
-            "slug": null,
+            "slug": "starminite",
             "usagePct": 100
           }
         ],
@@ -32956,7 +32956,7 @@
         "items": [
           {
             "displayName": "Dragoninite",
-            "slug": null,
+            "slug": "dragoninite",
             "usagePct": 100
           }
         ],
@@ -33013,7 +33013,7 @@
         "items": [
           {
             "displayName": "Meganiumite",
-            "slug": null,
+            "slug": "meganiumite",
             "usagePct": 100
           }
         ],
@@ -33332,7 +33332,7 @@
         "items": [
           {
             "displayName": "Feraligite",
-            "slug": null,
+            "slug": "feraligite",
             "usagePct": 100
           }
         ],
@@ -34824,7 +34824,7 @@
         "items": [
           {
             "displayName": "Skarmorite",
-            "slug": null,
+            "slug": "skarmorite",
             "usagePct": 100
           }
         ],
@@ -37068,7 +37068,7 @@
         "items": [
           {
             "displayName": "Chimechite",
-            "slug": null,
+            "slug": "chimechite",
             "usagePct": 100
           }
         ],
@@ -39763,7 +39763,7 @@
         "items": [
           {
             "displayName": "Froslassite",
-            "slug": null,
+            "slug": "froslassite",
             "usagePct": 100
           }
         ],
@@ -40475,7 +40475,7 @@
         "items": [
           {
             "displayName": "Emboarite",
-            "slug": null,
+            "slug": "emboarite",
             "usagePct": 100
           }
         ],
@@ -41261,7 +41261,7 @@
         "items": [
           {
             "displayName": "Excadrite",
-            "slug": null,
+            "slug": "excadrite",
             "usagePct": 100
           }
         ],
@@ -42491,7 +42491,7 @@
         "items": [
           {
             "displayName": "Chandelurite",
-            "slug": null,
+            "slug": "chandelurite",
             "usagePct": 100
           }
         ],
@@ -42922,7 +42922,7 @@
         "items": [
           {
             "displayName": "Golurkite",
-            "slug": null,
+            "slug": "golurkite",
             "usagePct": 100
           }
         ],
@@ -43250,7 +43250,7 @@
         "items": [
           {
             "displayName": "Chesnaughtite",
-            "slug": null,
+            "slug": "chesnaughtite",
             "usagePct": 100
           }
         ],
@@ -43428,7 +43428,7 @@
         "items": [
           {
             "displayName": "Delphoxite",
-            "slug": null,
+            "slug": "delphoxite",
             "usagePct": 100
           }
         ],
@@ -43596,7 +43596,7 @@
         "items": [
           {
             "displayName": "Greninjite",
-            "slug": null,
+            "slug": "greninjite",
             "usagePct": 100
           }
         ],
@@ -43971,7 +43971,7 @@
         "items": [
           {
             "displayName": "Floettite",
-            "slug": null,
+            "slug": "floettite",
             "usagePct": 100
           }
         ],
@@ -45260,7 +45260,7 @@
         "items": [
           {
             "displayName": "Hawluchanite",
-            "slug": null,
+            "slug": "hawluchanite",
             "usagePct": 100
           }
         ],
@@ -46657,7 +46657,7 @@
         "items": [
           {
             "displayName": "Crabominite",
-            "slug": null,
+            "slug": "crabominite",
             "usagePct": 100
           }
         ],
@@ -47581,7 +47581,7 @@
         "items": [
           {
             "displayName": "Drampanite",
-            "slug": null,
+            "slug": "drampanite",
             "usagePct": 100
           }
         ],
@@ -49876,7 +49876,7 @@
         "items": [
           {
             "displayName": "Scovillainite",
-            "slug": null,
+            "slug": "scovillainite",
             "usagePct": 100
           }
         ],
@@ -50429,7 +50429,7 @@
         "items": [
           {
             "displayName": "Glimmoranite",
-            "slug": null,
+            "slug": "glimmoranite",
             "usagePct": 100
           }
         ],
@@ -51607,6 +51607,204 @@
       "category": "Type Enhancement",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/silver-powder.png",
       "flingPower": 10
+    },
+    "clefablite": {
+      "slug": "clefablite",
+      "displayName": "Clefablite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "victreebelite": {
+      "slug": "victreebelite",
+      "displayName": "Victreebelite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "starminite": {
+      "slug": "starminite",
+      "displayName": "Starminite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "dragoninite": {
+      "slug": "dragoninite",
+      "displayName": "Dragoninite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "meganiumite": {
+      "slug": "meganiumite",
+      "displayName": "Meganiumite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "feraligite": {
+      "slug": "feraligite",
+      "displayName": "Feraligite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "skarmorite": {
+      "slug": "skarmorite",
+      "displayName": "Skarmorite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "chimechite": {
+      "slug": "chimechite",
+      "displayName": "Chimechite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "froslassite": {
+      "slug": "froslassite",
+      "displayName": "Froslassite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "emboarite": {
+      "slug": "emboarite",
+      "displayName": "Emboarite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "excadrite": {
+      "slug": "excadrite",
+      "displayName": "Excadrite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "chandelurite": {
+      "slug": "chandelurite",
+      "displayName": "Chandelurite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "golurkite": {
+      "slug": "golurkite",
+      "displayName": "Golurkite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "chesnaughtite": {
+      "slug": "chesnaughtite",
+      "displayName": "Chesnaughtite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "delphoxite": {
+      "slug": "delphoxite",
+      "displayName": "Delphoxite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "greninjite": {
+      "slug": "greninjite",
+      "displayName": "Greninjite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "floettite": {
+      "slug": "floettite",
+      "displayName": "Floettite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "hawluchanite": {
+      "slug": "hawluchanite",
+      "displayName": "Hawluchanite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "crabominite": {
+      "slug": "crabominite",
+      "displayName": "Crabominite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "drampanite": {
+      "slug": "drampanite",
+      "displayName": "Drampanite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "scovillainite": {
+      "slug": "scovillainite",
+      "displayName": "Scovillainite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
+    },
+    "glimmoranite": {
+      "slug": "glimmoranite",
+      "displayName": "Glimmoranite",
+      "shortEffect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "effect": "A Mega Stone. Its holder can Mega Evolve during battle.",
+      "category": "Mega Stones",
+      "sprite": null,
+      "flingPower": null
     }
   }
 }

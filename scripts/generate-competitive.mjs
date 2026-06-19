@@ -368,6 +368,41 @@ async function main() {
   const itemSlugOf = (id) => itemSlugByStripped.get(id) ?? null;
   const moveOf = (id) => moveDisplay.get(id) ?? { displayName: toDisplayName(id), slug: null };
 
+  // EVERY shown item must be tappable with a description. PokeAPI's item DB
+  // lacks some Champions items — Mega Stones for mons the mainline never gave one
+  // (Greninjite, Clefablite, …) today, and potentially any future Champions-
+  // original item. When itemSlugOf returns null we synthesize a slug + a
+  // description floor so the row is never an un-tappable dead end. Mega Stones
+  // (name ends in "ite") get the Mega Stone blurb; anything else gets a generic
+  // floor and is logged so a maintainer can add a curated ITEM_OVERRIDES entry.
+  const MEGA_STONE_DESC = "A Mega Stone. Its holder can Mega Evolve during battle.";
+  const isMegaStone = (name) => /ite$/i.test(name.replace(/\s+/g, ""));
+  const genericItemDesc = (name) => `${name} — a held item used in Pokémon Champions.`;
+  const synthDetail = (slug, name) => {
+    const desc = isMegaStone(name) ? MEGA_STONE_DESC : genericItemDesc(name);
+    return {
+      slug,
+      displayName: name,
+      shortEffect: desc,
+      effect: desc,
+      category: isMegaStone(name) ? "Mega Stones" : null,
+      sprite: null,
+      flingPower: null,
+    };
+  };
+  const synthItems = {};
+  const synthWarn = new Set();
+  const resolveItemSlug = (id) => {
+    const real = itemSlugOf(id);
+    if (real) return real;
+    const name = itemName(id);
+    if (!synthItems[id]) {
+      synthItems[id] = synthDetail(id, name);
+      if (!isMegaStone(name)) synthWarn.add(name);
+    }
+    return id; // never null — the row stays tappable
+  };
+
   const rosterSlugs = new Set(roster.map((s) => s.replace(/\./g, "-")));
   const teammateSlug = (name) => {
     const s = slugify(name);
@@ -421,7 +456,7 @@ async function main() {
       moveUsage,
       items: topClean(m.Items, 3).map(([id, c]) => ({
         displayName: itemName(id),
-        slug: itemSlugOf(id),
+        slug: resolveItemSlug(id),
         usagePct: pct(c, itemSum),
       })),
       itemClasses: itemClassesOf(m.Items),
@@ -551,12 +586,23 @@ async function main() {
     ...new Set(
       Object.values(brackets).flatMap(({ profiles }) =>
         Object.values(profiles).flatMap((p) =>
-          p.items.map((it) => it.slug).filter(Boolean),
+          // Synthesized Mega Stones aren't on PokeAPI — fetching them would 404
+          // (and burn the retry budget); they're merged in from synthItems below.
+          p.items.map((it) => it.slug).filter((s) => s && !synthItems[s]),
         ),
       ),
     ),
   ];
   console.log(`Fetching ${itemSlugs.length} item details…`);
+  // Salvage source for items whose live PokeAPI fetch fails on every retry —
+  // the committed dataset, mirroring the move/pokemon generator's salvage. An
+  // item detail barely drifts, so a salvaged entry beats a dropped (un-tappable) one.
+  let previousItemIndex = {};
+  try {
+    previousItemIndex = JSON.parse(await readFile(OUT_PATH, "utf8")).itemIndex ?? {};
+  } catch {
+    // First run — nothing to salvage from.
+  }
   const itemIndex = {};
   for (let i = 0; i < itemSlugs.length; i += 8) {
     const chunk = itemSlugs.slice(i, i + 8);
@@ -580,12 +626,41 @@ async function main() {
             flingPower: d.fling_power ?? null,
           }];
         } catch {
-          return null;
+          // Fetch failed for a real slug — reuse the last committed detail rather
+          // than dropping it (which would render an un-tappable row).
+          return previousItemIndex[slug] ? [slug, previousItemIndex[slug]] : null;
         }
       }),
     );
     for (const r of results) if (r) itemIndex[r[0]] = r[1];
   }
+  // Champions-original items with no PokeAPI entry (Mega Stones today) — fold in
+  // their synthesized details.
+  Object.assign(itemIndex, synthItems);
+
+  // FINAL FLOOR (by construction, independent of `npm run status`): every item
+  // shown in any profile must have a non-null slug AND resolve to a detail with
+  // a real (>=3 char) description. Synthesize for anything that slipped through
+  // (a real slug whose fetch failed with no salvage, a one-off junk stub, …), so
+  // the app can NEVER render an un-tappable or blank item sheet.
+  const meaningless = (s) => !s || String(s).trim().length < 3;
+  let itemFloored = 0;
+  for (const b of Object.values(brackets)) {
+    for (const p of Object.values(b.profiles)) {
+      for (const it of p.items) {
+        if (!it.slug) it.slug = slugify(it.displayName);
+        const d = itemIndex[it.slug];
+        if (!d || (meaningless(d.effect) && meaningless(d.shortEffect))) {
+          itemIndex[it.slug] = synthDetail(it.slug, it.displayName);
+          itemFloored++;
+        }
+      }
+    }
+  }
+  if (synthWarn.size) {
+    console.warn(`  ~ ${synthWarn.size} non-Mega-Stone item(s) had no PokeAPI entry — used a generic description floor; add a curated ITEM_OVERRIDES entry: ${[...synthWarn].join(", ")}`);
+  }
+  if (itemFloored) console.log(`  + floored ${itemFloored} item detail(s) so every shown item is tappable + described`);
 
   const battles = chaosByCutoff[BRACKETS.all.cutoffs[0]].info["number of battles"];
   const out = {

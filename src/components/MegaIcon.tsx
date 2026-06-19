@@ -12,6 +12,10 @@ export function MegaIcon({ className }: { className?: string }) {
       width={24}
       height={24}
       className={className}
+      // One tiny shared asset reused across the list — load it eagerly so iOS
+      // Safari repaints it after a back navigation (native lazy leaves it blank
+      // until a scroll), same fix as the roster icons.
+      loading="eager"
     />
   );
 }
