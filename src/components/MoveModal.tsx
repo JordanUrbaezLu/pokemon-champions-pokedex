@@ -218,11 +218,14 @@ export function MoveModal({
           </div>
         )}
 
-        {(move.effect || move.shortEffect) && (
-          <p className="mt-4 text-sm leading-relaxed text-muted">
-            {move.effect || move.shortEffect}
-          </p>
-        )}
+        {/* The dataset guarantees description text (and `npm run status` enforces
+            it), but fall back to a mechanics-derived line so a sheet is never
+            blank even if that guarantee ever slips. */}
+        <p className="mt-4 text-sm leading-relaxed text-muted">
+          {move.effect ||
+            move.shortEffect ||
+            `A ${toDisplayName(move.type)}-type ${move.damageClass} move.`}
+        </p>
       </div>
     </div>
   );

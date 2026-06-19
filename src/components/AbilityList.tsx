@@ -65,11 +65,11 @@ export function AbilityList({
                 </span>
               )}
             </div>
-            {ability.shortEffect && (
-              <p className="mt-0.5 text-sm leading-snug text-muted">
-                {ability.shortEffect}
-              </p>
-            )}
+            {/* Data guarantees effect text (enforced by `npm run status`); the
+                fallback keeps the row from ever looking empty if that slips. */}
+            <p className="mt-0.5 text-sm leading-snug text-muted">
+              {ability.shortEffect || "Effect description unavailable."}
+            </p>
           </li>
         );
       })}

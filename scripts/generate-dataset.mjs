@@ -346,6 +346,27 @@ function buildMoveFromShowdown(slug, sd) {
   };
 }
 
+/**
+ * Last-resort move description, synthesized from the move's own mechanics — the
+ * floor that guarantees no move ever ships with an empty effect (so the move
+ * sheet is never blank), even for a brand-new move neither PokeAPI nor Showdown
+ * has text for yet. Only used when both sources came up empty.
+ */
+function synthMoveDescription(m) {
+  const type = m.type ? toDisplayName(m.type) : "Typeless";
+  const kind = m.damageClass === "status" ? "status move" : `${m.damageClass} move`;
+  const bits = [];
+  if (m.power) bits.push(`${m.power} base power`);
+  if (m.ailment) bits.push(`can inflict ${toDisplayName(m.ailment)}`);
+  if (m.healing > 0) bits.push(`restores HP`);
+  if (m.drain > 0) bits.push(`drains HP`);
+  if (m.drain < 0) bits.push(`deals recoil`);
+  for (const sc of m.statChanges ?? []) {
+    bits.push(`${sc.change > 0 ? "raises" : "lowers"} ${toDisplayName(sc.stat)}`);
+  }
+  return `A ${type}-type ${kind}.${bits.length ? ` ${bits.join("; ")}.` : ""}`;
+}
+
 // Populated in main() before any Pokémon is built.
 /** Recently-added species (from roster.json `newcomers`) — stamped `isNew` so
  * the app can flag them with a NEW badge + filter while they have no ladder data. */
@@ -725,6 +746,35 @@ async function main() {
     console.warn(`  ! ${dropped.length} move(s) missing from PokeAPI AND Showdown (dropped): ${dropped.join(", ")}`);
   }
   for (const p of built) p.moveSlugs = p.moveSlugs.filter((s) => moves[s]);
+
+  // Fullproof: every move the app can render must carry description text, so a
+  // tapped move sheet is never blank. PokeAPI sometimes has a move but no
+  // effect/flavor text — backfill from Showdown, then synthesize from the
+  // move's own mechanics as the absolute floor. (`npm run status` enforces this.)
+  let backfilled = 0;
+  let synthed = 0;
+  for (const m of Object.values(moves)) {
+    if (!m.shortEffect || !m.effect) {
+      const sd = showdown[stripId(m.name)];
+      const sdShort = (sd?.shortDesc || sd?.desc || "").trim();
+      const sdLong = (sd?.desc || sd?.shortDesc || "").trim();
+      if (!m.shortEffect && sdShort) { m.shortEffect = sdShort; backfilled++; }
+      if (!m.effect && sdLong) m.effect = sdLong;
+    }
+    if (!m.shortEffect && !m.effect) {
+      const synth = synthMoveDescription(m);
+      m.shortEffect = synth;
+      m.effect = synth;
+      synthed++;
+    } else {
+      // Mirror a one-sided description across both fields the UI reads.
+      if (!m.effect) m.effect = m.shortEffect;
+      if (!m.shortEffect) m.shortEffect = m.effect;
+    }
+  }
+  if (backfilled || synthed) {
+    console.log(`  + move descriptions: backfilled ${backfilled} from Showdown, synthesized ${synthed} from mechanics`);
+  }
 
   await mkdir(dirname(OUT_PATH), { recursive: true });
   await writeFile(

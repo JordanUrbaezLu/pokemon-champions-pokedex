@@ -26,6 +26,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run data:all
+      # Fail the refresh BEFORE opening a PR if the re-bake introduced any gap —
+      # a move/ability/item with no description, an un-tappable item, an orphan
+      # move ref, a date mismatch, etc. This is the enforcement point that makes
+      # the "every sheet has a description" guarantee permanent, not just local.
+      - name: Verify data integrity (no blank/un-tappable sheets)
+        run: npm run status
       - name: Open PR if data changed
         uses: peter-evans/create-pull-request@v6
         with:

@@ -29,6 +29,65 @@ for (const [bracket, profiles] of Object.entries(comp.brackets)) {
   );
 }
 
+// --- Description completeness ----------------------------------------------
+// Nothing the app renders may open to a blank sheet or be un-tappable. These
+// guard the "opened a move/item and there was no description" class of bug for
+// CURRENT and FUTURE data — a new move/item/ability that ships without a
+// description (or an item with no detail) turns this red instead of slipping by.
+// "Blank" is stricter than empty: a description that's whitespace, a known junk
+// stub ("null", "N/A", "-", "?"), or under 3 non-space chars is as useless to a
+// trainer as none at all, so the guards treat it as a gap too.
+const JUNK_DESC = /^(null|undefined|none|n\/?a|tbd|-+|\.+|\?+)$/i;
+const blank = (s) => {
+  const t = String(s ?? "").trim();
+  return !t || t.length < 3 || JUNK_DESC.test(t);
+};
+const moveIndex = dex.moves ?? {};
+
+// Moves whose sheet would render no description (both effect fields empty).
+const movesNoDesc = Object.values(moveIndex).filter((m) => blank(m.effect) && blank(m.shortEffect));
+
+// Every move slug the app references must resolve in the shared move index.
+const referencedMoves = new Set();
+for (const p of mons) for (const s of p.moveSlugs ?? []) referencedMoves.add(s);
+for (const b of Object.values(comp.brackets ?? {})) {
+  for (const pr of Object.values(b)) {
+    for (const s of Object.keys(pr.moveUsage ?? {})) referencedMoves.add(s);
+    for (const t of pr.setupThreats ?? []) if (t.slug) referencedMoves.add(t.slug);
+    for (const bm of pr.benchmarks ?? []) if (bm.move) referencedMoves.add(bm.move);
+  }
+}
+const orphanMoves = [...referencedMoves].filter((s) => !moveIndex[s]);
+
+// Every ability the app shows (base + every form) must carry effect text.
+const abilNoDesc = [];
+for (const p of mons) {
+  // A mon that ships with NO base abilities renders an empty "Abilities" section
+  // — [].every() is vacuously true, so guard the length explicitly (as forms do).
+  if (!(p.abilities?.length)) abilNoDesc.push(`${p.name} (no abilities)`);
+  for (const a of p.abilities ?? []) if (blank(a.shortEffect)) abilNoDesc.push(`${p.name}:${a.displayName}`);
+  for (const f of p.forms ?? []) {
+    if (!(f.abilities?.length)) abilNoDesc.push(`${f.key}:(no abilities)`);
+    for (const a of f.abilities ?? []) if (blank(a.shortEffect)) abilNoDesc.push(`${f.key}:${a.displayName}`);
+  }
+}
+
+// Every item shown in "Common Items" must be tappable (non-null slug) AND
+// resolve to an itemIndex entry that has a description.
+const itemIndex = comp.itemIndex ?? {};
+const itemGaps = new Set();
+for (const b of Object.values(comp.brackets ?? {})) {
+  for (const pr of Object.values(b)) {
+    for (const it of pr.items ?? []) {
+      if (!it.slug) itemGaps.add(`${it.displayName} (no slug → not tappable)`);
+      else if (!itemIndex[it.slug]) itemGaps.add(`${it.displayName} (no detail)`);
+      else if (blank(itemIndex[it.slug].effect) && blank(itemIndex[it.slug].shortEffect))
+        itemGaps.add(`${it.displayName} (blank description)`);
+    }
+  }
+}
+const sample = (arr) => [...arr].slice(0, 8).join(", ") + (([...arr].length > 8) ? ` …(+${[...arr].length - 8})` : "");
+
 // Integrity invariants — each guards a bug this project actually hit once.
 const checks = [
   ["no Tera moves anywhere (Champions has no Tera)", mons.every((p) => !p.moveSlugs.includes("tera-blast"))],
@@ -43,13 +102,21 @@ const checks = [
   ["every battle form carries an ability", mons.every((p) => (p.forms ?? []).every((f) => f.abilities?.length > 0 && f.abilities.every((a) => a.shortEffect)))],
   // Newcomers (no ladder data yet) are flagged so the NEW badge + filter work.
   ["new-to-Champions mons are flagged isNew", mons.some((p) => p.isNew)],
+  // --- no blank/un-tappable sheets, current or future ---
+  [`every move shows a description (${Object.keys(moveIndex).length} moves)`, movesNoDesc.length === 0, `${movesNoDesc.length} blank: ${sample(movesNoDesc.map((m) => m.name))}`],
+  ["every referenced move resolves in the move index", orphanMoves.length === 0, `${orphanMoves.length} orphans: ${sample(orphanMoves)}`],
+  ["every ability (base + form) has effect text", abilNoDesc.length === 0, `${abilNoDesc.length} blank: ${sample(abilNoDesc)}`],
+  ["every shown item is tappable with a description", itemGaps.size === 0, `${itemGaps.size} gaps: ${sample(itemGaps)}`],
 ];
 
 console.log("");
 let failed = 0;
-for (const [label, ok] of checks) {
+for (const [label, ok, detail] of checks) {
   console.log(`  ${ok ? "✓" : "✗"} ${label}`);
-  if (!ok) failed++;
+  if (!ok) {
+    failed++;
+    if (detail) console.log(`      ↳ ${detail}`);
+  }
 }
 
 const ageDays = dex.generatedAt
