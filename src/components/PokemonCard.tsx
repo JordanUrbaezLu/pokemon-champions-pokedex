@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { TypeBadge } from "./TypeBadge";
@@ -12,22 +12,35 @@ import { useOpponents } from "@/lib/opponents";
 import type { RosterEntry } from "@/lib/pokedex";
 
 /**
- * Warm the detail-page hero artwork once the card scrolls near the viewport, so
- * tapping it shows the image instantly — the image counterpart to Next's
- * route prefetch. Uses a wide rootMargin to fetch just ahead of the scroll.
+ * Tracks when a card scrolls near the viewport — two jobs:
+ *  - warm the detail-page hero artwork (the image counterpart to Next's route
+ *    prefetch) so tapping the card shows it instantly;
+ *  - flip `seen` so the row icon can switch from lazy to EAGER loading.
+ *
+ * Why `seen` matters: iOS Safari's native `loading="lazy"` does NOT reliably
+ * (re)load/paint in-viewport images after a client-side back navigation until a
+ * scroll nudges them — which left already-cached roster icons blurry/unrendered
+ * on Back (the eager detail hero never had this problem). An IntersectionObserver
+ * DOES fire on mount for elements already in view, so eager-loading once `seen`
+ * repaints them immediately, while off-screen rows stay lazy (light first paint).
+ * `seen` is sticky — once a row has been shown it never reverts.
  */
-function useArtworkPrefetch(srcs: (string | null)[]) {
+function useCardInView(prefetch: (string | null)[]) {
   const ref = useRef<HTMLDivElement>(null);
+  const [seen, setSeen] = useState(false);
   useEffect(() => {
+    if (seen) return; // sticky — nothing left to observe
     const el = ref.current;
-    const urls = srcs.filter((s): s is string => !!s);
-    if (!el || urls.length === 0) return;
+    if (!el) return;
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
-          for (const url of urls) {
-            const img = new window.Image();
-            img.src = url;
+          setSeen(true);
+          for (const url of prefetch) {
+            if (url) {
+              const img = new window.Image();
+              img.src = url;
+            }
           }
           io.disconnect();
         }
@@ -37,8 +50,8 @@ function useArtworkPrefetch(srcs: (string | null)[]) {
     io.observe(el);
     return () => io.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [srcs.join("|")]);
-  return ref;
+  }, [seen, prefetch.join("|")]);
+  return { ref, seen };
 }
 
 /**
@@ -60,7 +73,7 @@ export function PokemonCard({
 }) {
   const accent = TYPE_COLORS[entry.types[0]];
   const showUsage = usagePct != null && usagePct >= 0.1;
-  const cardRef = useArtworkPrefetch([entry.artwork, entry.megaArtwork]);
+  const { ref: cardRef, seen } = useCardInView([entry.artwork, entry.megaArtwork]);
 
   const { opponents, pin, unpin } = useOpponents();
   const isPinned = opponents.some((o) => o.slug === entry.name);
@@ -110,6 +123,10 @@ export function PokemonCard({
             width={74}
             height={74}
             className="size-18.5 object-contain"
+            // Eager once the row is in view so iOS Safari repaints it on a back
+            // navigation (native lazy leaves cached icons blurry until a scroll);
+            // rows still off-screen stay lazy to keep first paint light.
+            loading={seen ? "eager" : "lazy"}
           />
         ) : null}
       </div>
