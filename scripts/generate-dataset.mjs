@@ -598,7 +598,7 @@ async function buildPokemon(rosterSlug) {
   // inherit the base species' Megas (e.g. Alolan Raichu can't Mega Evolve).
   const isVariant = /-(alola|galar|hisui|paldea|wash|heat|frost|mow|fan)(-.*)?$/.test(slug);
   const altSlugs = isVariant ? [] : findAltForms(speciesData, data.name);
-  const forms = (
+  let forms = (
     await Promise.all(altSlugs.map((s) => buildForm(s, displayName)))
   ).filter(Boolean);
 
@@ -611,6 +611,22 @@ async function buildPokemon(rosterSlug) {
     ).filter(Boolean);
     forms.push(...built);
   }
+
+  // PokeAPI can serve two Mega varieties for one species that are battle-
+  // identical — Meowstic's male/female Megas share type, stats, ability, and
+  // label ("Mega Meowstic"); only the sprite differs. Two indistinguishable
+  // "Mega" tabs answer no mid-battle question, so collapse forms that match on
+  // every battle-relevant field, keeping the first (default variety's sprite).
+  const seenForms = new Set();
+  forms = forms.filter((f) => {
+    const sig = JSON.stringify([f.label, f.kind, f.types, f.stats, f.abilities]);
+    if (seenForms.has(sig)) {
+      console.warn(`  ~ ${f.key}: battle-identical to an earlier "${f.label}" — collapsed`);
+      return false;
+    }
+    seenForms.add(sig);
+    return true;
+  });
 
   // The Champions movepool is the source of truth. Variant forms (Alolan
   // Ninetales, Wash Rotom, …) have no Serebii page of their own — their moves

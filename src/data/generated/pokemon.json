@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-19",
+  "generatedAt": "2026-07-10",
   "pokemon": [
     {
       "id": 3,
@@ -938,7 +938,7 @@
               "shortEffect": "When this Pokémon enters battle, it changes the terrain to Electric Terrain."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10304.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10304.png"
         },
         {
@@ -965,7 +965,7 @@
               "shortEffect": "Ensures all moves used by and against the Pokémon hit."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10305.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10305.png"
         }
       ],
@@ -979,9 +979,11 @@
         "charge",
         "charge-beam",
         "charm",
+        "dazzling-gleam",
         "dig",
         "discharge",
         "double-team",
+        "drain-punch",
         "draining-kiss",
         "eerie-impulse",
         "electric-terrain",
@@ -1078,6 +1080,7 @@
         "charge",
         "charge-beam",
         "charm",
+        "dazzling-gleam",
         "dig",
         "discharge",
         "double-team",
@@ -1212,7 +1215,7 @@
               "shortEffect": "Reflects most non-damaging moves back at their user."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10278.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10278.png"
         }
       ],
@@ -1768,6 +1771,7 @@
         "bite",
         "body-slam",
         "bulldoze",
+        "burn-up",
         "close-combat",
         "covet",
         "crunch",
@@ -1807,6 +1811,7 @@
         "rock-blast",
         "rock-slide",
         "rock-tomb",
+        "round",
         "sandstorm",
         "scary-face",
         "scorching-sands",
@@ -1814,6 +1819,7 @@
         "smack-down",
         "smart-strike",
         "snarl",
+        "snore",
         "solar-beam",
         "stealth-rock",
         "stone-edge",
@@ -2479,6 +2485,7 @@
         "surf",
         "thunder-wave",
         "toxic",
+        "toxic-spikes",
         "tri-attack",
         "trick",
         "trick-room",
@@ -2839,7 +2846,7 @@
               "shortEffect": "Doubles Attack in battle."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10280.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10280.png"
         }
       ],
@@ -3202,8 +3209,10 @@
         "hydro-pump",
         "hyper-beam",
         "iron-head",
+        "iron-tail",
         "lash-out",
         "liquidation",
+        "megahorn",
         "outrage",
         "protect",
         "raging-bull",
@@ -3212,10 +3221,12 @@
         "reversal",
         "rock-slide",
         "rock-tomb",
+        "round",
         "sandstorm",
         "scary-face",
         "sleep-talk",
         "smart-strike",
+        "snore",
         "stomping-tantrum",
         "stone-edge",
         "substitute",
@@ -3224,6 +3235,7 @@
         "thief",
         "thrash",
         "trailblaze",
+        "uproar",
         "water-pulse",
         "wave-crash",
         "whirlpool",
@@ -4173,7 +4185,7 @@
               "shortEffect": "The Pokémon can use its moves as if the weather were harsh sunlight."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10282.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10282.png"
         }
       ],
@@ -4426,6 +4438,7 @@
         "iron-head",
         "lava-plume",
         "low-kick",
+        "mega-kick",
         "mystical-fire",
         "night-shade",
         "overheat",
@@ -4515,7 +4528,7 @@
               "shortEffect": "The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10283.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10283.png"
         }
       ],
@@ -6257,7 +6270,7 @@
               "shortEffect": "Ignores moves and abilities that draw in moves."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10284.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10284.png"
         }
       ],
@@ -8922,7 +8935,7 @@
               "shortEffect": "Evades Ground moves."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10306.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10306.png"
         }
       ],
@@ -9819,7 +9832,7 @@
               "shortEffect": "Inverts stat changes."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10308.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10308.png"
         }
       ],
@@ -12080,7 +12093,7 @@
               "shortEffect": "Summons hail that lasts indefinitely upon entering battle."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10285.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10285.png"
         }
       ],
@@ -12770,7 +12783,7 @@
               "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10286.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10286.png"
         }
       ],
@@ -13053,6 +13066,7 @@
         "soak",
         "substitute",
         "sucker-punch",
+        "superpower",
         "surf",
         "swords-dance",
         "taunt",
@@ -13706,7 +13720,7 @@
               "shortEffect": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10287.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10287.png"
         }
       ],
@@ -14083,7 +14097,7 @@
               "shortEffect": "Protects against critical hits."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10288.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10288.png"
         }
       ],
@@ -14437,7 +14451,7 @@
               "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10289.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10289.png"
         }
       ],
@@ -14849,8 +14863,10 @@
       "moveSlugs": [
         "aerial-ace",
         "agility",
+        "assurance",
         "bitter-malice",
         "body-slam",
+        "bounce",
         "brick-break",
         "burning-jealousy",
         "calm-mind",
@@ -14882,10 +14898,12 @@
         "lash-out",
         "low-kick",
         "low-sweep",
+        "mega-kick",
         "memento",
         "nasty-plot",
         "night-shade",
         "pain-split",
+        "payback",
         "phantom-force",
         "poltergeist",
         "protect",
@@ -14894,6 +14912,7 @@
         "rain-dance",
         "rest",
         "roar",
+        "round",
         "scary-face",
         "shadow-ball",
         "shadow-claw",
@@ -14902,6 +14921,7 @@
         "sleep-talk",
         "sludge-bomb",
         "snarl",
+        "snore",
         "snowscape",
         "spite",
         "substitute",
@@ -14912,6 +14932,7 @@
         "torment",
         "trick",
         "u-turn",
+        "uproar",
         "will-o-wisp"
       ]
     },
@@ -15249,10 +15270,10 @@
               "name": "eelevate",
               "displayName": "Eelevate",
               "isHidden": false,
-              "shortEffect": "Floats off the ground — immune to Ground moves, Spikes, Toxic Spikes, and Sticky Web. On knocking out a target, its highest stat rises one stage."
+              "shortEffect": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10290.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10290.png"
         }
       ],
@@ -15403,7 +15424,7 @@
               "shortEffect": "Bypasses Light Screen, Reflect, and Safeguard."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10291.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10291.png"
         }
       ],
@@ -15832,7 +15853,7 @@
               "shortEffect": "Contact moves can strike through Protect/Detect."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10313.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10313.png"
         }
       ],
@@ -16188,7 +16209,7 @@
               "shortEffect": "Protects against bullet, ball, and bomb-based moves."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10292.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10292.png"
         }
       ],
@@ -16344,7 +16365,7 @@
               "shortEffect": "Evades Ground moves."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10293.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10293.png"
         }
       ],
@@ -16485,7 +16506,7 @@
               "shortEffect": "Changes the bearer's type to match each move it uses."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10294.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10294.png"
         }
       ],
@@ -16907,7 +16928,7 @@
               "shortEffect": "Boosts the power of the Pokémon's Fire-type moves by 50%."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10295.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10295.png"
         }
       ],
@@ -17024,7 +17045,7 @@
               "shortEffect": "Strengthens Fairy moves to 1.33× their power for all friendly and opposing Pokémon."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10296.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png"
         }
       ],
@@ -17399,7 +17420,7 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/678.png",
       "forms": [
         {
-          "key": "meowstic-mega",
+          "key": "meowstic-male-mega",
           "label": "Mega Meowstic",
           "kind": "mega",
           "types": [
@@ -17422,7 +17443,7 @@
               "shortEffect": "Copies an opponent's ability upon entering battle."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10314.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10314.png"
         }
       ],
@@ -17835,7 +17856,7 @@
               "shortEffect": "Inverts stat changes."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10297.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10297.png"
         }
       ],
@@ -17979,7 +18000,7 @@
               "shortEffect": "Strengthens moves that make contact to 1.33× their power."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10298.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10298.png"
         }
       ],
@@ -18126,7 +18147,7 @@
               "shortEffect": "Heals for 1/3 max HP upon switching out."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10299.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10299.png"
         }
       ],
@@ -18742,7 +18763,7 @@
               "shortEffect": "Ensures all moves used by and against the Pokémon hit."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10300.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10300.png"
         }
       ],
@@ -18991,6 +19012,7 @@
         "flamethrower",
         "focus-blast",
         "focus-punch",
+        "giga-drain",
         "giga-impact",
         "hydro-pump",
         "hyper-beam",
@@ -19074,6 +19096,7 @@
       "moveSlugs": [
         "acid-armor",
         "acid-spray",
+        "ancient-power",
         "blizzard",
         "body-press",
         "body-slam",
@@ -19586,6 +19609,7 @@
       "home": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10243.png",
       "forms": [],
       "moveSlugs": [
+        "ancient-power",
         "aurora-veil",
         "avalanche",
         "bite",
@@ -20364,7 +20388,7 @@
               "shortEffect": "Strengthens punch-based moves to 1.2× their power."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10315.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10315.png"
         }
       ],
@@ -21420,7 +21444,7 @@
               "shortEffect": "Raises this Pokémon's Special Attack by one stage every time its HP drops below half."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10302.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10302.png"
         }
       ],
@@ -22689,7 +22713,7 @@
               "shortEffect": "Raises Attack two stages upon having any stat lowered."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10303.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10303.png"
         }
       ],
@@ -24353,7 +24377,7 @@
               "shortEffect": "When the Pokémon takes damage from a move, it burns the attacker."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10320.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10320.png"
         }
       ],
@@ -24865,7 +24889,7 @@
               "shortEffect": "Increases the same-type attack bonus from 1.5× to 2×."
             }
           ],
-          "sprite": null,
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10321.png",
           "artwork": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10321.png"
         }
       ],

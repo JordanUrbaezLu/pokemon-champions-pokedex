@@ -158,6 +158,22 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
 - ✅ **Freshness automation** — weekly GitHub Action re-bakes all data (auto-latest Smogon
   month) and opens a PR on changes; the home header shows regulation + updated date
 
+## Data refreshes
+- ✅ **2026-07-10 → Smogon month 2026-06** (from 2026-05) via `npm run data:all` — 2026-06 is
+  the newest published month for this format (2026-07 not out until ~early Aug). Battles
+  3.36M → 1.48M. Master+ 247 → 244 profiles, all-ranks 264. **Meta shift:** Kingambit → #1
+  (46%, +6pp), Basculegion → #2 (−9pp); big risers Incineroar (+14), Mega Floette (+14),
+  Sinistcha (+10), Mega Froslass (↑12 ranks); Aegislash/Pelipper/Sableye fell. Set moves:
+  Kingambit Low Kick → Iron Head, Basculegion Choice Scarf → Mystic Water, Talonflame
+  Acrobatics → Brave Bird. **PokeAPI drift** (from the roster re-bake `data:all` requires to
+  keep both files' generatedAt in sync): 65 previously-null form sprites now populated;
+  Meowstic's mega split into male/female (functionally identical — same 566 BST/Trace, differ
+  only in sprite). **Fixed:** `generate-dataset.mjs` now collapses forms identical on every
+  battle-relevant field (label/kind/types/stats/abilities), keeping the default variety's
+  sprite — Meowstic renders a single "Mega" tab; genuinely distinct forms (Mega Charizard X/Y)
+  are untouched. Verified via toggle DOM (`Base|Mega` vs Charizard `Base|Mega X|Mega Y`) +
+  375px screenshot. All integrity checks + tsc/lint/build (232 pages) green.
+
 ## Not available
 - ❌ **Checks & Counters** — the Champions doubles ladder dump ships none (empty for all mons)
 - ❌ **Tera** — Champions has no Terastallization
