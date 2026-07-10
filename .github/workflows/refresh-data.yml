@@ -1,19 +1,37 @@
-# Keeps the baked data fresh without anyone remembering to: re-runs the
-# generators weekly (the competitive script auto-detects the newest published
-# Smogon month) and opens a PR when anything changed. Merge = redeploy.
+# Keeps the baked data fresh without anyone remembering to. Every Monday it
+# re-bakes both datasets (the competitive generator auto-detects the newest
+# published Smogon month), verifies every integrity check + the unit suite +
+# the build, opens a PR with just the data diff, and AUTO-MERGES it once
+# everything is green. Merge -> the host redeploys from main.
+#
+# Same steps a human runs locally in one command: `npm run refresh`.
 name: Refresh battle data
 
 on:
   schedule:
-    # Mondays 09:00 UTC — Smogon publishes monthly stats in the first days of
-    # the month, so a weekly cadence catches new months within a week and
-    # picks up roster/movepool corrections in between.
+    # Mondays 09:00 UTC. Smogon publishes each month's stats in the first days
+    # of the following month, so a weekly cadence catches a new month within a
+    # week and picks up roster/movepool corrections in between.
     - cron: "0 9 * * 1"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      stats_month:
+        description: "Pin a Smogon month YYYY-MM (blank = auto-detect newest published)."
+        required: false
+        default: ""
 
+# contents: write -> push the branch + merge the PR. pull-requests: write -> open it.
+# ALSO REQUIRES the repo setting "Allow GitHub Actions to create and approve pull
+# requests" (Settings -> Actions -> General -> Workflow permissions). Without it the
+# PR step fails with "GitHub Actions is not permitted to create or approve pull requests".
 permissions:
   contents: write
   pull-requests: write
+
+# Never let a manual dispatch race the weekly cron.
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -25,25 +43,54 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run data:all
-      # Fail the refresh BEFORE opening a PR if the re-bake introduced any gap —
-      # a move/ability/item with no description, an un-tappable item, an orphan
-      # move ref, a date mismatch, etc. This is the enforcement point that makes
-      # the "every sheet has a description" guarantee permanent, not just local.
-      - name: Verify data integrity (no blank/un-tappable sheets)
-        run: npm run status
-      - name: Open PR if data changed
+
+      # The whole verification bar, mirroring `npm run refresh` locally: re-bake
+      # BOTH datasets (keeps their generatedAt in sync -- data:comp alone would
+      # fail the date check), assert every integrity check, run the unit suite
+      # if one exists yet, and confirm the app still builds. Any blank/un-tappable
+      # sheet, orphan move ref, date mismatch, failing test, or build break fails
+      # HERE, before a PR is ever opened.
+      - name: Refresh + verify (data:all -> status -> test -> build)
+        env:
+          STATS_MONTH: ${{ github.event.inputs.stats_month }}
+        run: |
+          npm run data:all
+          npm run status
+          npm test --if-present
+          npm run build
+
+      - name: Open PR for the data diff
+        id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "Refresh baked battle data"
+          commit-message: "Refresh baked battle data (latest Smogon month)"
           title: "Data refresh: latest Smogon snapshot + movepools"
           body: |
-            Automated weekly refresh of `src/data/generated/*` —
-            re-fetched from Smogon (latest published month, both brackets),
-            Serebii, PokeAPI and Showdown, with KO benchmarks rebaked.
+            Automated weekly refresh of `src/data/generated/*.json` — re-fetched
+            from Smogon (latest published month, both brackets), Serebii, PokeAPI
+            and Showdown, with KO benchmarks rebaked.
 
-            Review the generator log in the action run before merging.
+            Verified in CI before this PR opened: all `npm run status` integrity
+            checks, the unit suite, and `next build` (232 pages) are green.
           branch: auto/data-refresh
           delete-branch: true
-          add-paths: |
-            src/data/generated/*.json
+          add-paths: src/data/generated/*.json
+
+      # The checks above already ran in THIS job, so once the PR exists it is
+      # safe to merge immediately. Skipped when nothing changed (create-pull-
+      # request reports operation "none").
+      - name: Auto-merge the refresh PR
+        if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch
+
+      - name: Job summary
+        if: always()
+        run: |
+          op="${{ steps.cpr.outputs.pull-request-operation }}"
+          if [ -z "$op" ] || [ "$op" = "none" ]; then
+            echo "✅ Data already current for the newest published month — nothing to merge." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "✅ Refreshed data merged via PR #${{ steps.cpr.outputs.pull-request-number }} (op: $op)." >> "$GITHUB_STEP_SUMMARY"
+          fi
