@@ -31,8 +31,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  // Lock zoom so the layout stays put while a trainer taps quickly mid-battle.
-  maximumScale: 1,
+  // Pinch-to-zoom is intentionally left enabled: locking it (maximumScale: 1)
+  // is a WCAG 1.4.4 failure and blocks trainers who need to enlarge small text
+  // mid-battle. The layout already holds at any zoom level.
   themeColor: "#0b0f14",
 };
 

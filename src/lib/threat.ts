@@ -37,7 +37,8 @@ export type ThreatKind =
   | "field"
   | "trap"
   | "wall"
-  | "speed";
+  | "speed"
+  | "baseline";
 
 export interface ThreatVector {
   kind: ThreatKind;
@@ -79,6 +80,7 @@ const TONE: Record<ThreatKind, string> = {
   trap: "#ff5350",
   wall: "#67d693",
   speed: "#5cc6ef",
+  baseline: "#93a1b0",
 };
 
 const KIND_LABEL: Record<ThreatKind, string> = {
@@ -91,6 +93,7 @@ const KIND_LABEL: Record<ThreatKind, string> = {
   trap: "Punisher",
   wall: "Tank",
   speed: "Fast attacker",
+  baseline: "Support",
 };
 
 const stripId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -104,7 +107,7 @@ const SETUP_BOOSTS: Record<
   swordsdance: { mults: { atk: 2 }, offensive: true },
   dragondance: { mults: { atk: 1.5, spe: 1.5 }, offensive: true },
   nastyplot: { mults: { spa: 2 }, offensive: true },
-  tailglow: { mults: { spa: 4 }, offensive: true },
+  tailglow: { mults: { spa: 2.5 }, offensive: true }, // +3 SpA stages = 2.5×, not 4×
   calmmind: { mults: { spa: 1.5 }, offensive: true },
   quiverdance: { mults: { spa: 1.5, spe: 1.5 }, offensive: true },
   shellsmash: { mults: { atk: 2, spa: 2, spe: 2 }, offensive: true },
@@ -155,12 +158,21 @@ const DISRUPTION: Record<
   haze: { headline: "Erases boosts: Haze", detail: "Every stat boost on the field resets", weight: 8 },
   "clear-smog": { headline: "Erases boosts: Clear Smog", detail: "The target's stat boosts reset", weight: 8 },
   "will-o-wisp": { headline: "Burns attackers: Will-O-Wisp", detail: "Your physical hits get halved", weight: 12 },
+  "wide-guard": { headline: "Blocks spread moves: Wide Guard", detail: "Rock Slide / Earthquake / Heat Wave fizzle this turn", weight: 12 },
+  "quick-guard": { headline: "Blocks priority: Quick Guard", detail: "Fake Out and priority attacks fizzle this turn", weight: 10 },
 };
 
 const SPEED_DROPS: Record<string, string> = {
   "icy-wind": "Icy Wind",
   electroweb: "Electroweb",
   bulldoze: "Bulldoze",
+};
+
+// Moves that (near-)guarantee paralysis — all quarter the target's Speed.
+const PARALYSIS: Record<string, string> = {
+  "thunder-wave": "Thunder Wave",
+  glare: "Glare",
+  nuzzle: "Nuzzle",
 };
 
 const WEATHER_ABILITIES: Record<string, { headline: string; detail: string }> = {
@@ -271,7 +283,11 @@ export function getThreatProfile(
     let best: { slug: string; pct: number; boost: (typeof SETUP_BOOSTS)[string] } | null = null;
     for (const [slug, pct] of Object.entries(usage)) {
       const boost = SETUP_BOOSTS[stripId(slug)];
-      if (boost && pct >= 10 && (!best || pct > best.pct)) best = { slug, pct, boost };
+      if (!boost || pct < 10) continue;
+      // Ghost-type Curse sacrifices HP to curse the foe — it is NOT a stat
+      // boost, so it must not read as a set-up sweep (Typhlosion-Hisui, etc.).
+      if (stripId(slug) === "curse" && types.includes("ghost")) continue;
+      if (!best || pct > best.pct) best = { slug, pct, boost };
     }
     if (best) {
       const move = moveBySlug.get(best.slug);
@@ -362,16 +378,19 @@ export function getThreatProfile(
       break; // one speed-drop read is enough
     }
   }
-  if (u("thunder-wave") >= 20) {
-    vectors.push({
-      kind: "speed-control",
-      headline: "Paralysis: Thunder Wave",
-      detail: "¼ Speed · 25% fully skipped turns",
-      tone: TONE["speed-control"],
-      stat: runStat(u("thunder-wave")),
-      severity: 26 + u("thunder-wave") / 3,
-      moveSlug: "thunder-wave",
-    });
+  for (const [slug, label] of Object.entries(PARALYSIS)) {
+    if (u(slug) >= 20) {
+      vectors.push({
+        kind: "speed-control",
+        headline: `Paralysis: ${label}`,
+        detail: "¼ Speed · 25% fully skipped turns",
+        tone: TONE["speed-control"],
+        stat: runStat(u(slug)),
+        severity: 26 + u(slug) / 3,
+        moveSlug: slug,
+      });
+      break; // one paralysis read is enough
+    }
   }
 
   // --- Priority revenge-killing. (Fake Out is a disruption read, not this.)
@@ -528,6 +547,23 @@ export function getThreatProfile(
         severity: 12 + p / 5 + (isScarf ? 16 : 0),
       });
     }
+  }
+
+  // Never leave the headline card blank when there IS ladder data: a form that
+  // crosses no threshold is a support/filler mon, but the trainer still needs
+  // its most-used move (and the kill-shot strip below it). Surface a baseline.
+  if (vectors.length === 0 && Object.keys(usage).length) {
+    const [topSlug, topPct] = Object.entries(usage).sort((a, b) => b[1] - a[1])[0];
+    const m = moveBySlug.get(topSlug);
+    vectors.push({
+      kind: "baseline",
+      headline: m ? `Most-used move: ${m.displayName}` : "No standout threat",
+      detail: "No dominant threat vector — plays a support / balanced role",
+      tone: TONE.baseline,
+      stat: m ? runStat(Math.round(topPct)) : null,
+      severity: 1,
+      moveSlug: m?.name,
+    });
   }
 
   vectors.sort((a, b) => b.severity - a.severity);

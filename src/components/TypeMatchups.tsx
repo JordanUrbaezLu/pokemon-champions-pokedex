@@ -1,14 +1,25 @@
 import { TypeBadge } from "./TypeBadge";
-import { defensiveProfile } from "@/lib/type-chart";
+import { defensiveProfile, abilityMatchupNotes } from "@/lib/type-chart";
 import type { PokemonType } from "@/lib/types";
 
 /**
  * The "what move do I click?" panel: the defender's weaknesses (4× called out
  * loudly), resistances, and immunities. Pure type math — renders identically
- * with or without ladder data, so it's always available mid-battle.
+ * with or without ladder data, so it's always available mid-battle. When the
+ * form has an ability that overrides type math (Levitate, Flash Fire, Thick
+ * Fat…), a caveat calls it out so a "weakness" the ability negates never sends
+ * a trainer into a dead click.
  */
-export function TypeMatchups({ types }: { types: PokemonType[] }) {
+export function TypeMatchups({
+  types,
+  abilities = [],
+}: {
+  types: PokemonType[];
+  /** the form's possible abilities, by slug — for the matchup caveats */
+  abilities?: readonly string[];
+}) {
   const profile = defensiveProfile(types);
+  const abilityNotes = abilityMatchupNotes(abilities);
 
   const allRows: {
     key: string;
@@ -68,6 +79,24 @@ export function TypeMatchups({ types }: { types: PokemonType[] }) {
           </div>
         ))}
       </div>
+
+      {abilityNotes.length > 0 && (
+        <div className="mt-2.5 border-t border-border pt-2">
+          <p className="mb-1 text-[10px] font-black uppercase tracking-wide text-amber-300/90">
+            Ability can change this
+          </p>
+          <ul className="flex flex-col gap-0.5">
+            {abilityNotes.map((n) => (
+              <li key={n} className="flex gap-1.5 text-[11px] leading-snug text-muted">
+                <span aria-hidden className="text-amber-300/70">
+                  ⚠
+                </span>
+                <span>{n}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </section>
   );
 }

@@ -370,6 +370,14 @@ const TRAP_ABILITIES: Record<string, { warning: string; tone: "red" | "amber" }>
   purifyingsalt: { warning: "Can't be statused; takes half Ghost damage", tone: "amber" },
   thermalexchange: { warning: "Fire moves give it +1 Atk; can't be burned", tone: "amber" },
   unaware: { warning: "Ignores your stat boosts when it attacks or defends", tone: "amber" },
+  contrary: { warning: "Reverses stat changes — Intimidate / Icy Wind / any drop BOOSTS it", tone: "red" },
+  sturdy: { warning: "Survives any OHKO from full HP (hangs on at 1 HP) — needs chip or a second hit", tone: "amber" },
+  static: { warning: "Contact may paralyze you — a physical hit can cost you your Speed", tone: "amber" },
+  flamebody: { warning: "Contact may burn you — halving your physical attacker", tone: "amber" },
+  poisonpoint: { warning: "Contact may poison you", tone: "amber" },
+  roughskin: { warning: "Contact chips your attacker every hit", tone: "amber" },
+  ironbarbs: { warning: "Contact chips your attacker every hit", tone: "amber" },
+  effectspore: { warning: "Contact may poison, paralyze, or put you to sleep", tone: "amber" },
 };
 
 // --- Speed math ----------------------------------------------------------------

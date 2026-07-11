@@ -17,8 +17,13 @@ const DEFAULT_BRACKET: DataBracket = "master";
 
 function read(): DataBracket {
   if (typeof window === "undefined") return DEFAULT_BRACKET;
-  const raw = window.localStorage.getItem(KEY);
-  return raw === "all" ? "all" : DEFAULT_BRACKET;
+  try {
+    // Reading localStorage throws in some privacy modes / blocked-storage
+    // contexts — never let that crash the home and detail screens.
+    return window.localStorage.getItem(KEY) === "all" ? "all" : DEFAULT_BRACKET;
+  } catch {
+    return DEFAULT_BRACKET;
+  }
 }
 
 function subscribe(callback: () => void) {
