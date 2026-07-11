@@ -72,6 +72,15 @@ input[type="search"]::-webkit-search-cancel-button {
   appearance: none;
 }
 
+/* Keyboard focus: a clear, consistent ring for accessibility. Scoped to
+   :focus-visible so quick finger taps mid-battle never leave a lingering
+   outline, while keyboard / switch-control users always see where they are. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 /* Hide scrollbars on horizontal chip strips while keeping them scrollable. */
 .no-scrollbar {
   scrollbar-width: none;

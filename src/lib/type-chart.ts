@@ -114,3 +114,46 @@ export function allMatchups(
     multiplier: defensiveMultiplier(type, defenderTypes),
   }));
 }
+
+/**
+ * Abilities that OVERRIDE raw type effectiveness on defense. The matchup grid
+ * is pure type math and can't see them, so a Levitate mon would read "weak to
+ * Ground" and an Eelektross (pure Electric + Levitate) would read "weak to
+ * Ground" despite having no weaknesses at all. We surface these as an explicit
+ * caveat so a trainer never commits to a move the opponent's ability negates.
+ * Keyed by stripped ability id.
+ */
+const DEFENSIVE_ABILITY_NOTES: Record<string, string> = {
+  levitate: "Levitate — immune to Ground (ignore any Ground weakness)",
+  flashfire: "Flash Fire — immune to Fire (and it powers up)",
+  waterabsorb: "Water Absorb — heals from Water instead of taking it",
+  stormdrain: "Storm Drain — draws in and absorbs Water",
+  dryskin: "Dry Skin — heals from Water (but takes 1.25× Fire)",
+  voltabsorb: "Volt Absorb — heals from Electric",
+  lightningrod: "Lightning Rod — draws in and absorbs Electric",
+  motordrive: "Motor Drive — Electric does nothing (gives it +1 Speed)",
+  sapsipper: "Sap Sipper — Grass does nothing (gives it +1 Attack)",
+  eartheater: "Earth Eater — heals from Ground",
+  wellbakedbody: "Well-Baked Body — immune to Fire (gains +2 Def)",
+  thickfat: "Thick Fat — takes half from Fire and Ice",
+  heatproof: "Heatproof — takes half from Fire",
+  waterbubble: "Water Bubble — takes half from Fire",
+  purifyingsalt: "Purifying Salt — takes half from Ghost",
+  fluffy: "Fluffy — takes 2× Fire (but halves contact moves)",
+  wonderguard: "Wonder Guard — only super-effective hits connect",
+};
+
+const stripAbilityId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/**
+ * Human-readable caveats for any of the defender's abilities that change its
+ * real type matchups. One entry per distinct ability; empty when none apply.
+ */
+export function abilityMatchupNotes(abilityNames: readonly string[]): string[] {
+  const notes: string[] = [];
+  for (const name of abilityNames) {
+    const note = DEFENSIVE_ABILITY_NOTES[stripAbilityId(name)];
+    if (note && !notes.includes(note)) notes.push(note);
+  }
+  return notes;
+}

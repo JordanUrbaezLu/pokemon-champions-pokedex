@@ -15,7 +15,13 @@ let queryCache: string | null = null;
 
 function readQuery(): string {
   if (queryCache === null) {
-    queryCache = window.sessionStorage.getItem(QUERY_KEY) ?? "";
+    try {
+      // sessionStorage access throws where site storage is blocked — the home
+      // screen must still render, so fall back to an empty query.
+      queryCache = window.sessionStorage.getItem(QUERY_KEY) ?? "";
+    } catch {
+      queryCache = "";
+    }
   }
   return queryCache;
 }

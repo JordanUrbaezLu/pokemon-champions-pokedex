@@ -7,6 +7,24 @@ import type { CompetitiveProfile, PokemonStats } from "@/lib/types";
 /** "252 EVs" in the game's own Stat Point units. */
 const toSP = (evs: number) => Math.round(evs / 8);
 
+const stripId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/**
+ * Abilities that multiply Speed under a condition. Without these, a sun-team
+ * Venusaur reads Max=Common=145 when Chlorophyll actually makes it 290 — a
+ * flatly wrong answer to "do I outspeed?". Offered as conditional one-tap
+ * modifiers, labelled with the trigger, only when the form owns the ability.
+ */
+const ABILITY_SPEED_MODS: Record<string, { label: string; effect: string; mult: number }> = {
+  chlorophyll: { label: "Chlorophyll", effect: "sun ×2", mult: 2 },
+  swiftswim: { label: "Swift Swim", effect: "rain ×2", mult: 2 },
+  sandrush: { label: "Sand Rush", effect: "sand ×2", mult: 2 },
+  slushrush: { label: "Slush Rush", effect: "snow ×2", mult: 2 },
+  surgesurfer: { label: "Surge Surfer", effect: "E-terrain ×2", mult: 2 },
+  unburden: { label: "Unburden", effect: "item used ×2", mult: 2 },
+  quickfeet: { label: "Quick Feet", effect: "status ×1.5", mult: 1.5 },
+};
+
 /**
  * The "do I outspeed?" panel — the most-asked mid-battle question. Champions
  * fixes IVs (31) and level (50), so MIN / COMMON / MAX are provable bounds,
@@ -18,23 +36,46 @@ const toSP = (evs: number) => Math.round(evs / 8);
 export function SpeedPanel({
   stats,
   comp,
+  abilities = [],
 }: {
   stats: PokemonStats;
   comp: CompetitiveProfile | undefined;
+  /** the form's ability slugs — surfaces conditional ability speed-doublers */
+  abilities?: readonly string[];
 }) {
   const [active, setActive] = useState<ReadonlySet<string>>(new Set());
   const [trickRoom, setTrickRoom] = useState(false);
 
   const anchors = useMemo(() => speedAnchors(stats, comp?.spread), [stats, comp]);
 
-  const modded = useMemo(
-    () => ({
-      max: applySpeedMods(anchors.max, active),
-      common: anchors.common != null ? applySpeedMods(anchors.common, active) : null,
-      min: applySpeedMods(anchors.min, active),
-    }),
-    [anchors, active],
+  // Ability speed-doublers this form can own (Chlorophyll, Swift Swim, …).
+  const abilityMods = useMemo(
+    () =>
+      abilities
+        .map((a) => {
+          const spec = ABILITY_SPEED_MODS[stripId(a)];
+          return spec ? { id: `ab:${stripId(a)}`, ...spec } : null;
+        })
+        .filter((m): m is NonNullable<typeof m> => m != null),
+    [abilities],
   );
+
+  const modded = useMemo(() => {
+    // Built-in field mods (Icy Wind/Scarf/Tailwind/Para) first, then any active
+    // ability doubler — each floored, the way the game chains speed modifiers.
+    const apply = (base: number) => {
+      let v = applySpeedMods(base, active);
+      for (const m of abilityMods) {
+        if (active.has(m.id)) v = Math.floor(v * m.mult);
+      }
+      return v;
+    };
+    return {
+      max: apply(anchors.max),
+      common: anchors.common != null ? apply(anchors.common) : null,
+      min: apply(anchors.min),
+    };
+  }, [anchors, active, abilityMods]);
 
   const toggle = (id: string) => {
     const next = new Set(active);
@@ -137,6 +178,28 @@ export function SpeedPanel({
               <span className={on ? "text-white/70" : "opacity-60"}>
                 {isScarfTell && !on ? `${scarfPct}%` : mod.effect}
               </span>
+            </button>
+          );
+        })}
+        {/* Conditional ability doublers — amber to signal "only if it has this
+            ability and the trigger is up", distinct from the always-true field
+            mods above. */}
+        {abilityMods.map((mod) => {
+          const on = active.has(mod.id);
+          return (
+            <button
+              key={mod.id}
+              type="button"
+              onClick={() => toggle(mod.id)}
+              aria-pressed={on}
+              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+                on
+                  ? "bg-amber-400 text-black"
+                  : "border border-amber-400/50 bg-surface-2 text-amber-300"
+              }`}
+            >
+              {mod.label}{" "}
+              <span className={on ? "text-black/70" : "opacity-70"}>{mod.effect}</span>
             </button>
           );
         })}

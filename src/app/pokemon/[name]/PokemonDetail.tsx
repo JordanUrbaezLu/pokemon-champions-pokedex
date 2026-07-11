@@ -304,7 +304,11 @@ export function PokemonDetail({
           />
         )}
 
-        <SpeedPanel stats={active.stats} comp={comp} />
+        <SpeedPanel
+          stats={active.stats}
+          comp={comp}
+          abilities={active.abilities.map((a) => a.name)}
+        />
 
         <Section title="Base Stats">
           <StatBars stats={active.stats} spread={comp?.spread ?? null} />
@@ -428,7 +432,10 @@ export function PokemonDetail({
           </Section>
         )}
 
-        <TypeMatchups types={active.types} />
+        <TypeMatchups
+          types={active.types}
+          abilities={active.abilities.map((a) => a.name)}
+        />
 
         {comp && (
           <p className="px-1 text-[11px] leading-snug text-muted/70">

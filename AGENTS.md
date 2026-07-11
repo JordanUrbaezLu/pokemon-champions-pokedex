@@ -34,10 +34,21 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 - `npm run dev` / `npm run build && npm run start` (prod).
 - `npm run data` / `npm run data:comp` / `npm run data:all` — re-bake data. The competitive
   script **auto-detects the newest published Smogon month** (pin: `STATS_MONTH=YYYY-MM`).
+- **`npm run refresh` — the one-command manual data update (use THIS, not `data:comp`):**
+  `data:all → status → test → build`. It re-bakes both files (keeping `generatedAt` in sync —
+  `data:comp` alone fails the status date check), runs every integrity check + the unit suite +
+  the build, and stops on the first failure. Green = the two `src/data/generated/*.json` are ready
+  to commit. Nothing else to remember.
 - `npm run status` — one-command context: data freshness, bracket coverage, integrity checks.
+- `npm test` — Vitest unit suite for the pure logic (type-chart, Lv50 math, threat engine,
+  formatters). Node-only, no build. This is the regression net for the weekly data re-bake.
 - `npm run shot -- /pokemon/kingambit out.png` — 375px screenshot of a running app
   (`PORT=3210` env to target another port). Use it after every visual change.
-- A weekly GitHub Action (`.github/workflows/refresh-data.yml`) re-bakes data via PR.
+- A weekly GitHub Action (`.github/workflows/refresh-data.yml`, Mondays 09:00 UTC) runs the same
+  `npm run refresh`, opens a PR with the data diff, and **auto-merges it when green** (manual run:
+  Actions tab → Run workflow, optional `stats_month` to pin). **One-time repo setting required:**
+  Settings → Actions → General → Workflow permissions → enable *"Allow GitHub Actions to create and
+  approve pull requests"* — without it the PR step fails with *"not permitted to create pull requests"*.
 
 **Hard-won facts — do not re-learn these**
 - Smogon chaos `Checks and Counters` is **empty for every mon** in this format. Never plan on it.
@@ -75,5 +86,5 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
   Type Matchups at the bottom by owner request).
 
 **Verification bar for any change**
-`npx tsc --noEmit` + `npm run lint` + `npm run build` (232 static pages) must stay green, and
-visual changes get a `npm run shot` screenshot check at 375px before they're called done.
+`npx tsc --noEmit` + `npm run lint` + `npm test` + `npm run build` (232 static pages) must stay
+green, and visual changes get a `npm run shot` screenshot check at 375px before they're called done.

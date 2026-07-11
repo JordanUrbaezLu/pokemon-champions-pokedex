@@ -38,7 +38,17 @@ function read(): PinnedOpponent[] {
   if (typeof window === "undefined") return [];
   try {
     const parsed = JSON.parse(window.localStorage.getItem(KEY) ?? "[]");
-    return Array.isArray(parsed) ? parsed : [];
+    if (!Array.isArray(parsed)) return [];
+    // Validate each entry's shape, not just the array — one malformed record
+    // (from an old schema or hand-editing) must not brick every screen that
+    // reads the tray. Anything missing its slug/types is silently dropped.
+    return parsed.filter(
+      (o): o is PinnedOpponent =>
+        !!o &&
+        typeof o === "object" &&
+        typeof o.slug === "string" &&
+        Array.isArray(o.types),
+    );
   } catch {
     return [];
   }

@@ -36,10 +36,23 @@ function useCardInView(prefetch: (string | null)[]) {
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
           setSeen(true);
-          for (const url of prefetch) {
-            if (url) {
-              const img = new window.Image();
-              img.src = url;
+          // Warm the detail hero artwork — but never on a metered / very slow
+          // link. Prefetching full-res artwork for the whole roster as it
+          // scrolls can burn 100+ MB of cellular data the trainer never asked
+          // for; Save-Data and 2g connections opt out (the icon still repaints).
+          const conn = (
+            navigator as Navigator & {
+              connection?: { saveData?: boolean; effectiveType?: string };
+            }
+          ).connection;
+          const metered =
+            !!conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType ?? "");
+          if (!metered) {
+            for (const url of prefetch) {
+              if (url) {
+                const img = new window.Image();
+                img.src = url;
+              }
             }
           }
           io.disconnect();
