@@ -81,6 +81,29 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 3px;
 }
 
+/* Guarantee a 44px touch target on small icon buttons (WCAG 2.5.5 / the design
+   system's 44px floor) without changing the visual size — an invisible centered
+   hit area extends the button's own clickable box. */
+.tap-target {
+  position: relative;
+}
+.tap-target::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+}
+
+/* While a bottom sheet is open, the opponent tray goes inert: its controls sit
+   below the sheet's scrim yet stay visible, so without this a tap on the Brief
+   button would stack a second sheet under the first. */
+:root[data-sheet-open] nav[aria-label="Pinned opponents"] {
+  pointer-events: none;
+}
+
 /* Hide scrollbars on horizontal chip strips while keeping them scrollable. */
 .no-scrollbar {
   scrollbar-width: none;

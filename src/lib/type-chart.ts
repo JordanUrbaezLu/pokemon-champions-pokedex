@@ -157,3 +157,76 @@ export function abilityMatchupNotes(abilityNames: readonly string[]): string[] {
   }
   return notes;
 }
+
+/**
+ * Machine-readable companion to DEFENSIVE_ABILITY_NOTES: abilities that REDUCE
+ * incoming effectiveness, as a multiplier on the raw type result (0 = negated,
+ * 0.5 = halved). Only reducing entries live here — an ability can't be relied on
+ * to CREATE a weakness (the opponent may not be running it), but the "kill shot"
+ * must never promise damage an ability negates. Keyed by stripped ability id.
+ */
+const DEFENSIVE_ABILITY_FACTORS: Record<string, Partial<Record<PokemonType, number>>> = {
+  levitate: { ground: 0 },
+  flashfire: { fire: 0 },
+  wellbakedbody: { fire: 0 },
+  waterabsorb: { water: 0 },
+  stormdrain: { water: 0 },
+  dryskin: { water: 0 },
+  voltabsorb: { electric: 0 },
+  lightningrod: { electric: 0 },
+  motordrive: { electric: 0 },
+  sapsipper: { grass: 0 },
+  eartheater: { ground: 0 },
+  thickfat: { fire: 0.5, ice: 0.5 },
+  heatproof: { fire: 0.5 },
+  waterbubble: { fire: 0.5 },
+  purifyingsalt: { ghost: 0.5 },
+};
+
+/**
+ * Worst-case (most-resistant) multiplier of an attacking type given the
+ * defender's POSSIBLE abilities. Used where a claim must hold no matter which
+ * ability the opponent is actually running — so if any of its abilities negates
+ * or halves the type, that's what we assume. Falls back to raw type math when
+ * no ability touches the type.
+ */
+export function effectiveDefensiveMultiplier(
+  attacking: PokemonType,
+  defenderTypes: readonly PokemonType[],
+  abilityNames: readonly string[] = [],
+): number {
+  let factor = 1;
+  for (const name of abilityNames) {
+    const f = DEFENSIVE_ABILITY_FACTORS[stripAbilityId(name)]?.[attacking];
+    if (f != null) factor = Math.min(factor, f);
+  }
+  return defensiveMultiplier(attacking, defenderTypes) * factor;
+}
+
+/**
+ * Ability-aware defensive profile — the read the "kill shot" can trust. Same
+ * buckets as {@link defensiveProfile}, but a weakness the mon's ability negates
+ * or halves is demoted: a Levitate mon shows NO Ground weakness, and a Thick Fat
+ * mon's 4× Ice drops to a 2× (out of `quad`). Type-only when no abilities given.
+ */
+export function effectiveDefensiveProfile(
+  defenderTypes: readonly PokemonType[],
+  abilityNames: readonly string[] = [],
+): DefensiveProfile {
+  const profile: DefensiveProfile = {
+    quad: [],
+    weak: [],
+    resists: [],
+    doubleResists: [],
+    immune: [],
+  };
+  for (const type of POKEMON_TYPES) {
+    const m = effectiveDefensiveMultiplier(type, defenderTypes, abilityNames);
+    if (m === 0) profile.immune.push(type);
+    else if (m >= 4) profile.quad.push(type);
+    else if (m > 1) profile.weak.push(type);
+    else if (m <= 0.25) profile.doubleResists.push(type);
+    else if (m < 1) profile.resists.push(type);
+  }
+  return profile;
+}

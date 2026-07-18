@@ -88,7 +88,7 @@ export function PokemonCard({
   const showUsage = usagePct != null && usagePct >= 0.1;
   const { ref: cardRef, seen } = useCardInView([entry.artwork, entry.megaArtwork]);
 
-  const { opponents, pin, unpin } = useOpponents();
+  const { opponents, pin, unpin, isFull } = useOpponents();
   const isPinned = opponents.some((o) => o.slug === entry.name);
   const togglePin = () => {
     if (isPinned) unpin(entry.name);
@@ -102,8 +102,12 @@ export function PokemonCard({
     <div
       ref={cardRef}
       // `isolate` contains the card's stacking context so nothing paints over
-      // the sticky search bar while scrolling.
-      className="glass-quiet relative isolate flex items-center gap-2.5 rounded-2xl px-2.5 py-2 transition-colors active:bg-surface-2"
+      // the sticky search bar while scrolling. `content-visibility:auto` skips
+      // layout/paint for off-screen rows (226 of them) to keep scroll smooth on
+      // constrained hardware; contain-intrinsic-size reserves each row's height
+      // so the scrollbar stays stable. (The Mega halo is the card's own
+      // box-shadow, painted by the parent — not clipped by this containment.)
+      className="glass-quiet relative isolate flex items-center gap-2.5 rounded-2xl px-2.5 py-2 transition-colors [contain-intrinsic-size:0_92px] [content-visibility:auto] active:bg-surface-2"
       style={{
         borderLeft: `3px solid ${accent}`,
         // Mega-capable Pokémon get a soft white halo around the whole card —
@@ -149,12 +153,22 @@ export function PokemonCard({
             actually cares about. Holds through search filtering; top-3 glow
             accent. */}
         {rank != null ? (
-          <span
-            className={`font-mono text-xs font-bold tabular-nums ${
-              rank <= 3 ? "text-accent" : "text-muted"
-            }`}
-          >
-            #{rank}
+          // A ranked mon can also be new to Champions — show BOTH, so a newcomer
+          // that has already climbed the ladder still reads as unfamiliar (the
+          // whole point of the badge) instead of looking like a veteran.
+          <span className="flex items-center gap-1.5">
+            <span
+              className={`font-mono text-xs font-bold tabular-nums ${
+                rank <= 3 ? "text-accent" : "text-muted"
+              }`}
+            >
+              #{rank}
+            </span>
+            {entry.isNew && (
+              <span className="rounded bg-sky-400/15 px-1 py-px text-[9px] font-black uppercase tracking-wide text-sky-300 ring-1 ring-inset ring-sky-400/30">
+                New
+              </span>
+            )}
           </span>
         ) : entry.isNew ? (
           // Recently added to Champions, no ladder rank yet — flag it so trainers
@@ -219,9 +233,10 @@ export function PokemonCard({
         <PinButton
           pinned={isPinned}
           onToggle={togglePin}
+          disabled={!isPinned && isFull}
           pinLabel={`Pin ${entry.displayName} as opponent`}
           unpinLabel={`Unpin ${entry.displayName}`}
-          className="size-10 text-lg"
+          className="size-11 text-lg"
         />
       </div>
     </div>

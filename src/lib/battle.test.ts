@@ -70,9 +70,19 @@ describe("applySpeedMods — game-order modifiers with flooring", () => {
   it("Icy Wind floors (×2/3)", () => {
     expect(applySpeedMods(100, new Set(["icywind"]))).toBe(66);
   });
-  it("Scarf then Paralysis, each floored", () => {
-    // 100 → floor(150) → floor(75) = 75
+  it("Scarf + Paralysis chains to ×0.75", () => {
     expect(applySpeedMods(100, new Set(["scarf", "para"]))).toBe(75);
+  });
+  it("Scarf + Tailwind on an odd Speed keeps the half a sequential floor drops", () => {
+    // Game: pokeRound(101 × 3) = 303, not floor(floor(101×1.5)×2) = 302.
+    expect(applySpeedMods(101, new Set(["scarf", "tailwind"]))).toBe(303);
+  });
+  it("Scarf + Tailwind on an even Speed is unchanged (no regression)", () => {
+    expect(applySpeedMods(100, new Set(["scarf", "tailwind"]))).toBe(300);
+  });
+  it("Icy Wind (stage) then Scarf still matches the game", () => {
+    // floor(100 × 2/3) = 66, then × 1.5 = 99
+    expect(applySpeedMods(100, new Set(["icywind", "scarf"]))).toBe(99);
   });
 });
 

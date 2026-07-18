@@ -129,7 +129,7 @@ export function MoveModal({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
+          className="tap-target flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
         >
           ✕
         </button>

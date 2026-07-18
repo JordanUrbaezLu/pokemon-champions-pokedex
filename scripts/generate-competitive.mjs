@@ -15,6 +15,7 @@
  */
 
 import { readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
@@ -23,6 +24,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
 const POKEMON_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
 const OUT_PATH = resolve(ROOT, "src/data/generated/competitive.json");
+const SW_PATH = resolve(ROOT, "public/sw.js");
 
 // Champions VGC (doubles). Both the ladder REGULATION (…regma → …regmb → …) and
 // the stats MONTH are auto-detected at run time, so every run tracks the game's
@@ -59,9 +61,18 @@ async function championsFormatsForMonth(month) {
   });
   if (!res.ok) return [];
   const text = await res.text();
-  return [...new Set(
+  const files = new Set(
+    [...text.matchAll(/(gen9championsvgc\d{4}reg[a-z]+-\d+)\.json/g)].map((m) => m[1]),
+  );
+  const bases = [...new Set(
     [...text.matchAll(/(gen9championsvgc\d{4}reg[a-z]+)-0\.json/g)].map((m) => m[1]),
   )];
+  // Only surface a format once EVERY cutoff we bake has published. A freshly
+  // rotated regulation posts its -0 (all-ranks) file first; selecting it before
+  // its 1630/1760 chaos files exist would hard-fail the whole refresh when we
+  // fetch those (getJson retries then throws). Waiting a run costs nothing.
+  const need = [...new Set(Object.values(BRACKETS).flatMap((b) => b.cutoffs))];
+  return bases.filter((f) => need.every((c) => files.has(`${f}-${c}`)));
 }
 
 /**
@@ -113,9 +124,16 @@ const SETUP_MOVE_IDS = new Set([
 ]);
 const SETUP_THRESHOLD = 0.05; // flag a set-up move if ≥5% of teams run it
 
-// Descriptions for items PokeAPI has neither effect nor flavor text for.
+// Descriptions for items PokeAPI has neither effect nor flavor text for. Keyed
+// by slug; the synth path also matches the un-hyphenated chaos id, so both forms
+// are listed for the Champions-original Mega Stones.
 const ITEM_OVERRIDES = {
   "fairy-feather": "Powers up the holder's Fairy-type moves.",
+  // Mega Raichu X/Y debuted in Champions (Reg M-B) — no PokeAPI item entry.
+  "raichunite-x": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
+  "raichunitex": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
+  "raichunite-y": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
+  "raichunitey": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
 };
 
 async function getJson(url, attempt = 1) {
@@ -362,6 +380,28 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
 
 async function main() {
   const { format: FORMAT, month: MONTH } = await resolveFormatAndMonth();
+  // Never move BACKWARDS. A transient Smogon hiccup (a pulled file, a partial
+  // month republish) could make auto-detect resolve an OLDER regulation/month
+  // than what's already committed; refuse to overwrite good current data with it
+  // unless a pin explicitly asks. Format ids + ISO months both sort in release
+  // order, so a plain string compare is the "is this a downgrade?" test.
+  if (!FORMAT_OVERRIDE && !MONTH_OVERRIDE) {
+    let prevMeta = null;
+    try {
+      prevMeta = JSON.parse(await readFile(OUT_PATH, "utf8")).meta;
+    } catch {
+      // No committed file yet — nothing to protect.
+    }
+    if (
+      prevMeta?.format &&
+      (FORMAT < prevMeta.format ||
+        (FORMAT === prevMeta.format && MONTH < prevMeta.month))
+    ) {
+      throw new Error(
+        `detected ${FORMAT} ${MONTH} is OLDER than committed ${prevMeta.format} ${prevMeta.month} — refusing to downgrade (pin STATS_FORMAT / STATS_MONTH to override)`,
+      );
+    }
+  }
   const allCutoffs = [...new Set(Object.values(BRACKETS).flatMap((b) => b.cutoffs))];
   console.log(`Fetching Champions DOUBLES competitive stats (${FORMAT} = ${regulationLabel(FORMAT)}, ${MONTH}${FORMAT_OVERRIDE ? " [format pinned]" : " [latest regulation]"}${MONTH_OVERRIDE ? " [month pinned]" : ""}, cutoffs ${allCutoffs.join("/")})…`);
   const [chaosByCutoff, itemList, pokemonData] = await Promise.all([
@@ -414,10 +454,15 @@ async function main() {
   // (name ends in "ite") get the Mega Stone blurb; anything else gets a generic
   // floor and is logged so a maintainer can add a curated ITEM_OVERRIDES entry.
   const MEGA_STONE_DESC = "A Mega Stone. Its holder can Mega Evolve during battle.";
-  const isMegaStone = (name) => /ite$/i.test(name.replace(/\s+/g, ""));
+  // "…ite", plus the "…ite X" / "…ite Y" pair (Raichunite X/Y, Charizardite X/Y),
+  // whose trailing X/Y the old `/ite$/` missed — leaving them with a generic
+  // "a held item" blurb instead of the Mega Stone one.
+  const isMegaStone = (name) => /ite(?:\s*[xy])?$/i.test(name.trim());
   const genericItemDesc = (name) => `${name} — a held item used in Pokémon Champions.`;
   const synthDetail = (slug, name) => {
-    const desc = isMegaStone(name) ? MEGA_STONE_DESC : genericItemDesc(name);
+    const desc =
+      ITEM_OVERRIDES[slug] ||
+      (isMegaStone(name) ? MEGA_STONE_DESC : genericItemDesc(name));
     return {
       slug,
       displayName: name,
@@ -542,6 +587,8 @@ async function main() {
 
     const profiles = {};
     const misses = [];
+    // Ladder keys a roster form actually claimed — for reverse coverage below.
+    const consumed = new Set();
     for (const p of pokemonData.pokemon) {
       // asForm is set only for a genuinely different form (not a "-breed"
       // naming artifact), so the same Pokémon keeps its real usage tables.
@@ -549,6 +596,7 @@ async function main() {
       // Base form (exact key, e.g. base Ninetales — not its Alolan variant).
       const base = bestKey(p.name);
       if (base) {
+        consumed.add(base.key);
         profiles[p.name] = buildProfile(data, base.key, base.slug !== norm(p.name) ? base.key : null);
       } else {
         misses.push(p.name);
@@ -558,6 +606,7 @@ async function main() {
           // A genuinely different Pokémon (Basculegion-F) — its own Smogon set.
           const ownKey = FORM_OWN_SMOGON_KEY[form.key];
           if (ownKey && data[ownKey]) {
+            consumed.add(ownKey);
             profiles[form.key] = buildProfile(data, ownKey, null);
             continue;
           }
@@ -578,24 +627,71 @@ async function main() {
         // Each Mega/Primal form, by its exact Smogon key.
         const mega = bestKey(form.key);
         if (mega) {
+          consumed.add(mega.key);
           profiles[form.key] = buildProfile(data, mega.key, mega.slug !== norm(form.key) ? mega.key : null);
         }
       }
     }
-    return { profiles, misses };
+    // Reverse coverage: ladder species with real usage that NO roster form
+    // claimed — a page a trainer can't reach. This is how a NEW species a
+    // regulation adds surfaces before roster.json catches up (the old logging
+    // only reported the other direction — roster mons with no ladder data).
+    const unmatched = keyIndex
+      .filter((c) => c.usage >= 0.005 && !consumed.has(c.key))
+      .sort((a, b) => b.usage - a.usage)
+      .map((c) => `${c.key} ${(c.usage * 100).toFixed(1)}%`);
+    return { profiles, misses, unmatched };
   }
 
   const brackets = {};
   for (const [name, def] of Object.entries(BRACKETS)) {
     const { data, backfilled } = mergeCutoffs(def.cutoffs);
-    const { profiles, misses } = buildBracket(data);
+    const { profiles, misses, unmatched } = buildBracket(data);
     brackets[name] = { profiles, misses };
     console.log(
       `  ${name}: ${Object.keys(profiles).length} profiles` +
         (backfilled ? ` (${backfilled} backfilled from ${def.cutoffs.slice(1).join("/")})` : "") +
         (misses.length ? ` · no data for: ${misses.join(", ")}` : ""),
     );
+    if (unmatched.length) {
+      console.warn(
+        `  ⚠ ${name}: ${unmatched.length} ladder species (≥0.5%) with NO roster page — add to roster.json if in Champions: ${unmatched.join(", ")}`,
+      );
+    }
   }
+
+  // Fold Smogon's "noability" bucket into the curated ability. A few
+  // Champions-original Mega forms (Mega Raichu X/Y, Staraptor, Eelektross, …) run
+  // an ability Smogon's dex doesn't recognize, so chaos files most of their sets
+  // under "noability" — which would render "Electric Surge 12%" when 100% of Mega
+  // Raichu X are on it. pokemon.json curates the real (single) ability per form,
+  // so collapse mono-ability forms to it; renormalize the rest if a form ever has
+  // several. (Found by `npm run audit`.)
+  const abilityIdsByKey = new Map();
+  for (const p of pokemonData.pokemon) {
+    abilityIdsByKey.set(p.name, p.abilities.map((a) => stripId(a.name)));
+    for (const f of p.forms ?? []) abilityIdsByKey.set(f.key, f.abilities.map((a) => stripId(a.name)));
+  }
+  let noAbilityFolded = 0;
+  for (const b of Object.values(brackets)) {
+    for (const [key, pr] of Object.entries(b.profiles)) {
+      if (!pr.abilityUsage || !("noability" in pr.abilityUsage)) continue;
+      const ids = abilityIdsByKey.get(key) ?? [];
+      if (ids.length === 1) {
+        pr.abilityUsage = { [ids[0]]: 100 };
+      } else {
+        const rest = Object.fromEntries(
+          Object.entries(pr.abilityUsage).filter(([k]) => k !== "noability"),
+        );
+        const sum = Object.values(rest).reduce((s, v) => s + v, 0) || 1;
+        pr.abilityUsage = Object.fromEntries(
+          Object.entries(rest).map(([k, v]) => [k, Math.round((v / sum) * 100)]),
+        );
+      }
+      noAbilityFolded++;
+    }
+  }
+  if (noAbilityFolded) console.log(`  + folded Smogon "noability" into the curated ability for ${noAbilityFolded} form profile(s)`);
 
   // Bake KO benchmarks for the default (master) bracket — the answer a
   // damage calculator would give, with zero inputs, precomputed.
@@ -719,6 +815,26 @@ async function main() {
     itemIndex,
   };
   await writeFile(OUT_PATH, JSON.stringify(out, null, 2) + "\n", "utf8");
+
+  // Stamp the service worker's cache VERSION from a hash of BOTH baked data files
+  // so a data refresh (deploy) changes sw.js → the browser installs the new
+  // worker → `activate` drops the previous version's caches (no stale build/data
+  // for installed-PWA users). Idempotent: identical data → identical hash.
+  try {
+    const hash = createHash("sha256")
+      .update(JSON.stringify(out))
+      .update(await readFile(POKEMON_PATH, "utf8"))
+      .digest("hex")
+      .slice(0, 12);
+    const sw = await readFile(SW_PATH, "utf8");
+    const stamped = sw.replace(/const VERSION = "[^"]*";/, `const VERSION = "cpx-${hash}";`);
+    if (stamped !== sw) {
+      await writeFile(SW_PATH, stamped, "utf8");
+      console.log(`  + stamped service worker VERSION cpx-${hash}`);
+    }
+  } catch (err) {
+    console.warn(`  ~ could not stamp service worker VERSION: ${err.message}`);
+  }
 
   const champ = brackets.master.profiles;
   const baseCovered = pokemonData.pokemon.filter((p) => champ[p.name]).length;

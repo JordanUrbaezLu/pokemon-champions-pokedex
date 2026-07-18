@@ -11,8 +11,9 @@
     "data": "node scripts/generate-dataset.mjs",
     "data:comp": "node scripts/generate-competitive.mjs",
     "data:all": "node scripts/generate-dataset.mjs && node scripts/generate-competitive.mjs",
-    "refresh": "npm run data:all && npm run status && npm test --if-present && npm run build",
+    "refresh": "npm run data:all && npm run status && npm run audit -- --offline && npm test --if-present && npm run build",
     "status": "node scripts/status.mjs",
+    "audit": "node scripts/audit-data.mjs",
     "shot": "node scripts/screenshot.mjs",
     "test": "vitest run",
     "test:watch": "vitest"

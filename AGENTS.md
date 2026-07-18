@@ -24,8 +24,11 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 - `src/app/page.tsx` home (search list) · `src/app/pokemon/[name]/` detail (server page +
   `PokemonDetail.tsx` client) · `src/app/layout.tsx` mounts OpponentTray + SW registrar.
 - `src/lib/`: `pokedex.ts` (all data access; bracket-aware), `threat.ts` (Threat Profile
-  engine), `battle.ts` (Lv50 math, speed anchors/mods, trap abilities, doubles roles),
-  `type-chart.ts`, `bracket.ts` + `opponents.ts` (localStorage stores), `format.ts`, `types.ts`.
+  engine), `battle.ts` (Lv50 math, speed anchors/mods, trap abilities), `type-chart.ts`
+  (type math + ability-aware `effectiveDefensiveProfile` for the kill-shot),
+  `type-meta.ts` (type colors/labels/order shared by badges, cards, tray),
+  `bracket.ts` + `opponents.ts` (localStorage stores), `format.ts`, `types.ts`.
+  UI sheets (move/item/briefing) share `src/components/Sheet.tsx` — see hard-won facts.
 - `scripts/`: `generate-dataset.mjs` (roster/movepools/moves), `generate-competitive.mjs`
   (both ladder brackets + baked KO benchmarks via @smogon/calc), `status.mjs`, `screenshot.mjs`.
 - `CHECKLIST.md` = living log of everything requested/built. `README.md` = user-facing.
@@ -43,8 +46,22 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
   the build, and stops on the first failure. Green = the two `src/data/generated/*.json` are ready
   to commit. Nothing else to remember.
 - `npm run status` — one-command context: data freshness, bracket coverage, integrity checks.
+- `npm run audit` — deep data-CORRECTNESS audit (`scripts/audit-data.mjs`): cross-checks every
+  Pokémon/form's baked usage/EVs/move %/ability %/items/teammates/benchmarks against internal
+  invariants AND the live Smogon source. `npm run audit -- --offline` skips the network checks
+  (this offline pass is wired into `refresh`). status proves nothing is BLANK; audit proves
+  nothing is WRONG. Exits non-zero on any HIGH finding.
 - `npm test` — Vitest unit suite for the pure logic (type-chart, Lv50 math, threat engine,
   formatters). Node-only, no build. This is the regression net for the weekly data re-bake.
+
+**Keeping data current (the whole loop, for the next agent)**
+1. `npm run status` — is it fresh + are the integrity invariants intact? (freshness = the date +
+   the coverage floors; if `⚠ data is N days old` or a newer regulation exists, re-bake.)
+2. `npm run refresh` — the update button: re-bakes both files from the newest published month +
+   regulation (auto-detected), then status → offline audit → tests → build. Green = ready to commit.
+3. `npm run audit` — the correctness net (run the online form for the freshness + usage cross-check).
+   New failure modes get a check ADDED here so they can never regress silently.
+That's the entire contract. The weekly Action runs `refresh` and opens/auto-merges the data PR.
 - `npm run shot -- /pokemon/kingambit out.png` — 375px screenshot of a running app
   (`PORT=3210` env to target another port). Use it after every visual change.
 - A weekly GitHub Action (`.github/workflows/refresh-data.yml`, Mondays 09:00 UTC) runs the same

@@ -60,7 +60,7 @@ export function BriefingSheet({
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
+            className="tap-target flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
           >
             ✕
           </button>
@@ -134,7 +134,7 @@ export function BriefingSheet({
               type="button"
               onClick={() => onRemove(m.slug)}
               aria-label={`Remove ${m.displayName}`}
-              className="flex size-6 shrink-0 items-center justify-center rounded-full bg-surface text-[10px] text-muted active:bg-border"
+              className="tap-target flex size-6 shrink-0 items-center justify-center rounded-full bg-surface text-[10px] text-muted active:bg-border"
             >
               ✕
             </button>

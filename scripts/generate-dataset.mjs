@@ -173,8 +173,20 @@ function readStats(data) {
   return stats;
 }
 
-async function readAbilities(data) {
-  return Promise.all(
+// Gender-dimorphic species whose non-default gender carries an ability PokeAPI
+// only lists on the alternate-gender form. Female Meowstic runs COMPETITIVE — a
+// trap ability the battle helper must be able to show — but PokeAPI's default
+// (male) Meowstic lists only Keen Eye / Infiltrator / Prankster. Keyed by
+// species slug → extra ability slugs to union in. (Found by `npm run audit`.)
+const EXTRA_BASE_ABILITIES = {
+  meowstic: ["competitive"],
+};
+
+// speciesSlug is the ROSTER slug (e.g. "meowstic"), which differs from the
+// PokeAPI variety name (`data.name` is "meowstic-male"): key the curation by the
+// roster slug so it actually matches.
+async function readAbilities(data, speciesSlug = data.name) {
+  const own = await Promise.all(
     data.abilities.map(async (a) => ({
       name: a.ability.name,
       displayName: toDisplayName(a.ability.name),
@@ -182,6 +194,17 @@ async function readAbilities(data) {
       shortEffect: await getAbilityEffect(a.ability.name),
     })),
   );
+  const have = new Set(own.map((a) => a.name));
+  for (const slug of EXTRA_BASE_ABILITIES[speciesSlug] ?? []) {
+    if (have.has(slug)) continue;
+    own.push({
+      name: slug,
+      displayName: toDisplayName(slug),
+      isHidden: false,
+      shortEffect: await getAbilityEffect(slug),
+    });
+  }
+  return own;
 }
 
 function readTypes(data) {
@@ -659,7 +682,7 @@ async function buildPokemon(rosterSlug) {
     displayName,
     types: readTypes(data),
     stats: readStats(data),
-    abilities: await readAbilities(data),
+    abilities: await readAbilities(data, slug),
     heightM: data.height / 10,
     weightKg: data.weight / 10,
     sprite: data.sprites?.front_default ?? null,

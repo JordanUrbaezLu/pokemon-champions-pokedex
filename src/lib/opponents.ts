@@ -8,7 +8,7 @@
  */
 
 import { useCallback, useSyncExternalStore } from "react";
-import type { PokemonType } from "./types";
+import { POKEMON_TYPES, type PokemonType } from "./types";
 
 const KEY = "cpx:opponents:v1";
 const CHANGE_EVENT = "cpx:opponents-change";
@@ -41,13 +41,17 @@ function read(): PinnedOpponent[] {
     if (!Array.isArray(parsed)) return [];
     // Validate each entry's shape, not just the array — one malformed record
     // (from an old schema or hand-editing) must not brick every screen that
-    // reads the tray. Anything missing its slug/types is silently dropped.
+    // reads the tray. The tray reads displayName.slice() and types[0] directly,
+    // so both must be present and well-formed or the record is dropped.
     return parsed.filter(
       (o): o is PinnedOpponent =>
         !!o &&
         typeof o === "object" &&
         typeof o.slug === "string" &&
-        Array.isArray(o.types),
+        typeof o.displayName === "string" &&
+        Array.isArray(o.types) &&
+        o.types.length > 0 &&
+        o.types.every((t: unknown) => POKEMON_TYPES.includes(t as PokemonType)),
     );
   } catch {
     return [];
@@ -91,8 +95,13 @@ export function useOpponents() {
   );
 
   const pin = useCallback((mon: PinnedOpponent) => {
-    const rest = read().filter((o) => o.slug !== mon.slug);
-    write([...rest, mon].slice(-MAX_PINNED));
+    const current = read();
+    // Doubles caps a team at 6, so the tray does too. When full, don't silently
+    // evict the earliest pin for a NEW mon — no-op (the UI disables the control
+    // via `isFull`). Re-pinning an already-pinned slug still updates it in place.
+    const already = current.some((o) => o.slug === mon.slug);
+    if (!already && current.length >= MAX_PINNED) return;
+    write([...current.filter((o) => o.slug !== mon.slug), mon].slice(-MAX_PINNED));
   }, []);
 
   const unpin = useCallback((slug: string) => {
@@ -101,5 +110,5 @@ export function useOpponents() {
 
   const clear = useCallback(() => write([]), []);
 
-  return { opponents, pin, unpin, clear };
+  return { opponents, pin, unpin, clear, isFull: opponents.length >= MAX_PINNED };
 }
