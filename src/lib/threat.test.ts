@@ -125,6 +125,26 @@ describe("set-up sweep classification", () => {
   });
 });
 
+describe("priority revenge-killing", () => {
+  it("recognizes Grassy Glide despite its static priority 0 (Rillaboom regression)", () => {
+    const p = profile(
+      ["grass"],
+      { "grassy-glide": 45 },
+      [move({
+        name: "grassy-glide",
+        displayName: "Grassy Glide",
+        type: "grass",
+        damageClass: "physical",
+        power: 55,
+        priority: 0,
+      })],
+    );
+    const prio = p.vectors.find((v) => v.kind === "priority");
+    expect(prio).toBeDefined();
+    expect(prio!.headline).toContain("Grassy Glide");
+  });
+});
+
 describe("speed-control: paralysis", () => {
   it("recognizes Glare, not just Thunder Wave (regression)", () => {
     const p = profile(

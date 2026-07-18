@@ -2,6 +2,31 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Deep audit — 33 fixes — 2026-07-17
+A 9-dimension multi-agent audit (each finding refuted + reproduced) surfaced 31 issues; plus 2
+live-data findings. All fixed in one pass. Highlights:
+- ✅ **Kill-shot / pin quad now ability-aware** (`effectiveDefensiveProfile`): Heat Rotom
+  (Levitate) no longer reads "4× weak to Ground", Thick Fat demotes a 4× to 2×. Wired into
+  ThreatProfileCard + the home/detail pin. Unit-tested.
+- ✅ **Threat Profile recognizes Grassy Glide** (static priority 0) → Rillaboom shows its revenge
+  vector. ✅ **Speed Scarf+Tailwind** chained in Q12 (101→303, not 302). Both unit-tested (50 tests).
+- ✅ **Pipeline guardrails** (the auto-detect I shipped): refuses to downgrade to an older
+  regulation/month; won't select a regulation before its 1630/1760 files publish; logs ladder
+  species with no roster page; `status.mjs` gained a coverage floor + a KO-benchmark floor.
+  ✅ Champions-original Mega Stones (Raichunite X/Y) get a real description (isMegaStone missed
+  the "…ite X/Y" suffix).
+- ✅ **Service worker**: VERSION now stamped from a data hash (old caches purge on deploy),
+  static-cache cap, image cache LRU, captive-portal fallback guard; registrar checks for updates
+  on reopen and reloads once (guarded against loops / first-install).
+- ✅ **Sheets**: focus-trap, tray goes inert while open (no stacked sheets), wheel/touch scroll
+  guard, 44px close targets. ✅ **Home/search**: iOS autocorrect off, autofocus only on first
+  session mount, aria-live count, `content-visibility` windowing, newcomer badge kept when ranked,
+  44px pin, tray-full no longer silently evicts. ✅ **Detail**: "See whole-ladder read" flips the
+  bracket in place; Reg label surfaced; SpeedPanel resets per form.
+- ✅ **Dead code removed**: RoleModal + getDoublesRoles/ROLE_TONE/DoublesRole chain (248 lines);
+  AGENTS.md map corrected (+type-meta.ts, −doubles roles); README on Reg M-B + reg auto-detect.
+- Verified: tsc + lint + test + build + status green; screenshots.
+
 ### Reg M-B switch + bottom-sheet rework — 2026-07-17
 User report: "no data for some Pokémon that have been out a while" + bottom sheets misbehaving.
 - ✅ **Root cause of "no data":** game rotated to **Regulation M-B** (v1.1.0, 2026-06-17) but the

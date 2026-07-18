@@ -1,12 +1,18 @@
 "use client";
 
-import { useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { PokemonCard } from "./PokemonCard";
 import { BracketToggle } from "./BracketToggle";
 import { useBracket } from "@/lib/bracket";
 import { TYPE_COLORS, typeTextColor } from "@/lib/type-meta";
 import { POKEMON_TYPES, type PokemonType } from "@/lib/types";
 import type { RosterEntry } from "@/lib/pokedex";
+
+// Autofocus the search field only on the FIRST home mount of the session — not
+// on every back-navigation, where re-grabbing focus pops the keyboard over the
+// list and scrolls away the trainer's place. Module-scoped so it survives the
+// home screen unmounting while a detail page is open.
+let didAutoFocus = false;
 
 // Session-scoped search query, shared across mounts of this screen.
 const QUERY_KEY = "cpx:query";
@@ -201,6 +207,15 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
     return map;
   }, [entries, bracket]);
 
+  // Focus the search field once per session (first home mount), not on every
+  // back-navigation — see `didAutoFocus` above.
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (didAutoFocus) return;
+    didAutoFocus = true;
+    inputRef.current?.focus({ preventScroll: true });
+  }, []);
+
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       {/* Sticky search controls so they stay reachable while results scroll. */}
@@ -214,9 +229,16 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
               ⌕
             </span>
             <input
+              ref={inputRef}
               type="search"
               inputMode="search"
-              autoFocus
+              // Raw keystrokes must reach the filter: iOS autocorrect would
+              // rewrite "chomp" (Garchomp) or "gible" into dictionary words and
+              // silently zero out the results.
+              autoCorrect="off"
+              autoCapitalize="none"
+              autoComplete="off"
+              spellCheck={false}
               value={query}
               onChange={(e) => updateQuery(e.target.value)}
               placeholder="Search name or type…"
@@ -383,7 +405,11 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
 
       <div className="flex-1 px-4 pb-8 pt-3">
         <div className="mb-2 flex items-center justify-between gap-2 px-1">
-          <p className="text-xs text-muted">{results.length} Pokémon</p>
+          {/* aria-live so screen-reader users hear the match count / empty state
+              update as they type, instead of swiping the list to discover it. */}
+          <p className="text-xs text-muted" role="status" aria-live="polite">
+            {results.length} Pokémon
+          </p>
           <BracketToggle />
         </div>
 

@@ -24,8 +24,11 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 - `src/app/page.tsx` home (search list) · `src/app/pokemon/[name]/` detail (server page +
   `PokemonDetail.tsx` client) · `src/app/layout.tsx` mounts OpponentTray + SW registrar.
 - `src/lib/`: `pokedex.ts` (all data access; bracket-aware), `threat.ts` (Threat Profile
-  engine), `battle.ts` (Lv50 math, speed anchors/mods, trap abilities, doubles roles),
-  `type-chart.ts`, `bracket.ts` + `opponents.ts` (localStorage stores), `format.ts`, `types.ts`.
+  engine), `battle.ts` (Lv50 math, speed anchors/mods, trap abilities), `type-chart.ts`
+  (type math + ability-aware `effectiveDefensiveProfile` for the kill-shot),
+  `type-meta.ts` (type colors/labels/order shared by badges, cards, tray),
+  `bracket.ts` + `opponents.ts` (localStorage stores), `format.ts`, `types.ts`.
+  UI sheets (move/item/briefing) share `src/components/Sheet.tsx` — see hard-won facts.
 - `scripts/`: `generate-dataset.mjs` (roster/movepools/moves), `generate-competitive.mjs`
   (both ladder brackets + baked KO benchmarks via @smogon/calc), `status.mjs`, `screenshot.mjs`.
 - `CHECKLIST.md` = living log of everything requested/built. `README.md` = user-facing.

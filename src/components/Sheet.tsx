@@ -33,25 +33,72 @@ export function Sheet({
   children: ReactNode;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const previouslyFocused = document.activeElement as HTMLElement | null;
-    // NB: no `overflow: hidden` scroll lock here. Locking the scroll root kills
-    // the opponent tray's `position: sticky`, dropping the footer off-screen —
-    // exactly what we must not do. Background scroll is instead contained by the
-    // scrim (`touch-none`) and the panel (`overscroll-contain`), which needs no
-    // overflow change and so never shifts the page or hides the footer.
-    //
-    // Focus moves into the dialog WITHOUT scrolling to it (that scroll-into-view
-    // was the "jumps to the bottom of the page" symptom).
-    panelRef.current?.focus({ preventScroll: true });
+    const panel = panelRef.current;
+    const overlay = overlayRef.current;
+    const root = document.documentElement;
+
+    // Move focus into the dialog WITHOUT scrolling to it (that scroll-into-view
+    // was the "jumps to the bottom of the page" symptom). NB: no `overflow:hidden`
+    // scroll lock — it kills the tray's `position: sticky` and drops the footer
+    // off-screen; background scroll is contained below instead.
+    panel?.focus({ preventScroll: true });
+
+    // Flag a sheet open so the opponent tray goes inert (globals.css). Its
+    // controls stay visible below the scrim, so without this a tap on Brief would
+    // stack a second sheet. A counter tolerates a (rare) nested sheet.
+    root.dataset.sheetOpen = String(Number(root.dataset.sheetOpen ?? "0") + 1);
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      // Trap Tab inside the panel — `aria-modal` promises the background is
+      // inert, so focus must not reach the page/tray behind the scrim.
+      if (e.key === "Tab" && panel) {
+        const focusables = panel.querySelectorAll<HTMLElement>(
+          'a[href],button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex]:not([tabindex="-1"])',
+        );
+        if (focusables.length === 0) {
+          e.preventDefault();
+          panel.focus({ preventScroll: true });
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const activeEl = document.activeElement;
+        if (e.shiftKey && (activeEl === first || activeEl === panel)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && activeEl === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     window.addEventListener("keydown", onKey);
+
+    // Contain background scroll without an overflow lock: swallow wheel / touch
+    // scrolling that isn't inside the scrollable panel. Native + non-passive so
+    // preventDefault applies (React's synthetic wheel/touch handlers are passive).
+    const blockOutside = (e: Event) => {
+      if (e.target instanceof Node && panel?.contains(e.target)) return;
+      e.preventDefault();
+    };
+    overlay?.addEventListener("wheel", blockOutside, { passive: false });
+    overlay?.addEventListener("touchmove", blockOutside, { passive: false });
+
     return () => {
       window.removeEventListener("keydown", onKey);
+      overlay?.removeEventListener("wheel", blockOutside);
+      overlay?.removeEventListener("touchmove", blockOutside);
+      const depth = Number(root.dataset.sheetOpen ?? "1") - 1;
+      if (depth > 0) root.dataset.sheetOpen = String(depth);
+      else delete root.dataset.sheetOpen;
       previouslyFocused?.focus?.({ preventScroll: true });
     };
   }, [onClose]);
@@ -62,6 +109,7 @@ export function Sheet({
 
   return createPortal(
     <div
+      ref={overlayRef}
       className="fixed inset-x-0 top-0 z-50 flex items-end justify-center"
       // Stop at the top of the opponent tray so the footer is never covered.
       style={{ bottom: "var(--tray-height, 0px)" }}

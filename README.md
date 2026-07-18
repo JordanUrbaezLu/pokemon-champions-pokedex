@@ -83,7 +83,8 @@ Run both with `npm run data:all`.
 - **PokeAPI v2** — types, stats, abilities, Mega forms, move/item details.
 - **Serebii** (`pokedex-champions`) — the official Champions roster, which Pokémon have Champions
   Megas, and each Pokémon's Champions movepool.
-- **Smogon** Champions VGC doubles ladder (`gen9championsvgc2026regma` "chaos" stats) — usage,
+- **Smogon** Champions VGC doubles ladder (`gen9championsvgc2026regmb` "chaos" stats — the
+  current Reg M-B; auto-detected, see Updating) — usage,
   common abilities/items/moves/spreads, set-up threats, and teammates. **Two complete brackets
   are baked** and the app toggles between them client-side (Master+ is the default):
   - **Master+** — the top skill cutoff (1760), backfilled per-mon from 1630 only. Mons too
@@ -95,9 +96,11 @@ Run both with `npm run data:all`.
 ### Updating
 
 - **Roster:** edit `src/data/roster.json` (one PokeAPI slug per line) and run `npm run data`.
-- **Competitive snapshot:** `npm run data:comp` **auto-detects the newest published Smogon
-  month** for the format, so a plain re-run is always as fresh as the source allows. Pin a
-  specific snapshot with `STATS_MONTH=YYYY-MM npm run data:comp` if you ever need to.
+- **Competitive snapshot:** `npm run data:comp` **auto-detects both the current ladder
+  regulation and the newest published Smogon month** (it takes the highest-lettered
+  `gen9championsvgc2026regm*` that has published — `…regmb` today, a future `…regmc`
+  automatically), so a plain re-run tracks the game's regulation with no code edit. Pin a
+  specific snapshot with `STATS_FORMAT=… STATS_MONTH=YYYY-MM npm run data:comp` if needed.
 - The home header shows the date the data was last generated.
 
 ## Caveats

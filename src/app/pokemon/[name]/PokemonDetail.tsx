@@ -18,7 +18,7 @@ import { TypeMatchups } from "@/components/TypeMatchups";
 import { useBracket } from "@/lib/bracket";
 import { useOpponents } from "@/lib/opponents";
 import { speedAnchors } from "@/lib/battle";
-import { defensiveProfile } from "@/lib/type-chart";
+import { effectiveDefensiveProfile } from "@/lib/type-chart";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import {
   dexNumber,
@@ -135,7 +135,7 @@ export function PokemonDetail({
     usagePct: number;
   } | null>(null);
   const [selectedMove, setSelectedMove] = useState<MoveSummary | null>(null);
-  const [bracket] = useBracket();
+  const [bracket, setBracket] = useBracket();
   const active = forms[activeIndex];
   const tint = TYPE_COLORS[active.types[0]];
   const comp = competitiveByBracket[bracket][active.key];
@@ -146,7 +146,7 @@ export function PokemonDetail({
   // Opponent pinning: one tap at team preview → one-tap return all battle.
   // Form-aware: a base pin can be upgraded to its Mega in one tap (and vice
   // versa), since the tray keys one slot per species.
-  const { opponents, pin, unpin } = useOpponents();
+  const { opponents, pin, unpin, isFull } = useOpponents();
   const pinned = opponents.find((o) => o.slug === pokemon.name);
   const pinnedFormKey = pinned ? pinned.formKey ?? pokemon.name : null;
   const isPinned = pinnedFormKey === active.key;
@@ -166,7 +166,11 @@ export function PokemonDetail({
         ? pokemon.home ?? pokemon.sprite
         : active.artwork ?? active.sprite ?? pokemon.home ?? pokemon.sprite,
       types: active.types,
-      quad: defensiveProfile(active.types).quad[0] ?? null,
+      // Ability-aware so the tray/briefing 4× tag never promises a kill an
+      // ability negates (a Levitate mon is not "4× weak to Ground").
+      quad:
+        effectiveDefensiveProfile(active.types, active.abilities.map((a) => a.name))
+          .quad[0] ?? null,
       speed: comp ? speedAnchors(active.stats, comp.spread).common : null,
       archetype: threat?.archetype ?? [],
       headline: threat?.vectors[0]?.headline ?? null,
@@ -249,6 +253,7 @@ export function PokemonDetail({
           <PinButton
             pinned={isPinned}
             onToggle={togglePin}
+            disabled={!isPinned && isFull}
             pinLabel="Pin as opponent"
             unpinLabel="Unpin opponent"
             caption
@@ -279,13 +284,25 @@ export function PokemonDetail({
       </div>
 
       <div className="flex flex-col gap-2.5 px-4 pb-10 pt-1 animate-[fadeUp_.34s_ease-out_.05s_both]">
-        {!comp && (
-          <p className="px-1 text-xs text-muted">
-            {bracket === "master" && compInAll
-              ? "Too rare at Master+ level for meaningful data — switch to All ranks on the home screen for the whole-ladder read."
-              : "No Champions ladder data for this form yet."}
-          </p>
-        )}
+        {!comp &&
+          (bracket === "master" && compInAll ? (
+            // Too rare at Master+ — but the whole-ladder read exists. Flip the
+            // bracket in place (one tap) instead of sending them back to home.
+            <button
+              type="button"
+              onClick={() => setBracket("all")}
+              className="mx-1 rounded-xl border border-accent/40 bg-accent/10 px-3 py-2 text-left text-xs text-muted active:bg-accent/20"
+            >
+              Too rare at Master+ for meaningful data.{" "}
+              <span className="font-bold text-accent">
+                See its whole-ladder read ›
+              </span>
+            </button>
+          ) : (
+            <p className="px-1 text-xs text-muted">
+              No Champions ladder data for this form yet.
+            </p>
+          ))}
 
         {threat && (
           <ThreatProfileCard
@@ -293,6 +310,7 @@ export function PokemonDetail({
             moves={moves}
             usage={comp?.moveUsage}
             types={active.types}
+            abilities={active.abilities.map((a) => a.name)}
             ability={topAbility(active.abilities, comp?.abilityUsage)}
             item={
               comp?.items[0]
@@ -305,6 +323,7 @@ export function PokemonDetail({
         )}
 
         <SpeedPanel
+          key={active.key}
           stats={active.stats}
           comp={comp}
           abilities={active.abilities.map((a) => a.name)}
@@ -440,7 +459,7 @@ export function PokemonDetail({
         {comp && (
           <p className="px-1 text-[11px] leading-snug text-muted/70">
             {comp.asForm && `Competitive data shown for ${comp.asForm}. `}
-            Smogon doubles ladder · {bracket === "master" ? "Master+" : "all ranks"} ·{" "}
+            {competitiveMeta.formatLabel} · {bracket === "master" ? "Master+" : "all ranks"} ·{" "}
             {competitiveMeta.month}
           </p>
         )}

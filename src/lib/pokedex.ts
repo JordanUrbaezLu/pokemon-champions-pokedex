@@ -7,7 +7,7 @@ import {
   type ThreatProfile,
 } from "./threat";
 import { speedAnchors } from "./battle";
-import { defensiveProfile } from "./type-chart";
+import { effectiveDefensiveProfile } from "./type-chart";
 import type { PinnedOpponent } from "./opponents";
 import type {
   BattleForm,
@@ -273,11 +273,18 @@ function buildBestPin(p: ChampionPokemon): PinnedOpponent {
     const f = p.forms.find((x) => x.key === key);
     return f ? Math.max(f.stats.attack, f.stats.specialAttack) : 0;
   };
+  const keys = [p.name, ...p.forms.map((f) => f.key)];
+  // Prefer the top bracket a trainer actually faces; but for the ~9 mons only
+  // played below Master+ (no master profile), fall back to the whole ladder so
+  // the home-list pin still carries a full briefing instead of a sparse chip.
+  const bracket: DataBracket = keys.some((k) => profilesOf("master")[k])
+    ? "master"
+    : "all";
   let bestKey = p.name;
   let bestUsage = -1;
   let bestOffense = -1;
-  for (const key of [p.name, ...p.forms.map((f) => f.key)]) {
-    const u = profilesOf("master")[key]?.usagePct ?? -1;
+  for (const key of keys) {
+    const u = profilesOf(bracket)[key]?.usagePct ?? -1;
     if (u < 0) continue;
     const o = offense(key);
     if (u > bestUsage || (u === bestUsage && o > bestOffense)) {
@@ -290,8 +297,9 @@ function buildBestPin(p: ChampionPokemon): PinnedOpponent {
   const form = isBase ? null : p.forms.find((f) => f.key === bestKey);
   const types = form ? form.types : p.types;
   const stats = form ? form.stats : p.stats;
-  const comp = profilesOf("master")[bestKey];
-  const threat = getThreatProfilesByForm(p, "master")[bestKey];
+  const abilities = (form ? form.abilities : p.abilities).map((a) => a.name);
+  const comp = profilesOf(bracket)[bestKey];
+  const threat = getThreatProfilesByForm(p, bracket)[bestKey];
   return {
     slug: p.name,
     formKey: isBase ? null : bestKey,
@@ -300,7 +308,8 @@ function buildBestPin(p: ChampionPokemon): PinnedOpponent {
       ? form.artwork ?? form.sprite ?? p.home ?? p.sprite
       : p.home ?? p.sprite,
     types,
-    quad: defensiveProfile(types).quad[0] ?? null,
+    // Ability-aware so the tray 4× tag never promises a kill an ability negates.
+    quad: effectiveDefensiveProfile(types, abilities).quad[0] ?? null,
     speed: comp ? speedAnchors(stats, comp.spread).common : null,
     archetype: threat?.archetype ?? [],
     headline: threat?.vectors[0]?.headline ?? null,

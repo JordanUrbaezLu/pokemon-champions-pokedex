@@ -397,7 +397,11 @@ export function getThreatProfile(
   {
     let best: MoveSummary | null = null;
     for (const m of moves) {
-      if (m.priority <= 0 || m.damageClass === "status" || m.name === "fake-out") continue;
+      // Grassy Glide carries static priority 0 (its +1 only applies on Grassy
+      // Terrain), so the raw priority check would miss Rillaboom's signature
+      // revenge move — treat it as the priority read it is in practice.
+      const isPriority = m.priority > 0 || m.name === "grassy-glide";
+      if (!isPriority || m.damageClass === "status" || m.name === "fake-out") continue;
       const pct = usage[m.name];
       if (pct == null || pct < 20) continue;
       if (!best || pct > (usage[best.name] ?? 0)) best = m;
@@ -408,7 +412,9 @@ export function getThreatProfile(
           ? "Fails if you don't attack — status or Protect beats it"
           : best.name === "extreme-speed"
             ? "+2 priority — beats even other priority"
-            : "Ignores Speed — picks off weakened Pokémon";
+            : best.name === "grassy-glide"
+              ? "Priority while Grassy Terrain is up — first strike on terrain"
+              : "Ignores Speed — picks off weakened Pokémon";
       vectors.push({
         kind: "priority",
         headline: `Strikes first: ${best.displayName}`,

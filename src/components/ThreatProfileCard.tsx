@@ -1,5 +1,5 @@
 import { TypeBadge } from "./TypeBadge";
-import { defensiveProfile } from "@/lib/type-chart";
+import { effectiveDefensiveProfile } from "@/lib/type-chart";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { prettySmogonName } from "@/lib/format";
 import type { ThreatProfile } from "@/lib/threat";
@@ -18,6 +18,7 @@ export function ThreatProfileCard({
   moves,
   usage,
   types,
+  abilities,
   ability,
   item,
   benchmarks,
@@ -27,6 +28,8 @@ export function ThreatProfileCard({
   moves: MoveSummary[];
   usage: Record<string, number> | undefined;
   types: PokemonType[];
+  /** the form's possible abilities — so the kill shot respects immunities */
+  abilities: string[];
   /** most-used ability, e.g. { label: "Defiant", pct: 92 } */
   ability: { label: string; pct: number } | null;
   /** most-used item, e.g. { label: "Focus Sash", pct: 41 } */
@@ -47,8 +50,11 @@ export function ThreatProfileCard({
           .slice(0, 4)
       : [];
 
-  // The counterplay: a 4× weakness is the fastest way to delete this threat.
-  const quad = defensiveProfile(types).quad;
+  // The counterplay: a 4× weakness is the fastest way to delete this threat —
+  // but only when the mon's ability can't negate it (Levitate vs Ground) or
+  // halve it (Thick Fat vs Ice), or the green "Kill shot" would send a trainer
+  // into a move that does nothing.
+  const quad = effectiveDefensiveProfile(types, abilities).quad;
 
   // The single most lethal precomputed verdict — a damage calc's answer with
   // zero inputs ("Play Rough OHKOs Garchomp +1 · 2HKOs 8 of the top meta").

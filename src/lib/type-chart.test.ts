@@ -4,8 +4,42 @@ import {
   defensiveProfile,
   allMatchups,
   abilityMatchupNotes,
+  effectiveDefensiveMultiplier,
+  effectiveDefensiveProfile,
 } from "./type-chart";
 import { POKEMON_TYPES } from "./types";
+
+describe("effectiveDefensiveProfile — ability-aware kill-shot read", () => {
+  it("no abilities behaves exactly like defensiveProfile", () => {
+    const t = ["grass", "dragon"] as const;
+    expect(effectiveDefensiveProfile(t)).toEqual(defensiveProfile(t));
+  });
+
+  it("Levitate removes the Ground weakness (Heat Rotom must not read 4× Ground)", () => {
+    // Electric/Fire is 2×2 = 4× to Ground on type alone.
+    expect(defensiveProfile(["electric", "fire"]).quad).toContain("ground");
+    const eff = effectiveDefensiveProfile(["electric", "fire"], ["Levitate"]);
+    expect(eff.quad).not.toContain("ground");
+    expect(eff.weak).not.toContain("ground");
+    expect(eff.immune).toContain("ground");
+    expect(effectiveDefensiveMultiplier("ground", ["electric", "fire"], ["Levitate"])).toBe(0);
+  });
+
+  it("Thick Fat demotes a 4× Ice weakness to 2× (out of the kill-shot)", () => {
+    // Grass/Dragon is 2× Ice on type alone... use Grass/Flying for a true 4×.
+    expect(defensiveProfile(["grass", "flying"]).quad).toContain("ice");
+    const eff = effectiveDefensiveProfile(["grass", "flying"], ["Thick Fat"]);
+    expect(eff.quad).not.toContain("ice");
+    expect(eff.weak).toContain("ice");
+    expect(effectiveDefensiveMultiplier("ice", ["grass", "flying"], ["Thick Fat"])).toBe(2);
+  });
+
+  it("takes the worst case across multiple possible abilities", () => {
+    // If any listed ability negates Ground, the kill shot can't rely on it.
+    const eff = effectiveDefensiveProfile(["electric", "fire"], ["Blaze", "Levitate"]);
+    expect(eff.immune).toContain("ground");
+  });
+});
 
 describe("defensiveMultiplier — canonical single-type matchups", () => {
   it("immunities are 0×", () => {

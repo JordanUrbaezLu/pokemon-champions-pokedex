@@ -88,6 +88,20 @@ for (const b of Object.values(comp.brackets ?? {})) {
 }
 const sample = (arr) => [...arr].slice(0, 8).join(", ") + (([...arr].length > 8) ? ` …(+${[...arr].length - 8})` : "");
 
+// --- Coverage floors -------------------------------------------------------
+// A regulation rotation can quietly change how Smogon names species (a new
+// suffix, a slugify drift), collapsing the name-match so almost no profile
+// attaches. The per-description checks still pass (a few profiles keep moves),
+// so without a coverage floor a near-empty dataset would ship green. These turn
+// a collapse — and a total KO-benchmark wipeout — red.
+const hasAnyData = (p, b) =>
+  [p.name, ...(p.forms ?? []).map((f) => f.key)].some((k) => b?.[k]);
+const coveredAll = mons.filter((p) => hasAnyData(p, comp.brackets.all)).length;
+const coverageFloor = mons.length - 25; // ~full today; trips on a match collapse
+const benchedMaster = Object.values(comp.brackets.master ?? {}).filter(
+  (p) => p.benchmarks?.length,
+).length;
+
 // Integrity invariants — each guards a bug this project actually hit once.
 const checks = [
   ["no Tera moves anywhere (Champions has no Tera)", mons.every((p) => !p.moveSlugs.includes("tera-blast"))],
@@ -102,6 +116,9 @@ const checks = [
   ["every battle form carries an ability", mons.every((p) => (p.forms ?? []).every((f) => f.abilities?.length > 0 && f.abilities.every((a) => a.shortEffect)))],
   // Newcomers (no ladder data yet) are flagged so the NEW badge + filter work.
   ["new-to-Champions mons are flagged isNew", mons.some((p) => p.isNew)],
+  // Ladder coverage floors — catch a silent name-matching collapse / benchmark wipeout.
+  [`ladder coverage intact (≥${coverageFloor} mons have all-ranks data)`, coveredAll >= coverageFloor, `only ${coveredAll}/${mons.length} mons have any all-ranks data`],
+  ["master bracket has KO benchmarks baked", benchedMaster >= 40, `only ${benchedMaster} master profiles carry benchmarks`],
   // --- no blank/un-tappable sheets, current or future ---
   [`every move shows a description (${Object.keys(moveIndex).length} moves)`, movesNoDesc.length === 0, `${movesNoDesc.length} blank: ${sample(movesNoDesc.map((m) => m.name))}`],
   ["every referenced move resolves in the move index", orphanMoves.length === 0, `${orphanMoves.length} orphans: ${sample(orphanMoves)}`],

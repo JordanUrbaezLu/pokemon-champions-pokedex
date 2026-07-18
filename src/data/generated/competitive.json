@@ -58822,20 +58822,20 @@
     "raichunite-x": {
       "slug": "raichunite-x",
       "displayName": "Raichunite X",
-      "shortEffect": "Raichunite X — a held item used in Pokémon Champions.",
-      "effect": "Raichunite X — a held item used in Pokémon Champions.",
-      "category": null,
+      "shortEffect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
+      "effect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
+      "category": "Mega Stones",
       "sprite": null,
-      "flingPower": null
+      "flingPower": 80
     },
     "raichunite-y": {
       "slug": "raichunite-y",
       "displayName": "Raichunite Y",
-      "shortEffect": "Raichunite Y — a held item used in Pokémon Champions.",
-      "effect": "Raichunite Y — a held item used in Pokémon Champions.",
-      "category": null,
+      "shortEffect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
+      "effect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
+      "category": "Mega Stones",
       "sprite": null,
-      "flingPower": null
+      "flingPower": 80
     },
     "magnet": {
       "slug": "magnet",

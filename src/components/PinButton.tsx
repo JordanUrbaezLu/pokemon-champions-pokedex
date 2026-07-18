@@ -14,6 +14,7 @@ export function PinButton({
   pinLabel,
   unpinLabel,
   caption = false,
+  disabled = false,
   className = "size-10 text-lg",
 }: {
   pinned: boolean;
@@ -24,6 +25,8 @@ export function PinButton({
   unpinLabel: string;
   /** show the "pin"/"foe" caption under the icon (detail hero) */
   caption?: boolean;
+  /** dim + block the control (e.g. the tray is full at 6) */
+  disabled?: boolean;
   /** size + text-size utilities for the circle */
   className?: string;
 }) {
@@ -31,6 +34,7 @@ export function PinButton({
   return (
     <button
       type="button"
+      disabled={disabled}
       onClick={() => {
         if (!pinned) setPopping(true); // celebrate the pin, stay quiet on unpin
         onToggle();
@@ -38,7 +42,8 @@ export function PinButton({
       onAnimationEnd={() => setPopping(false)}
       aria-pressed={pinned}
       aria-label={pinned ? unpinLabel : pinLabel}
-      className={`relative z-10 flex shrink-0 flex-col items-center justify-center rounded-full border transition-colors ${
+      title={disabled ? "Opponent tray full (6)" : undefined}
+      className={`relative z-10 flex shrink-0 flex-col items-center justify-center rounded-full border transition-colors disabled:opacity-40 ${
         popping ? "animate-[popPin_.36s_ease-out]" : ""
       } ${
         pinned
