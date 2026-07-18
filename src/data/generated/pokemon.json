@@ -17411,6 +17411,12 @@
           "displayName": "Prankster",
           "isHidden": true,
           "shortEffect": "Raises non-damaging moves' priority by one stage."
+        },
+        {
+          "name": "competitive",
+          "displayName": "Competitive",
+          "isHidden": false,
+          "shortEffect": "Raises Special Attack by two stages upon having any stat lowered."
         }
       ],
       "heightM": 0.6,

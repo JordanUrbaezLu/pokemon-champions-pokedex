@@ -660,6 +660,39 @@ async function main() {
     }
   }
 
+  // Fold Smogon's "noability" bucket into the curated ability. A few
+  // Champions-original Mega forms (Mega Raichu X/Y, Staraptor, Eelektross, …) run
+  // an ability Smogon's dex doesn't recognize, so chaos files most of their sets
+  // under "noability" — which would render "Electric Surge 12%" when 100% of Mega
+  // Raichu X are on it. pokemon.json curates the real (single) ability per form,
+  // so collapse mono-ability forms to it; renormalize the rest if a form ever has
+  // several. (Found by `npm run audit`.)
+  const abilityIdsByKey = new Map();
+  for (const p of pokemonData.pokemon) {
+    abilityIdsByKey.set(p.name, p.abilities.map((a) => stripId(a.name)));
+    for (const f of p.forms ?? []) abilityIdsByKey.set(f.key, f.abilities.map((a) => stripId(a.name)));
+  }
+  let noAbilityFolded = 0;
+  for (const b of Object.values(brackets)) {
+    for (const [key, pr] of Object.entries(b.profiles)) {
+      if (!pr.abilityUsage || !("noability" in pr.abilityUsage)) continue;
+      const ids = abilityIdsByKey.get(key) ?? [];
+      if (ids.length === 1) {
+        pr.abilityUsage = { [ids[0]]: 100 };
+      } else {
+        const rest = Object.fromEntries(
+          Object.entries(pr.abilityUsage).filter(([k]) => k !== "noability"),
+        );
+        const sum = Object.values(rest).reduce((s, v) => s + v, 0) || 1;
+        pr.abilityUsage = Object.fromEntries(
+          Object.entries(rest).map(([k, v]) => [k, Math.round((v / sum) * 100)]),
+        );
+      }
+      noAbilityFolded++;
+    }
+  }
+  if (noAbilityFolded) console.log(`  + folded Smogon "noability" into the curated ability for ${noAbilityFolded} form profile(s)`);
+
   // Bake KO benchmarks for the default (master) bracket — the answer a
   // damage calculator would give, with zero inputs, precomputed.
   {

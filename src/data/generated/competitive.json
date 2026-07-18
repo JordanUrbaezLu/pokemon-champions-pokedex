@@ -1311,8 +1311,7 @@
         "smogonName": "Raichu-Mega-X",
         "asForm": null,
         "abilityUsage": {
-          "noability": 88,
-          "electricsurge": 12
+          "electricsurge": 100
         },
         "moveUsage": {
           "protect": 69,
@@ -1414,8 +1413,7 @@
         "smogonName": "Raichu-Mega-Y",
         "asForm": null,
         "abilityUsage": {
-          "noability": 81,
-          "noguard": 19
+          "noguard": 100
         },
         "moveUsage": {
           "zap-cannon": 98,
@@ -13110,8 +13108,7 @@
         "smogonName": "Staraptor-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 87,
-          "contrary": 13
+          "contrary": 100
         },
         "moveUsage": {
           "brave-bird": 84,
@@ -18463,8 +18460,7 @@
         "smogonName": "Scolipede-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 89,
-          "shellarmor": 11
+          "shellarmor": 100
         },
         "moveUsage": {
           "gunk-shot": 27,
@@ -18939,8 +18935,7 @@
         "smogonName": "Scrafty-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 70,
-          "intimidate": 30
+          "intimidate": 100
         },
         "moveUsage": {
           "fake-out": 91,
@@ -19940,8 +19935,7 @@
         "smogonName": "Eelektross-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 88,
-          "eelevate": 12
+          "eelevate": 100
         },
         "moveUsage": {
           "wild-charge": 4,
@@ -22210,8 +22204,7 @@
         "smogonName": "Pyroar-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 75,
-          "firemane": 25
+          "firemane": 100
         },
         "moveUsage": {
           "protect": 99,
@@ -22267,20 +22260,20 @@
           {
             "move": "heat-wave",
             "ohkoCount": 1,
-            "twoCount": 5,
+            "twoCount": 3,
             "ohko": [
               "Whimsicott"
             ],
             "two": [
               "Sinistcha",
               "Kingambit",
-              "Sneasler"
+              "Metagross-Mega"
             ]
           },
           {
             "move": "overheat",
-            "ohkoCount": 5,
-            "twoCount": 6,
+            "ohkoCount": 4,
+            "twoCount": 7,
             "ohko": [
               "Sinistcha",
               "Whimsicott",
@@ -22289,31 +22282,29 @@
             "two": [
               "Farigiraf",
               "Pelipper",
-              "Floette-Mega"
+              "Sneasler"
             ]
           },
           {
             "move": "solar-beam",
-            "ohkoCount": 2,
+            "ohkoCount": 1,
             "twoCount": 2,
             "ohko": [
-              "Basculegion",
               "Swampert-Mega"
             ],
             "two": [
-              "Garchomp",
+              "Basculegion",
               "Pelipper"
             ]
           },
           {
             "move": "hyper-voice",
             "ohkoCount": 0,
-            "twoCount": 3,
+            "twoCount": 2,
             "ohko": [],
             "two": [
               "Whimsicott",
-              "Pelipper",
-              "Sneasler"
+              "Pelipper"
             ]
           }
         ]
@@ -23387,8 +23378,7 @@
         "smogonName": "Malamar-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 81,
-          "contrary": 19
+          "contrary": 100
         },
         "moveUsage": {
           "superpower": 99,
@@ -23636,8 +23626,7 @@
         "smogonName": "Barbaracle-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 77,
-          "toughclaws": 23
+          "toughclaws": 100
         },
         "moveUsage": {
           "rock-slide": 96,
@@ -23894,8 +23883,7 @@
         "smogonName": "Dragalge-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 85,
-          "regenerator": 15
+          "regenerator": 100
         },
         "moveUsage": {
           "sludge-bomb": 84,
@@ -29479,8 +29467,7 @@
         "smogonName": "Falinks-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 83,
-          "defiant": 17
+          "defiant": 100
         },
         "moveUsage": {
           "no-retreat": 88,
@@ -34573,8 +34560,7 @@
         "smogonName": "Raichu-Mega-X",
         "asForm": null,
         "abilityUsage": {
-          "noability": 78,
-          "electricsurge": 22
+          "electricsurge": 100
         },
         "moveUsage": {
           "protect": 63,
@@ -34642,8 +34628,7 @@
         "smogonName": "Raichu-Mega-Y",
         "asForm": null,
         "abilityUsage": {
-          "noability": 74,
-          "noguard": 26
+          "noguard": 100
         },
         "moveUsage": {
           "zap-cannon": 98,
@@ -43490,8 +43475,7 @@
         "smogonName": "Staraptor-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 81,
-          "contrary": 19
+          "contrary": 100
         },
         "moveUsage": {
           "brave-bird": 81,
@@ -47627,8 +47611,7 @@
         "smogonName": "Scolipede-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 75,
-          "shellarmor": 25
+          "shellarmor": 100
         },
         "moveUsage": {
           "gunk-shot": 28,
@@ -47947,8 +47930,7 @@
         "smogonName": "Scrafty-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 65,
-          "intimidate": 35
+          "intimidate": 100
         },
         "moveUsage": {
           "fake-out": 84,
@@ -48776,8 +48758,7 @@
         "smogonName": "Eelektross-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 79,
-          "eelevate": 21
+          "eelevate": 100
         },
         "moveUsage": {
           "liquidation": 3,
@@ -50475,8 +50456,7 @@
         "smogonName": "Pyroar-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 69,
-          "firemane": 31
+          "firemane": 100
         },
         "moveUsage": {
           "protect": 97,
@@ -51495,8 +51475,7 @@
         "smogonName": "Malamar-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 74,
-          "contrary": 26
+          "contrary": 100
         },
         "moveUsage": {
           "superpower": 97,
@@ -51666,8 +51645,7 @@
         "smogonName": "Barbaracle-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 67,
-          "toughclaws": 33
+          "toughclaws": 100
         },
         "moveUsage": {
           "rock-slide": 84,
@@ -51819,8 +51797,7 @@
         "smogonName": "Dragalge-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 76,
-          "regenerator": 24
+          "regenerator": 100
         },
         "moveUsage": {
           "sludge-bomb": 75,
@@ -55856,8 +55833,7 @@
         "smogonName": "Falinks-Mega",
         "asForm": null,
         "abilityUsage": {
-          "noability": 76,
-          "defiant": 24
+          "defiant": 100
         },
         "moveUsage": {
           "no-retreat": 89,

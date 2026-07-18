@@ -2,6 +2,28 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Data-integrity audit + `npm run audit` — 2026-07-18
+User asked to verify no stale/wrong per-Pokémon data (EVs, move %, pick rate, everything) and to
+make the "keep data current" process obvious to the next agent.
+- ✅ **New `scripts/audit-data.mjs` (`npm run audit`)** — the correctness net `status` lacked. Per
+  Pokémon/form it checks: pick rate range, EV spread (nature valid, ≤252/≤508), move %/ability %/item %
+  ranges, **that every baked move is in the mon's movepool and every ability is one it can actually have**
+  (catches wrong Smogon matches), item/teammate slugs resolve, benchmarks reference real mons + moves,
+  stat totals, types. Plus live cross-checks: newest published month/regulation, and every mon's usage
+  vs Smogon's **independent** `usage.txt`. Wired offline into `refresh`; exits non-zero on any HIGH.
+- ✅ **Finding A (fixed):** 11 Champions-original Megas (Mega Raichu X/Y, Staraptor, Scolipede, Scrafty,
+  Eelektross, Pyroar, Malamar, Barbaracle, Dragalge, Falinks) had `abilityUsage:{noability:88,…}` —
+  Smogon can't identify their ability. Generator now **folds `noability` into the curated single
+  ability** (Mega Raichu X → "Electric Surge 100%", not 12%). 22 profiles corrected.
+- ✅ **Finding B (fixed):** Meowstic's ability list was male-only (Keen Eye/Infiltrator/Prankster); the
+  1% **Competitive** (female) was missing. Added via `EXTRA_BASE_ABILITIES` (keyed by ROSTER slug, since
+  PokeAPI's default variety is `meowstic-male`, not `meowstic`).
+- ✅ **Confirmed NOT stale/wrong:** every numeric value (298 usages vs usage.txt: 0 mismatches; EVs, move %,
+  ability %, spreads) checks out; data is on the newest month + regulation. The 57 master `usagePct:0`
+  profiles are the legitimate 1630-backfill tail (accurate), and `asForm` profiles blank ability/move by
+  design — both taught to the audit so they aren't false positives.
+- Verified: `status` + offline & online `audit` + tests + build green.
+
 ### Deep audit — 33 fixes — 2026-07-17
 A 9-dimension multi-agent audit (each finding refuted + reproduced) surfaced 31 issues; plus 2
 live-data findings. All fixed in one pass. Highlights:
