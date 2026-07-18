@@ -33,7 +33,10 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
 **Commands**
 - `npm run dev` / `npm run build && npm run start` (prod).
 - `npm run data` / `npm run data:comp` / `npm run data:all` — re-bake data. The competitive
-  script **auto-detects the newest published Smogon month** (pin: `STATS_MONTH=YYYY-MM`).
+  script **auto-detects both the current ladder REGULATION and the newest published Smogon
+  month** — it reads each month's chaos index newest-first and takes the highest-lettered
+  `gen9championsvgc2026regm*` (…regmb > …regma), so a game regulation rotation needs no code edit.
+  Pin either: `STATS_FORMAT=gen9championsvgc2026regmb` / `STATS_MONTH=YYYY-MM`. (Currently Reg M-B.)
 - **`npm run refresh` — the one-command manual data update (use THIS, not `data:comp`):**
   `data:all → status → test → build`. It re-bakes both files (keeping `generatedAt` in sync —
   `data:comp` alone fails the status date check), runs every integrity check + the unit suite +
@@ -72,6 +75,14 @@ Pre-battle tooling (team builders, etc.) is explicitly out of scope.
   PokeAPI/Showdown entry has). `npm run status` asserts every battle form ships an ability+effect.
 - Puppeteer's `setOfflineMode` does NOT apply to service workers — to test offline for real,
   prime the cache, kill the server, then navigate.
+- Bottom sheets go through `Sheet.tsx`: it **portals to `document.body`** (a `position: fixed`
+  sheet rendered inline is positioned by its ancestors — that's why the deep-in-the-moves-list
+  MoveModal silently failed to appear in the installed PWA while the shallow ItemModal only
+  covered the footer). It rests ABOVE the opponent tray via `--tray-height` (published by
+  `OpponentTray`), so the footer is ALWAYS visible. **Never scroll-lock with `overflow:hidden`** —
+  it kills the tray's `position: sticky` and drops the footer off-screen; background scroll is
+  contained by the scrim (`touch-none`) + panel (`overscroll-contain`) instead. Any new sheet
+  must use `Sheet`, not its own fixed overlay.
 - Damage math foundation: lv50 formula in `battle.ts` (31 IVs); build-time verdicts use
   @smogon/calc (dev-only dep, never shipped). Showdown chaos species names are calc-compatible.
 

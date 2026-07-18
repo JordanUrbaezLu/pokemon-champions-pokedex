@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId, useRef } from "react";
+import { useId } from "react";
+import { Sheet } from "./Sheet";
 import { TypeBadge } from "./TypeBadge";
 import { prettySmogonName, toDisplayName } from "@/lib/format";
 import type { DamageClass, MoveBenchmark, MoveSummary } from "@/lib/types";
@@ -107,126 +108,100 @@ export function MoveModal({
   onClose: () => void;
 }) {
   const titleId = useId();
-  const closeRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeRef.current?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKey);
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = previousOverflow;
-      previouslyFocused?.focus?.();
-    };
-  }, [onClose]);
-
   const facts = moveFacts(move);
   const target = move.target
     ? TARGET_LABELS[move.target] ?? toDisplayName(move.target)
     : null;
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center"
-      role="dialog"
-      aria-modal
-      aria-labelledby={titleId}
-    >
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="relative z-10 max-h-[88dvh] w-full max-w-md animate-[slideUp_.18s_ease-out] overflow-y-auto rounded-t-3xl border-t border-border bg-surface p-5 pb-9">
-        <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-border" />
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h3 id={titleId} className="text-xl font-black leading-tight">
-              {move.displayName}
-            </h3>
-            <div className="mt-2 flex items-center gap-2">
-              <TypeBadge type={move.type} />
-              <CategoryPill cls={move.damageClass} big />
-            </div>
+    <Sheet onClose={onClose} labelledBy={titleId}>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h3 id={titleId} className="text-xl font-black leading-tight">
+            {move.displayName}
+          </h3>
+          <div className="mt-2 flex items-center gap-2">
+            <TypeBadge type={move.type} />
+            <CategoryPill cls={move.damageClass} big />
           </div>
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
-          >
-            ✕
-          </button>
         </div>
-
-        <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-          <ModalStat label="Power" value={move.power ?? "—"} />
-          <ModalStat label="Acc" value={move.accuracy ?? "—"} />
-          <ModalStat label="Prio" value={move.priority > 0 ? `+${move.priority}` : move.priority} />
-        </div>
-
-        {target && <p className="mt-3 text-sm text-muted">{target}.</p>}
-
-        {benchmark && (benchmark.ohkoCount > 0 || benchmark.twoCount > 0) && (
-          <div className="mt-3 rounded-xl bg-surface-2/70 p-2.5">
-            <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
-              Off its common set, vs the top meta
-            </p>
-            <div className="flex flex-col gap-1 text-xs">
-              {benchmark.ohkoCount > 0 && (
-                <p>
-                  <span className="font-black text-accent">OHKO</span>{" "}
-                  <span className="font-semibold">
-                    {benchmark.ohko.map(prettySmogonName).join(", ")}
-                  </span>
-                  {benchmark.ohkoCount > benchmark.ohko.length && (
-                    <span className="text-muted">
-                      {" "}
-                      +{benchmark.ohkoCount - benchmark.ohko.length} more
-                    </span>
-                  )}
-                </p>
-              )}
-              {benchmark.twoCount > 0 && (
-                <p>
-                  <span className="font-black text-amber-300">2HKO</span>{" "}
-                  <span className="font-semibold">
-                    {benchmark.two.map(prettySmogonName).join(", ")}
-                  </span>
-                  {benchmark.twoCount > benchmark.two.length && (
-                    <span className="text-muted">
-                      {" "}
-                      +{benchmark.twoCount - benchmark.two.length} more
-                    </span>
-                  )}
-                </p>
-              )}
-            </div>
-          </div>
-        )}
-
-        {facts.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {facts.map((f) => (
-              <span
-                key={f}
-                className="rounded-full bg-surface-2 px-2.5 py-0.5 text-xs font-semibold"
-              >
-                {f}
-              </span>
-            ))}
-          </div>
-        )}
-
-        {/* The dataset guarantees description text (and `npm run status` enforces
-            it), but fall back to a mechanics-derived line so a sheet is never
-            blank even if that guarantee ever slips. */}
-        <p className="mt-4 text-sm leading-relaxed text-muted">
-          {move.effect ||
-            move.shortEffect ||
-            `A ${toDisplayName(move.type)}-type ${move.damageClass} move.`}
-        </p>
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface-2 text-muted active:bg-border"
+        >
+          ✕
+        </button>
       </div>
-    </div>
+
+      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
+        <ModalStat label="Power" value={move.power ?? "—"} />
+        <ModalStat label="Acc" value={move.accuracy ?? "—"} />
+        <ModalStat label="Prio" value={move.priority > 0 ? `+${move.priority}` : move.priority} />
+      </div>
+
+      {target && <p className="mt-3 text-sm text-muted">{target}.</p>}
+
+      {benchmark && (benchmark.ohkoCount > 0 || benchmark.twoCount > 0) && (
+        <div className="mt-3 rounded-xl bg-surface-2/70 p-2.5">
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
+            Off its common set, vs the top meta
+          </p>
+          <div className="flex flex-col gap-1 text-xs">
+            {benchmark.ohkoCount > 0 && (
+              <p>
+                <span className="font-black text-accent">OHKO</span>{" "}
+                <span className="font-semibold">
+                  {benchmark.ohko.map(prettySmogonName).join(", ")}
+                </span>
+                {benchmark.ohkoCount > benchmark.ohko.length && (
+                  <span className="text-muted">
+                    {" "}
+                    +{benchmark.ohkoCount - benchmark.ohko.length} more
+                  </span>
+                )}
+              </p>
+            )}
+            {benchmark.twoCount > 0 && (
+              <p>
+                <span className="font-black text-amber-300">2HKO</span>{" "}
+                <span className="font-semibold">
+                  {benchmark.two.map(prettySmogonName).join(", ")}
+                </span>
+                {benchmark.twoCount > benchmark.two.length && (
+                  <span className="text-muted">
+                    {" "}
+                    +{benchmark.twoCount - benchmark.two.length} more
+                  </span>
+                )}
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {facts.length > 0 && (
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {facts.map((f) => (
+            <span
+              key={f}
+              className="rounded-full bg-surface-2 px-2.5 py-0.5 text-xs font-semibold"
+            >
+              {f}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* The dataset guarantees description text (and `npm run status` enforces
+          it), but fall back to a mechanics-derived line so a sheet is never
+          blank even if that guarantee ever slips. */}
+      <p className="mt-4 text-sm leading-relaxed text-muted">
+        {move.effect ||
+          move.shortEffect ||
+          `A ${toDisplayName(move.type)}-type ${move.damageClass} move.`}
+      </p>
+    </Sheet>
   );
 }
