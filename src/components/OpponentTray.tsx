@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,12 +18,36 @@ export function OpponentTray() {
   const { opponents, unpin, clear } = useOpponents();
   const [briefing, setBriefing] = useState(false);
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
 
-  if (opponents.length === 0) return null;
+  // Publish the tray's live height so bottom sheets can rest ABOVE it and never
+  // cover the footer. Tracked with a ResizeObserver (its height changes with the
+  // safe-area inset / wrapping) and reset to 0 whenever the tray isn't shown.
+  const shown = opponents.length > 0;
+  useEffect(() => {
+    const root = document.documentElement;
+    const el = navRef.current;
+    if (!shown || !el) {
+      root.style.setProperty("--tray-height", "0px");
+      return;
+    }
+    const apply = () =>
+      root.style.setProperty("--tray-height", `${el.offsetHeight}px`);
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.setProperty("--tray-height", "0px");
+    };
+  }, [shown]);
+
+  if (!shown) return null;
 
   return (
     <>
       <nav
+        ref={navRef}
         aria-label="Pinned opponents"
         className="sticky bottom-0 z-30 border-t border-border bg-background/95 px-3 pb-[max(env(safe-area-inset-bottom),8px)] pt-2 backdrop-blur animate-[slideUp_.22s_ease-out]"
       >

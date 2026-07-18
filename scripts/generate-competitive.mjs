@@ -24,10 +24,14 @@ const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
 const POKEMON_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
 const OUT_PATH = resolve(ROOT, "src/data/generated/competitive.json");
 
-const FORMAT = "gen9championsvgc2026regma"; // Champions VGC doubles, Reg M-A
-// The month is auto-detected at run time (newest published month that carries
-// this format), so every run is as fresh as Smogon allows. Pin a specific
-// snapshot with STATS_MONTH=YYYY-MM when needed.
+// Champions VGC (doubles). Both the ladder REGULATION (…regma → …regmb → …) and
+// the stats MONTH are auto-detected at run time, so every run tracks the game's
+// *current* regulation and the freshest published month with no code edit when
+// the game rotates regulations. (The weekly refresh Action only re-bakes; this
+// is what keeps it from silently serving a dead regulation.) Pin either when
+// reproducing an exact snapshot:
+//   STATS_FORMAT=gen9championsvgc2026regmb   STATS_MONTH=YYYY-MM
+const FORMAT_OVERRIDE = process.env.STATS_FORMAT || null;
 const MONTH_OVERRIDE = process.env.STATS_MONTH || null;
 // The app ships TWO complete brackets and toggles between them client-side:
 //  - master: Smogon's top cutoffs — 1760 primary, 1630 backfilling mons the
@@ -38,28 +42,62 @@ const BRACKETS = {
   master: { cutoffs: ["1760", "1630"], label: "Master+ (top ladder brackets)" },
   all: { cutoffs: ["0"], label: "all ranks" },
 };
-const statsUrl = (month, cutoff) =>
-  `https://www.smogon.com/stats/${month}/chaos/${FORMAT}-${cutoff}.json`;
+const statsUrl = (format, month, cutoff) =>
+  `https://www.smogon.com/stats/${month}/chaos/${format}-${cutoff}.json`;
 
-/** The newest published Smogon month that actually carries this format. */
-async function resolveLatestMonth() {
-  if (MONTH_OVERRIDE) return MONTH_OVERRIDE;
-  const res = await fetch("https://www.smogon.com/stats/", {
+/** "gen9championsvgc2026regmb" → "Reg M-B" (best-effort; raw id if unparseable). */
+function regulationLabel(format) {
+  const m = format.match(/reg([a-z])([a-z])$/);
+  return m ? `Reg ${m[1].toUpperCase()}-${m[2].toUpperCase()}` : format;
+}
+
+/** Every base Champions-VGC doubles regulation id with a published all-ranks
+ *  file in `month` (the …bo3 best-of-three variants are deliberately excluded). */
+async function championsFormatsForMonth(month) {
+  const res = await fetch(`https://www.smogon.com/stats/${month}/chaos/`, {
     headers: { "User-Agent": USER_AGENT },
   });
-  if (!res.ok) throw new Error(`stats index: HTTP ${res.status}`);
-  const months = [...new Set(
-    [...(await res.text()).matchAll(/href="(\d{4}-\d{2})\//g)].map((m) => m[1]),
-  )].sort().reverse();
-  // Walk newest-first; a month can exist before this format publishes in it.
-  for (const month of months.slice(0, 6)) {
-    const probe = await fetch(statsUrl(month, BRACKETS.all.cutoffs[0]), {
-      method: "HEAD",
+  if (!res.ok) return [];
+  const text = await res.text();
+  return [...new Set(
+    [...text.matchAll(/(gen9championsvgc\d{4}reg[a-z]+)-0\.json/g)].map((m) => m[1]),
+  )];
+}
+
+/**
+ * Resolve the freshest { format, month }: the newest published month, and within
+ * it the newest REGULATION. Format ids sort lexically in release order
+ * (…regmb > …regma; a future …regmc > …regmb; the m→n series and the year prefix
+ * all sort correctly), so `.sort().at(-1)` is "the current regulation". Honors
+ * STATS_FORMAT / STATS_MONTH pins.
+ */
+async function resolveFormatAndMonth() {
+  let months;
+  if (MONTH_OVERRIDE) {
+    months = [MONTH_OVERRIDE];
+  } else {
+    const index = await fetch("https://www.smogon.com/stats/", {
       headers: { "User-Agent": USER_AGENT },
     });
-    if (probe.ok) return month;
+    if (!index.ok) throw new Error(`stats index: HTTP ${index.status}`);
+    months = [...new Set(
+      [...(await index.text()).matchAll(/href="(\d{4}-\d{2})\//g)].map((m) => m[1]),
+    )].sort().reverse().slice(0, 6);
   }
-  throw new Error(`no published stats found for ${FORMAT} in ${months.slice(0, 6).join(", ")}`);
+  // Walk newest-first; a month can exist before the format publishes into it.
+  for (const month of months) {
+    if (FORMAT_OVERRIDE) {
+      const probe = await fetch(
+        statsUrl(FORMAT_OVERRIDE, month, BRACKETS.all.cutoffs[0]),
+        { method: "HEAD", headers: { "User-Agent": USER_AGENT } },
+      );
+      if (probe.ok) return { format: FORMAT_OVERRIDE, month };
+      continue;
+    }
+    const formats = await championsFormatsForMonth(month);
+    if (formats.length) return { format: formats.sort().at(-1), month };
+  }
+  throw new Error(`no published Champions VGC stats found in ${months.join(", ")}`);
 }
 const ITEMS_URL = "https://pokeapi.co/api/v2/item?limit=3000";
 
@@ -323,11 +361,11 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
 }
 
 async function main() {
-  const MONTH = await resolveLatestMonth();
+  const { format: FORMAT, month: MONTH } = await resolveFormatAndMonth();
   const allCutoffs = [...new Set(Object.values(BRACKETS).flatMap((b) => b.cutoffs))];
-  console.log(`Fetching Champions DOUBLES competitive stats (${FORMAT}, ${MONTH}${MONTH_OVERRIDE ? " [pinned]" : " [latest published]"}, cutoffs ${allCutoffs.join("/")})…`);
+  console.log(`Fetching Champions DOUBLES competitive stats (${FORMAT} = ${regulationLabel(FORMAT)}, ${MONTH}${FORMAT_OVERRIDE ? " [format pinned]" : " [latest regulation]"}${MONTH_OVERRIDE ? " [month pinned]" : ""}, cutoffs ${allCutoffs.join("/")})…`);
   const [chaosByCutoff, itemList, pokemonData] = await Promise.all([
-    Promise.all(allCutoffs.map((c) => getJson(statsUrl(MONTH, c)))).then((files) =>
+    Promise.all(allCutoffs.map((c) => getJson(statsUrl(FORMAT, MONTH, c)))).then((files) =>
       Object.fromEntries(allCutoffs.map((c, i) => [c, files[i]])),
     ),
     getJson(ITEMS_URL),
@@ -666,10 +704,10 @@ async function main() {
   const out = {
     meta: {
       format: FORMAT,
-      formatLabel: "Champions VGC (doubles), Reg M-A",
+      formatLabel: `Champions VGC (doubles), ${regulationLabel(FORMAT)}`,
       month: MONTH,
       battles,
-      source: statsUrl(MONTH, BRACKETS.master.cutoffs[0]),
+      source: statsUrl(FORMAT, MONTH, BRACKETS.master.cutoffs[0]),
       generatedAt: new Date().toISOString().slice(0, 10),
       bracketLabels: Object.fromEntries(
         Object.entries(BRACKETS).map(([name, def]) => [name, def.label]),

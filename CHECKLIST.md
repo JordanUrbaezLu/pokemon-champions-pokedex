@@ -2,6 +2,27 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Reg M-B switch + bottom-sheet rework — 2026-07-17
+User report: "no data for some Pokémon that have been out a while" + bottom sheets misbehaving.
+- ✅ **Root cause of "no data":** game rotated to **Regulation M-B** (v1.1.0, 2026-06-17) but the
+  competitive generator hard-coded `…regma`. The +22 roster mons (added 2026-06-18) had pages but
+  no ladder data because they only appear in the M-B stats. Confirmed: 38 of 40 dataless forms are
+  present in Smogon's `…regmb` files.
+- ✅ **Fix:** `generate-competitive.mjs` now **auto-detects the current regulation AND month**
+  (reads each month's chaos index newest-first, takes the highest-lettered `…regm*`; `.sort().at(-1)`
+  tracks release order). Pins: `STATS_FORMAT` / `STATS_MONTH`. Re-baked → master **244 → 280**
+  profiles, all **264 → 300**; Mega Swampert 14.6%, Mega Metagross 13.9%, Grimmsnarl 14.7%,
+  Gholdengo 11.6%, Mega Raichu X/Y 1.7/9.5% — all previously blank, now populated. Status all green.
+- ✅ **Bottom-sheet rework** (`Sheet.tsx`, new): all sheets (Move/Item/Briefing/Role) now **portal to
+  `document.body`**, fixing the PWA bug where the deep-in-the-DOM MoveModal never appeared and the
+  shallow ItemModal covered the footer — web + installed-PWA now behave identically. Sheets rest
+  **above** the opponent tray via `--tray-height` (published by `OpponentTray`); **footer always
+  visible, never covered** (per user). Dropped the `overflow:hidden` scroll-lock (it killed the
+  tray's `sticky` and caused the page shift/jump) in favor of scrim `touch-none` + panel
+  `overscroll-contain` + `focus({preventScroll})`. Verified at 375px with a seeded opponent:
+  sheet bottom == footer top, footer fully visible for both move + item sheets.
+- ✅ tsc + lint + `npm test` (42) + build (232 pages) green.
+
 ## Foundation
 - ✅ Latest **Next.js 16** (App Router, Turbopack), TypeScript, Tailwind v4, mobile-only
 - ✅ **Very fast** — all data baked in at build; every page static; **zero runtime API calls**
@@ -13,8 +34,8 @@ A living log of everything requested + built. Legend: ✅ done · 🔄 in progre
 - ✅ **Regional + Rotom forms split out** as distinct entries (Alolan/Galarian/Hisuian/Paldean,
   Wash/Heat/Frost/Mow/Fan Rotom) — own typing/stats/abilities/movepool/competitive data
 - ✅ Moves = the **actual Champions movepool** (Serebii) with full battle data (PokeAPI)
-- ✅ **Competitive data = Champions DOUBLES ladder** (`gen9championsvgc2026regma`, 2026-05,
-  3.36M battles); per-form
+- ✅ **Competitive data = Champions DOUBLES ladder**, per-form. Regulation + month **auto-detected**
+  (see 2026-07-17 entry); currently `gen9championsvgc2026regmb` (Reg M-B), 2026-06, 1.16M battles
 
 ### Roster update — 2026-06-18 (22 new species)
 - ✅ **+22 species** Serebii added to Champions: annihilape, barbaracle, blaziken, dragalge,
