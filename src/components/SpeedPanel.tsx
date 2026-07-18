@@ -103,8 +103,8 @@ export function SpeedPanel({
 
   return (
     <section className="rounded-2xl glass p-3.5">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-xs font-black uppercase tracking-wider text-muted">Speed</h2>
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="hud-label text-[11px]">Speed</h2>
         <span className="text-[10px] text-muted">
           Lv. 50 · 31 IVs{trickRoom ? " · Trick Room: slower acts first" : ""}
         </span>

@@ -147,7 +147,7 @@ export function MovesSection({
 
   return (
     <section className="rounded-2xl glass-quiet p-3.5">
-      <h2 className="text-xs font-black uppercase tracking-wider text-muted">
+      <h2 className="hud-label text-[11px]">
         Moves <span className="text-foreground">· {moves.length}</span>
       </h2>
 

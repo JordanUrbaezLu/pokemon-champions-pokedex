@@ -182,7 +182,7 @@ export function PokemonCard({
         {/* Name with the Mega mark inline to its right — the glow flags "has a
             Mega" right where the eye already is. */}
         <div className="flex min-w-0 items-center gap-1.5">
-          <p className="min-w-0 truncate text-[17px] font-bold leading-tight">
+          <p className="min-w-0 truncate font-display text-base font-semibold leading-tight">
             {entry.displayName}
           </p>
           {entry.hasMega && entry.megaKey && (

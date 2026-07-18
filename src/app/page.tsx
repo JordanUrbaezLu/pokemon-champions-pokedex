@@ -21,7 +21,7 @@ export default function Home() {
       <header className="flex items-center gap-3 px-4 pb-1 pt-5">
         <PokeballIcon className="size-9 shrink-0 drop-shadow" />
         <div>
-          <h1 className="text-2xl font-black leading-none tracking-tight">
+          <h1 className="font-display text-[22px] font-bold leading-none tracking-tight">
             Champions Pokédex
           </h1>
           <p className="mt-1 text-sm text-muted">
