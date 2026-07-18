@@ -38,9 +38,7 @@ export function TypeMatchups({
 
   return (
     <section className="rounded-2xl glass-quiet p-3.5">
-      <h2 className="mb-2.5 text-xs font-black uppercase tracking-wider text-muted">
-        Type Matchups
-      </h2>
+      <h2 className="hud-label mb-2.5 text-[11px]">Type Matchups</h2>
       <div className="flex flex-col gap-2">
         {rows.map((row) => (
           <div

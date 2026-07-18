@@ -66,9 +66,7 @@ export function ThreatProfileCard({
   return (
     <section className="rounded-2xl glass p-3.5">
       <div className="mb-2.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
-        <h2 className="text-xs font-black uppercase tracking-wider text-muted">
-          Threat Profile
-        </h2>
+        <h2 className="hud-label text-[11px]">Threat Profile</h2>
         {profile.archetype.length > 0 && (
           <div className="flex flex-wrap gap-1">
             {profile.archetype.map((a) => (

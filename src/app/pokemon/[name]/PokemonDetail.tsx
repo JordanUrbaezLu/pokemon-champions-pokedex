@@ -53,9 +53,7 @@ function Section({
 }) {
   return (
     <section className="rounded-2xl glass-quiet p-3.5">
-      <h2 className="mb-2.5 text-xs font-black uppercase tracking-wider text-muted">
-        {title}
-      </h2>
+      <h2 className="hud-label mb-2.5 text-[11px]">{title}</h2>
       {children}
     </section>
   );
@@ -180,24 +178,25 @@ export function PokemonDetail({
   return (
     <main className="flex min-h-dvh flex-col">
       {/* Sticky top bar: back = previous Pokémon (e.g. after following a
-          partner link), and a dedicated centered Home button. */}
+          partner link), and a dedicated centered Home button. Chrome is kept
+          strictly neutral — on this screen red means one thing only: threat. */}
       <div className="sticky top-0 z-20 grid grid-cols-[1fr_auto_1fr] items-center border-b border-border bg-background/90 px-1 py-1.5 backdrop-blur">
         <button
           type="button"
           onClick={() => router.back()}
           aria-label="Go back"
-          className="flex size-11 items-center justify-center justify-self-start rounded-full text-xl active:bg-surface-2"
+          className="flex size-11 items-center justify-center justify-self-start rounded-full text-xl text-muted active:bg-surface-2"
         >
           ‹
         </button>
         <Link
           href="/"
           aria-label="Home"
-          className="flex size-11 items-center justify-center justify-self-center rounded-full border-2 border-accent text-accent active:bg-accent/15"
+          className="flex size-11 items-center justify-center justify-self-center rounded-full border border-border bg-surface text-muted active:bg-surface-2"
         >
           <HomeIcon className="size-5" />
         </Link>
-        <span className="justify-self-end pr-3 font-mono text-xs text-muted">
+        <span className="justify-self-end pr-3 font-mono text-xs tabular-nums text-muted">
           {dexNumber(pokemon.id)}
         </span>
       </div>
@@ -206,35 +205,71 @@ export function PokemonDetail({
           tight block — the Threat Profile is the star, so it must clear the
           fold. The artwork is for recognition, not admiration. */}
       <div
-        className="px-4 pb-2 pt-1.5 animate-[fadeUp_.3s_ease-out]"
+        className="relative px-4 pb-3 pt-2 animate-[fadeUp_.3s_ease-out]"
         style={{
-          background: `radial-gradient(130% 90% at 0% 0%, ${tint}38, transparent 62%)`,
+          background: `radial-gradient(130% 92% at 0% 0%, ${tint}3d, transparent 60%)`,
         }}
       >
-        <div className="flex items-center gap-3">
-          {active.artwork ? (
-            <Image
-              key={active.key}
-              src={active.artwork}
-              alt={active.label}
-              width={240}
-              height={240}
-              className="size-37.5 shrink-0 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
-              priority
-              // Served straight from the CDN (no on-demand optimizer step) so the
-              // URL is stable and can be warmed by the home list's prefetch.
-              unoptimized
-            />
-          ) : null}
+        <div className="flex items-center gap-3.5">
+          {/* The signature: the opponent acquired by a targeting reticle. A
+              type-tinted plate gives the frame something to hold; four corner
+              brackets in the type color snap on once as the page settles. Kept
+              compact on purpose so the Threat Profile still clears the fold. */}
+          <div className="relative shrink-0">
+            <div
+              className="flex size-30 items-center justify-center rounded-2xl"
+              style={{
+                background: `radial-gradient(circle at 50% 36%, ${tint}30, ${tint}0a)`,
+                border: `1px solid ${tint}2b`,
+              }}
+            >
+              {active.artwork ? (
+                <Image
+                  key={active.key}
+                  src={active.artwork}
+                  alt={active.label}
+                  width={240}
+                  height={240}
+                  className="size-26 object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]"
+                  priority
+                  // Served straight from the CDN (no on-demand optimizer step) so
+                  // the URL is stable and warmed by the home list's prefetch.
+                  unoptimized
+                />
+              ) : null}
+            </div>
+            <div
+              className="pointer-events-none absolute -inset-1 animate-[lockIn_.4s_ease-out_both]"
+              aria-hidden
+            >
+              {[
+                "left-0 top-0 border-l-2 border-t-2 rounded-tl-lg",
+                "right-0 top-0 border-r-2 border-t-2 rounded-tr-lg",
+                "bottom-0 left-0 border-b-2 border-l-2 rounded-bl-lg",
+                "bottom-0 right-0 border-b-2 border-r-2 rounded-br-lg",
+              ].map((corner) => (
+                <span
+                  key={corner}
+                  className={`absolute size-4 ${corner}`}
+                  // Lift the type hue toward white so the reticle stays legible
+                  // even for the dark types (Dark/Ghost/Poison) whose brand color
+                  // all but disappears on the near-black background.
+                  style={{ borderColor: `color-mix(in srgb, ${tint} 62%, #fff)` }}
+                />
+              ))}
+            </div>
+          </div>
           <div className="min-w-0 flex-1">
-            <h1 className="text-xl font-black leading-tight">{active.label}</h1>
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+            <h1 className="font-display text-[25px] font-bold leading-[1.02] tracking-tight">
+              {active.label}
+            </h1>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5">
               {active.types.map((t) => (
                 <TypeBadge key={t} type={t} size="sm" />
               ))}
               {comp && (
                 <span
-                  className="rounded-full px-2 py-0.5 text-[11px] font-bold"
+                  className="rounded-full px-2 py-0.5 text-[11px] font-bold tabular-nums"
                   style={{ backgroundColor: `${tint}26`, color: tint }}
                 >
                   {formatPickRate(comp.usagePct)} pick
@@ -323,7 +358,12 @@ export function PokemonDetail({
         )}
 
         <SpeedPanel
-          key={active.key}
+          // Distinct per-sibling prefix: SpeedPanel and MovesSection are both
+          // keyed by the form so switching forms remounts them (resetting their
+          // internal toggles), but a bare `active.key` collides between the two
+          // siblings — React then duplicates/omits one (it rendered the Speed
+          // panel twice). The prefix keeps the remount, drops the collision.
+          key={`speed-${active.key}`}
           stats={active.stats}
           comp={comp}
           abilities={active.abilities.map((a) => a.name)}
@@ -413,7 +453,7 @@ export function PokemonDetail({
         )}
 
         <MovesSection
-          key={active.key}
+          key={`moves-${active.key}`}
           moves={moves}
           usage={comp?.moveUsage}
           benchmarks={comp?.benchmarks}

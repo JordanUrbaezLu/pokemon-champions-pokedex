@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Geist_Mono } from "next/font/google";
+import { Manrope, Geist_Mono, Chakra_Petch } from "next/font/google";
 import { OpponentTray } from "@/components/OpponentTray";
 import { ServiceWorkerRegistrar } from "@/components/ServiceWorkerRegistrar";
 import "./globals.css";
 
 // Manrope: smooth, rounded, and highly legible at small sizes — easy to read
-// at a glance mid-battle. Geist Mono is reserved for stat/dex numerals.
+// at a glance mid-battle. It carries ALL body copy, labels and chips. Geist Mono
+// is reserved for stat/dex numerals (numbers win the hierarchy).
 const appSans = Manrope({
   variable: "--font-app-sans",
   subsets: ["latin"],
@@ -14,6 +15,17 @@ const appSans = Manrope({
 const appMono = Geist_Mono({
   variable: "--font-app-mono",
   subsets: ["latin"],
+});
+
+// Chakra Petch: a squared, chamfered "tactical HUD" face — the app is an
+// in-battle scouting console, not a friendly encyclopedia, and this is the
+// personality that says so. Used with restraint: the wordmark, the opponent's
+// name in the hero, and the section readout labels ONLY. Never body copy — its
+// job is identity, Manrope's is legibility.
+const appDisplay = Chakra_Petch({
+  variable: "--font-app-display",
+  subsets: ["latin"],
+  weight: ["500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -45,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${appSans.variable} ${appMono.variable} h-full antialiased`}
+      className={`${appSans.variable} ${appMono.variable} ${appDisplay.variable} h-full antialiased`}
     >
       <head>
         {/* Sprites come from this CDN; shaving the handshake makes the first
