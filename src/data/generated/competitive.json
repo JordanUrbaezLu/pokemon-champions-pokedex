@@ -5,7 +5,7 @@
     "month": "2026-06",
     "battles": 1163315,
     "source": "https://www.smogon.com/stats/2026-06/chaos/gen9championsvgc2026regmb-1760.json",
-    "generatedAt": "2026-07-18",
+    "generatedAt": "2026-07-19",
     "bracketLabels": {
       "master": "Master+ (top ladder brackets)",
       "all": "all ranks"
@@ -134,6 +134,34 @@
             "two": [
               "Basculegion",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "solar-beam",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "leaf-storm",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Basculegion",
+              "Pelipper",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Farigiraf",
+              "Grimmsnarl"
             ]
           }
         ]
@@ -357,6 +385,34 @@
               "Pelipper",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "air-slash",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "hurricane",
+            "ohkoCount": 3,
+            "twoCount": 4,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -470,6 +526,19 @@
             "ohko": [],
             "two": [
               "Garchomp",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "temper-flare",
+            "ohkoCount": 1,
+            "twoCount": 7,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
               "Sneasler"
             ]
           }
@@ -666,6 +735,25 @@
             "two": [
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "body-press",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -768,6 +856,33 @@
             "two": [
               "Incineroar",
               "Archaludon"
+            ]
+          },
+          {
+            "move": "water-pulse",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -879,6 +994,26 @@
               "Incineroar",
               "Whimsicott"
             ]
+          },
+          {
+            "move": "fell-stinger",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -973,6 +1108,21 @@
             "ohko": [],
             "two": [
               "Pelipper"
+            ]
+          },
+          {
+            "move": "hyper-beam",
+            "ohkoCount": 3,
+            "twoCount": 8,
+            "ohko": [
+              "Whimsicott",
+              "Pelipper",
+              "Sneasler"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Farigiraf"
             ]
           }
         ]
@@ -1090,6 +1240,15 @@
               "Floette-Mega",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -1192,6 +1351,17 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "volt-switch",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -1302,6 +1472,29 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -1404,6 +1597,26 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "play-rough",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Sneasler",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -1506,6 +1719,28 @@
               "Basculegion",
               "Sneasler",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "dazzling-gleam",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -1631,6 +1866,31 @@
               "Sneasler"
             ],
             "two": [
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "discharge",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
               "Staraptor-Mega"
             ]
           }
@@ -1859,6 +2119,26 @@
               "Whimsicott",
               "Pelipper"
             ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "draining-kiss",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -1978,6 +2258,16 @@
               "Kingambit",
               "Sneasler",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Swampert-Mega"
             ]
           }
         ]
@@ -2104,6 +2394,15 @@
             "ohko": [],
             "two": [
               "Garchomp"
+            ]
+          },
+          {
+            "move": "dazzling-gleam",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -2236,6 +2535,28 @@
               "Basculegion",
               "Pelipper"
             ]
+          },
+          {
+            "move": "giga-drain",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "moonblast",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -2345,6 +2666,30 @@
               "Basculegion",
               "Charizard-Mega-Y",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
             ]
           }
         ]
@@ -2462,6 +2807,31 @@
               "Sinistcha",
               "Basculegion",
               "Whimsicott"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "wild-charge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -2602,6 +2972,30 @@
               "Pelipper",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "focus-blast",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -2727,6 +3121,34 @@
               "Sinistcha",
               "Basculegion",
               "Whimsicott"
+            ]
+          },
+          {
+            "move": "psyshock",
+            "ohkoCount": 2,
+            "twoCount": 5,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Whimsicott",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 2,
+            "twoCount": 7,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
             ]
           }
         ]
@@ -2861,6 +3283,18 @@
               "Incineroar",
               "Whimsicott",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
             ]
           }
         ]
@@ -2998,6 +3432,27 @@
               "Pelipper",
               "Floette-Mega"
             ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "leaf-storm",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -3106,6 +3561,29 @@
             "two": [
               "Floette-Mega",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "trailblaze",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Swampert-Mega"
+            ]
+          },
+          {
+            "move": "power-whip",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Pelipper",
+              "Floette-Mega"
             ]
           }
         ]
@@ -3246,6 +3724,28 @@
             "two": [
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "body-press",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "expanding-force",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -3364,6 +3864,27 @@
               "Whimsicott",
               "Pelipper",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psychic-noise",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "muddy-water",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -3507,6 +4028,18 @@
             "two": [
               "Whimsicott"
             ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
           }
         ]
       },
@@ -3644,6 +4177,31 @@
               "Pelipper",
               "Floette-Mega",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "thunderbolt",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -3841,6 +4399,26 @@
             "two": [
               "Basculegion"
             ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "hammer-arm",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -3941,6 +4519,28 @@
             "ohko": [],
             "two": [
               "Basculegion"
+            ]
+          },
+          {
+            "move": "hammer-arm",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit"
             ]
           }
         ]
@@ -4079,6 +4679,32 @@
               "Whimsicott",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "hydro-pump",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -4208,6 +4834,36 @@
               "Sinistcha",
               "Swampert-Mega"
             ]
+          },
+          {
+            "move": "ice-spinner",
+            "ohkoCount": 4,
+            "twoCount": 6,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott",
+              "Sneasler"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 3,
+            "twoCount": 8,
+            "ohko": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -4314,6 +4970,32 @@
           },
           {
             "move": "storm-throw",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "giga-impact",
+            "ohkoCount": 11,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ],
+            "two": [
+              "Incineroar",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "close-combat",
             "ohkoCount": 1,
             "twoCount": 2,
             "ohko": [
@@ -4447,6 +5129,28 @@
               "Incineroar",
               "Archaludon"
             ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "raging-bull",
+            "ohkoCount": 0,
+            "twoCount": 6,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -4573,6 +5277,28 @@
               "Incineroar",
               "Sneasler",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "wild-charge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -4709,6 +5435,15 @@
             "two": [
               "Sneasler"
             ]
+          },
+          {
+            "move": "crunch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -4827,6 +5562,29 @@
             "two": [
               "Pelipper",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "earthquake",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "ice-fang",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -5149,6 +5907,25 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "alluring-voice",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -5262,6 +6039,15 @@
               "Sinistcha",
               "Whimsicott",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "flame-charge",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
             ]
           }
         ]
@@ -5611,6 +6397,25 @@
             "two": [
               "Kingambit"
             ]
+          },
+          {
+            "move": "smack-down",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -5723,6 +6528,24 @@
             "ohko": [],
             "two": [
               "Whimsicott"
+            ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "stomping-tantrum",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Sneasler"
             ]
           }
         ]
@@ -5844,6 +6667,19 @@
               "Sinistcha",
               "Whimsicott",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "thunderbolt",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -6064,6 +6900,29 @@
             "two": [
               "Basculegion"
             ]
+          },
+          {
+            "move": "extrasensory",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "solar-beam",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -6198,6 +7057,34 @@
               "Pelipper",
               "Sneasler"
             ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -6330,6 +7217,28 @@
             "two": [
               "Pelipper"
             ]
+          },
+          {
+            "move": "aqua-jet",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "ice-fang",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -6445,6 +7354,30 @@
             "twoCount": 1,
             "ohko": [],
             "two": [
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "waterfall",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Sneasler",
               "Charizard-Mega-Y"
             ]
           }
@@ -6657,6 +7590,34 @@
               "Sneasler",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "parabolic-charge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 4,
+            "twoCount": 8,
+            "ohko": [
+              "Basculegion",
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Whimsicott",
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -6788,6 +7749,19 @@
               "Incineroar",
               "Sneasler",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "ice-spinner",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Sneasler"
             ]
           }
         ]
@@ -7006,6 +7980,19 @@
             "two": [
               "Pelipper",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "expanding-force",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -7229,6 +8216,25 @@
               "Garchomp",
               "Whimsicott"
             ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -7369,6 +8375,30 @@
               "Whimsicott"
             ],
             "two": []
+          },
+          {
+            "move": "eerie-spell",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -7493,6 +8523,29 @@
               "Kingambit",
               "Floette-Mega"
             ]
+          },
+          {
+            "move": "iron-head",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Sneasler",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "drill-run",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Incineroar",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -7606,6 +8659,30 @@
             ],
             "two": [
               "Pelipper"
+            ]
+          },
+          {
+            "move": "iron-head",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott",
+              "Floette-Mega"
+            ],
+            "two": [
+              "Sneasler",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "psychic-fangs",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -7728,6 +8805,15 @@
             "two": [
               "Floette-Mega",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "liquidation",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -7860,6 +8946,33 @@
               "Whimsicott",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "dual-wingbeat",
+            "ohkoCount": 3,
+            "twoCount": 8,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -7972,6 +9085,31 @@
             "ohko": [],
             "two": [
               "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "dual-wingbeat",
+            "ohkoCount": 3,
+            "twoCount": 5,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "pounce",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
               "Farigiraf"
             ]
           }
@@ -8311,6 +9449,17 @@
             "two": [
               "Sneasler"
             ]
+          },
+          {
+            "move": "rock-tomb",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -8411,6 +9560,15 @@
               "Sinistcha",
               "Basculegion",
               "Farigiraf"
+            ]
+          },
+          {
+            "move": "scorching-sands",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Sneasler"
             ]
           }
         ]
@@ -8529,6 +9687,21 @@
             "two": [
               "Sinistcha",
               "Kingambit",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Pelipper",
               "Sneasler"
             ]
           }
@@ -8665,6 +9838,27 @@
               "Farigiraf",
               "Pelipper"
             ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "high-horsepower",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Incineroar",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -8782,6 +9976,19 @@
               "Basculegion",
               "Incineroar",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "crunch",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Farigiraf"
             ]
           }
         ]
@@ -8917,6 +10124,15 @@
             "two": [
               "Garchomp"
             ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -9028,6 +10244,18 @@
               "Garchomp",
               "Whimsicott",
               "Farigiraf"
+            ]
+          },
+          {
+            "move": "giga-drain",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
             ]
           }
         ]
@@ -9165,6 +10393,30 @@
               "Sinistcha",
               "Kingambit",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 4,
+            "twoCount": 5,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Sneasler",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -9409,6 +10661,25 @@
               "Whimsicott",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "earth-power",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -9524,6 +10795,28 @@
               "Garchomp",
               "Basculegion",
               "Incineroar"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
             ]
           }
         ]
@@ -9767,6 +11060,28 @@
             "two": [
               "Kingambit"
             ]
+          },
+          {
+            "move": "psyshock",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Charizard-Mega-Y",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "icy-wind",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Garchomp"
+            ]
           }
         ]
       },
@@ -9888,6 +11203,35 @@
             "ohko": [],
             "two": [
               "Kingambit"
+            ]
+          },
+          {
+            "move": "moonblast",
+            "ohkoCount": 2,
+            "twoCount": 11,
+            "ohko": [
+              "Garchomp",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "hyper-beam",
+            "ohkoCount": 10,
+            "twoCount": 6,
+            "ohko": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ],
+            "two": [
+              "Incineroar",
+              "Farigiraf",
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -10194,6 +11538,31 @@
               "Whimsicott",
               "Pelipper"
             ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -10303,6 +11672,16 @@
             "ohko": [],
             "two": [
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
             ]
           }
         ]
@@ -10435,6 +11814,31 @@
               "Floette-Mega",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "psycho-cut",
+            "ohkoCount": 2,
+            "twoCount": 5,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Whimsicott",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -10545,6 +11949,35 @@
             "two": [
               "Incineroar",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 2,
+            "twoCount": 7,
+            "ohko": [
+              "Incineroar",
+              "Kingambit"
+            ],
+            "two": [
+              "Garchomp",
+              "Farigiraf",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "zen-headbutt",
+            "ohkoCount": 3,
+            "twoCount": 7,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
             ]
           }
         ]
@@ -10672,6 +12105,32 @@
               "Whimsicott",
               "Metagross-Mega"
             ]
+          },
+          {
+            "move": "discharge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -10777,6 +12236,30 @@
               "Kingambit",
               "Farigiraf",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
             ]
           }
         ]
@@ -10905,6 +12388,26 @@
             "two": [
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "aqua-jet",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -11019,6 +12522,19 @@
               "Sinistcha",
               "Sneasler",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "waterfall",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Floette-Mega"
             ]
           }
         ]
@@ -11151,6 +12667,28 @@
               "Sneasler",
               "Archaludon"
             ]
+          },
+          {
+            "move": "heat-wave",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "eruption",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -11255,6 +12793,21 @@
           },
           {
             "move": "eruption",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flamethrower",
             "ohkoCount": 4,
             "twoCount": 7,
             "ohko": [
@@ -11378,6 +12931,31 @@
             "ohko": [],
             "two": [
               "Sneasler",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "solar-beam",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
               "Metagross-Mega"
             ]
           }
@@ -11607,6 +13185,30 @@
               "Sinistcha",
               "Whimsicott",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "fire-blast",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "alluring-voice",
+            "ohkoCount": 0,
+            "twoCount": 6,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Pelipper"
             ]
           }
         ]
@@ -11953,6 +13555,19 @@
             "two": [
               "Sneasler"
             ]
+          },
+          {
+            "move": "expanding-force",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -12083,6 +13698,26 @@
               "Basculegion",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "psycho-cut",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "shadow-claw",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -12206,6 +13841,28 @@
             "two": [
               "Pelipper"
             ]
+          },
+          {
+            "move": "play-rough",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Sneasler",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "psycho-cut",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -12324,6 +13981,34 @@
               "Sinistcha",
               "Sneasler",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "icicle-crash",
+            "ohkoCount": 2,
+            "twoCount": 6,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "freeze-dry",
+            "ohkoCount": 2,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp",
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Whimsicott",
+              "Swampert-Mega"
             ]
           }
         ]
@@ -12471,6 +14156,35 @@
               "Sneasler",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 2,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "explosion",
+            "ohkoCount": 5,
+            "twoCount": 6,
+            "ohko": [
+              "Whimsicott",
+              "Pelipper",
+              "Sneasler"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -12583,6 +14297,30 @@
             "ohko": [
               "Sneasler"
             ],
+            "two": [
+              "Incineroar",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "body-press",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
             "two": [
               "Incineroar",
               "Kingambit"
@@ -12731,6 +14469,27 @@
               "Basculegion",
               "Incineroar"
             ]
+          },
+          {
+            "move": "seed-bomb",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "body-press",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -12855,6 +14614,28 @@
               "Sinistcha",
               "Kingambit",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "aura-sphere",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "stone-edge",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
             ]
           }
         ]
@@ -12986,6 +14767,15 @@
             "two": [
               "Garchomp"
             ]
+          },
+          {
+            "move": "surf",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -13098,6 +14888,17 @@
             "two": [
               "Whimsicott",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "double-edge",
+            "ohkoCount": 0,
+            "twoCount": 6,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Sneasler"
             ]
           }
         ]
@@ -13338,6 +15139,28 @@
             "twoCount": 0,
             "ohko": [
               "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "rising-voltage",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psychic-fangs",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Sneasler"
             ],
             "two": []
           }
@@ -13616,6 +15439,33 @@
               "Sinistcha",
               "Kingambit",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "zen-headbutt",
+            "ohkoCount": 2,
+            "twoCount": 7,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Basculegion",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "crunch",
+            "ohkoCount": 1,
+            "twoCount": 7,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Farigiraf"
             ]
           }
         ]
@@ -13926,6 +15776,21 @@
             "two": [
               "Kingambit"
             ]
+          },
+          {
+            "move": "giga-impact",
+            "ohkoCount": 3,
+            "twoCount": 10,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -14024,6 +15889,25 @@
             ],
             "two": [
               "Swampert-Mega",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "sucker-punch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "dark-pulse",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
               "Metagross-Mega"
             ]
           }
@@ -14151,6 +16035,29 @@
               "Incineroar",
               "Kingambit"
             ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "rock-tomb",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -14268,6 +16175,29 @@
               "Basculegion",
               "Incineroar",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "earth-power",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Kingambit",
+              "Sneasler",
+              "Archaludon"
             ]
           }
         ]
@@ -14390,6 +16320,19 @@
               "Kingambit"
             ],
             "two": []
+          },
+          {
+            "move": "steel-beam",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sneasler",
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
           }
         ]
       },
@@ -14521,6 +16464,30 @@
               "Floette-Mega",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "flash-cannon",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sneasler",
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -14632,6 +16599,26 @@
             "ohko": [],
             "two": [
               "Sneasler"
+            ]
+          },
+          {
+            "move": "stone-edge",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "body-press",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
             ]
           }
         ]
@@ -14750,6 +16737,33 @@
             "ohko": [],
             "two": [
               "Basculegion"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "gunk-shot",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott",
+              "Floette-Mega",
+              "Grimmsnarl"
+            ],
+            "two": [
+              "Pelipper",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -14887,6 +16901,28 @@
               "Basculegion",
               "Pelipper"
             ]
+          },
+          {
+            "move": "earth-power",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Sneasler",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "focus-blast",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -14995,6 +17031,31 @@
             "ohko": [],
             "two": [
               "Garchomp"
+            ]
+          },
+          {
+            "move": "giga-drain",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "wood-hammer",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Pelipper",
+              "Floette-Mega"
             ]
           }
         ]
@@ -15122,6 +17183,30 @@
               "Sinistcha",
               "Sneasler",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "icicle-crash",
+            "ohkoCount": 2,
+            "twoCount": 6,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "ice-shard",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
             ]
           }
         ]
@@ -15265,6 +17350,34 @@
               "Sneasler",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "rock-wrecker",
+            "ohkoCount": 8,
+            "twoCount": 5,
+            "ohko": [
+              "Basculegion",
+              "Incineroar",
+              "Whimsicott"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "stomping-tantrum",
+            "ohkoCount": 1,
+            "twoCount": 9,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Garchomp",
+              "Basculegion",
+              "Incineroar"
+            ]
           }
         ]
       },
@@ -15391,6 +17504,15 @@
             "ohko": [],
             "two": [
               "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "x-scissor",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
               "Farigiraf"
             ]
           }
@@ -15523,6 +17645,36 @@
               "Sinistcha",
               "Basculegion",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "frost-breath",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
             ]
           }
         ]
@@ -15662,6 +17814,27 @@
               "Incineroar",
               "Kingambit"
             ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -15789,6 +17962,29 @@
               "Incineroar",
               "Kingambit",
               "Archaludon"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": []
+          },
+          {
+            "move": "icicle-spear",
+            "ohkoCount": 2,
+            "twoCount": 5,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Sneasler",
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -15928,6 +18124,20 @@
               "Basculegion",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "triple-axel",
+            "ohkoCount": 2,
+            "twoCount": 6,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -16064,6 +18274,31 @@
               "Whimsicott",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -16181,6 +18416,15 @@
           },
           {
             "move": "avalanche",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Garchomp"
+            ]
+          },
+          {
+            "move": "icy-wind",
             "ohkoCount": 0,
             "twoCount": 1,
             "ohko": [],
@@ -16407,6 +18651,28 @@
               "Basculegion",
               "Metagross-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "volt-switch",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -16530,6 +18796,19 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "discharge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -16660,6 +18939,15 @@
               "Sneasler",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
           }
         ]
       },
@@ -16790,6 +19078,28 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "discharge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "shadow-ball",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -16921,6 +19231,29 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 3,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Pelipper",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -17046,6 +19379,28 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "discharge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "dark-pulse",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -17276,6 +19631,30 @@
               "Whimsicott",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "wild-charge",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "earthquake",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Incineroar"
+            ]
           }
         ]
       },
@@ -17405,6 +19784,19 @@
               "Sneasler",
               "Floette-Mega"
             ]
+          },
+          {
+            "move": "night-slash",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Sinistcha",
+              "Farigiraf",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -17513,6 +19905,15 @@
               "Swampert-Mega",
               "Metagross-Mega"
             ]
+          },
+          {
+            "move": "sucker-punch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
           }
         ]
       },
@@ -17620,6 +20021,17 @@
             "two": [
               "Whimsicott",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "hydro-pump",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -17892,6 +20304,19 @@
               "Basculegion",
               "Incineroar"
             ]
+          },
+          {
+            "move": "stomping-tantrum",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Basculegion",
+              "Incineroar",
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -17998,6 +20423,19 @@
           },
           {
             "move": "earthquake",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Basculegion",
+              "Incineroar",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "drill-run",
             "ohkoCount": 1,
             "twoCount": 6,
             "ohko": [
@@ -18182,6 +20620,15 @@
             "two": [
               "Whimsicott"
             ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -18320,6 +20767,32 @@
               "Pelipper",
               "Sneasler"
             ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 3,
+            "twoCount": 10,
+            "ohko": [
+              "Incineroar",
+              "Kingambit",
+              "Archaludon"
+            ],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -18451,6 +20924,17 @@
             "two": [
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "megahorn",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -18569,6 +21053,29 @@
             ],
             "two": [
               "Pelipper"
+            ]
+          },
+          {
+            "move": "earthquake",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "megahorn",
+            "ohkoCount": 2,
+            "twoCount": 6,
+            "ohko": [
+              "Whimsicott",
+              "Farigiraf"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Incineroar"
             ]
           }
         ]
@@ -18801,6 +21308,30 @@
             "two": [
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "throat-chop",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "gunk-shot",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Charizard-Mega-Y",
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
           }
         ]
       },
@@ -18926,6 +21457,30 @@
               "Incineroar",
               "Archaludon"
             ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "brick-break",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -19039,6 +21594,29 @@
               "Garchomp",
               "Sneasler",
               "Archaludon"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
             ]
           }
         ]
@@ -19261,6 +21839,31 @@
               "Floette-Mega",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "focus-blast",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -19392,6 +21995,28 @@
               "Sinistcha",
               "Basculegion",
               "Whimsicott"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -19539,6 +22164,34 @@
               "Basculegion",
               "Whimsicott"
             ]
+          },
+          {
+            "move": "expanding-force",
+            "ohkoCount": 2,
+            "twoCount": 6,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 4,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Sneasler",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -19660,6 +22313,15 @@
               "Garchomp",
               "Whimsicott"
             ]
+          },
+          {
+            "move": "flash-cannon",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -19777,6 +22439,29 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "volt-switch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "acrobatics",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -19926,6 +22611,34 @@
               "Garchomp",
               "Pelipper"
             ]
+          },
+          {
+            "move": "thunderbolt",
+            "ohkoCount": 4,
+            "twoCount": 4,
+            "ohko": [
+              "Basculegion",
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Kingambit",
+              "Farigiraf",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -20048,6 +22761,24 @@
               "Basculegion",
               "Charizard-Mega-Y",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "dragon-pulse",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Garchomp"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
             ]
           }
         ]
@@ -20189,6 +22920,34 @@
               "Kingambit",
               "Sneasler"
             ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Whimsicott",
+              "Pelipper",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -20314,6 +23073,21 @@
               "Farigiraf",
               "Pelipper",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Pelipper",
+              "Sneasler"
             ]
           }
         ]
@@ -20447,6 +23221,26 @@
             "two": [
               "Pelipper"
             ]
+          },
+          {
+            "move": "liquidation",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "earthquake",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -20566,6 +23360,29 @@
             "two": [
               "Basculegion",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "sludge-bomb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": []
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Sneasler",
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -20705,6 +23522,29 @@
               "Sneasler",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "stone-edge",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Whimsicott",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -20816,6 +23656,32 @@
             ],
             "two": [
               "Pelipper"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "earthquake",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Basculegion",
+              "Incineroar",
+              "Kingambit"
             ]
           }
         ]
@@ -20932,6 +23798,29 @@
               "Kingambit",
               "Sneasler",
               "Archaludon"
+            ]
+          },
+          {
+            "move": "heat-wave",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
             ]
           }
         ]
@@ -21051,6 +23940,31 @@
             "ohko": [],
             "two": [
               "Swampert-Mega"
+            ]
+          },
+          {
+            "move": "bug-buzz",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 4,
+            "twoCount": 4,
+            "ohko": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
+            ],
+            "two": [
+              "Farigiraf",
+              "Sneasler",
+              "Archaludon"
             ]
           }
         ]
@@ -21189,6 +24103,32 @@
               "Archaludon",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "wood-hammer",
+            "ohkoCount": 2,
+            "twoCount": 4,
+            "ohko": [
+              "Basculegion",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Pelipper",
+              "Floette-Mega"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
           }
         ]
       },
@@ -21308,6 +24248,25 @@
             ],
             "two": [
               "Basculegion"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -21461,6 +24420,33 @@
             "two": [
               "Sneasler",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psyshock",
+            "ohkoCount": 2,
+            "twoCount": 5,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Whimsicott",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "solar-beam",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion",
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Pelipper"
             ]
           }
         ]
@@ -21709,6 +24695,28 @@
               "Charizard-Mega-Y",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "hydro-pump",
+            "ohkoCount": 1,
+            "twoCount": 11,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "water-shuriken",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -21832,6 +24840,15 @@
               "Garchomp",
               "Incineroar",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "water-shuriken",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -21958,6 +24975,34 @@
               "Basculegion",
               "Incineroar",
               "Kingambit"
+            ]
+          },
+          {
+            "move": "giga-impact",
+            "ohkoCount": 6,
+            "twoCount": 5,
+            "ohko": [
+              "Whimsicott",
+              "Pelipper",
+              "Sneasler"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Sneasler"
             ]
           }
         ]
@@ -22092,6 +25137,17 @@
               "Sinistcha",
               "Pelipper",
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "overheat",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Kingambit"
             ]
           }
         ]
@@ -22305,6 +25361,28 @@
             "two": [
               "Whimsicott",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "scorching-sands",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Sneasler"
             ]
           }
         ]
@@ -22602,6 +25680,27 @@
               "Garchomp",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Swampert-Mega"
+            ]
+          },
+          {
+            "move": "psychic",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -22739,6 +25838,31 @@
             "ohko": [],
             "two": [
               "Whimsicott"
+            ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "darkest-lariat",
+            "ohkoCount": 1,
+            "twoCount": 7,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Garchomp",
+              "Sinistcha",
+              "Farigiraf"
             ]
           }
         ]
@@ -23072,6 +26196,29 @@
               "Incineroar",
               "Kingambit"
             ]
+          },
+          {
+            "move": "shadow-ball",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "flash-cannon",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
           }
         ]
       },
@@ -23369,6 +26516,27 @@
             "two": [
               "Basculegion"
             ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "foul-play",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Swampert-Mega",
+              "Metagross-Mega"
+            ]
           }
         ]
       },
@@ -23484,6 +26652,17 @@
               "Whimsicott",
               "Charizard-Mega-Y",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "throat-chop",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
             ]
           }
         ]
@@ -23617,6 +26796,31 @@
               "Floette-Mega",
               "Grimmsnarl"
             ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "razor-shell",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Sneasler",
+              "Floette-Mega"
+            ]
           }
         ]
       },
@@ -23737,6 +26941,26 @@
               "Pelipper",
               "Charizard-Mega-Y",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "aqua-cutter",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "night-slash",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
             ]
           }
         ]
@@ -23874,6 +27098,27 @@
               "Basculegion",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "focus-blast",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "scald",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -23979,6 +27224,28 @@
               "Basculegion",
               "Pelipper",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "thunderbolt",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "scald",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -24108,6 +27375,20 @@
             "two": [
               "Pelipper",
               "Sneasler",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
               "Staraptor-Mega"
             ]
           }
@@ -24241,6 +27522,15 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
           }
         ]
       },
@@ -24380,6 +27670,28 @@
             "two": [
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "ice-fang",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -24505,6 +27817,17 @@
               "Pelipper",
               "Sneasler"
             ]
+          },
+          {
+            "move": "earth-power",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -24625,6 +27948,15 @@
               "Garchomp",
               "Whimsicott",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "mystical-fire",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
             ]
           }
         ]
@@ -24765,6 +28097,28 @@
               "Whimsicott",
               "Floette-Mega"
             ]
+          },
+          {
+            "move": "dual-wingbeat",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott",
+              "Sneasler"
+            ],
+            "two": [
+              "Sinistcha",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "upper-hand",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -24878,6 +28232,19 @@
               "Kingambit"
             ],
             "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "high-jump-kick",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Garchomp",
               "Incineroar",
               "Archaludon"
             ]
@@ -25002,6 +28369,28 @@
               "Pelipper"
             ],
             "two": [
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
+          },
+          {
+            "move": "volt-switch",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
           }
@@ -25147,6 +28536,31 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "thunder",
+            "ohkoCount": 2,
+            "twoCount": 2,
+            "ohko": [
+              "Pelipper",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "dragon-pulse",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Pelipper",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -25274,6 +28688,24 @@
               "Pelipper"
             ],
             "two": []
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "dragon-pulse",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Garchomp"
+            ]
           }
         ]
       },
@@ -25492,6 +28924,17 @@
               "Pelipper",
               "Floette-Mega"
             ]
+          },
+          {
+            "move": "phantom-force",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -25693,6 +29136,28 @@
               "Sneasler",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "avalanche",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "icicle-spear",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -25828,6 +29293,31 @@
               "Pelipper",
               "Sneasler"
             ]
+          },
+          {
+            "move": "crunch",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "ice-fang",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -25962,6 +29452,15 @@
               "Garchomp",
               "Pelipper"
             ]
+          },
+          {
+            "move": "heat-wave",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -26085,6 +29584,16 @@
             "two": [
               "Whimsicott",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "dual-wingbeat",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Sneasler"
             ]
           }
         ]
@@ -26215,6 +29724,29 @@
               "Pelipper",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "upper-hand",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Incineroar",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Garchomp",
+              "Basculegion",
+              "Incineroar"
+            ]
           }
         ]
       },
@@ -26323,6 +29855,15 @@
             "two": [
               "Basculegion",
               "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
             ]
           }
         ]
@@ -26457,6 +29998,30 @@
             "two": [
               "Basculegion",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 2,
+            "twoCount": 4,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "icy-wind",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
             ]
           }
         ]
@@ -26593,6 +30158,16 @@
               "Whimsicott",
               "Sneasler"
             ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -26719,6 +30294,31 @@
             "two": [
               "Kingambit"
             ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "thunder-punch",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Charizard-Mega-Y",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -26835,6 +30435,31 @@
               "Garchomp",
               "Whimsicott",
               "Farigiraf"
+            ]
+          },
+          {
+            "move": "thunder-punch",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Basculegion",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
             ]
           }
         ]
@@ -26958,6 +30583,25 @@
             ],
             "two": [
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "crunch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
+            ]
+          },
+          {
+            "move": "iron-head",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Floette-Mega"
             ]
           }
         ]
@@ -27155,6 +30799,33 @@
             "two": [
               "Kingambit"
             ]
+          },
+          {
+            "move": "close-combat",
+            "ohkoCount": 1,
+            "twoCount": 5,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Garchomp",
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "stone-edge",
+            "ohkoCount": 2,
+            "twoCount": 5,
+            "ohko": [
+              "Pelipper",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Basculegion",
+              "Incineroar",
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -27243,6 +30914,15 @@
               "Incineroar",
               "Sneasler",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Whimsicott"
             ]
           }
         ]
@@ -27370,6 +31050,28 @@
               "Sneasler",
               "Archaludon"
             ]
+          },
+          {
+            "move": "flamethrower",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "acid-spray",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": []
           }
         ]
       },
@@ -27490,6 +31192,27 @@
               "Garchomp",
               "Pelipper",
               "Floette-Mega"
+            ]
+          },
+          {
+            "move": "high-jump-kick",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar",
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "knock-off",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
             ]
           }
         ]
@@ -27730,6 +31453,26 @@
               "Charizard-Mega-Y",
               "Floette-Mega",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
             ]
           }
         ]
@@ -27997,6 +31740,35 @@
               "Sneasler",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "dragon-pulse",
+            "ohkoCount": 2,
+            "twoCount": 8,
+            "ohko": [
+              "Garchomp",
+              "Pelipper"
+            ],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -28118,6 +31890,31 @@
             ],
             "two": [
               "Sinistcha",
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "thunderbolt",
+            "ohkoCount": 1,
+            "twoCount": 4,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": [
+              "Basculegion",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
               "Basculegion",
               "Pelipper"
             ]
@@ -28243,6 +32040,15 @@
             "two": [
               "Sinistcha",
               "Whimsicott",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "vacuum-wave",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
               "Kingambit"
             ]
           }
@@ -28489,6 +32295,31 @@
             "two": [
               "Sinistcha",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "sucker-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "outrage",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Garchomp",
+              "Pelipper",
+              "Sneasler"
+            ],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Incineroar"
             ]
           }
         ]
@@ -28761,6 +32592,17 @@
             "two": [
               "Sneasler"
             ]
+          },
+          {
+            "move": "stone-edge",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -29012,6 +32854,31 @@
               "Kingambit",
               "Metagross-Mega"
             ]
+          },
+          {
+            "move": "psyshock",
+            "ohkoCount": 2,
+            "twoCount": 7,
+            "ohko": [
+              "Sneasler",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Garchomp",
+              "Basculegion",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "draining-kiss",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -29258,6 +33125,31 @@
               "Pelipper",
               "Sneasler"
             ]
+          },
+          {
+            "move": "ice-beam",
+            "ohkoCount": 3,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott",
+              "Staraptor-Mega"
+            ],
+            "two": [
+              "Sinistcha",
+              "Pelipper",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "icy-wind",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -29372,6 +33264,15 @@
             "ohko": [],
             "two": [
               "Charizard-Mega-Y"
+            ]
+          },
+          {
+            "move": "shadow-claw",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Basculegion"
             ]
           }
         ]
@@ -29572,6 +33473,29 @@
               "Whimsicott",
               "Floette-Mega",
               "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Floette-Mega",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "seed-bomb",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion"
             ]
           }
         ]
@@ -29818,6 +33742,26 @@
               "Sneasler",
               "Metagross-Mega"
             ]
+          },
+          {
+            "move": "shadow-ball",
+            "ohkoCount": 0,
+            "twoCount": 5,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Whimsicott"
+            ]
+          },
+          {
+            "move": "psychic-fangs",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": []
           }
         ]
       },
@@ -29949,6 +33893,17 @@
             "two": [
               "Sneasler"
             ]
+          },
+          {
+            "move": "psychic-noise",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -30079,6 +34034,27 @@
             "two": [
               "Pelipper"
             ]
+          },
+          {
+            "move": "u-turn",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Farigiraf"
+            ]
+          },
+          {
+            "move": "night-slash",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
+            ]
           }
         ]
       },
@@ -30198,6 +34174,19 @@
               "Charizard-Mega-Y"
             ],
             "two": [
+              "Incineroar",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "liquidation",
+            "ohkoCount": 1,
+            "twoCount": 6,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
               "Incineroar",
               "Sneasler"
             ]
@@ -30335,6 +34324,30 @@
             "two": [
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "hydro-pump",
+            "ohkoCount": 3,
+            "twoCount": 10,
+            "ohko": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "flip-turn",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Charizard-Mega-Y"
+            ]
           }
         ]
       },
@@ -30457,6 +34470,29 @@
               "Pelipper",
               "Charizard-Mega-Y"
             ]
+          },
+          {
+            "move": "poison-jab",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott",
+              "Floette-Mega"
+            ],
+            "two": [
+              "Pelipper",
+              "Charizard-Mega-Y",
+              "Grimmsnarl"
+            ]
+          },
+          {
+            "move": "rock-slide",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": []
           }
         ]
       },
@@ -30611,6 +34647,18 @@
               "Sinistcha",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "liquidation",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Incineroar",
+              "Sneasler"
+            ]
           }
         ]
       },
@@ -30731,6 +34779,27 @@
               "Sinistcha",
               "Pelipper",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "sucker-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "throat-chop",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Farigiraf"
             ]
           }
         ]
@@ -30858,6 +34927,30 @@
             "two": [
               "Garchomp",
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "heat-wave",
+            "ohkoCount": 1,
+            "twoCount": 3,
+            "ohko": [
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Kingambit",
+              "Metagross-Mega"
+            ]
+          },
+          {
+            "move": "hex",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Pelipper"
             ]
           }
         ]
@@ -31000,6 +35093,35 @@
               "Sinistcha",
               "Pelipper",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "ice-spinner",
+            "ohkoCount": 2,
+            "twoCount": 3,
+            "ohko": [
+              "Garchomp",
+              "Whimsicott"
+            ],
+            "two": [
+              "Sinistcha",
+              "Sneasler",
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "wave-crash",
+            "ohkoCount": 4,
+            "twoCount": 9,
+            "ohko": [
+              "Incineroar",
+              "Sneasler",
+              "Charizard-Mega-Y"
+            ],
+            "two": [
+              "Garchomp",
+              "Whimsicott",
+              "Kingambit"
             ]
           }
         ]
@@ -31354,6 +35476,29 @@
               "Whimsicott",
               "Pelipper"
             ]
+          },
+          {
+            "move": "aura-sphere",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Kingambit"
+            ],
+            "two": [
+              "Archaludon"
+            ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -31600,6 +35745,15 @@
               "Charizard-Mega-Y",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "electroweb",
+            "ohkoCount": 1,
+            "twoCount": 0,
+            "ohko": [
+              "Pelipper"
+            ],
+            "two": []
           }
         ]
       },
@@ -31742,6 +35896,28 @@
               "Sinistcha",
               "Kingambit",
               "Sneasler"
+            ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
+          },
+          {
+            "move": "seed-bomb",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Swampert-Mega"
             ]
           }
         ]
@@ -32055,6 +36231,16 @@
               "Grimmsnarl",
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "ice-hammer",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
+            ]
           }
         ]
       },
@@ -32176,6 +36362,16 @@
             "ohko": [],
             "two": [
               "Kingambit"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Whimsicott"
             ]
           }
         ]
@@ -32307,6 +36503,27 @@
             "two": [
               "Incineroar",
               "Archaludon"
+            ]
+          },
+          {
+            "move": "drain-punch",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
+          },
+          {
+            "move": "ice-punch",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Garchomp"
+            ],
+            "two": [
+              "Whimsicott",
+              "Staraptor-Mega"
             ]
           }
         ]
@@ -32539,6 +36756,18 @@
               "Sneasler",
               "Archaludon"
             ]
+          },
+          {
+            "move": "energy-ball",
+            "ohkoCount": 1,
+            "twoCount": 2,
+            "ohko": [
+              "Swampert-Mega"
+            ],
+            "two": [
+              "Basculegion",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -32765,6 +36994,17 @@
             "two": [
               "Staraptor-Mega"
             ]
+          },
+          {
+            "move": "play-rough",
+            "ohkoCount": 0,
+            "twoCount": 3,
+            "ohko": [],
+            "two": [
+              "Garchomp",
+              "Grimmsnarl",
+              "Staraptor-Mega"
+            ]
           }
         ]
       },
@@ -32887,6 +37127,30 @@
               "Incineroar",
               "Archaludon"
             ]
+          },
+          {
+            "move": "shadow-claw",
+            "ohkoCount": 0,
+            "twoCount": 4,
+            "ohko": [],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Sneasler"
+            ]
+          },
+          {
+            "move": "phantom-force",
+            "ohkoCount": 1,
+            "twoCount": 7,
+            "ohko": [
+              "Basculegion"
+            ],
+            "two": [
+              "Sinistcha",
+              "Whimsicott",
+              "Pelipper"
+            ]
           }
         ]
       },
@@ -33006,6 +37270,27 @@
             ],
             "two": [
               "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "psychic-noise",
+            "ohkoCount": 1,
+            "twoCount": 1,
+            "ohko": [
+              "Sneasler"
+            ],
+            "two": [
+              "Staraptor-Mega"
+            ]
+          },
+          {
+            "move": "foul-play",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Basculegion",
+              "Metagross-Mega"
             ]
           }
         ]
@@ -33488,6 +37773,15 @@
               "Basculegion",
               "Farigiraf"
             ]
+          },
+          {
+            "move": "aura-sphere",
+            "ohkoCount": 0,
+            "twoCount": 1,
+            "ohko": [],
+            "two": [
+              "Kingambit"
+            ]
           }
         ]
       },
@@ -33626,6 +37920,31 @@
             "two": [
               "Garchomp",
               "Pelipper"
+            ]
+          },
+          {
+            "move": "draco-meteor",
+            "ohkoCount": 4,
+            "twoCount": 7,
+            "ohko": [
+              "Garchomp",
+              "Pelipper",
+              "Sneasler"
+            ],
+            "two": [
+              "Sinistcha",
+              "Basculegion",
+              "Incineroar"
+            ]
+          },
+          {
+            "move": "pollen-puff",
+            "ohkoCount": 0,
+            "twoCount": 2,
+            "ohko": [],
+            "two": [
+              "Whimsicott",
+              "Farigiraf"
             ]
           }
         ]
