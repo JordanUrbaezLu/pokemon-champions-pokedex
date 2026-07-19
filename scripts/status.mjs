@@ -14,6 +14,12 @@ const read = (p) => JSON.parse(readFileSync(resolve(ROOT, p), "utf8"));
 
 const dex = read("src/data/generated/pokemon.json");
 const comp = read("src/data/generated/competitive.json");
+let teams = null;
+try {
+  teams = read("src/data/generated/teams.json");
+} catch {
+  // teams.json is optional context; its own check below turns a miss red.
+}
 
 const mons = dex.pokemon;
 const byName = new Map(mons.map((p) => [p.name, p]));
@@ -26,6 +32,11 @@ for (const [bracket, profiles] of Object.entries(comp.brackets)) {
   console.log(
     `  bracket ${bracket} (“${comp.meta.bracketLabels?.[bracket] ?? bracket}”): ${Object.keys(profiles).length} profiles` +
       (benched ? ` · ${benched} with KO benchmarks` : ""),
+  );
+}
+if (teams) {
+  console.log(
+    `  meta teams: ${teams.teams.length} real teams · top ${teams.meta.topN} featured · ${teams.meta.regulationLabel} · generated ${teams.meta.generatedAt ?? "?"}`,
   );
 }
 
@@ -102,6 +113,26 @@ const benchedMaster = Object.values(comp.brackets.master ?? {}).filter(
   (p) => p.benchmarks?.length,
 ).length;
 
+// --- Meta teams ------------------------------------------------------------
+// Real tournament teams baked from Smogon's sample-teams thread. Guard the
+// "team card renders a blank tile / dead link" class of bug: every member must
+// resolve to a roster mon and carry a full set, and every team must be complete.
+const teamIssues = new Set();
+if (teams) {
+  for (const t of teams.teams ?? []) {
+    if ((t.members?.length ?? 0) !== 6) teamIssues.add(`${t.slug}: ${t.members?.length ?? 0}/6 mons`);
+    for (const m of t.members ?? []) {
+      if (!m.slug || !byName.has(m.slug)) teamIssues.add(`${t.slug}: ${m.name} → no roster mon`);
+      else if (!m.sprite) teamIssues.add(`${t.slug}: ${m.formLabel} has no sprite`);
+      else if (!m.ability) teamIssues.add(`${t.slug}: ${m.formLabel} has no ability`);
+      else if (!(m.moves?.length)) teamIssues.add(`${t.slug}: ${m.formLabel} has no moves`);
+      // A modeled form key must point at a real form of that species.
+      else if (m.formKey && !(byName.get(m.slug).forms ?? []).some((f) => f.key === m.formKey))
+        teamIssues.add(`${t.slug}: ${m.formLabel} formKey ${m.formKey} unknown`);
+    }
+  }
+}
+
 // Integrity invariants — each guards a bug this project actually hit once.
 const checks = [
   ["no Tera moves anywhere (Champions has no Tera)", mons.every((p) => !p.moveSlugs.includes("tera-blast"))],
@@ -124,6 +155,9 @@ const checks = [
   ["every referenced move resolves in the move index", orphanMoves.length === 0, `${orphanMoves.length} orphans: ${sample(orphanMoves)}`],
   ["every ability (base + form) has effect text", abilNoDesc.length === 0, `${abilNoDesc.length} blank: ${sample(abilNoDesc)}`],
   ["every shown item is tappable with a description", itemGaps.size === 0, `${itemGaps.size} gaps: ${sample(itemGaps)}`],
+  // --- meta teams: real, complete, and fully resolvable ---
+  [`meta teams present (≥5, from ${teams?.meta.regulationLabel ?? "?"})`, !!teams && (teams.teams?.length ?? 0) >= 5, teams ? `only ${teams.teams.length} teams` : "teams.json missing — run `npm run data:teams`"],
+  ["every meta-team member resolves to a roster mon with a full set", teamIssues.size === 0, `${teamIssues.size} issues: ${sample(teamIssues)}`],
 ];
 
 console.log("");
@@ -141,6 +175,15 @@ const ageDays = dex.generatedAt
   : null;
 if (ageDays != null && ageDays > 14) {
   console.log(`\n  ⚠ data is ${ageDays} days old — consider \`npm run data:all\``);
+}
+
+// Soft freshness note: the teams generator pins its date to the competitive
+// snapshot, so a divergence means teams were salvaged (a fetch blip) and are a
+// snapshot behind — worth surfacing, but not a hard failure (salvage is by design).
+if (teams && teams.meta.generatedAt !== comp.meta.generatedAt) {
+  console.log(
+    `\n  ⚠ meta teams (${teams.meta.generatedAt}) are behind the ladder snapshot (${comp.meta.generatedAt}) — re-run \`npm run data:teams\``,
+  );
 }
 
 process.exit(failed ? 1 : 0);

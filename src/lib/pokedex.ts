@@ -1,5 +1,6 @@
 import dataset from "@/data/generated/pokemon.json";
 import competitiveData from "@/data/generated/competitive.json";
+import teamsData from "@/data/generated/teams.json";
 import {
   getThreatProfile,
   metaIndexes,
@@ -17,6 +18,9 @@ import type {
   CompetitiveProfile,
   DataBracket,
   ItemDetail,
+  MetaTeam,
+  MetaTeamsDataset,
+  MetaTeamsMeta,
   MoveSummary,
   PokedexDataset,
   PokemonType,
@@ -85,6 +89,23 @@ export function getCompetitiveByKey(
 /** Look up full item details (effect, category, sprite) by slug, for the item modal. */
 export function getItemDetail(slug: string | null): ItemDetail | undefined {
   return slug ? COMPETITIVE.itemIndex?.[slug] : undefined;
+}
+
+const TEAMS = teamsData as unknown as MetaTeamsDataset;
+
+/** Every baked meta team, in ranked order (most decorated first). */
+export function getMetaTeams(): MetaTeam[] {
+  return TEAMS.teams;
+}
+
+/** One meta team by its route slug. */
+export function getMetaTeamBySlug(slug: string): MetaTeam | undefined {
+  return TEAMS.teams.find((t) => t.slug === slug);
+}
+
+/** Provenance for the meta teams (source thread, regulation, freshness). */
+export function getMetaTeamsMeta(): MetaTeamsMeta {
+  return TEAMS.meta;
 }
 
 /** Build a form-key → profile map for a Pokémon's base + Mega forms. */

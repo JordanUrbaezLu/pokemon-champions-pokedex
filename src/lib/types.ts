@@ -284,3 +284,82 @@ export interface CompetitiveDataset {
   /** Item details keyed by slug, for items referenced in typical sets. */
   itemIndex: Record<string, ItemDetail>;
 }
+
+// --- Meta teams (real tournament teams) ---------------------------------------
+// Smogon exposes no "teams" for this format — only per-Pokémon co-usage. So the
+// Meta Teams are REAL, whole teams lifted from Smogon's official "Champions VGC
+// Regulation … Sample Teams" thread (collated from TPCi + grassroots events),
+// baked at build time by scripts/generate-teams.mjs. Nothing here is synthesized.
+
+/** One Pokémon on a meta team — its exact set, plus links back into the dex. */
+export interface MetaTeamMember {
+  /** Roster route slug (base species), or null if it isn't in the roster. */
+  slug: string | null;
+  /** Battle-form key for the `?form=` deep link, or null for the base form. */
+  formKey: string | null;
+  /** Base species display name, e.g. "Charizard". */
+  name: string;
+  /** Full form label, e.g. "Mega Charizard Y". */
+  formLabel: string;
+  types: PokemonType[];
+  sprite: string | null;
+  isMega: boolean;
+  item: string | null;
+  ability: string | null;
+  nature: string | null;
+  /** EV spread exactly as written in the source paste (Champions' own scale). */
+  evs: Partial<Record<EvStat, number>>;
+  /** Pre-formatted EV line, e.g. "252 HP / 4 Def / 252 Spe". */
+  evStr: string;
+  /** The four moves, in paste order. */
+  moves: string[];
+  gender: string | null;
+  /** This form's current Master+ ladder usage %, or null if it sees no play. */
+  usagePct: number | null;
+}
+
+/** Who built a team and how it placed — the pedigree that makes it a "top" team. */
+export interface MetaTeamCredit {
+  raw: string;
+  author: string | null;
+  /** Event + result, e.g. "Season M-3 Rank #1" or "Champions Arena II 1st Place". */
+  detail: string | null;
+}
+
+export interface MetaTeam {
+  /** URL slug for the /teams/[slug] detail route. */
+  slug: string;
+  /** Display order (1 = most decorated); the page features the top `topN`. */
+  rank: number;
+  /** Codename, e.g. "Mega Metagross + Mega Swampert Rain". */
+  name: string;
+  /** Play-style / weather archetype, e.g. "Rain", "Sun", "Offense". */
+  archetype: string | null;
+  /** A Pokémon type used to tint the archetype tag (weather archetypes only). */
+  archetypeType: PokemonType | null;
+  credit: MetaTeamCredit | null;
+  /** The published sets are a recreation of the original (flagged honestly). */
+  isRecreation: boolean;
+  pasteUrl: string;
+  /** Sum of the six members' current Master+ usage — a "how meta is this core" read. */
+  metaFootprint: number;
+  members: MetaTeamMember[];
+}
+
+export interface MetaTeamsMeta {
+  format: string;
+  regulationLabel: string;
+  /** Sample-teams thread URL the teams were lifted from. */
+  source: string;
+  sourceLabel: string;
+  /** ISO date — pinned to the competitive snapshot's date. */
+  generatedAt?: string;
+  /** How many teams the list page features up top. */
+  topN: number;
+  count: number;
+}
+
+export interface MetaTeamsDataset {
+  meta: MetaTeamsMeta;
+  teams: MetaTeam[];
+}

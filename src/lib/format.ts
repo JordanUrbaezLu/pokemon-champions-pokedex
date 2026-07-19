@@ -63,6 +63,9 @@ export function natureEffect(nature: string): { up: string; down: string } | nul
   return NATURE_EFFECTS[nature] ?? null;
 }
 
+/** Every nature name, for a nature picker (neutral ones first). */
+export const NATURES: string[] = Object.keys(NATURE_EFFECTS);
+
 /** "Aerodactyl-Mega" -> "Mega Aerodactyl", "Charizard-Mega-Y" -> "Mega Charizard Y". */
 export function prettySmogonName(name: string): string {
   const m = name.match(/^(.+)-Mega(-[XY])?$/);

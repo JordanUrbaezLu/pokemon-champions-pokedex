@@ -207,6 +207,50 @@ async function liveChecks() {
   }
 }
 
+// --- Meta teams (real teams from Smogon's sample-teams thread) ----------------
+// Correctness of the baked teams: complete squads, resolvable members, and sets
+// that are internally consistent with the roster (legal ability, in-movepool).
+try {
+  const teams = read("src/data/generated/teams.json");
+  const displayToSlug = new Map(
+    Object.entries(moveIndex).map(([slug, m]) => [stripId(m.displayName ?? slug), slug]),
+  );
+  if (teams.meta.generatedAt !== comp.meta.generatedAt)
+    add("medium", "TEAMS", `teams snapshot ${teams.meta.generatedAt} ≠ ladder ${comp.meta.generatedAt} (salvaged — re-run \`npm run data:teams\`)`);
+
+  for (const t of teams.teams ?? []) {
+    const tag = `team ${t.slug}`;
+    if ((t.members?.length ?? 0) !== 6) add("high", tag, `${t.members?.length ?? 0}/6 members`);
+    for (const m of t.members ?? []) {
+      const owner = m.formKey ? formOf.get(m.formKey) : formOf.get(m.slug);
+      if (!m.slug || !owner) {
+        add("high", tag, `${m.name} → no roster mon (slug ${m.slug}, form ${m.formKey})`);
+        continue;
+      }
+      if (m.formKey && !(formOf.get(m.slug)?.p.forms ?? []).some((f) => f.key === m.formKey))
+        add("high", tag, `${m.formLabel} formKey ${m.formKey} isn't a form of ${m.slug}`);
+      if (!m.sprite) add("medium", tag, `${m.formLabel} has no sprite`);
+      if ((m.moves?.length ?? 0) < 1 || (m.moves?.length ?? 0) > 4)
+        add("medium", tag, `${m.formLabel} has ${m.moves?.length ?? 0} moves (expected 1–4)`);
+      // An unmodeled form (e.g. Lycanroc-Dusk) resolves to the BASE species, whose
+      // abilities/movepool describe the base, not the form — so ability/move
+      // legality can't be judged and the checks below would false-positive. Skip.
+      const unmodeled = !m.formKey && m.formLabel !== formOf.get(m.slug)?.p.displayName;
+      // Legal ability for the resolved form (curated Mega abilities included).
+      if (!unmodeled && m.ability && !new Set(owner.abilities.map(stripId)).has(stripId(m.ability)))
+        add("medium", tag, `${m.formLabel} ability "${m.ability}" not in its known abilities`);
+      // In-movepool moves (a miss usually flags a real PokeAPI/Showdown learnset hole).
+      for (const mv of m.moves ?? []) {
+        const slug = displayToSlug.get(stripId(mv));
+        if (!unmodeled && slug && !owner.moveSlugs.includes(slug))
+          add("low", tag, `${m.formLabel} runs ${mv} — outside the baked movepool (learnset hole?)`);
+      }
+    }
+  }
+} catch (e) {
+  add("high", "TEAMS", `could not audit teams.json: ${e.message}`);
+}
+
 // --- Report ------------------------------------------------------------------
 console.log(`Data audit — ${comp.meta.format} ${comp.meta.month} · generated ${comp.meta.generatedAt}\n`);
 if (!OFFLINE) await liveChecks();

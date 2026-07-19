@@ -98,6 +98,14 @@ export function OpponentTray() {
               );
             })}
           </div>
+          {/* Run the numbers against your top opponent — seeds it as the
+              calc's defender. Neutral chrome: red is reserved for threat. */}
+          <Link
+            href={`/calc?d=${opponents[0].slug}`}
+            className="shrink-0 rounded-full border-2 border-border px-3 py-1.5 text-xs font-black uppercase tracking-wide text-muted active:bg-surface-2"
+          >
+            Calc
+          </Link>
           <button
             type="button"
             onClick={() => setBriefing(true)}

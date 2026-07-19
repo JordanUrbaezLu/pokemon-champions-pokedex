@@ -2,6 +2,62 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Battle Calc — full damage calculator — 2026-07-19
+User asked for a Pokémon damage calculator (the online-calc experience, in-app): pick two mons,
+build their sets, see who OHKOs / what survives. Explicitly chose the **full builder** (edit
+EVs-as-Stat-Points, nature, ability, item, move) over an in-battle-minimal read — a deliberate
+reversal of the old "team builders out of scope" brief line (updated in AGENTS.md).
+- ✅ **Client damage engine** `src/lib/damage.ts` — hand-port of @smogon/calc's gen789 formula
+  (base damage, bp/at/df/final mod chains, `pokeRound`, doubles ×0.75 spread, 16-roll, KO verdict +
+  OHKO chance). **Ships zero @smogon/calc to the client.** Supports weather, screens, Helping Hand,
+  Friend Guard, boosts, burn, Multiscale/Filter/Thick Fat/Ice Scales/Adaptability/Technician/Tough
+  Claws/Sheer Force/Choice/Life Orb/Expert Belt/AV/Eviolite + Psyshock/Foul Play/Freeze-Dry/Acrobatics.
+- ✅ **`src/lib/stat-points.ts`** — Champions Stat Points ↔ EVs (`EV = min(252, SP×8)`, the app's own
+  `parseSpread` rule); UI edits SP, engine consumes EVs → numbers match the baked benchmarks.
+- ✅ **`src/lib/spread.ts`** — shared spread-move predicate.
+- ✅ **Golden test `src/lib/damage.test.ts`** — computes 300+ real meta matchups with BOTH @smogon/calc
+  and `damage.ts`; asserts the 16-roll arrays match **exactly**, plus one case per modeled ability/field.
+- ✅ **`/calc` route** — static `page.tsx` builds a compact index (`calc-data.ts`) server-side (raw
+  ~2.4 MB dataset stays off the client) → `Calc.tsx` client builder: two mon editors (search-select,
+  Base/Mega toggle, ability/item/nature/move, Stat-Point sliders with 66-budget/32-cap, meta-set preset
+  load), global weather, per-mon battle-state chips, and a **sticky both-directions verdict** + speed
+  order. Deep-linkable via `?a=slug&d=slug`. Home header gets a **Calc** pill beside Teams.
+- ✅ **Variable-power moves** — Grass Knot/Low Kick (target weight), Heavy Slam/Heat Crash (weight
+  ratio), Gyro Ball/Electro Ball (speed) now computed (`VARIABLE_MOVES` in `damage.ts`, golden-tested
+  vs @smogon/calc). Situational ones (Counter/Fissure/Fling/Endeavor) stay "not calculated".
+- ✅ **Save & load sets** — `src/lib/calc-sets.ts` (localStorage, tray pattern); per-side **Save**,
+  a **Saved sets** list that loads any set into either side (the compare loop).
+- ✅ **Send to Calc** — detail-page top bar **Calc** → `/calc?a=<slug>`; OpponentTray **Calc** →
+  `/calc?d=<top opponent>` (deep-link seeding via `?a=`/`?d=`).
+- Verified: `tsc` + `lint` + **75 tests** + `build` (**247 static pages**) green; 375px screenshots.
+- ⏳ Still open: a dedicated compare **matrix** view (defender × many attacker sets at once).
+
+### Meta Teams — top 5 real teams + full details — 2026-07-19
+User asked for a "top 5 meta teams" section: real teams players actually use (nothing synthesized),
+on the latest data, for players to study and build counters against. New `/teams` page.
+- ✅ **Real source, not derived.** Smogon exposes no teams for this format (only per-mon co-usage), so
+  the teams come from Smogon's **official "Champions VGC Regulation M-B Sample Teams" thread** (collated
+  from TPCi + grassroots events) — each a real team credited to a real player + tournament result.
+- ✅ **New `scripts/generate-teams.mjs` (`npm run data:teams`)** — bakes `src/data/generated/teams.json`
+  at build (committed → **zero runtime calls**). Fetches the thread + each PokéPaste, parses the sets,
+  **joins paste↔team by species set** (position-proof against the thread's off-by-one link ordering),
+  resolves each mon's form/types/sprite + current Master+ usage, parses the author/event/placement credit
+  and archetype, and **ranks by real tournament pedigree** (footprint tie-break). Salvages the committed
+  file on a network blip. `generatedAt` pinned to competitive.json's (keeps `status` date-agreement green).
+- ✅ **Mega ability fix:** a paste lists the *pre*-Mega base ability (Showdown convention: "Charizard @
+  Charizardite Y / Ability: Blaze"); the card now shows the **Mega's** in-battle ability (Drought / Tough
+  Claws) since the member is displayed as the Mega. Audit skips ability/move legality for unmodeled forms
+  (e.g. Lycanroc-Dusk → base Lycanroc) to avoid false positives.
+- ✅ **UI** (frontend-design skill): `/teams` list = 5 ranked "dossier" cards (rank marker, archetype tag,
+  codename, real credit, **formation strip signature** — 6 type-tinted sprites over a spectrum blended from
+  their own type colors, so a Rain team reads blue / a Sun team orange) + a "More sample teams" list (all 13
+  baked). `/teams/[slug]` = full sets per mon (item/ability/nature/EVs/4 moves) each linking to its scouting
+  page. Home header gains a neutral **Teams** entry point. hud-label headings, red stays threat-only.
+- ✅ Wired `data:teams` into `data:all` → `refresh` (+ weekly Action). `status` + `audit` gained teams
+  checks (6-mon completeness, every member resolves to a roster mon with a full set, form keys valid).
+- Verified: `tsc` + `lint` + 50 tests + `build` (246 static pages: +/teams +13 team pages) + `status` +
+  offline `audit` (0 findings) all green; 375px screenshots of list + detail checked.
+
 ### Data-integrity audit + `npm run audit` — 2026-07-18
 User asked to verify no stale/wrong per-Pokémon data (EVs, move %, pick rate, everything) and to
 make the "keep data current" process obvious to the next agent.

@@ -196,9 +196,17 @@ export function PokemonDetail({
         >
           <HomeIcon className="size-5" />
         </Link>
-        <span className="justify-self-end pr-3 font-mono text-xs tabular-nums text-muted">
-          {dexNumber(pokemon.id)}
-        </span>
+        <div className="flex items-center gap-2 justify-self-end pr-3">
+          {/* Run the numbers on this mon — seeds it as the calc's attacker. */}
+          <Link
+            href={`/calc?a=${pokemon.name}`}
+            aria-label="Open in Battle Calc"
+            className="tap-target rounded-md bg-surface-2 px-2 py-1 font-display text-[10px] font-semibold uppercase tracking-wider text-muted active:bg-surface"
+          >
+            Calc
+          </Link>
+          <span className="font-mono text-xs tabular-nums text-muted">{dexNumber(pokemon.id)}</span>
+        </div>
       </div>
 
       {/* Hero, battle-compact: small render, name, types and pick rate in one

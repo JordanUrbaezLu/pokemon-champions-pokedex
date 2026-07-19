@@ -40,14 +40,14 @@ export function ThreatProfileCard({
 }) {
   if (profile.vectors.length === 0) return null;
 
-  // The 4 moves it's actually clicking — the "what's coming" read, right
-  // inside the profile so the whole threat picture lives in one card.
+  // The moves it's actually clicking (top 6 by usage) — the "what's coming"
+  // read, right inside the profile so the whole threat picture lives in one card.
   const likely =
     usage && Object.keys(usage).length
       ? [...moves]
           .filter((m) => usage[m.name] != null)
           .sort((a, b) => (usage[b.name] ?? 0) - (usage[a.name] ?? 0))
-          .slice(0, 4)
+          .slice(0, 6)
       : [];
 
   // The counterplay: a 4× weakness is the fastest way to delete this threat —

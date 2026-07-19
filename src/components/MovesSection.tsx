@@ -107,7 +107,7 @@ export function MovesSection({
     return [...moves]
       .filter((m) => usage![m.name] != null)
       .sort((a, b) => (usage![b.name] ?? 0) - (usage![a.name] ?? 0))
-      .slice(0, 4);
+      .slice(0, 6);
   }, [moves, usage, hasUsage]);
 
   const filters: { key: Filter; label: string }[] = [

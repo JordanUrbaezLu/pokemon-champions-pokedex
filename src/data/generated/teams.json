@@ -1,0 +1,2514 @@
+{
+  "meta": {
+    "format": "gen9championsvgc2026regmb",
+    "regulationLabel": "Reg M-B",
+    "source": "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
+    "sourceLabel": "Smogon Champions Reg M-B Sample Teams",
+    "generatedAt": "2026-07-19",
+    "topN": 5,
+    "count": 13
+  },
+  "teams": [
+    {
+      "slug": "mega-charizard-y-farigiraf-offense",
+      "name": "Mega Charizard Y + Farigiraf Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Marco Silva's Champions Arena II 1st Place",
+        "author": "Marco Silva",
+        "detail": "Champions Arena II 1st Place"
+      },
+      "isRecreation": true,
+      "pasteUrl": "https://pokepast.es/5045d4dfc5ec569b",
+      "metaFootprint": 120.3,
+      "members": [
+        {
+          "slug": "garchomp",
+          "formKey": null,
+          "name": "Garchomp",
+          "formLabel": "Garchomp",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/445.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Rough Skin",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "Dragon Claw",
+            "Earthquake",
+            "Stomping Tantrum",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 33.9
+        },
+        {
+          "slug": "farigiraf",
+          "formKey": null,
+          "name": "Farigiraf",
+          "formLabel": "Farigiraf",
+          "types": [
+            "normal",
+            "psychic"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/981.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Armor Tail",
+          "nature": "Calm",
+          "evs": {
+            "hp": 31,
+            "def": 15,
+            "spd": 20
+          },
+          "evStr": "31 HP / 15 Def / 20 SpD",
+          "moves": [
+            "Psychic",
+            "Helping Hand",
+            "Trick Room",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 20.7
+        },
+        {
+          "slug": "sylveon",
+          "formKey": null,
+          "name": "Sylveon",
+          "formLabel": "Sylveon",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/700.png",
+          "isMega": false,
+          "item": "Fairy Feather",
+          "ability": "Pixilate",
+          "nature": "Modest",
+          "evs": {
+            "hp": 7,
+            "def": 32,
+            "spa": 20,
+            "spe": 7
+          },
+          "evStr": "7 HP / 32 Def / 20 SpA / 7 Spe",
+          "moves": [
+            "Hyper Voice",
+            "Yawn",
+            "Quick Attack",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 12.6
+        },
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 28,
+            "def": 5,
+            "spa": 21,
+            "spe": 12
+          },
+          "evStr": "28 HP / 5 Def / 21 SpA / 12 Spe",
+          "moves": [
+            "Weather Ball",
+            "Heat Wave",
+            "Solar Beam",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 17.9
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Charcoal",
+          "ability": "Intimidate",
+          "nature": "Brave",
+          "evs": {
+            "hp": 31,
+            "atk": 32,
+            "def": 3
+          },
+          "evStr": "31 HP / 32 Atk / 3 Def",
+          "moves": [
+            "Fake Out",
+            "Flare Blitz",
+            "Darkest Lariat",
+            "Parting Shot"
+          ],
+          "gender": "F",
+          "usagePct": 31.1
+        },
+        {
+          "slug": "aerodactyl",
+          "formKey": null,
+          "name": "Aerodactyl",
+          "formLabel": "Aerodactyl",
+          "types": [
+            "rock",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/142.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Unnerve",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 32,
+            "def": 2,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 2 Def / 32 Spe",
+          "moves": [
+            "Rock Slide",
+            "Wide Guard",
+            "Tailwind",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 4.1
+        }
+      ],
+      "rank": 1
+    },
+    {
+      "slug": "dual-weather",
+      "name": "Dual Weather",
+      "archetype": "Dual Weather",
+      "archetypeType": "water",
+      "credit": {
+        "raw": "Alex Underhill's Grand Champions Festival Encore 1st place",
+        "author": "Alex Underhill",
+        "detail": "Grand Champions Festival Encore 1st place"
+      },
+      "isRecreation": true,
+      "pasteUrl": "https://pokepast.es/167ae70e3741626d",
+      "metaFootprint": 101.7,
+      "members": [
+        {
+          "slug": "venusaur",
+          "formKey": null,
+          "name": "Venusaur",
+          "formLabel": "Venusaur",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/3.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Chlorophyll",
+          "nature": "Timid",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Sludge Bomb",
+            "Earth Power",
+            "Sleep Powder",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 2.6
+        },
+        {
+          "slug": "grimmsnarl",
+          "formKey": null,
+          "name": "Grimmsnarl",
+          "formLabel": "Grimmsnarl",
+          "types": [
+            "dark",
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/861.png",
+          "isMega": false,
+          "item": "Light Clay",
+          "ability": "Prankster",
+          "nature": "Careful",
+          "evs": {
+            "hp": 32,
+            "def": 19,
+            "spd": 15
+          },
+          "evStr": "32 HP / 19 Def / 15 SpD",
+          "moves": [
+            "Spirit Break",
+            "Reflect",
+            "Light Screen",
+            "Parting Shot"
+          ],
+          "gender": null,
+          "usagePct": 14.7
+        },
+        {
+          "slug": "pelipper",
+          "formKey": null,
+          "name": "Pelipper",
+          "formLabel": "Pelipper",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/279.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Drizzle",
+          "nature": "Modest",
+          "evs": {
+            "hp": 31,
+            "def": 1,
+            "spa": 5,
+            "spd": 18,
+            "spe": 11
+          },
+          "evStr": "31 HP / 1 Def / 5 SpA / 18 SpD / 11 Spe",
+          "moves": [
+            "Hurricane",
+            "Weather Ball",
+            "Tailwind",
+            "Wide Guard"
+          ],
+          "gender": null,
+          "usagePct": 18.6
+        },
+        {
+          "slug": "archaludon",
+          "formKey": null,
+          "name": "Archaludon",
+          "formLabel": "Archaludon",
+          "types": [
+            "steel",
+            "dragon"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1018.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Stamina",
+          "nature": "Modest",
+          "evs": {
+            "hp": 32,
+            "def": 4,
+            "spa": 1,
+            "spd": 22,
+            "spe": 7
+          },
+          "evStr": "32 HP / 4 Def / 1 SpA / 22 SpD / 7 Spe",
+          "moves": [
+            "Dragon Pulse",
+            "Flash Cannon",
+            "Electro Shot",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 16.2
+        },
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 30,
+            "def": 31,
+            "spa": 1,
+            "spe": 4
+          },
+          "evStr": "30 HP / 31 Def / 1 SpA / 4 Spe",
+          "moves": [
+            "Heat Wave",
+            "Solar Beam",
+            "Weather Ball",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 17.9
+        },
+        {
+          "slug": "basculegion",
+          "formKey": null,
+          "name": "Basculegion",
+          "formLabel": "Basculegion",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
+          "isMega": false,
+          "item": "Choice Scarf",
+          "ability": "Adaptability",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 4,
+            "atk": 24,
+            "def": 10,
+            "spe": 28
+          },
+          "evStr": "4 HP / 24 Atk / 10 Def / 28 Spe",
+          "moves": [
+            "Wave Crash",
+            "Flip Turn",
+            "Last Respects",
+            "Aqua Jet"
+          ],
+          "gender": null,
+          "usagePct": 31.7
+        }
+      ],
+      "rank": 2
+    },
+    {
+      "slug": "mega-charizard-y-mega-aerodactyl-offense",
+      "name": "Mega Charizard Y + Mega Aerodactyl Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Shohei Kimura's Season M-3 Rank #1",
+        "author": "Shohei Kimura",
+        "detail": "Season M-3 Rank #1"
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/1ca814417e498f42",
+      "metaFootprint": 125.4,
+      "members": [
+        {
+          "slug": "aerodactyl",
+          "formKey": "aerodactyl-mega",
+          "name": "Aerodactyl",
+          "formLabel": "Mega Aerodactyl",
+          "types": [
+            "rock",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10042.png",
+          "isMega": true,
+          "item": "Aerodactylite",
+          "ability": "Tough Claws",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 28,
+            "atk": 11,
+            "def": 9,
+            "spd": 1,
+            "spe": 17
+          },
+          "evStr": "28 HP / 11 Atk / 9 Def / 1 SpD / 17 Spe",
+          "moves": [
+            "Rock Slide",
+            "Ice Fang",
+            "Tailwind",
+            "Wide Guard"
+          ],
+          "gender": "M",
+          "usagePct": 5.3
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 13,
+            "atk": 25,
+            "def": 1,
+            "spd": 1,
+            "spe": 26
+          },
+          "evStr": "13 HP / 25 Atk / 1 Def / 1 SpD / 26 Spe",
+          "moves": [
+            "Kowtow Cleave",
+            "Sucker Punch",
+            "Iron Head",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 24.6
+        },
+        {
+          "slug": "sylveon",
+          "formKey": null,
+          "name": "Sylveon",
+          "formLabel": "Sylveon",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/700.png",
+          "isMega": false,
+          "item": "Fairy Feather",
+          "ability": "Pixilate",
+          "nature": "Modest",
+          "evs": {
+            "hp": 18,
+            "def": 10,
+            "spa": 21,
+            "spe": 17
+          },
+          "evStr": "18 HP / 10 Def / 21 SpA / 17 Spe",
+          "moves": [
+            "Detect",
+            "Hyper Voice",
+            "Hyper Beam",
+            "Quick Attack"
+          ],
+          "gender": "M",
+          "usagePct": 12.6
+        },
+        {
+          "slug": "garchomp",
+          "formKey": null,
+          "name": "Garchomp",
+          "formLabel": "Garchomp",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/445.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Rough Skin",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 32,
+            "def": 1,
+            "spd": 1,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 1 Def / 1 SpD / 32 Spe",
+          "moves": [
+            "Earthquake",
+            "Dragon Claw",
+            "Stomping Tantrum",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 33.9
+        },
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 24,
+            "def": 16,
+            "spa": 9,
+            "spe": 17
+          },
+          "evStr": "24 HP / 16 Def / 9 SpA / 17 Spe",
+          "moves": [
+            "Protect",
+            "Heat Wave",
+            "Solar Beam",
+            "Weather Ball"
+          ],
+          "gender": "M",
+          "usagePct": 17.9
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Impish",
+          "evs": {
+            "hp": 32,
+            "def": 32,
+            "spd": 2
+          },
+          "evStr": "32 HP / 32 Def / 2 SpD",
+          "moves": [
+            "Darkest Lariat",
+            "Flare Blitz",
+            "Fake Out",
+            "Parting Shot"
+          ],
+          "gender": "M",
+          "usagePct": 31.1
+        }
+      ],
+      "rank": 3
+    },
+    {
+      "slug": "mega-charizard-y-toxapex-offense",
+      "name": "Mega Charizard Y + Toxapex Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Rinya Kobayashi's Season M-3 Rank #2",
+        "author": "Rinya Kobayashi",
+        "detail": "Season M-3 Rank #2"
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/a17f2d13aa4796d8",
+      "metaFootprint": 89.3,
+      "members": [
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 28,
+            "def": 27,
+            "spa": 11
+          },
+          "evStr": "28 HP / 27 Def / 11 SpA",
+          "moves": [
+            "Heat Wave",
+            "Weather Ball",
+            "Helping Hand",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 17.9
+        },
+        {
+          "slug": "venusaur",
+          "formKey": null,
+          "name": "Venusaur",
+          "formLabel": "Venusaur",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/3.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Chlorophyll",
+          "nature": "Modest",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Leaf Storm",
+            "Sludge Bomb",
+            "Earth Power",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 2.6
+        },
+        {
+          "slug": "mamoswine",
+          "formKey": null,
+          "name": "Mamoswine",
+          "formLabel": "Mamoswine",
+          "types": [
+            "ice",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/473.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Oblivious",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "High Horsepower",
+            "Rock Tomb",
+            "Ice Shard",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 1.6
+        },
+        {
+          "slug": "garchomp",
+          "formKey": null,
+          "name": "Garchomp",
+          "formLabel": "Garchomp",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/445.png",
+          "isMega": false,
+          "item": "Choice Scarf",
+          "ability": "Rough Skin",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "Dragon Claw",
+            "Earthquake",
+            "Rock Slide",
+            "Stomping Tantrum"
+          ],
+          "gender": "M",
+          "usagePct": 33.9
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Impish",
+          "evs": {
+            "hp": 32,
+            "def": 10,
+            "spd": 14,
+            "spe": 10
+          },
+          "evStr": "32 HP / 10 Def / 14 SpD / 10 Spe",
+          "moves": [
+            "Flare Blitz",
+            "Throat Chop",
+            "Parting Shot",
+            "Fake Out"
+          ],
+          "gender": "M",
+          "usagePct": 31.1
+        },
+        {
+          "slug": "toxapex",
+          "formKey": null,
+          "name": "Toxapex",
+          "formLabel": "Toxapex",
+          "types": [
+            "poison",
+            "water"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/748.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Regenerator",
+          "nature": "Bold",
+          "evs": {
+            "hp": 32,
+            "def": 21,
+            "spd": 13
+          },
+          "evStr": "32 HP / 21 Def / 13 SpD",
+          "moves": [
+            "Toxic",
+            "Infestation",
+            "Wide Guard",
+            "Baneful Bunker"
+          ],
+          "gender": "M",
+          "usagePct": 2.2
+        }
+      ],
+      "rank": 4
+    },
+    {
+      "slug": "mega-metagross-mega-swampert-rain",
+      "name": "Mega Metagross + Mega Swampert Rain",
+      "archetype": "Rain",
+      "archetypeType": "water",
+      "credit": {
+        "raw": "Jeongso Lee's Victory Road June Challenge #2 Top 4",
+        "author": "Jeongso Lee",
+        "detail": "Victory Road June Challenge #2 Top 4"
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/a8f447c2e7790a1a",
+      "metaFootprint": 111.2,
+      "members": [
+        {
+          "slug": "grimmsnarl",
+          "formKey": null,
+          "name": "Grimmsnarl",
+          "formLabel": "Grimmsnarl",
+          "types": [
+            "dark",
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/861.png",
+          "isMega": false,
+          "item": "Light Clay",
+          "ability": "Prankster",
+          "nature": "Calm",
+          "evs": {
+            "hp": 32,
+            "def": 20,
+            "spd": 14
+          },
+          "evStr": "32 HP / 20 Def / 14 SpD",
+          "moves": [
+            "Foul Play",
+            "Parting Shot",
+            "Reflect",
+            "Light Screen"
+          ],
+          "gender": "M",
+          "usagePct": 14.7
+        },
+        {
+          "slug": "swampert",
+          "formKey": "swampert-mega",
+          "name": "Swampert",
+          "formLabel": "Mega Swampert",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10064.png",
+          "isMega": true,
+          "item": "Swampertite",
+          "ability": "Swift Swim",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 18,
+            "atk": 30,
+            "spe": 18
+          },
+          "evStr": "18 HP / 30 Atk / 18 Spe",
+          "moves": [
+            "Wave Crash",
+            "Earthquake",
+            "Ice Punch",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 14.6
+        },
+        {
+          "slug": "pelipper",
+          "formKey": null,
+          "name": "Pelipper",
+          "formLabel": "Pelipper",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/279.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Drizzle",
+          "nature": "Modest",
+          "evs": {
+            "hp": 32,
+            "def": 1,
+            "spa": 5,
+            "spd": 17,
+            "spe": 11
+          },
+          "evStr": "32 HP / 1 Def / 5 SpA / 17 SpD / 11 Spe",
+          "moves": [
+            "Hurricane",
+            "Weather Ball",
+            "Tailwind",
+            "Wide Guard"
+          ],
+          "gender": "M",
+          "usagePct": 18.6
+        },
+        {
+          "slug": "archaludon",
+          "formKey": null,
+          "name": "Archaludon",
+          "formLabel": "Archaludon",
+          "types": [
+            "steel",
+            "dragon"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1018.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Stamina",
+          "nature": "Modest",
+          "evs": {
+            "hp": 32,
+            "spa": 1,
+            "spd": 29,
+            "spe": 4
+          },
+          "evStr": "32 HP / 1 SpA / 29 SpD / 4 Spe",
+          "moves": [
+            "Electro Shot",
+            "Dragon Pulse",
+            "Flash Cannon",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 16.2
+        },
+        {
+          "slug": "sinistcha",
+          "formKey": null,
+          "name": "Sinistcha",
+          "formLabel": "Sinistcha",
+          "types": [
+            "grass",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png",
+          "isMega": false,
+          "item": "Coba Berry",
+          "ability": "Hospitality",
+          "nature": "Relaxed",
+          "evs": {
+            "hp": 32,
+            "def": 4,
+            "spd": 30
+          },
+          "evStr": "32 HP / 4 Def / 30 SpD",
+          "moves": [
+            "Matcha Gotcha",
+            "Rage Powder",
+            "Trick Room",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 33.2
+        },
+        {
+          "slug": "metagross",
+          "formKey": "metagross-mega",
+          "name": "Metagross",
+          "formLabel": "Mega Metagross",
+          "types": [
+            "steel",
+            "psychic"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10076.png",
+          "isMega": true,
+          "item": "Metagrossite",
+          "ability": "Tough Claws",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 14,
+            "atk": 27,
+            "spe": 25
+          },
+          "evStr": "14 HP / 27 Atk / 25 Spe",
+          "moves": [
+            "Iron Head",
+            "Psychic Fangs",
+            "Body Press",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 13.9
+        }
+      ],
+      "rank": 5
+    },
+    {
+      "slug": "mega-blastoise-mega-delphox-set-up",
+      "name": "Mega Blastoise + Mega Delphox Set Up",
+      "archetype": "Set Up",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Mao Harada's Season M-3 Rank #18",
+        "author": "Mao Harada",
+        "detail": "Season M-3 Rank #18"
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/9839322d1ed7ceab",
+      "metaFootprint": 116.3,
+      "members": [
+        {
+          "slug": "sneasler",
+          "formKey": null,
+          "name": "Sneasler",
+          "formLabel": "Sneasler",
+          "types": [
+            "fighting",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/903.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Poison Touch",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "Poison Jab",
+            "Close Combat",
+            "Fake Out",
+            "Quick Guard"
+          ],
+          "gender": "M",
+          "usagePct": 18.1
+        },
+        {
+          "slug": "blastoise",
+          "formKey": "blastoise-mega",
+          "name": "Blastoise",
+          "formLabel": "Mega Blastoise",
+          "types": [
+            "water"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10036.png",
+          "isMega": true,
+          "item": "Blastoisinite",
+          "ability": "Mega Launcher",
+          "nature": "Modest",
+          "evs": {
+            "hp": 1,
+            "def": 1,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "1 HP / 1 Def / 32 SpA / 32 Spe",
+          "moves": [
+            "Dark Pulse",
+            "Water Spout",
+            "Shell Smash",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 3
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Black Glasses",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 32,
+            "atk": 7,
+            "spd": 27
+          },
+          "evStr": "32 HP / 7 Atk / 27 SpD",
+          "moves": [
+            "Kowtow Cleave",
+            "Sucker Punch",
+            "Swords Dance",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 24.6
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Careful",
+          "evs": {
+            "hp": 32,
+            "def": 1,
+            "spd": 10,
+            "spe": 23
+          },
+          "evStr": "32 HP / 1 Def / 10 SpD / 23 Spe",
+          "moves": [
+            "Flare Blitz",
+            "Helping Hand",
+            "Parting Shot",
+            "Fake Out"
+          ],
+          "gender": "M",
+          "usagePct": 31.1
+        },
+        {
+          "slug": "delphox",
+          "formKey": "delphox-mega",
+          "name": "Delphox",
+          "formLabel": "Mega Delphox",
+          "types": [
+            "fire",
+            "psychic"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10293.png",
+          "isMega": true,
+          "item": "Delphoxite",
+          "ability": "Levitate",
+          "nature": "Modest",
+          "evs": {
+            "hp": 23,
+            "def": 11,
+            "spa": 1,
+            "spe": 31
+          },
+          "evStr": "23 HP / 11 Def / 1 SpA / 31 Spe",
+          "moves": [
+            "Heat Wave",
+            "Nasty Plot",
+            "Psyshock",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 6.3
+        },
+        {
+          "slug": "sinistcha",
+          "formKey": null,
+          "name": "Sinistcha",
+          "formLabel": "Sinistcha",
+          "types": [
+            "grass",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png",
+          "isMega": false,
+          "item": "Kasib Berry",
+          "ability": "Hospitality",
+          "nature": "Bold",
+          "evs": {
+            "hp": 32,
+            "def": 4,
+            "spd": 30
+          },
+          "evStr": "32 HP / 4 Def / 30 SpD",
+          "moves": [
+            "Matcha Gotcha",
+            "Rage Powder",
+            "Trick Room",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 33.2
+        }
+      ],
+      "rank": 6
+    },
+    {
+      "slug": "mega-raichu-y-mega-floette-offense",
+      "name": "Mega Raichu Y + Mega Floette Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Michael Kelsch's Smogon VGC Major Live Tour",
+        "author": "Michael Kelsch",
+        "detail": "Smogon VGC Major Live Tour"
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/f40af08d4182d5cb",
+      "metaFootprint": 98.9,
+      "members": [
+        {
+          "slug": "sinistcha",
+          "formKey": null,
+          "name": "Sinistcha",
+          "formLabel": "Sinistcha",
+          "types": [
+            "grass",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png",
+          "isMega": false,
+          "item": "Kasib Berry",
+          "ability": "Hospitality",
+          "nature": "Relaxed",
+          "evs": {
+            "hp": 32,
+            "def": 4,
+            "spd": 30
+          },
+          "evStr": "32 HP / 4 Def / 30 SpD",
+          "moves": [
+            "Matcha Gotcha",
+            "Life Dew",
+            "Rage Powder",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 33.2
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Impish",
+          "evs": {
+            "hp": 32,
+            "def": 24,
+            "spd": 8,
+            "spe": 2
+          },
+          "evStr": "32 HP / 24 Def / 8 SpD / 2 Spe",
+          "moves": [
+            "Flare Blitz",
+            "Throat Chop",
+            "Fake Out",
+            "Parting Shot"
+          ],
+          "gender": null,
+          "usagePct": 31.1
+        },
+        {
+          "slug": "milotic",
+          "formKey": null,
+          "name": "Milotic",
+          "formLabel": "Milotic",
+          "types": [
+            "water"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/350.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Competitive",
+          "nature": "Calm",
+          "evs": {
+            "hp": 32,
+            "def": 27,
+            "spd": 5,
+            "spe": 2
+          },
+          "evStr": "32 HP / 27 Def / 5 SpD / 2 Spe",
+          "moves": [
+            "Muddy Water",
+            "Coil",
+            "Hypnosis",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 4.8
+        },
+        {
+          "slug": "raichu",
+          "formKey": "raichu-mega-y",
+          "name": "Raichu",
+          "formLabel": "Mega Raichu Y",
+          "types": [
+            "electric"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10305.png",
+          "isMega": true,
+          "item": "Raichunite Y",
+          "ability": "No Guard",
+          "nature": "Timid",
+          "evs": {
+            "hp": 30,
+            "def": 13,
+            "spe": 23
+          },
+          "evStr": "30 HP / 13 Def / 23 Spe",
+          "moves": [
+            "Zap Cannon",
+            "Focus Blast",
+            "Fake Out",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 9.5
+        },
+        {
+          "slug": "floette",
+          "formKey": "floette-mega",
+          "name": "Floette",
+          "formLabel": "Mega Floette",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png",
+          "isMega": true,
+          "item": "Floettite",
+          "ability": "Fairy Aura",
+          "nature": "Timid",
+          "evs": {
+            "hp": 7,
+            "def": 27,
+            "spe": 32
+          },
+          "evStr": "7 HP / 27 Def / 32 Spe",
+          "moves": [
+            "Dazzling Gleam",
+            "Draining Kiss",
+            "Calm Mind",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 17.6
+        },
+        {
+          "slug": "ceruledge",
+          "formKey": null,
+          "name": "Ceruledge",
+          "formLabel": "Ceruledge",
+          "types": [
+            "fire",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/937.png",
+          "isMega": false,
+          "item": "Colbur Berry",
+          "ability": "Flash Fire",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 31,
+            "atk": 25,
+            "def": 10
+          },
+          "evStr": "31 HP / 25 Atk / 10 Def",
+          "moves": [
+            "Bitter Blade",
+            "Shadow Sneak",
+            "Bulk Up",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 2.7
+        }
+      ],
+      "rank": 7
+    },
+    {
+      "slug": "mega-charizard-y-toxapex-annihilape-offense",
+      "name": "Mega Charizard Y, Toxapex + Annihilape Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": {
+        "raw": "Shiilang Tang's",
+        "author": "Shiilang Tang",
+        "detail": null
+      },
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/5004c67434e6f875",
+      "metaFootprint": 92.7,
+      "members": [
+        {
+          "slug": "garchomp",
+          "formKey": null,
+          "name": "Garchomp",
+          "formLabel": "Garchomp",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/445.png",
+          "isMega": false,
+          "item": "Choice Scarf",
+          "ability": "Rough Skin",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 14,
+            "atk": 20,
+            "spe": 32
+          },
+          "evStr": "14 HP / 20 Atk / 32 Spe",
+          "moves": [
+            "Earthquake",
+            "Rock Slide",
+            "Dragon Claw",
+            "Stomping Tantrum"
+          ],
+          "gender": null,
+          "usagePct": 33.9
+        },
+        {
+          "slug": "venusaur",
+          "formKey": null,
+          "name": "Venusaur",
+          "formLabel": "Venusaur",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/3.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Chlorophyll",
+          "nature": "Modest",
+          "evs": {
+            "hp": 4,
+            "def": 12,
+            "spa": 32,
+            "spe": 18
+          },
+          "evStr": "4 HP / 12 Def / 32 SpA / 18 Spe",
+          "moves": [
+            "Sludge Bomb",
+            "Solar Beam",
+            "Earth Power",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 2.6
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Impish",
+          "evs": {
+            "hp": 32,
+            "def": 21,
+            "spd": 11,
+            "spe": 2
+          },
+          "evStr": "32 HP / 21 Def / 11 SpD / 2 Spe",
+          "moves": [
+            "Fake Out",
+            "Flare Blitz",
+            "Throat Chop",
+            "Parting Shot"
+          ],
+          "gender": null,
+          "usagePct": 31.1
+        },
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 28,
+            "def": 24,
+            "spa": 1,
+            "spe": 13
+          },
+          "evStr": "28 HP / 24 Def / 1 SpA / 13 Spe",
+          "moves": [
+            "Heat Wave",
+            "Weather Ball",
+            "Protect",
+            "Helping Hand"
+          ],
+          "gender": null,
+          "usagePct": 17.9
+        },
+        {
+          "slug": "toxapex",
+          "formKey": null,
+          "name": "Toxapex",
+          "formLabel": "Toxapex",
+          "types": [
+            "poison",
+            "water"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/748.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Regenerator",
+          "nature": "Bold",
+          "evs": {
+            "hp": 32,
+            "def": 15,
+            "spd": 19
+          },
+          "evStr": "32 HP / 15 Def / 19 SpD",
+          "moves": [
+            "Infestation",
+            "Toxic",
+            "Wide Guard",
+            "Baneful Bunker"
+          ],
+          "gender": null,
+          "usagePct": 2.2
+        },
+        {
+          "slug": "annihilape",
+          "formKey": null,
+          "name": "Annihilape",
+          "formLabel": "Annihilape",
+          "types": [
+            "fighting",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/979.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Defiant",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 32,
+            "def": 1,
+            "spd": 1,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 1 Def / 1 SpD / 32 Spe",
+          "moves": [
+            "Close Combat",
+            "Phantom Force",
+            "Rock Tomb",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 5
+        }
+      ],
+      "rank": 8
+    },
+    {
+      "slug": "mega-pyroar-mega-floette-sun",
+      "name": "Mega Pyroar + Mega Floette Sun",
+      "archetype": "Sun",
+      "archetypeType": "fire",
+      "credit": {
+        "raw": "Wolfe Glicke's",
+        "author": "Wolfe Glicke",
+        "detail": null
+      },
+      "isRecreation": true,
+      "pasteUrl": "https://pokepast.es/3aef3e8155dce8c5",
+      "metaFootprint": 85.8,
+      "members": [
+        {
+          "slug": "pyroar",
+          "formKey": "pyroar-mega",
+          "name": "Pyroar",
+          "formLabel": "Mega Pyroar",
+          "types": [
+            "fire",
+            "normal"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10295.png",
+          "isMega": true,
+          "item": "Pyroarite",
+          "ability": "Fire Mane",
+          "nature": "Timid",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Protect",
+            "Overheat",
+            "Heat Wave",
+            "Solar Beam"
+          ],
+          "gender": null,
+          "usagePct": 4.7
+        },
+        {
+          "slug": "vileplume",
+          "formKey": null,
+          "name": "Vileplume",
+          "formLabel": "Vileplume",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/45.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Chlorophyll",
+          "nature": "Timid",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Sleep Powder",
+            "After You",
+            "Sludge Bomb",
+            "Solar Beam"
+          ],
+          "gender": null,
+          "usagePct": 1.8
+        },
+        {
+          "slug": "torkoal",
+          "formKey": null,
+          "name": "Torkoal",
+          "formLabel": "Torkoal",
+          "types": [
+            "fire"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/324.png",
+          "isMega": false,
+          "item": "Charcoal",
+          "ability": "Drought",
+          "nature": "Quiet",
+          "evs": {
+            "hp": 32,
+            "spa": 32,
+            "spd": 2
+          },
+          "evStr": "32 HP / 32 SpA / 2 SpD",
+          "moves": [
+            "Protect",
+            "Helping Hand",
+            "Eruption",
+            "Weather Ball"
+          ],
+          "gender": null,
+          "usagePct": 9.9
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "White Herb",
+          "ability": "Intimidate",
+          "nature": "Brave",
+          "evs": {
+            "hp": 32,
+            "atk": 32,
+            "spd": 2
+          },
+          "evStr": "32 HP / 32 Atk / 2 SpD",
+          "moves": [
+            "Fake Out",
+            "Flare Blitz",
+            "Darkest Lariat",
+            "Close Combat"
+          ],
+          "gender": null,
+          "usagePct": 31.1
+        },
+        {
+          "slug": "floette",
+          "formKey": "floette-mega",
+          "name": "Floette",
+          "formLabel": "Mega Floette",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png",
+          "isMega": true,
+          "item": "Floettite",
+          "ability": "Fairy Aura",
+          "nature": "Modest",
+          "evs": {
+            "hp": 29,
+            "spa": 5,
+            "spe": 32
+          },
+          "evStr": "29 HP / 5 SpA / 32 Spe",
+          "moves": [
+            "Protect",
+            "Calm Mind",
+            "Moonblast",
+            "Draining Kiss"
+          ],
+          "gender": null,
+          "usagePct": 17.6
+        },
+        {
+          "slug": "farigiraf",
+          "formKey": null,
+          "name": "Farigiraf",
+          "formLabel": "Farigiraf",
+          "types": [
+            "normal",
+            "psychic"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/981.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Armor Tail",
+          "nature": "Relaxed",
+          "evs": {
+            "hp": 18,
+            "def": 30,
+            "spd": 18
+          },
+          "evStr": "18 HP / 30 Def / 18 SpD",
+          "moves": [
+            "Helping Hand",
+            "Trick Room",
+            "Psychic",
+            "Thunderbolt"
+          ],
+          "gender": null,
+          "usagePct": 20.7
+        }
+      ],
+      "rank": 9
+    },
+    {
+      "slug": "mega-delphox-mega-floette-offense",
+      "name": "Mega Delphox + Mega Floette Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": null,
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/6b17aa37586a40ee",
+      "metaFootprint": 130.9,
+      "members": [
+        {
+          "slug": "delphox",
+          "formKey": "delphox-mega",
+          "name": "Delphox",
+          "formLabel": "Mega Delphox",
+          "types": [
+            "fire",
+            "psychic"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10293.png",
+          "isMega": true,
+          "item": "Delphoxite",
+          "ability": "Levitate",
+          "nature": "Timid",
+          "evs": {
+            "hp": 15,
+            "def": 17,
+            "spa": 15,
+            "spe": 19
+          },
+          "evStr": "15 HP / 17 Def / 15 SpA / 19 Spe",
+          "moves": [
+            "Heat Wave",
+            "Psyshock",
+            "Nasty Plot",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 6.3
+        },
+        {
+          "slug": "floette",
+          "formKey": "floette-mega",
+          "name": "Floette",
+          "formLabel": "Mega Floette",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png",
+          "isMega": true,
+          "item": "Floettite",
+          "ability": "Fairy Aura",
+          "nature": "Modest",
+          "evs": {
+            "hp": 22,
+            "def": 17,
+            "spa": 5,
+            "spe": 22
+          },
+          "evStr": "22 HP / 17 Def / 5 SpA / 22 Spe",
+          "moves": [
+            "Moonblast",
+            "Dazzling Gleam",
+            "Calm Mind",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 17.6
+        },
+        {
+          "slug": "sneasler",
+          "formKey": null,
+          "name": "Sneasler",
+          "formLabel": "Sneasler",
+          "types": [
+            "fighting",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/903.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Poison Touch",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "Dire Claw",
+            "Close Combat",
+            "Fake Out",
+            "Quick Guard"
+          ],
+          "gender": null,
+          "usagePct": 18.1
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Intimidate",
+          "nature": "Impish",
+          "evs": {
+            "hp": 32,
+            "def": 19,
+            "spd": 13,
+            "spe": 2
+          },
+          "evStr": "32 HP / 19 Def / 13 SpD / 2 Spe",
+          "moves": [
+            "Darkest Lariat",
+            "Flare Blitz",
+            "Fake Out",
+            "Parting Shot"
+          ],
+          "gender": null,
+          "usagePct": 31.1
+        },
+        {
+          "slug": "sinistcha",
+          "formKey": null,
+          "name": "Sinistcha",
+          "formLabel": "Sinistcha",
+          "types": [
+            "grass",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png",
+          "isMega": false,
+          "item": "Colbur Berry",
+          "ability": "Hospitality",
+          "nature": "Relaxed",
+          "evs": {
+            "hp": 31,
+            "def": 14,
+            "spd": 21
+          },
+          "evStr": "31 HP / 14 Def / 21 SpD",
+          "moves": [
+            "Matcha Gotcha",
+            "Rage Powder",
+            "Trick Room",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 33.2
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Black Glasses",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 32,
+            "atk": 32,
+            "spd": 1,
+            "spe": 1
+          },
+          "evStr": "32 HP / 32 Atk / 1 SpD / 1 Spe",
+          "moves": [
+            "Kowtow Cleave",
+            "Sucker Punch",
+            "Swords Dance",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 24.6
+        }
+      ],
+      "rank": 10
+    },
+    {
+      "slug": "mega-swampert-mega-venusaur-rain",
+      "name": "Mega Swampert + Mega Venusaur Rain",
+      "archetype": "Rain",
+      "archetypeType": "water",
+      "credit": null,
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/e2cacc9d8e944e28",
+      "metaFootprint": 99.1,
+      "members": [
+        {
+          "slug": "grimmsnarl",
+          "formKey": null,
+          "name": "Grimmsnarl",
+          "formLabel": "Grimmsnarl",
+          "types": [
+            "dark",
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/861.png",
+          "isMega": false,
+          "item": "Light Clay",
+          "ability": "Prankster",
+          "nature": "Careful",
+          "evs": {
+            "hp": 32,
+            "def": 20,
+            "spd": 13,
+            "spe": 1
+          },
+          "evStr": "32 HP / 20 Def / 13 SpD / 1 Spe",
+          "moves": [
+            "Spirit Break",
+            "Reflect",
+            "Light Screen",
+            "Parting Shot"
+          ],
+          "gender": "M",
+          "usagePct": 14.7
+        },
+        {
+          "slug": "swampert",
+          "formKey": "swampert-mega",
+          "name": "Swampert",
+          "formLabel": "Mega Swampert",
+          "types": [
+            "water",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10064.png",
+          "isMega": true,
+          "item": "Swampertite",
+          "ability": "Swift Swim",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 2,
+            "atk": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 Atk / 32 Spe",
+          "moves": [
+            "Wave Crash",
+            "Earthquake",
+            "Ice Punch",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 14.6
+        },
+        {
+          "slug": "pelipper",
+          "formKey": null,
+          "name": "Pelipper",
+          "formLabel": "Pelipper",
+          "types": [
+            "water",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/279.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Drizzle",
+          "nature": "Bold",
+          "evs": {
+            "hp": 32,
+            "def": 5,
+            "spd": 5,
+            "spe": 24
+          },
+          "evStr": "32 HP / 5 Def / 5 SpD / 24 Spe",
+          "moves": [
+            "Weather Ball",
+            "Hurricane",
+            "Tailwind",
+            "Wide Guard"
+          ],
+          "gender": null,
+          "usagePct": 18.6
+        },
+        {
+          "slug": "archaludon",
+          "formKey": null,
+          "name": "Archaludon",
+          "formLabel": "Archaludon",
+          "types": [
+            "steel",
+            "dragon"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1018.png",
+          "isMega": false,
+          "item": "Leftovers",
+          "ability": "Stamina",
+          "nature": "Modest",
+          "evs": {
+            "hp": 30,
+            "def": 1,
+            "spa": 1,
+            "spd": 31,
+            "spe": 3
+          },
+          "evStr": "30 HP / 1 Def / 1 SpA / 31 SpD / 3 Spe",
+          "moves": [
+            "Electro Shot",
+            "Dragon Pulse",
+            "Flash Cannon",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 16.2
+        },
+        {
+          "slug": "venusaur",
+          "formKey": "venusaur-mega",
+          "name": "Venusaur",
+          "formLabel": "Mega Venusaur",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10033.png",
+          "isMega": true,
+          "item": "Venusaurite",
+          "ability": "Thick Fat",
+          "nature": "Modest",
+          "evs": {
+            "hp": 32,
+            "def": 17,
+            "spa": 8,
+            "spe": 9
+          },
+          "evStr": "32 HP / 17 Def / 8 SpA / 9 Spe",
+          "moves": [
+            "Sludge Bomb",
+            "Giga Drain",
+            "Earth Power",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 3.3
+        },
+        {
+          "slug": "basculegion",
+          "formKey": null,
+          "name": "Basculegion",
+          "formLabel": "Basculegion",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
+          "isMega": false,
+          "item": "Choice Scarf",
+          "ability": "Adaptability",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 20,
+            "def": 14,
+            "spe": 32
+          },
+          "evStr": "20 Atk / 14 Def / 32 Spe",
+          "moves": [
+            "Wave Crash",
+            "Last Respects",
+            "Aqua Jet",
+            "Flip Turn"
+          ],
+          "gender": "M",
+          "usagePct": 31.7
+        }
+      ],
+      "rank": 11
+    },
+    {
+      "slug": "mega-blaziken-mega-gengar-perish-trap",
+      "name": "Mega Blaziken + Mega Gengar Perish Trap",
+      "archetype": "Perish Trap",
+      "archetypeType": "ghost",
+      "credit": null,
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/96c8739cd552e6d8",
+      "metaFootprint": 98.4,
+      "members": [
+        {
+          "slug": "blaziken",
+          "formKey": "blaziken-mega",
+          "name": "Blaziken",
+          "formLabel": "Mega Blaziken",
+          "types": [
+            "fire",
+            "fighting"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10050.png",
+          "isMega": true,
+          "item": "Blazikenite",
+          "ability": "Speed Boost",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 32,
+            "def": 2,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 2 Def / 32 Spe",
+          "moves": [
+            "Close Combat",
+            "Rock Slide",
+            "Flare Blitz",
+            "Detect"
+          ],
+          "gender": null,
+          "usagePct": 2.2
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 24,
+            "atk": 31,
+            "def": 1,
+            "spd": 1,
+            "spe": 9
+          },
+          "evStr": "24 HP / 31 Atk / 1 Def / 1 SpD / 9 Spe",
+          "moves": [
+            "Kowtow Cleave",
+            "Sucker Punch",
+            "Protect",
+            "Iron Head"
+          ],
+          "gender": null,
+          "usagePct": 24.6
+        },
+        {
+          "slug": "basculegion",
+          "formKey": null,
+          "name": "Basculegion",
+          "formLabel": "Basculegion",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Adaptability",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 32,
+            "def": 2,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 2 Def / 32 Spe",
+          "moves": [
+            "Liquidation",
+            "Last Respects",
+            "Aqua Jet",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 31.7
+        },
+        {
+          "slug": "ninetales-alola",
+          "formKey": null,
+          "name": "Alolan Ninetales",
+          "formLabel": "Alolan Ninetales",
+          "types": [
+            "ice",
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10104.png",
+          "isMega": false,
+          "item": "Never-Melt Ice",
+          "ability": "Snow Warning",
+          "nature": "Timid",
+          "evs": {
+            "hp": 13,
+            "spa": 21,
+            "spe": 32
+          },
+          "evStr": "13 HP / 21 SpA / 32 Spe",
+          "moves": [
+            "Blizzard",
+            "Freeze-Dry",
+            "Encore",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 5.5
+        },
+        {
+          "slug": "gengar",
+          "formKey": "gengar-mega",
+          "name": "Gengar",
+          "formLabel": "Mega Gengar",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10038.png",
+          "isMega": true,
+          "item": "Gengarite",
+          "ability": "Shadow Tag",
+          "nature": "Modest",
+          "evs": {
+            "hp": 32,
+            "def": 14,
+            "spa": 1,
+            "spd": 14,
+            "spe": 5
+          },
+          "evStr": "32 HP / 14 Def / 1 SpA / 14 SpD / 5 Spe",
+          "moves": [
+            "Shadow Ball",
+            "Disable",
+            "Perish Song",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 3.3
+        },
+        {
+          "slug": "incineroar",
+          "formKey": null,
+          "name": "Incineroar",
+          "formLabel": "Incineroar",
+          "types": [
+            "fire",
+            "dark"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/727.png",
+          "isMega": false,
+          "item": "Passho Berry",
+          "ability": "Intimidate",
+          "nature": "Relaxed",
+          "evs": {
+            "hp": 31,
+            "def": 21,
+            "spd": 14
+          },
+          "evStr": "31 HP / 21 Def / 14 SpD",
+          "moves": [
+            "Fake Out",
+            "Parting Shot",
+            "Flare Blitz",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 31.1
+        }
+      ],
+      "rank": 12
+    },
+    {
+      "slug": "mega-froslass-mega-scovillain-balance",
+      "name": "Mega Froslass + Mega Scovillain Balance",
+      "archetype": "Balance",
+      "archetypeType": null,
+      "credit": null,
+      "isRecreation": false,
+      "pasteUrl": "https://pokepast.es/9c81640ed1fd414e",
+      "metaFootprint": 80.8,
+      "members": [
+        {
+          "slug": "froslass",
+          "formKey": "froslass-mega",
+          "name": "Froslass",
+          "formLabel": "Mega Froslass",
+          "types": [
+            "ice",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10285.png",
+          "isMega": true,
+          "item": "Froslassite",
+          "ability": "Snow Warning",
+          "nature": "Modest",
+          "evs": {
+            "hp": 24,
+            "spa": 8,
+            "spd": 4,
+            "spe": 30
+          },
+          "evStr": "24 HP / 8 SpA / 4 SpD / 30 Spe",
+          "moves": [
+            "Blizzard",
+            "Shadow Ball",
+            "Aurora Veil",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 3.9
+        },
+        {
+          "slug": "scovillain",
+          "formKey": "scovillain-mega",
+          "name": "Scovillain",
+          "formLabel": "Mega Scovillain",
+          "types": [
+            "grass",
+            "fire"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10320.png",
+          "isMega": true,
+          "item": "Scovillainite",
+          "ability": "Spicy Spray",
+          "nature": "Bold",
+          "evs": {
+            "hp": 32,
+            "def": 15,
+            "spd": 15,
+            "spe": 4
+          },
+          "evStr": "32 HP / 15 Def / 15 SpD / 4 Spe",
+          "moves": [
+            "Giga Drain",
+            "Overheat",
+            "Rage Powder",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 2.4
+        },
+        {
+          "slug": "basculegion",
+          "formKey": null,
+          "name": "Basculegion",
+          "formLabel": "Basculegion",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
+          "isMega": false,
+          "item": "Sitrus Berry",
+          "ability": "Adaptability",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 24,
+            "atk": 18,
+            "def": 18,
+            "spd": 6
+          },
+          "evStr": "24 HP / 18 Atk / 18 Def / 6 SpD",
+          "moves": [
+            "Wave Crash",
+            "Last Respects",
+            "Aqua Jet",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 31.7
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Black Glasses",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 32,
+            "atk": 32,
+            "spd": 2
+          },
+          "evStr": "32 HP / 32 Atk / 2 SpD",
+          "moves": [
+            "Kowtow Cleave",
+            "Sucker Punch",
+            "Swords Dance",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 24.6
+        },
+        {
+          "slug": "sneasler",
+          "formKey": null,
+          "name": "Sneasler",
+          "formLabel": "Sneasler",
+          "types": [
+            "fighting",
+            "poison"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/903.png",
+          "isMega": false,
+          "item": "White Herb",
+          "ability": "Unburden",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 18,
+            "def": 31,
+            "spe": 17
+          },
+          "evStr": "18 HP / 31 Def / 17 Spe",
+          "moves": [
+            "Close Combat",
+            "Gunk Shot",
+            "Protect",
+            "Fake Out"
+          ],
+          "gender": null,
+          "usagePct": 18.1
+        },
+        {
+          "slug": "lycanroc",
+          "formKey": null,
+          "name": "Lycanroc",
+          "formLabel": "Lycanroc Dusk",
+          "types": [
+            "rock"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/745.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Tough Claws",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 32,
+            "spd": 2,
+            "spe": 32
+          },
+          "evStr": "32 Atk / 2 SpD / 32 Spe",
+          "moves": [
+            "Close Combat",
+            "Accelerock",
+            "Rock Slide",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 0.1
+        }
+      ],
+      "rank": 13
+    }
+  ]
+}

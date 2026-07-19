@@ -322,11 +322,14 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
   let skipped = 0;
   for (const profile of Object.values(profiles)) {
     if (profile.asForm || !profile.spread) continue;
+    // Top damaging moves by usage — kept in step with the UI "Likely set" (6),
+    // so a likely move that actually KOs something carries its verdict. Moves
+    // that OHKO/2HKO nothing are dropped below, so weak pivots add no noise.
     const moves = Object.entries(profile.moveUsage)
       .sort((a, b) => b[1] - a[1])
       .map(([slug]) => ({ slug, meta: moveIndex[slug] }))
       .filter(({ meta }) => meta && meta.damageClass !== "status" && meta.power)
-      .slice(0, 4);
+      .slice(0, 6);
     if (!moves.length) continue;
 
     let attacker;
