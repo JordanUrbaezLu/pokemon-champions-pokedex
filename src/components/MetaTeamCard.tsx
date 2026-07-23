@@ -4,13 +4,15 @@ import { TYPE_COLORS } from "@/lib/type-meta";
 import type { MetaTeam } from "@/lib/types";
 
 /** The archetype tag — type-tinted for weather archetypes, neutral otherwise
- *  (red stays threat-only, so an "Offense" tag never reads as a threat). */
+ *  (red stays threat-only, so an "Offense" tag never reads as a threat).
+ *  Same tracked display voice as .hud-label but WITHOUT the field-marker
+ *  tick — the tick means "a section starts here", and a tag isn't one. */
 export function ArchetypeTag({ team }: { team: MetaTeam }) {
   if (!team.archetype) return null;
   const c = team.archetypeType ? TYPE_COLORS[team.archetypeType] : null;
   return (
     <span
-      className="hud-label shrink-0 rounded-full px-2 py-0.5 text-[10px]"
+      className="shrink-0 rounded-full px-2 py-0.5 font-display text-[10px] font-semibold uppercase tracking-[0.16em] text-muted"
       style={
         c
           ? { color: c, background: `${c}1f`, boxShadow: `inset 0 0 0 1px ${c}40` }
@@ -49,7 +51,7 @@ export function MetaTeamCard({ team }: { team: MetaTeam }) {
           )}
           {team.credit.author && team.credit.detail && " · "}
           {team.credit.detail}
-          {team.isRecreation && <span className="text-muted/70"> · recreation</span>}
+          {team.isRecreation && <span className="text-muted/70"> · set recreation</span>}
         </p>
       ) : (
         <p className="mt-1 text-xs text-muted/70">Community sample team</p>

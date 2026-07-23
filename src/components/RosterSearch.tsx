@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { useRouter } from "next/navigation";
 import { PokemonCard } from "./PokemonCard";
 import { BracketToggle } from "./BracketToggle";
 import { useBracket } from "@/lib/bracket";
@@ -116,6 +117,7 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
   const query = useSyncExternalStore(subscribeQuery, readQuery, () => "");
   const updateQuery = writeQuery;
   const [bracket] = useBracket();
+  const router = useRouter();
 
   // Whether the popover is open is ephemeral UI state; the filter SELECTIONS
   // persist (sessionStorage store above) so Back from a detail page restores the
@@ -241,9 +243,18 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
               spellCheck={false}
               value={query}
               onChange={(e) => updateQuery(e.target.value)}
+              // Go = open the top-ranked match: results are prefix-first, so
+              // "king" + Go lands on Kingambit in one motion, keyboard dropped.
+              enterKeyHint="go"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && query.trim() && results[0]) {
+                  e.currentTarget.blur();
+                  router.push(`/pokemon/${results[0].name}`);
+                }
+              }}
               placeholder="Search name or type…"
               aria-label="Search the roster by name or type"
-              className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-11 text-base outline-none placeholder:text-muted focus:border-accent"
+              className="w-full rounded-2xl border border-border bg-surface py-3 pl-10 pr-11 text-base outline-none placeholder:text-muted focus:border-foreground/30"
             />
             {query && (
               <button

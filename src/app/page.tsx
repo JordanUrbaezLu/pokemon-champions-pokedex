@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { RosterSearch } from "@/components/RosterSearch";
 import { PokeballIcon } from "@/components/PokeballIcon";
-import { getRosterEntries, getRosterCount, getDataUpdatedAt } from "@/lib/pokedex";
+import {
+  getRosterEntries,
+  getRosterCount,
+  getCompetitiveMeta,
+  getDataUpdatedAt,
+} from "@/lib/pokedex";
 
 /** "2026-06-11" -> "June 11, 2026". */
 function longDate(iso: string): string {
@@ -16,6 +21,12 @@ function longDate(iso: string): string {
 export default function Home() {
   const entries = getRosterEntries();
   const updatedAt = getDataUpdatedAt();
+  // "Reg M-B", peeled off the long format label — the same vocabulary the
+  // Teams header speaks. The roster count already lives in the list toolbar,
+  // where it printed twice; if the label shape ever changes, fall back to it.
+  const regulation =
+    getCompetitiveMeta().formatLabel.match(/(Reg\s+[A-Za-z0-9-]+)\s*$/)?.[1] ??
+    `${getRosterCount()} Pokémon`;
 
   return (
     <main className="flex min-h-dvh flex-col">
@@ -26,7 +37,7 @@ export default function Home() {
             Champions Pokédex
           </h1>
           <p className="mt-1 text-sm text-muted">
-            {getRosterCount()} Pokémon
+            <span className="whitespace-nowrap">{regulation}</span>
             {updatedAt && (
               <span className="whitespace-nowrap"> · updated {longDate(updatedAt)}</span>
             )}

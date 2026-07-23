@@ -123,6 +123,18 @@ input[type="search"]::-webkit-search-cancel-button {
   border-radius: 3px;
 }
 
+/* Text fields already signal focus with their own border change — the accent
+   outline on top made the autofocused search open every session inside two
+   stacked red rings, reading as an error state (red = threat only). Keyboard
+   users keep a visible, now-neutral ring; buttons/links keep the accent one.
+   (Plain rgba of --color-foreground: the CSS pipeline drops a color-mix(...,
+   transparent) that wraps a var() here.) */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline-color: rgba(244, 246, 248, 0.45);
+}
+
 /* Guarantee a 44px touch target on small icon buttons (WCAG 2.5.5 / the design
    system's 44px floor) without changing the visual size — an invisible centered
    hit area extends the button's own clickable box. */
@@ -137,6 +149,57 @@ input[type="search"]::-webkit-search-cancel-button {
   width: 44px;
   height: 44px;
   transform: translate(-50%, -50%);
+}
+
+/* Same 44px floor for full-width chips/segments in a row: extend the hit area
+   vertically only (an invisible overlay, like .tap-target but row-shaped), so
+   dense chip strips stay visually tight while taps stop needing pixel aim.
+   ::after, not ::before, so it can stack with .tap-target if ever combined. */
+.tap-row {
+  position: relative;
+}
+.tap-row::after {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
+}
+
+/* Battle Calc Stat-Point sliders: the input is a 28px-tall grab strip while
+   the drawn track stays a thin 6px line — the thumb is 18px and NEUTRAL
+   (a slider is chrome; red stays threat, amber stays stat magnitude). */
+.sp-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.sp-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-surface-2);
+}
+.sp-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 9999px;
+  background: #c7d2dc;
+  border: 2px solid var(--color-background);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.sp-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--color-surface-2);
+}
+.sp-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  background: #c7d2dc;
+  border: 2px solid var(--color-background);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* While a bottom sheet is open, the opponent tray goes inert: its controls sit

@@ -166,7 +166,7 @@ export function SpeedPanel({
               type="button"
               onClick={() => toggle(mod.id)}
               aria-pressed={on}
-              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              className={`tap-row rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
                 on
                   ? "bg-accent text-white"
                   : isScarfTell
@@ -192,7 +192,7 @@ export function SpeedPanel({
               type="button"
               onClick={() => toggle(mod.id)}
               aria-pressed={on}
-              className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+              className={`tap-row rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
                 on
                   ? "bg-amber-400 text-black"
                   : "border border-amber-400/50 bg-surface-2 text-amber-300"
@@ -207,8 +207,10 @@ export function SpeedPanel({
           type="button"
           onClick={() => setTrickRoom((t) => !t)}
           aria-pressed={trickRoom}
-          className={`rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
-            trickRoom ? "bg-sky-500 text-white" : "bg-surface-2 text-muted"
+          // Violet (the move's own Psychic flavor), not sky — cyan belongs to
+          // exactly one concept app-wide: "new to Champions".
+          className={`tap-row rounded-full px-3 py-1.5 text-xs font-bold transition-colors ${
+            trickRoom ? "bg-violet-500 text-white" : "bg-surface-2 text-muted"
           }`}
         >
           Trick Room

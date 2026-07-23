@@ -305,6 +305,25 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
 ## Reviews
 - ✅ Multi-lens UX + mid-battle review → top improvements implemented
 - ✅ Final adversarial code review (18 agents, 14 findings raised) → **0 confirmed**; clean
+- ✅ **2026-07-22 UI/UX polish pass** (4-lens design critique → 37 findings → 3 packages
+  shipped). **Color law:** stat bars back on the documented single-amber luminance ramp
+  (had regressed to red→green); all view-switch chrome (BracketToggle, form toggles, moves
+  filters, calc weather/toggle cells, SP sliders) moved to a neutral white active state —
+  red is threat-only again; Trick Room + "Both foes" tags sky→violet (cyan = newcomer only);
+  text-input focus rings neutralized (was a double red ring on the autofocused search);
+  Mega card halo tamed to a whisper. **Ergonomics:** hero speed chip ("Spe 70 · max 112")
+  above the fold; Enter/Go opens the top search result; calc selects + move search → 16px
+  (kills iOS focus auto-zoom); `.tap-row` 44px hit-area utility on speed/moves/form/tray
+  chips; calc SP sliders restyled (28px grab strip, 18px neutral thumb); save-set button
+  confirms with ✓ "saved"; pin button explains "Tray full" on tap; calc field cells got real
+  accessible names + HP ▾ cycle cue. **One language:** calc header is a route title with
+  un-truncated "Master+ sets" subtitle; calc opens on the top-2 picked mons (baked
+  `defaultSlugs`), not Abomasnow/Absol; spreads speak Stat Points everywhere
+  (`formatSpreadSp`; detail caption + TeamSetCard "Stat Pts" row + nature effect); team set
+  move chips type-dotted (server-built move→type map); home masthead "Reg M-B · updated …"
+  (kills the orphaned "226" line + duplicate count); copy sweep ("Sets", "set recreation",
+  "→ Attacker/Defender", archetype tag drops the hud-label tick). tsc/lint/77 tests/build
+  (247 pages) green + before/after 375px screenshots on all five routes.
 
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as

@@ -114,6 +114,10 @@ That's the entire contract. The weekly Action runs `refresh` and opens/auto-merg
   PokeAPI/Showdown entry has). `npm run status` asserts every battle form ships an ability+effect.
 - Puppeteer's `setOfflineMode` does NOT apply to service workers — to test offline for real,
   prime the cache, kill the server, then navigate.
+- The Tailwind v4 CSS pipeline **silently drops** a `globals.css` rule whose value is
+  `color-mix(..., var(--token) N%, transparent)` — the rule vanishes from the built CSS with
+  no warning (bit us on the input focus-ring override). Use a plain rgba() literal instead
+  and verify via `document.styleSheets` when a custom rule mysteriously doesn't apply.
 - Bottom sheets go through `Sheet.tsx`: it **portals to `document.body`** (a `position: fixed`
   sheet rendered inline is positioned by its ancestors — that's why the deep-in-the-moves-list
   MoveModal silently failed to appear in the installed PWA while the shallow ItemModal only

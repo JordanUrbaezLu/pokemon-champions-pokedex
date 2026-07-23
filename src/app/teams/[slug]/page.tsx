@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { ArchetypeTag } from "@/components/MetaTeamCard";
 import { TeamFormation } from "@/components/TeamFormation";
 import { TeamSetCard } from "@/components/TeamSetCard";
-import { getMetaTeamBySlug, getMetaTeams, getMetaTeamsMeta } from "@/lib/pokedex";
+import { getMetaTeamBySlug, getMetaTeams, getMetaTeamsMeta, getMoveBySlug } from "@/lib/pokedex";
+import type { PokemonType } from "@/lib/types";
 
 // The teams are a fixed, known set, so prerender every detail page and 404
 // anything off-list — each opens instantly with zero data fetching.
@@ -39,12 +40,25 @@ export default async function TeamPage({
   if (!team) notFound();
   const meta = getMetaTeamsMeta();
 
+  // Paste move names → types, resolved at build time so the set cards can
+  // type-dot their move chips at zero client cost. Unmapped names get no dot.
+  const slugifyMove = (n: string) =>
+    n.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+  const moveTypes: Record<string, PokemonType> = {};
+  for (const m of team.members) {
+    for (const mv of m.moves) {
+      const t = getMoveBySlug(slugifyMove(mv))?.type;
+      if (t) moveTypes[mv] = t;
+    }
+  }
+
   return (
     <main className="flex min-h-dvh flex-col pb-10">
       <header className="px-4 pt-5">
+        {/* -m/p padding keeps the visual size while the tap box clears 44px. */}
         <Link
           href="/teams"
-          className="inline-flex items-center gap-1 text-xs font-medium text-muted active:opacity-70"
+          className="-m-3 inline-flex items-center gap-1 p-3 text-xs font-medium text-muted active:opacity-70"
         >
           <span aria-hidden>‹</span> Meta Teams
         </Link>
@@ -77,10 +91,10 @@ export default async function TeamPage({
       </header>
 
       <section className="mt-6 px-4">
-        <h2 className="hud-label mb-3 text-[11px]">The Sets</h2>
+        <h2 className="hud-label mb-3 text-[11px]">Sets</h2>
         <div className="space-y-2.5">
           {team.members.map((m, i) => (
-            <TeamSetCard key={`${m.slug ?? m.name}-${i}`} member={m} />
+            <TeamSetCard key={`${m.slug ?? m.name}-${i}`} member={m} moveTypes={moveTypes} />
           ))}
         </div>
       </section>
