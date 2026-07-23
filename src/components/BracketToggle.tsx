@@ -22,11 +22,12 @@ export function BracketToggle({ className = "" }: { className?: string }) {
       aria-label="Ladder data bracket"
       className={`relative isolate inline-flex shrink-0 rounded-full border border-border bg-surface-2 p-0.5 ${className}`}
     >
-      {/* Sliding accent thumb — each segment is equal width, so translating by
-          its own width (100%) lands it exactly on the next option. */}
+      {/* Sliding thumb — each segment is equal width, so translating by its
+          own width (100%) lands it exactly on the next option. Neutral white:
+          a data-source switch is chrome, and red is reserved for threat. */}
       <span
         aria-hidden
-        className="absolute inset-y-0.5 left-0.5 -z-10 w-[calc(50%-2px)] rounded-full bg-accent transition-transform duration-200 ease-out"
+        className="absolute inset-y-0.5 left-0.5 -z-10 w-[calc(50%-2px)] rounded-full bg-foreground transition-transform duration-200 ease-out"
         style={{ transform: `translateX(${activeIndex * 100}%)` }}
       />
       {OPTIONS.map((o) => (
@@ -35,8 +36,8 @@ export function BracketToggle({ className = "" }: { className?: string }) {
           type="button"
           onClick={() => setBracket(o.key)}
           aria-pressed={bracket === o.key}
-          className={`flex-1 basis-0 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors duration-200 ${
-            bracket === o.key ? "text-white" : "text-muted"
+          className={`tap-row flex-1 basis-0 whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-bold transition-colors duration-200 ${
+            bracket === o.key ? "text-background" : "text-muted"
           }`}
         >
           {o.label}

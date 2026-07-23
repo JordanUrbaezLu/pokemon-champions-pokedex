@@ -72,6 +72,12 @@ export interface CalcIndex {
   entries: CalcEntry[];
   moves: Record<string, CalcMoveLite>;
   bracketLabel: string;
+  /** Short bracket name for tight UI ("Master+" / "All ranks") — the long
+   *  bracketLabel truncates mid-word in the calc's 375px sticky header. */
+  bracketShort: string;
+  /** The bracket's two most-picked mons — the calc's opening matchup, so the
+   *  first paint answers a real question instead of an alphabetical accident. */
+  defaultSlugs?: [string, string];
   generatedAt: string | null;
 }
 
@@ -117,9 +123,15 @@ function toAbilityPairs(abilities: PokemonAbility[]): { name: string; displayNam
 export function buildCalcIndex(bracket: DataBracket = "master"): CalcIndex {
   const entries: CalcEntry[] = [];
   const moves: Record<string, CalcMoveLite> = {};
+  // Each species' best pick rate across its forms — for the default matchup.
+  const usageBySlug = new Map<string, number>();
 
   for (const p of getAllPokemon()) {
     const compByForm = getCompetitiveByForm(p, bracket);
+    usageBySlug.set(
+      p.name,
+      Math.max(0, ...Object.values(compByForm).map((c) => c?.usagePct ?? 0)),
+    );
 
     const damaging = getUnionMoves(p).filter((m) => m.damageClass !== "status");
     const moveSlugs: string[] = [];
@@ -158,11 +170,20 @@ export function buildCalcIndex(bracket: DataBracket = "master"): CalcIndex {
 
   entries.sort((a, b) => a.name.localeCompare(b.name));
 
+  const topPicked = [...usageBySlug.entries()]
+    .filter(([, pct]) => pct > 0)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 2)
+    .map(([slug]) => slug);
+
   const meta = getCompetitiveMeta();
   return {
     entries,
     moves,
     bracketLabel: meta.bracketLabels?.[bracket] ?? (bracket === "master" ? "Master+" : "All ranks"),
+    bracketShort: bracket === "master" ? "Master+" : "All ranks",
+    defaultSlugs:
+      topPicked.length === 2 ? [topPicked[0], topPicked[1]] : undefined,
     generatedAt: getDataUpdatedAt(),
   };
 }

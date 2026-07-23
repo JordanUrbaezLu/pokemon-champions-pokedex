@@ -73,7 +73,9 @@ export default function TeamsPage() {
               Meta Teams
             </h1>
             <p className="mt-1 text-sm text-muted">
-              {meta.regulationLabel} · top {meta.topN} of {meta.count}
+              <span className="whitespace-nowrap">
+                {meta.regulationLabel} · top {meta.topN} of {meta.count}
+              </span>
               {meta.generatedAt && (
                 <span className="whitespace-nowrap"> · updated {longDate(meta.generatedAt)}</span>
               )}

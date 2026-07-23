@@ -102,14 +102,14 @@ export function OpponentTray() {
               calc's defender. Neutral chrome: red is reserved for threat. */}
           <Link
             href={`/calc?d=${opponents[0].slug}`}
-            className="shrink-0 rounded-full border-2 border-border px-3 py-1.5 text-xs font-black uppercase tracking-wide text-muted active:bg-surface-2"
+            className="tap-row shrink-0 rounded-full border-2 border-border px-3 py-1.5 text-xs font-black uppercase tracking-wide text-muted active:bg-surface-2"
           >
             Calc
           </Link>
           <button
             type="button"
             onClick={() => setBriefing(true)}
-            className="shrink-0 rounded-full border-2 border-accent px-3 py-1.5 text-xs font-black uppercase tracking-wide text-accent active:bg-accent/15"
+            className="tap-row shrink-0 rounded-full border-2 border-accent px-3 py-1.5 text-xs font-black uppercase tracking-wide text-accent active:bg-accent/15"
           >
             Brief
           </button>

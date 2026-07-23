@@ -1,3 +1,4 @@
+import { evToSp } from "./stat-points";
 import type { CompetitiveSpread, EvStat } from "./types";
 
 /** Turn a PokeAPI slug ("mr-mime", "charizard") into a display name. */
@@ -83,4 +84,16 @@ export function formatSpread(spread: CompetitiveSpread): string {
   return EV_ORDER.filter((k) => spread.evs[k])
     .map((k) => `${spread.evs[k]} ${EV_LABELS[k]}`)
     .join(" / ");
+}
+
+/**
+ * The same spread in Champions' own unit: "32 HP / 32 Atk / 1 SpD SP".
+ * The game shows Stat Points, not EVs — and this matches the "+N" annotations
+ * on the stat bars, so the caption and the bars finally speak one language.
+ */
+export function formatSpreadSp(spread: CompetitiveSpread): string {
+  const parts = EV_ORDER.filter((k) => spread.evs[k]).map(
+    (k) => `${evToSp(spread.evs[k]!)} ${EV_LABELS[k]}`,
+  );
+  return parts.length ? `${parts.join(" / ")} SP` : "";
 }

@@ -11,13 +11,15 @@ const STAT_ORDER: StatKey[] = [
   "speed",
 ];
 
-/** Color a stat by how good it is, for an instant read of the spread. */
+/** Color a stat by how good it is, for an instant read of the spread.
+ *  A single amber hue stepped by luminance (colorblind-safe): magnitude is
+ *  brightness, never hue — red stays threat-only, green stays kill-shot-only. */
 function statColor(value: number): string {
-  if (value < 60) return "#ef4444";
-  if (value < 90) return "#f59e0b";
-  if (value < 110) return "#eab308";
-  if (value < 130) return "#84cc16";
-  return "#22c55e";
+  if (value < 60) return "#8a5c0a";
+  if (value < 90) return "#b47c0b";
+  if (value < 110) return "#d69a0e";
+  if (value < 130) return "#f0b429";
+  return "#ffd25e";
 }
 
 // Bars are scaled against a visual max a touch above the highest practical base

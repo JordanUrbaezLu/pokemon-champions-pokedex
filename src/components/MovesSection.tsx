@@ -24,12 +24,13 @@ function PriorityTag({ priority }: { priority: number }) {
 function SpreadTag({ target }: { target: string | null }) {
   const tag = spreadTag(target);
   if (!tag) return null;
-  // "Spread" also hits your ally (a risk) → amber; "Both foes" is just sky.
+  // "Spread" also hits your ally (a risk) → amber; "Both foes" is violet —
+  // sky/cyan is reserved for exactly one concept app-wide: new to Champions.
   const amber = tag === "Spread";
   return (
     <span
       className={`shrink-0 rounded px-1.5 text-[10px] font-bold ${
-        amber ? "bg-amber-500/20 text-amber-200" : "bg-sky-500/20 text-sky-300"
+        amber ? "bg-amber-500/20 text-amber-200" : "bg-violet-400/20 text-violet-300"
       }`}
     >
       {tag}
@@ -153,7 +154,9 @@ export function MovesSection({
 
       {likely.length > 0 && (
         <div className="mt-2.5">
-          <p className="mb-1.5 text-[11px] font-bold uppercase tracking-wide text-accent">
+          {/* Same voice as the Threat Profile's sub-label: structure is muted,
+              the red usage pills on the rows carry the "expect this" signal. */}
+          <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
             Likely set
           </p>
           <ul className="flex flex-col gap-1.5">
@@ -189,8 +192,11 @@ export function MovesSection({
                 key={f.key}
                 type="button"
                 onClick={() => setFilter(f.key)}
-                className={`shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
-                  filter === f.key ? "bg-accent text-white" : "bg-surface-2 text-muted"
+                aria-pressed={filter === f.key}
+                className={`tap-row shrink-0 rounded-full px-3 py-1 text-xs font-bold transition-colors ${
+                  filter === f.key
+                    ? "bg-foreground text-background"
+                    : "bg-surface-2 text-muted"
                 }`}
               >
                 {f.label}
@@ -205,7 +211,9 @@ export function MovesSection({
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Find a move…"
             aria-label="Search moves"
-            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm outline-none placeholder:text-muted focus:border-accent"
+            // text-base, not sm: pinch-zoom stays enabled (WCAG 1.4.4), so any
+            // sub-16px input makes iOS Safari auto-zoom the whole viewport.
+            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-base outline-none placeholder:text-muted focus:border-foreground/30"
           />
 
           {visible.length === 0 ? (

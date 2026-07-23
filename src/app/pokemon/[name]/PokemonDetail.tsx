@@ -23,7 +23,7 @@ import { TYPE_COLORS } from "@/lib/type-meta";
 import {
   dexNumber,
   formatPickRate,
-  formatSpread,
+  formatSpreadSp,
   natureEffect,
   prettySmogonName,
 } from "@/lib/format";
@@ -283,6 +283,21 @@ export function PokemonDetail({
                   {formatPickRate(comp.usagePct)} pick
                 </span>
               )}
+              {comp &&
+                (() => {
+                  // "Do I outspeed?" is the most-asked mid-battle question —
+                  // its two anchors belong above the fold, not 1.5 screens
+                  // down. Neutral chrome; the full Speed panel has the rest.
+                  const a = speedAnchors(active.stats, comp.spread);
+                  return (
+                    <span className="rounded-full bg-surface-2 px-2 py-0.5 font-mono text-[11px] font-semibold tabular-nums text-foreground/90 ring-1 ring-inset ring-white/10">
+                      <span className="text-muted">Spe </span>
+                      {a.common ?? a.min}
+                      <span className="text-muted"> · max </span>
+                      {a.max}
+                    </span>
+                  );
+                })()}
               {pokemon.isNew && (
                 // Newly added to Champions — flag it so a trainer who's never
                 // faced this mon knows to read its kit. Cyan (red = threat only).
@@ -296,7 +311,7 @@ export function PokemonDetail({
           <PinButton
             pinned={isPinned}
             onToggle={togglePin}
-            disabled={!isPinned && isFull}
+            full={isFull}
             pinLabel="Pin as opponent"
             unpinLabel="Unpin opponent"
             caption
@@ -311,9 +326,12 @@ export function PokemonDetail({
                 key={form.key}
                 type="button"
                 onClick={() => setActiveIndex(i)}
-                className={`shrink-0 rounded-full px-3.5 py-1 text-xs font-bold transition-colors ${
+                aria-pressed={i === activeIndex}
+                className={`tap-row shrink-0 rounded-full px-3.5 py-1 text-xs font-bold transition-colors ${
                   i === activeIndex
-                    ? "bg-accent text-white"
+                    ? // Neutral white, not red: a form switch is chrome, and on
+                      // this screen red means one thing only — threat.
+                      "bg-foreground text-background"
                     : "text-muted active:bg-surface"
                 }`}
               >
@@ -394,7 +412,7 @@ export function PokemonDetail({
                         <span className="text-accent">{eff.down} ↓</span>)
                       </span>
                     )}
-                    <span className="text-muted"> · {formatSpread(comp.spread)}</span>
+                    <span className="text-muted"> · {formatSpreadSp(comp.spread)}</span>
                   </p>
                 </div>
               );

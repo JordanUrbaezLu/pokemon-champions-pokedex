@@ -7,6 +7,7 @@ import {
   prettySmogonName,
   formatPickRate,
   formatSpread,
+  formatSpreadSp,
 } from "./format";
 
 describe("toDisplayName", () => {
@@ -73,5 +74,19 @@ describe("formatSpread", () => {
     expect(formatSpread({ nature: "Modest", evs: { spa: 252, hp: 4 } })).toBe(
       "4 HP / 252 SpA",
     );
+  });
+});
+
+describe("formatSpreadSp", () => {
+  it("renders the spread in Stat Points with the SP suffix", () => {
+    expect(
+      formatSpreadSp({ nature: "Jolly", evs: { atk: 252, spe: 252, spd: 4 } }),
+    ).toBe("32 Atk / 1 SpD / 32 Spe SP");
+  });
+  it("omits zero-EV stats and returns empty for an empty spread", () => {
+    expect(formatSpreadSp({ nature: "Modest", evs: { spa: 252 } })).toBe(
+      "32 SpA SP",
+    );
+    expect(formatSpreadSp({ nature: "Hardy", evs: {} })).toBe("");
   });
 });

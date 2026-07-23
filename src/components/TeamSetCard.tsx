@@ -3,16 +3,24 @@ import Link from "next/link";
 import { TypeBadge } from "./TypeBadge";
 import { MegaIcon } from "./MegaIcon";
 import { TYPE_COLORS } from "@/lib/type-meta";
-import { formatPickRate } from "@/lib/format";
-import type { MetaTeamMember } from "@/lib/types";
+import { formatPickRate, natureEffect } from "@/lib/format";
+import type { MetaTeamMember, PokemonType } from "@/lib/types";
 
 /**
- * One Pokémon's full set on a meta team — item, ability, nature, EV spread, and
- * four moves, exactly as the source paste lists them. The name links into the
- * mon's own scouting page (its form deep-linked) so a trainer can go from
- * "who's on this team" to "how do I beat it" in one tap.
+ * One Pokémon's full set on a meta team — item, ability, nature, Stat-Point
+ * spread, and four moves, exactly as the source paste lists them. The name
+ * links into the mon's own scouting page (its form deep-linked) so a trainer
+ * can go from "who's on this team" to "how do I beat it" in one tap.
  */
-export function TeamSetCard({ member }: { member: MetaTeamMember }) {
+export function TeamSetCard({
+  member,
+  moveTypes,
+}: {
+  member: MetaTeamMember;
+  /** move display name → type, resolved server-side; dots are skipped when a
+   *  move can't be mapped, so an odd paste never breaks the card */
+  moveTypes?: Record<string, PokemonType>;
+}) {
   const accent = TYPE_COLORS[member.types[0]] ?? "#5b6675";
   const href = member.slug
     ? `/pokemon/${member.slug}${member.formKey ? `?form=${member.formKey}` : ""}`
@@ -76,7 +84,7 @@ export function TeamSetCard({ member }: { member: MetaTeamMember }) {
         </div>
       </div>
 
-      {/* Item · Ability · Nature */}
+      {/* Item · Ability · Nature · Stat Points */}
       <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-[12px]">
         <dt className="text-muted">Item</dt>
         <dd className="font-medium">{member.item ?? "—"}</dd>
@@ -85,22 +93,49 @@ export function TeamSetCard({ member }: { member: MetaTeamMember }) {
         <dt className="text-muted">Nature</dt>
         <dd className="font-medium">
           {member.nature ?? "—"}
-          {member.evStr && (
-            <span className="ml-2 font-mono text-[11px] tabular-nums text-muted">{member.evStr}</span>
-          )}
+          {member.nature &&
+            (() => {
+              const eff = natureEffect(member.nature);
+              return eff ? (
+                <span className="ml-1.5 text-muted">
+                  (+{eff.up} −{eff.down})
+                </span>
+              ) : null;
+            })()}
         </dd>
+        {member.evStr && (
+          <>
+            {/* Its own row, in the game's own unit — no longer an unlabeled
+                number string hanging off the Nature line. */}
+            <dt className="text-muted">Stat Pts</dt>
+            <dd className="font-mono text-[11px] font-medium tabular-nums">
+              {member.evStr}
+            </dd>
+          </>
+        )}
       </dl>
 
-      {/* Moves */}
+      {/* Moves — type-dotted, the same grammar as the Threat Profile's
+          likely-set rows, so team coverage reads at a glance. */}
       <div className="mt-2.5 flex flex-wrap gap-1.5">
-        {member.moves.map((mv) => (
-          <span
-            key={mv}
-            className="rounded-md bg-surface-2 px-2 py-1 text-[11px] font-medium ring-1 ring-inset ring-white/5"
-          >
-            {mv}
-          </span>
-        ))}
+        {member.moves.map((mv) => {
+          const t = moveTypes?.[mv];
+          return (
+            <span
+              key={mv}
+              className="flex items-center gap-1.5 rounded-md bg-surface-2 px-2 py-1 text-[11px] font-medium ring-1 ring-inset ring-white/5"
+            >
+              {t && (
+                <span
+                  className="size-2 shrink-0 rounded-full"
+                  style={{ backgroundColor: TYPE_COLORS[t] }}
+                  aria-hidden
+                />
+              )}
+              {mv}
+            </span>
+          );
+        })}
       </div>
     </div>
   );

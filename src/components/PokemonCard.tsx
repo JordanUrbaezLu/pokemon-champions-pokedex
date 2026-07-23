@@ -112,10 +112,12 @@ export function PokemonCard({
         borderLeft: `3px solid ${accent}`,
         // Mega-capable Pokémon get a soft white halo around the whole card —
         // a second, card-level cue (beyond the inline Mega mark) that this one
-        // has a Mega Evolution in play.
+        // has a Mega Evolution in play. Kept a whisper: any louder and the
+        // halo reads as a selected state, stealing the first glance from the
+        // rank + pick-rate hierarchy.
         ...(entry.hasMega && {
           boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.56), 0 0 14px 0 rgba(255,255,255,0.63)",
+            "inset 0 1px 0 rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.28), 0 0 10px 0 rgba(255,255,255,0.24)",
         }),
       }}
     >
@@ -233,7 +235,7 @@ export function PokemonCard({
         <PinButton
           pinned={isPinned}
           onToggle={togglePin}
-          disabled={!isPinned && isFull}
+          full={isFull}
           pinLabel={`Pin ${entry.displayName} as opponent`}
           unpinLabel={`Unpin ${entry.displayName}`}
           className="size-11 text-lg"

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HomeIcon } from "./HomeIcon";
 import { TypeBadge } from "./TypeBadge";
 import { computeDamage, moveToCalcMove, type CalcField, type CalcPokemon, type DamageResult, type Weather } from "@/lib/damage";
@@ -130,8 +130,15 @@ export function Calc({ index }: { index: CalcIndex }) {
     return m;
   }, [index]);
 
-  const first = index.entries[0];
-  const second = index.entries[1] ?? first;
+  // First paint answers a question trainers actually have: the format's two
+  // most-picked mons squaring off — not an alphabetical accident (Abomasnow
+  // vs Absol). The ?a=/?d= deep-link effect below still overrides.
+  const first =
+    (index.defaultSlugs && bySlug.get(index.defaultSlugs[0])) ?? index.entries[0];
+  const second =
+    (index.defaultSlugs && bySlug.get(index.defaultSlugs[1])) ??
+    index.entries[1] ??
+    first;
   const [attacker, setAttacker] = useState<MonState>(() => defaultMon(first));
   const [defender, setDefender] = useState<MonState>(() => defaultMon(second));
   const [weather, setWeather] = useState<Weather>(null);
@@ -199,8 +206,15 @@ export function Calc({ index }: { index: CalcIndex }) {
             <HomeIcon className="size-5" />
           </Link>
           <div className="min-w-0 flex-1">
-            <h1 className="hud-label text-[13px]">Battle Calc</h1>
-            <p className="truncate text-[11px] text-muted">Doubles · Lv 50 · {index.bracketLabel} sets</p>
+            {/* Route title, not a hud-label — those mark sections, and this
+                header was speaking in the same voice as its own ATTACKER /
+                FIELD labels below. */}
+            <h1 className="font-display text-[15px] font-bold uppercase leading-tight tracking-wider">
+              Battle Calc
+            </h1>
+            <p className="truncate text-[11px] text-muted">
+              Doubles · Lv 50 · {index.bracketShort} sets
+            </p>
           </div>
           <button
             onClick={swap}
@@ -272,17 +286,19 @@ export function Calc({ index }: { index: CalcIndex }) {
               .map((s) => (
                 <div key={s.id} className="flex items-center gap-2 rounded-lg glass-quiet px-2.5 py-1.5">
                   <span className="min-w-0 flex-1 truncate text-[12px] font-medium">{s.name}</span>
+                  {/* "Attacker"/"Defender" — the hud-labels' own words, not
+                      "Atk"/"Def", which are stat names 100px above. */}
                   <button
                     onClick={() => loadInto("attacker", s)}
                     className="tap-target rounded-md bg-surface-2 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted ring-1 ring-inset ring-white/5 active:bg-surface"
                   >
-                    → Atk
+                    → Attacker
                   </button>
                   <button
                     onClick={() => loadInto("defender", s)}
                     className="tap-target rounded-md bg-surface-2 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted ring-1 ring-inset ring-white/5 active:bg-surface"
                   >
-                    → Def
+                    → Defender
                   </button>
                   <button
                     onClick={() => removeSet(s.id)}
@@ -419,6 +435,24 @@ function MonCard({
   const pickForm = (i: number) => setState(defaultMon(entry, i));
   const patch = (p: Partial<MonState>) => setState({ ...state, ...p });
 
+  // Saving appends to a section that may be off-screen (or not exist yet) —
+  // without an on-the-spot confirmation, three hopeful taps mint three
+  // duplicate sets. The glyph flips to ✓ "saved" for a beat instead.
+  const [justSaved, setJustSaved] = useState(false);
+  const savedTimer = useRef<number | null>(null);
+  useEffect(
+    () => () => {
+      if (savedTimer.current != null) window.clearTimeout(savedTimer.current);
+    },
+    [],
+  );
+  const handleSave = () => {
+    onSave();
+    setJustSaved(true);
+    if (savedTimer.current != null) window.clearTimeout(savedTimer.current);
+    savedTimer.current = window.setTimeout(() => setJustSaved(false), 1200);
+  };
+
   const moveOptions = entry.moveSlugs
     .map((s) => moves[s])
     .filter((m): m is CalcMoveLite => !!m);
@@ -428,19 +462,29 @@ function MonCard({
       <div className="mb-1.5 flex items-center gap-1">
         <span className="hud-label text-[10px]">{role === "attacker" ? "Attacker" : "Defender"}</span>
         <button
-          onClick={onSave}
+          onClick={handleSave}
           aria-label="Save this set"
-          className="tap-target ml-auto grid size-6 place-items-center rounded-md bg-surface-2 text-[13px] leading-none text-muted ring-1 ring-inset ring-white/5 active:bg-surface"
+          className={`tap-target ml-auto flex h-8 min-w-8 flex-col items-center justify-center rounded-md bg-surface-2 px-1 leading-none ring-1 ring-inset ring-white/5 active:bg-surface ${
+            justSaved ? "text-foreground animate-[popPin_.36s_ease-out]" : "text-muted"
+          }`}
         >
-          ＋
+          <span className="text-[12px] leading-none" aria-hidden>
+            {justSaved ? "✓" : "＋"}
+          </span>
+          <span className="mt-0.5 text-[10px] font-semibold leading-none">
+            {justSaved ? "saved" : "save"}
+          </span>
         </button>
         {form.preset && (
           <button
             onClick={() => pickForm(state.formIdx)}
             aria-label="Load the meta set"
-            className="tap-target grid size-6 place-items-center rounded-md bg-surface-2 text-[13px] leading-none text-muted ring-1 ring-inset ring-white/5 active:bg-surface"
+            className="tap-target flex h-8 min-w-8 flex-col items-center justify-center rounded-md bg-surface-2 px-1 leading-none text-muted ring-1 ring-inset ring-white/5 active:bg-surface"
           >
-            ↺
+            <span className="text-[12px] leading-none" aria-hidden>
+              ↺
+            </span>
+            <span className="mt-0.5 text-[10px] font-semibold leading-none">meta</span>
           </button>
         )}
       </div>
@@ -455,7 +499,7 @@ function MonCard({
           )}
         </div>
         <div className="min-w-0 flex-1">
-          <Select value={state.slug} onChange={pickMon} className="font-display text-[13px] font-semibold">
+          <Select value={state.slug} onChange={pickMon} className="font-display font-semibold">
             {entries.map((e) => (
               <option key={e.slug} value={e.slug}>{e.name}</option>
             ))}
@@ -472,8 +516,11 @@ function MonCard({
             <button
               key={f.key ?? "base"}
               onClick={() => pickForm(i)}
-              className={`rounded px-1.5 py-0.5 text-[10px] font-medium ring-1 ring-inset transition-colors ${
-                i === state.formIdx ? "bg-accent text-white ring-accent" : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
+              aria-pressed={i === state.formIdx}
+              className={`tap-row rounded px-1.5 py-0.5 text-[10px] font-medium ring-1 ring-inset transition-colors ${
+                i === state.formIdx
+                  ? "bg-foreground text-background ring-foreground"
+                  : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
               }`}
             >
               {shortFormLabel(f)}
@@ -577,7 +624,10 @@ function StatSliders({
               max={SP_CAP}
               value={v}
               onChange={(e) => set(k, Number(e.target.value))}
-              className="h-1.5 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-surface-2 accent-accent"
+              // .sp-slider (globals.css): 28px grab strip, thin drawn track,
+              // 18px neutral thumb — the most-dragged control on the screen
+              // was a 6px strip with a red thumb that outshouted the verdict.
+              className="sp-slider h-7 min-w-0 flex-1 cursor-pointer"
               aria-label={`${SP_LABEL[k]} stat points`}
             />
             <span className="w-5 shrink-0 text-right font-mono text-[10px] tabular-nums text-foreground/80">{v}</span>
@@ -611,10 +661,12 @@ function Select({
   className?: string;
 }) {
   return (
+    // text-base, not 13px: pinch-zoom stays enabled (WCAG 1.4.4), so a sub-16px
+    // select makes iOS Safari auto-zoom on every one of these ten dropdowns.
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`w-full rounded-lg border border-border bg-surface-2 px-2 py-1.5 text-[13px] text-foreground outline-none focus:border-accent/60 ${className}`}
+      className={`w-full rounded-lg border border-border bg-surface-2 px-2 py-1 text-base text-foreground outline-none focus:border-foreground/30 ${className}`}
     >
       {children}
     </select>
@@ -659,9 +711,11 @@ function FieldControls({
             <button
               key={w.label}
               onClick={() => setWeather(w.value)}
+              aria-pressed={weather === w.value}
               className={`tap-target rounded-md px-2 py-1 text-[11px] font-medium ring-1 ring-inset transition-colors ${
                 weather === w.value
-                  ? "bg-accent/15 text-accent ring-accent/40"
+                  ? // Neutral on-state: field condition is input, not threat.
+                    "bg-white/10 text-foreground ring-white/30"
                   : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
               }`}
             >
@@ -677,32 +731,32 @@ function FieldControls({
         <span className="truncate text-center text-[9px] uppercase tracking-wide text-muted">{dName}</span>
 
         <RowLabel>Atk / SpA</RowLabel>
-        <BoostCell value={attacker.offBoost} onChange={(v) => pa({ offBoost: v })} />
-        <BoostCell value={defender.offBoost} onChange={(v) => pd({ offBoost: v })} />
+        <BoostCell label={`Atk / SpA boost — ${aName}`} value={attacker.offBoost} onChange={(v) => pa({ offBoost: v })} />
+        <BoostCell label={`Atk / SpA boost — ${dName}`} value={defender.offBoost} onChange={(v) => pd({ offBoost: v })} />
 
         <RowLabel>Def / SpD</RowLabel>
-        <BoostCell value={attacker.defBoost} onChange={(v) => pa({ defBoost: v })} />
-        <BoostCell value={defender.defBoost} onChange={(v) => pd({ defBoost: v })} />
+        <BoostCell label={`Def / SpD boost — ${aName}`} value={attacker.defBoost} onChange={(v) => pa({ defBoost: v })} />
+        <BoostCell label={`Def / SpD boost — ${dName}`} value={defender.defBoost} onChange={(v) => pd({ defBoost: v })} />
 
         <RowLabel>Burn</RowLabel>
-        <ToggleCell on={attacker.burn} onClick={() => pa({ burn: !attacker.burn })} />
-        <ToggleCell on={defender.burn} onClick={() => pd({ burn: !defender.burn })} />
+        <ToggleCell label={`Burn — ${aName}`} on={attacker.burn} onClick={() => pa({ burn: !attacker.burn })} />
+        <ToggleCell label={`Burn — ${dName}`} on={defender.burn} onClick={() => pd({ burn: !defender.burn })} />
 
         <RowLabel>Screens</RowLabel>
-        <ToggleCell on={attacker.screens} onClick={() => pa({ screens: !attacker.screens })} />
-        <ToggleCell on={defender.screens} onClick={() => pd({ screens: !defender.screens })} />
+        <ToggleCell label={`Screens — ${aName}`} on={attacker.screens} onClick={() => pa({ screens: !attacker.screens })} />
+        <ToggleCell label={`Screens — ${dName}`} on={defender.screens} onClick={() => pd({ screens: !defender.screens })} />
 
         <RowLabel>Helping Hand</RowLabel>
-        <ToggleCell on={attacker.helpingHand} onClick={() => pa({ helpingHand: !attacker.helpingHand })} />
-        <ToggleCell on={defender.helpingHand} onClick={() => pd({ helpingHand: !defender.helpingHand })} />
+        <ToggleCell label={`Helping Hand — ${aName}`} on={attacker.helpingHand} onClick={() => pa({ helpingHand: !attacker.helpingHand })} />
+        <ToggleCell label={`Helping Hand — ${dName}`} on={defender.helpingHand} onClick={() => pd({ helpingHand: !defender.helpingHand })} />
 
         <RowLabel>Friend Guard</RowLabel>
-        <ToggleCell on={attacker.friendGuard} onClick={() => pa({ friendGuard: !attacker.friendGuard })} />
-        <ToggleCell on={defender.friendGuard} onClick={() => pd({ friendGuard: !defender.friendGuard })} />
+        <ToggleCell label={`Friend Guard — ${aName}`} on={attacker.friendGuard} onClick={() => pa({ friendGuard: !attacker.friendGuard })} />
+        <ToggleCell label={`Friend Guard — ${dName}`} on={defender.friendGuard} onClick={() => pd({ friendGuard: !defender.friendGuard })} />
 
         <RowLabel>HP</RowLabel>
-        <HpCell value={attacker.hpPct} onChange={(v) => pa({ hpPct: v })} />
-        <HpCell value={defender.hpPct} onChange={(v) => pd({ hpPct: v })} />
+        <HpCell label={aName} value={attacker.hpPct} onChange={(v) => pa({ hpPct: v })} />
+        <HpCell label={dName} value={defender.hpPct} onChange={(v) => pd({ hpPct: v })} />
       </div>
     </div>
   );
@@ -712,11 +766,20 @@ function RowLabel({ children }: { children: React.ReactNode }) {
   return <span className="truncate text-[11px] text-muted">{children}</span>;
 }
 
-function BoostCell({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+function BoostCell({
+  label,
+  value,
+  onChange,
+}: {
+  /** which row + which mon, e.g. "Atk / SpA boost — Kingambit" */
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+}) {
   return (
     <div className="flex items-center justify-between rounded-md bg-surface-2 px-1 py-0.5 ring-1 ring-inset ring-white/5">
       <button
-        aria-label="Lower"
+        aria-label={`Lower ${label}`}
         onClick={() => onChange(Math.max(-6, value - 1))}
         className="tap-target grid size-5 place-items-center rounded text-muted active:text-foreground"
       >
@@ -726,7 +789,7 @@ function BoostCell({ value, onChange }: { value: number; onChange: (v: number) =
         {value > 0 ? `+${value}` : value}
       </span>
       <button
-        aria-label="Raise"
+        aria-label={`Raise ${label}`}
         onClick={() => onChange(Math.min(6, value + 1))}
         className="tap-target grid size-5 place-items-center rounded text-muted active:text-foreground"
       >
@@ -736,13 +799,17 @@ function BoostCell({ value, onChange }: { value: number; onChange: (v: number) =
   );
 }
 
-function ToggleCell({ on, onClick }: { on: boolean; onClick: () => void }) {
+function ToggleCell({ label, on, onClick }: { label: string; on: boolean; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
       aria-pressed={on}
+      aria-label={label}
       className={`tap-target w-full rounded-md py-1 text-[10px] font-bold uppercase tracking-wide ring-1 ring-inset transition-colors ${
-        on ? "bg-accent/15 text-accent ring-accent/40" : "bg-surface-2 text-muted/60 ring-white/5 active:bg-surface"
+        on
+          ? // Neutral on-state: battle-state input, not a threat signal.
+            "bg-white/10 text-foreground ring-white/30"
+          : "bg-surface-2 text-muted/60 ring-white/5 active:bg-surface"
       }`}
     >
       {on ? "On" : "—"}
@@ -750,14 +817,27 @@ function ToggleCell({ on, onClick }: { on: boolean; onClick: () => void }) {
   );
 }
 
-function HpCell({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+function HpCell({
+  label,
+  value,
+  onChange,
+}: {
+  /** the mon this HP belongs to */
+  label: string;
+  value: number;
+  onChange: (v: number) => void;
+}) {
   const cycle = () => onChange(value <= 25 ? 100 : value - 25); // 100 → 75 → 50 → 25 → 100
   return (
     <button
       onClick={cycle}
+      aria-label={`HP ${value}% for ${label} — tap to cycle 100, 75, 50, 25`}
       className="tap-target w-full rounded-md bg-surface-2 py-1 text-center font-mono text-[11px] tabular-nums text-foreground/80 ring-1 ring-inset ring-white/5 active:bg-surface"
     >
-      {value}%
+      {value}%{" "}
+      <span className="text-muted/60" aria-hidden>
+        ▾
+      </span>
     </button>
   );
 }
