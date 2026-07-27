@@ -4,9 +4,9 @@
     "regulationLabel": "Reg M-B",
     "source": "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
     "sourceLabel": "Smogon Champions Reg M-B Sample Teams",
-    "generatedAt": "2026-07-20",
+    "generatedAt": "2026-07-27",
     "topN": 5,
-    "count": 13
+    "count": 14
   },
   "teams": [
     {
@@ -1749,6 +1749,194 @@
       "rank": 9
     },
     {
+      "slug": "mega-charizard-y-mega-floette-offense",
+      "name": "Mega Charizard Y + Mega Floette Offense",
+      "archetype": "Offense",
+      "archetypeType": null,
+      "credit": null,
+      "isRecreation": true,
+      "pasteUrl": "https://pokepast.es/3195ce95fd71d16c",
+      "metaFootprint": 152.9,
+      "members": [
+        {
+          "slug": "whimsicott",
+          "formKey": null,
+          "name": "Whimsicott",
+          "formLabel": "Whimsicott",
+          "types": [
+            "grass",
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/547.png",
+          "isMega": false,
+          "item": "Focus Sash",
+          "ability": "Prankster",
+          "nature": "Timid",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Moonblast",
+            "Tailwind",
+            "Encore",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 27.2
+        },
+        {
+          "slug": "charizard",
+          "formKey": "charizard-mega-y",
+          "name": "Charizard",
+          "formLabel": "Mega Charizard Y",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10035.png",
+          "isMega": true,
+          "item": "Charizardite Y",
+          "ability": "Drought",
+          "nature": "Modest",
+          "evs": {
+            "hp": 25,
+            "def": 30,
+            "spa": 11
+          },
+          "evStr": "25 HP / 30 Def / 11 SpA",
+          "moves": [
+            "Heat Wave",
+            "Weather Ball",
+            "Solar Beam",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 17.9
+        },
+        {
+          "slug": "garchomp",
+          "formKey": null,
+          "name": "Garchomp",
+          "formLabel": "Garchomp",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/445.png",
+          "isMega": false,
+          "item": "Life Orb",
+          "ability": "Rough Skin",
+          "nature": "Jolly",
+          "evs": {
+            "hp": 1,
+            "atk": 32,
+            "def": 1,
+            "spe": 32
+          },
+          "evStr": "1 HP / 32 Atk / 1 Def / 32 Spe",
+          "moves": [
+            "Dragon Claw",
+            "Stomping Tantrum",
+            "Rock Slide",
+            "Earthquake"
+          ],
+          "gender": null,
+          "usagePct": 33.9
+        },
+        {
+          "slug": "floette",
+          "formKey": "floette-mega",
+          "name": "Floette",
+          "formLabel": "Mega Floette",
+          "types": [
+            "fairy"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10296.png",
+          "isMega": true,
+          "item": "Floettite",
+          "ability": "Fairy Aura",
+          "nature": "Timid",
+          "evs": {
+            "hp": 2,
+            "spa": 32,
+            "spe": 32
+          },
+          "evStr": "2 HP / 32 SpA / 32 Spe",
+          "moves": [
+            "Moonblast",
+            "Dazzling Gleam",
+            "Light of Ruin",
+            "Protect"
+          ],
+          "gender": "F",
+          "usagePct": 17.6
+        },
+        {
+          "slug": "basculegion",
+          "formKey": null,
+          "name": "Basculegion",
+          "formLabel": "Basculegion",
+          "types": [
+            "water",
+            "ghost"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/902.png",
+          "isMega": false,
+          "item": "Mystic Water",
+          "ability": "Adaptability",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 18,
+            "atk": 32,
+            "def": 6,
+            "spe": 10
+          },
+          "evStr": "18 HP / 32 Atk / 6 Def / 10 Spe",
+          "moves": [
+            "Wave Crash",
+            "Aqua Jet",
+            "Last Respects",
+            "Protect"
+          ],
+          "gender": "M",
+          "usagePct": 31.7
+        },
+        {
+          "slug": "kingambit",
+          "formKey": null,
+          "name": "Kingambit",
+          "formLabel": "Kingambit",
+          "types": [
+            "dark",
+            "steel"
+          ],
+          "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/983.png",
+          "isMega": false,
+          "item": "Black Glasses",
+          "ability": "Defiant",
+          "nature": "Adamant",
+          "evs": {
+            "hp": 19,
+            "atk": 32,
+            "spe": 15
+          },
+          "evStr": "19 HP / 32 Atk / 15 Spe",
+          "moves": [
+            "Sucker Punch",
+            "Kowtow Cleave",
+            "Iron Head",
+            "Protect"
+          ],
+          "gender": null,
+          "usagePct": 24.6
+        }
+      ],
+      "rank": 10
+    },
+    {
       "slug": "mega-delphox-mega-floette-offense",
       "name": "Mega Delphox + Mega Floette Offense",
       "archetype": "Offense",
@@ -1936,7 +2124,7 @@
           "usagePct": 24.6
         }
       ],
-      "rank": 10
+      "rank": 11
     },
     {
       "slug": "mega-swampert-mega-venusaur-rain",
@@ -2128,7 +2316,7 @@
           "usagePct": 31.7
         }
       ],
-      "rank": 11
+      "rank": 12
     },
     {
       "slug": "mega-blaziken-mega-gengar-perish-trap",
@@ -2319,7 +2507,7 @@
           "usagePct": 31.1
         }
       ],
-      "rank": 12
+      "rank": 13
     },
     {
       "slug": "mega-froslass-mega-scovillain-balance",
@@ -2508,7 +2696,7 @@
           "usagePct": 0.1
         }
       ],
-      "rank": 13
+      "rank": 14
     }
   ]
 }
