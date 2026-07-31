@@ -78,9 +78,10 @@ function build(
 }
 
 function makeCalcMove(meta: MoveSummary): Move {
-  const move = new Move(GEN, meta.displayName);
-  if (isSpreadMove(meta.target)) (move as any).spreadHit = true;
-  return move;
+  // No `spreadHit` flag here: @smogon/calc has no such property — it derives the
+  // ×0.75 from its OWN move target plus the field's gameType. Setting one was a
+  // silent no-op (verified: identical 16-roll arrays with and without it).
+  return new Move(GEN, meta.displayName);
 }
 
 /** @smogon/calc's 16-roll array for a single-hit move, or null if unusable. */
@@ -108,6 +109,7 @@ describe("damage engine — core formula parity vs @smogon/calc (abilities neutr
     const defenders = profiles.slice(0, 8);
 
     const mismatches: string[] = [];
+    const targetDrift: string[] = [];
     let compared = 0;
 
     for (const ap of attackers) {
@@ -136,11 +138,15 @@ describe("damage engine — core formula parity vs @smogon/calc (abilities neutr
         if (AUTO_BOOST_MOVES.has(meta.name)) continue;
         const calcMove = makeCalcMove(meta);
         if (calcMove.bp !== meta.power) continue; // data-power mismatch: out of formula scope
-        // The library and our dataset must agree on whether the move is spread;
-        // where they disagree it's a move-metadata difference, not a formula bug
-        // (our engine matches the app's own benchmark bake, which uses the same set).
+        // The library and our dataset must agree on whether the move is spread.
+        // This used to `continue` past a disagreement, which is exactly how
+        // Matcha Gotcha shipped mis-targeted (and 33% overstated) — so it is now
+        // a recorded failure. Exhaustive coverage lives in the spread suite below.
         const calcSpread = ["allAdjacent", "allAdjacentFoes"].includes(calcMove.target as string);
-        if (calcSpread !== isSpreadMove(meta.target)) continue;
+        if (calcSpread !== isSpreadMove(meta.target)) {
+          targetDrift.push(`${meta.name}: ours=${meta.target} calc=${calcMove.target}`);
+          continue;
+        }
 
         for (const dp of defenders) {
           if (dp.smogonName === ap.smogonName) continue;
@@ -169,7 +175,72 @@ describe("damage engine — core formula parity vs @smogon/calc (abilities neutr
 
     // Sanity: we actually exercised a lot of matchups.
     expect(compared).toBeGreaterThan(300);
+    expect(targetDrift, `\nspread-target drift:\n${targetDrift.join("\n")}`).toEqual([]);
     expect(mismatches, `\n${mismatches.join("\n")}`).toEqual([]);
+  });
+});
+
+describe("spread moves — the doubles ×0.75", () => {
+  // PokeAPI's `target` is wrong often enough to matter (it served Matcha Gotcha
+  // as single-target), and a wrong value silently misprices damage by 33% with
+  // nothing else in the app noticing. The generator reconciles the spread axis
+  // against Showdown; this is the net that proves it stayed reconciled — over
+  // the WHOLE move index, not just the matchups the parity suite happens to hit.
+  it("classifies every move exactly as @smogon/calc does", () => {
+    const drift: string[] = [];
+    let checked = 0;
+    for (const meta of Object.values(MOVES) as MoveSummary[]) {
+      let calcMove;
+      try {
+        calcMove = new Move(GEN, meta.displayName);
+      } catch {
+        continue; // move the library doesn't carry — nothing to compare against
+      }
+      checked++;
+      const calcSpread = ["allAdjacent", "allAdjacentFoes"].includes(calcMove.target as string);
+      if (calcSpread !== isSpreadMove(meta.target)) {
+        drift.push(`${meta.name}: ours=${meta.target} calc=${calcMove.target}`);
+      }
+    }
+    expect(checked).toBeGreaterThan(400);
+    expect(drift, `\n${drift.join("\n")}`).toEqual([]);
+  });
+
+  const profile = (name: string) =>
+    Object.values(master).find((p: any) => p.smogonName === name && !p.asForm) as any;
+
+  it("drops the ×0.75 when only one target is left", () => {
+    const a = build(profile("Kingambit"), "Illuminate", undefined).mine;
+    const d = build(profile("Incineroar"), "Illuminate", undefined).mine;
+    const rockSlide = moveToCalcMove(MOVES["rock-slide"] as MoveSummary)!;
+
+    const both = computeDamage(a, d, rockSlide, { gameType: "Doubles" });
+    const lone = computeDamage(a, d, rockSlide, { gameType: "Doubles", singleTarget: true });
+
+    // Full power is strictly bigger, and lands within a roll of 1/0.75 — the
+    // ratio is not exactly 4/3 because the cut cuts base damage before the rolls.
+    expect(lone.maxDamage).toBeGreaterThan(both.maxDamage);
+    expect(lone.maxDamage / both.maxDamage).toBeGreaterThan(1.3);
+    expect(lone.maxDamage / both.maxDamage).toBeLessThan(1.37);
+
+    // …and the flag must not leak into single-target moves.
+    const kowtow = moveToCalcMove(MOVES["kowtow-cleave"] as MoveSummary)!;
+    expect(computeDamage(a, d, kowtow, { gameType: "Doubles", singleTarget: true }).damage).toEqual(
+      computeDamage(a, d, kowtow, { gameType: "Doubles" }).damage,
+    );
+  });
+
+  it("leaves the screen modifier alone (the Singles-flip trap)", () => {
+    const a = build(profile("Kingambit"), "Illuminate", undefined).mine;
+    const d = build(profile("Incineroar"), "Illuminate", undefined).mine;
+    const rockSlide = moveToCalcMove(MOVES["rock-slide"] as MoveSummary)!;
+
+    // Modelling "one target" as Singles would also swap Reflect 2/3 → 1/2.
+    const lone = computeDamage(a, d, rockSlide, {
+      gameType: "Doubles", singleTarget: true, reflect: true,
+    });
+    const asSingles = computeDamage(a, d, rockSlide, { gameType: "Singles", reflect: true });
+    expect(lone.maxDamage).toBeGreaterThan(asSingles.maxDamage);
   });
 });
 

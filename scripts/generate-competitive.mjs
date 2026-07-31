@@ -274,7 +274,6 @@ function itemClassesOf(items) {
 
 const GEN = Generations.get(9);
 const BENCH_FIELD = new Field({ gameType: "Doubles" });
-const SPREAD_TARGETS = new Set(["all-opponents", "all-other-pokemon"]);
 const TOP_TARGETS = 16; // benchmark against the mons you actually face
 // Items that change damage math meaningfully and that @smogon/calc models.
 const DAMAGE_ITEMS = new Set([
@@ -348,7 +347,11 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
       } catch {
         continue;
       }
-      if (SPREAD_TARGETS.has(meta.target)) move.spreadHit = true;
+      // No spread flag is set here on purpose: @smogon/calc has no `spreadHit`
+      // property — it applies the doubles ×0.75 from its own move target plus
+      // BENCH_FIELD's gameType. So every benchmark below is ALREADY the spread-
+      // reduced number for a spread move (verified: 208/208 baked rows), which
+      // is what the move sheet labels "×0.75 applied".
       const ohko = [];
       const two = [];
       for (const target of targets) {

@@ -17,7 +17,7 @@
 
 import { lv50Stats } from "./battle";
 import { defensiveMultiplier } from "./type-chart";
-import { isSpreadMove } from "./spread";
+import { isSpreadMove, SPREAD_DENOMINATOR, SPREAD_NUMERATOR } from "./spread";
 import type {
   CompetitiveSpread,
   DamageClass,
@@ -95,6 +95,16 @@ export interface CalcMove {
 
 export interface CalcField {
   gameType?: "Doubles" | "Singles";
+  /**
+   * Only ONE target is left for a spread move to hit (the other foe has
+   * fainted / isn't out). The ×0.75 spread reduction is keyed on the move
+   * actually hitting 2+ targets, so this turns it off — and NOTHING else.
+   *
+   * Do not model this by flipping `gameType` to "Singles": that also swaps the
+   * screen modifier (2732 → 2048) and would silently change Reflect/Light
+   * Screen math. No effect on single-target moves.
+   */
+  singleTarget?: boolean;
   weather?: Weather;
   /** Attacker's side. */
   helpingHand?: boolean;
@@ -339,7 +349,12 @@ export function computeDamage(
 
   // --- base damage + spread/weather/crit ---------------------------------------
   let base = Math.floor(Math.floor((Math.floor((2 * 50) / 5 + 2) * bp * attack) / defense) / 50 + 2);
-  if (isDoubles && isSpreadMove(move.target)) base = pokeRound((base * 3072) / 4096);
+  // ×0.75 only when the move actually hits 2+ targets — a spread move into a
+  // lone remaining foe lands at full power. Default stays "both foes out",
+  // which is what @smogon/calc computes and what damage.test.ts pins.
+  if (isDoubles && !field.singleTarget && isSpreadMove(move.target)) {
+    base = pokeRound((base * SPREAD_NUMERATOR) / SPREAD_DENOMINATOR);
+  }
   if (field.weather === "Sun") {
     if (move.type === "fire") base = pokeRound((base * 6144) / 4096);
     else if (move.type === "water") base = pokeRound((base * 2048) / 4096);
