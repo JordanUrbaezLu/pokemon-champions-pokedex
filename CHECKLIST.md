@@ -325,6 +325,27 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   "→ Attacker/Defender", archetype tag drops the hud-label tick). tsc/lint/77 tests/build
   (247 pages) green + before/after 375px screenshots on all five routes.
 
+- ✅ **Spread-move damage (×0.75) — audit + surfacing.** Owner: "moves like Heat Wave do less damage
+  when more than one is on the field — put that in the move popup, and find the exact divider."
+  Audited all 493 baked moves against @smogon/calc AND a live Showdown fetch. **Ground truth:** ×0.75
+  (3072/4096) on BASE damage, `pokeRound`ed, before weather/crit/STAB/type — and keyed on actually
+  hitting 2+ targets, so a spread move into a lone foe deals FULL damage. **Bug found and fixed:**
+  `matcha-gotcha` was baked `selected-pokemon` (PokeAPI is wrong) though it really hits both foes —
+  the only target mismatch in the whole index, and it sat on Sinistcha (33% usage, 99% of sets), so
+  /calc overstated it by a third and the sheet said "Hits one target". `generate-dataset.mjs` now
+  reconciles the spread axis from Showdown; the baked JSON was patched in place (1-line diff, no
+  re-bake — `competitive.json` benchmarks were already reduced). **UI:** a "Spread damage" panel in
+  the move sheet (`80 → ×0.75 → ≈60`, "1 target" vs "2+ targets") with the ally-hitting variant
+  spelled out, the KO block tailed "×0.75 already applied", and `MOVE_NOTES` caveats for Dragon Darts
+  (hits both foes at FULL power), Expanding Force (becomes spread in Psychic Terrain) and
+  Eruption/Water Spout (150 is full-HP only). **/calc:** a `TARGETS · 2 left / 1 left` control in the
+  field console driving the new `CalcField.singleTarget` (Heat Wave Charizard→Kingambit 59–71% →
+  79–94%). **Guards added** so this can't regress: `damage.test.ts` no longer `continue`s past a
+  target disagreement (that skip is exactly how the bug shipped) and now checks all 493 moves, plus
+  `npm run audit` cross-checks targets offline — both proven to go red when the bug is reintroduced.
+  Dead `move.spreadHit` assignments removed (verified no-ops). tsc/lint/80 tests/audit/build (248
+  pages) green + 375px screenshots of both sheet variants, the single-target control case and /calc.
+
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as
   repo bloat vs the ~80ms prod nav already in place)

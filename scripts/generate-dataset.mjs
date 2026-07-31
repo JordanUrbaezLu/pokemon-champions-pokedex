@@ -325,6 +325,33 @@ function showdownFlags(sd) {
   return sd ? FLAG_KEYS.filter((k) => sd.flags?.[k]) : [];
 }
 
+// Targets that take the doubles ×0.75 spread reduction — kept in step with
+// src/lib/spread.ts (a .mjs build tool can't import the TS module).
+const SPREAD_TARGETS = new Set(["all-opponents", "all-other-pokemon"]);
+const SHOWDOWN_SPREAD_TARGETS = new Set(["allAdjacentFoes", "allAdjacent"]);
+
+/**
+ * PokeAPI's `target` is occasionally wrong for newer moves — it lists Matcha
+ * Gotcha as single-target when it really hits both foes, which silently cost
+ * the app the ×0.75 on the format's most-used spread move. Showdown is the
+ * battle-accurate source, so it wins whenever the two disagree about SPREAD
+ * CLASSIFICATION specifically.
+ *
+ * Deliberately narrow: across the full 493-move index the two sources also
+ * disagree on 9 status moves (Heal Bell, Perish Song, Howl…), where PokeAPI's
+ * slug is the better UI label ("user-and-allies" reads better than
+ * "users-field") and no damage math depends on it. Only the spread-affecting
+ * disagreements are reconciled; everything else keeps PokeAPI's wording.
+ * Returns the corrected target, or null if no correction is needed.
+ */
+function reconciledSpreadTarget(move, sd) {
+  if (!sd?.target) return null;
+  const ours = SPREAD_TARGETS.has(move.target);
+  const theirs = SHOWDOWN_SPREAD_TARGETS.has(sd.target);
+  if (ours === theirs) return null;
+  return SHOWDOWN_TARGET[sd.target] ?? null;
+}
+
 /**
  * Build a MoveSummary from Showdown data alone — the fallback for
  * Champions-era moves PokeAPI doesn't serve yet, so they're never dropped
@@ -765,8 +792,22 @@ async function main() {
   const allMoveSlugs = [...new Set(built.flatMap((p) => p.moveSlugs))].sort();
   console.log(`Fetching ${allMoveSlugs.length} unique moves…`);
   const moveList = (await pooled(allMoveSlugs, buildMove)).filter(Boolean);
-  // Flags (contact, sound, …) come from Showdown — PokeAPI has none.
-  for (const m of moveList) m.flags = showdownFlags(showdown[stripId(m.name)]);
+  // Flags (contact, sound, …) come from Showdown — PokeAPI has none. Showdown
+  // also settles any spread/single-target disagreement, since that one drives
+  // the ×0.75 damage reduction.
+  const retargeted = [];
+  for (const m of moveList) {
+    const sd = showdown[stripId(m.name)];
+    m.flags = showdownFlags(sd);
+    const fixed = reconciledSpreadTarget(m, sd);
+    if (fixed) {
+      retargeted.push(`${m.name}: ${m.target} → ${fixed}`);
+      m.target = fixed;
+    }
+  }
+  if (retargeted.length) {
+    console.log(`  ~ spread target corrected from Showdown: ${retargeted.join(", ")}`);
+  }
   const moves = Object.fromEntries(moveList.map((m) => [m.name, m]));
 
   // Moves PokeAPI couldn't resolve (Champions-new) are built from Showdown

@@ -140,6 +140,28 @@ That's the entire contract. The weekly Action runs `refresh` and opens/auto-merg
   variable-BP moves Grass Knot/Low Kick (target weight), Heavy Slam/Heat Crash (weight ratio), Gyro
   Ball/Electro Ball (speed) — see `VARIABLE_MOVES`. Truly situational ones (Counter, Fissure, Fling,
   Endeavor…) stay "not calculated". Saved calc sets live in `calc-sets.ts` (localStorage, like the tray).
+- **The doubles spread reduction (`spread.ts`).** Exactly **×0.75 = 3072/4096**, applied to BASE DAMAGE
+  after the "+2" and BEFORE weather/crit/STAB/type/final mods, `pokeRound`ed. It is NOT a base-power cut —
+  so "power × 0.75" is a display approximation that always reads slightly HIGH (the sheet marks it "≈").
+  Showdown's `champions` mod overrides `modifyDamage` but leaves the spread block byte-identical, so the
+  game does not change it. **The rule is target-COUNT based, not move based:** it applies only when the move
+  actually hits 2+ targets, so a spread move into a lone remaining foe deals FULL damage — that's
+  `CalcField.singleTarget` (gates ONLY the spread line; never model it by flipping `gameType` to Singles,
+  which also swaps the screen modifier 2732→2048). Protect/Wide Guard/immunities do NOT give the cut back;
+  only an empty slot does. For `all-other-pokemon` your own ally counts as a target. **Dragon Darts** is the
+  only damaging move that hits both foes at full power; **Expanding Force** is the reverse gotcha (becomes
+  spread in Psychic Terrain, unmodelled — both carry a note in `MoveModal.MOVE_NOTES`).
+- **PokeAPI move targets are not trustworthy for spread.** It served Matcha Gotcha (Sinistcha's 99%-usage
+  signature move) as single-target, so the app skipped the ×0.75 and overstated it 33%. `generate-dataset.mjs`
+  now lets Showdown win **on the spread axis only** (`reconciledSpreadTarget`) — deliberately narrow, because
+  the two sources also disagree on 9 status moves where PokeAPI's slug is the better UI label. `npm run audit`
+  cross-checks all 493 targets against @smogon/calc offline, and `damage.test.ts` asserts it too. Gotcha:
+  **@smogon/calc OMITS `target` when it is the default "normal"** — a missing field means not-spread, not
+  unknown; treating it as unknown silently skips 455 of 493 moves.
+- `move.spreadHit` is **not a thing** in @smogon/calc — it derives the reduction from its own move target +
+  `field.gameType`. Setting it was a verified no-op (identical 16-roll arrays); both call sites are gone.
+  Consequence: the baked KO benchmarks in `competitive.json` were ALWAYS already ×0.75-reduced for spread
+  moves (verified 208/208 rows), which is what the move sheet labels "×0.75 already applied".
 - **Champions Stat Points, not EVs.** Real sets use Stat Points (≤32/stat, 66 total); the mapping is
   the app's own (`generate-competitive.mjs:parseSpread`): **`EV = min(252, SP × 8)`**, trimmed ≤508.
   `stat-points.ts` is the single home for it. So `competitive.json.spread.evs` is EV-space (252-style)
@@ -157,5 +179,5 @@ That's the entire contract. The weekly Action runs `refresh` and opens/auto-merg
   Type Matchups at the bottom by owner request).
 
 **Verification bar for any change**
-`npx tsc --noEmit` + `npm run lint` + `npm test` + `npm run build` (247 static pages) must stay
+`npx tsc --noEmit` + `npm run lint` + `npm test` + `npm run build` (248 static pages) must stay
 green, and visual changes get a `npm run shot` screenshot check at 375px before they're called done.

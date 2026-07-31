@@ -156,6 +156,43 @@ for (const p of mons) {
   }
 }
 
+// --- Spread targeting (drives the doubles ×0.75) -----------------------------
+// PokeAPI's `target` is wrong often enough to matter — it served Matcha Gotcha
+// (Sinistcha's 99%-usage signature move) as single-target, so the app skipped
+// the ×0.75 and overstated its damage by a third with nothing else noticing.
+// generate-dataset.mjs now reconciles the spread axis against Showdown; this is
+// the check that proves it held. @smogon/calc is a dev dep, so this runs offline.
+const SPREAD_TARGETS = new Set(["all-opponents", "all-other-pokemon"]);
+try {
+  const { Generations } = await import("@smogon/calc");
+  const gen = Generations.get(9);
+  const CALC_SPREAD = new Set(["allAdjacent", "allAdjacentFoes"]);
+  let checked = 0;
+  for (const [slug, m] of Object.entries(moveIndex)) {
+    const calcMove = gen.moves.get(stripId(slug));
+    if (!calcMove) continue;
+    checked++;
+    // @smogon/calc OMITS `target` when it is the default "normal" (single
+    // target) — so a missing field means not-spread, not unknown. Treating it
+    // as unknown would skip 455 of 493 moves and miss the "we say spread, the
+    // simulator doesn't" direction entirely.
+    const calcTarget = calcMove.target ?? "normal";
+    const ours = SPREAD_TARGETS.has(m.target);
+    const theirs = CALC_SPREAD.has(calcTarget);
+    if (ours !== theirs) {
+      add(
+        "high",
+        `MOVE ${slug}`,
+        `spread mismatch — baked target "${m.target}" (spread=${ours}) vs @smogon/calc "${calcTarget}" (spread=${theirs}); ` +
+          `the doubles ×0.75 is applied off ours, so damage is ${ours ? "understated" : "overstated"} by ~33%`,
+      );
+    }
+  }
+  if (checked < 400) add("low", "MOVES", `only ${checked} moves cross-checked for spread targeting`);
+} catch (e) {
+  add("low", "MOVES", `could not cross-check spread targeting: ${e.message}`);
+}
+
 // --- Live freshness + usage cross-check (network) ----------------------------
 async function liveChecks() {
   const UA = "Mozilla/5.0 (compatible; ChampionsPokedexAudit/1.0)";

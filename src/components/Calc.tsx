@@ -11,6 +11,7 @@ import { NATURES, natureEffect } from "@/lib/format";
 import {
   SP_BUDGET, SP_CAP, SP_STATS, statPointsToSpread, totalStatPoints, type StatPointMap,
 } from "@/lib/stat-points";
+import { isSpreadMove } from "@/lib/spread";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { useCalcSets, type SavedSet } from "@/lib/calc-sets";
 import type { CalcEntry, CalcForm, CalcIndex, CalcMoveLite } from "@/lib/calc-data";
@@ -142,6 +143,9 @@ export function Calc({ index }: { index: CalcIndex }) {
   const [attacker, setAttacker] = useState<MonState>(() => defaultMon(first));
   const [defender, setDefender] = useState<MonState>(() => defaultMon(second));
   const [weather, setWeather] = useState<Weather>(null);
+  // Spread moves lose the ×0.75 once only one target is left standing — the
+  // single biggest swing the calc couldn't express before.
+  const [singleTarget, setSingleTarget] = useState(false);
   const { sets, saveSet, removeSet } = useCalcSets();
 
   const loadInto = (side: "attacker" | "defender", set: SavedSet) => {
@@ -172,12 +176,16 @@ export function Calc({ index }: { index: CalcIndex }) {
   const aMove = index.moves[attacker.moveSlug];
   const dMove = index.moves[defender.moveSlug];
 
+  // Only surface the target-count control when a spread move is actually
+  // selected — for single-target moves it changes nothing and is pure noise.
+  const spreadInPlay = isSpreadMove(aMove?.target) || isSpreadMove(dMove?.target);
+
   const fwdField: CalcField = {
-    gameType: "Doubles", weather,
+    gameType: "Doubles", weather, singleTarget,
     helpingHand: attacker.helpingHand, auroraVeil: defender.screens, friendGuard: defender.friendGuard,
   };
   const backField: CalcField = {
-    gameType: "Doubles", weather,
+    gameType: "Doubles", weather, singleTarget,
     helpingHand: defender.helpingHand, auroraVeil: attacker.screens, friendGuard: attacker.friendGuard,
   };
 
@@ -271,6 +279,9 @@ export function Calc({ index }: { index: CalcIndex }) {
           setDefender={setDefender}
           weather={weather}
           setWeather={setWeather}
+          spreadInPlay={spreadInPlay}
+          singleTarget={singleTarget}
+          setSingleTarget={setSingleTarget}
           aName={aEntry.name}
           dName={dEntry.name}
         />
@@ -685,6 +696,9 @@ function FieldControls({
   setDefender,
   weather,
   setWeather,
+  spreadInPlay,
+  singleTarget,
+  setSingleTarget,
   aName,
   dName,
 }: {
@@ -694,6 +708,9 @@ function FieldControls({
   setDefender: (s: MonState) => void;
   weather: Weather;
   setWeather: (w: Weather) => void;
+  spreadInPlay: boolean;
+  singleTarget: boolean;
+  setSingleTarget: (v: boolean) => void;
   aName: string;
   dName: string;
 }) {
@@ -724,6 +741,36 @@ function FieldControls({
           ))}
         </div>
       </div>
+
+      {/* Shown only with a spread move selected. It gates the ×0.75 on base
+          damage, so the %, the KO label and the OHKO odds all recompute —
+          which is why it lives here as field state, not as a second number
+          bolted onto the verdict row. */}
+      {spreadInPlay && (
+        <div className="mb-3 flex items-center gap-2">
+          <span className="w-16 shrink-0 text-[10px] uppercase tracking-wide text-muted">Targets</span>
+          <div className="flex flex-1 flex-wrap items-center gap-1">
+            {[
+              { label: "2 left", value: false, hint: "spread ×0.75" },
+              { label: "1 left", value: true, hint: "full power" },
+            ].map((o) => (
+              <button
+                key={o.label}
+                onClick={() => setSingleTarget(o.value)}
+                aria-pressed={singleTarget === o.value}
+                className={`tap-target rounded-md px-2 py-1 text-[11px] font-medium ring-1 ring-inset transition-colors ${
+                  singleTarget === o.value
+                    ? "bg-white/10 text-foreground ring-white/30"
+                    : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
+                }`}
+              >
+                {o.label}
+                <span className="ml-1 text-[10px] text-muted">{o.hint}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-[minmax(0,1fr)_4.75rem_4.75rem] items-center gap-x-2 gap-y-1.5">
         <span />

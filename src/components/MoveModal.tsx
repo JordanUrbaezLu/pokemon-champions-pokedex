@@ -4,6 +4,7 @@ import { useId } from "react";
 import { Sheet } from "./Sheet";
 import { TypeBadge } from "./TypeBadge";
 import { prettySmogonName, toDisplayName } from "@/lib/format";
+import { effectiveSpreadPower, spreadInfo } from "@/lib/spread";
 import type { DamageClass, MoveBenchmark, MoveSummary } from "@/lib/types";
 
 const CATEGORY: Record<DamageClass, { label: string; color: string }> = {
@@ -53,6 +54,21 @@ const TARGET_LABELS: Record<string, string> = {
   "all-allies": "Your allies",
   "specific-move": "Depends on the move used",
 };
+/**
+ * Mid-battle caveats the static PokeAPI target can't express: conditional
+ * spread (Expanding Force), multi-target-but-NOT-reduced (Dragon Darts), and
+ * HP-scaled base power (Eruption / Water Spout, whose 150 is a full-HP-only
+ * figure neither the dataset nor the engine models).
+ */
+const MOVE_NOTES: Record<string, string> = {
+  "expanding-force":
+    "In Psychic Terrain (user grounded) it hits both foes at 120 power — and then takes the ×0.75 too.",
+  "dragon-darts":
+    "Its two 50-power darts split across both foes at FULL power — no spread cut.",
+  eruption: "150 power only at full HP — it falls as the user's HP does.",
+  "water-spout": "150 power only at full HP — it falls as the user's HP does.",
+};
+
 const STAT_SHORT: Record<string, string> = {
   attack: "Atk",
   defense: "Def",
@@ -112,6 +128,10 @@ export function MoveModal({
   const target = move.target
     ? TARGET_LABELS[move.target] ?? toDisplayName(move.target)
     : null;
+  // The ×0.75 only means something for a move that deals damage off base power.
+  const spread = move.damageClass === "status" ? null : spreadInfo(move.target);
+  const cutPower = spread ? effectiveSpreadPower(move.power) : null;
+  const note = MOVE_NOTES[move.name];
 
   return (
     <Sheet onClose={onClose} labelledBy={titleId}>
@@ -143,10 +163,55 @@ export function MoveModal({
 
       {target && <p className="mt-3 text-sm text-muted">{target}.</p>}
 
+      {/* The spread tax. Sits directly under the Power tile it qualifies and
+          above the KO verdicts, so those are read already knowing the cut is
+          baked into them. Neutral panel; amber is spent only on the reduced
+          number so it can't out-shout the amber 2HKO label just below. */}
+      {spread && cutPower != null && (
+        <div className="mt-3 rounded-xl bg-surface-2/70 p-2.5">
+          <p className="mb-2 text-[10px] font-bold uppercase tracking-wide text-muted">
+            Spread damage
+          </p>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 text-center">
+              <div className="font-mono text-lg font-bold leading-none tabular-nums">
+                {move.power}
+              </div>
+              <div className="mt-1 text-[10px] text-muted">1 target</div>
+            </div>
+            <div className="shrink-0 text-center leading-none">
+              <div className="font-mono text-xs font-bold text-amber-200">×0.75</div>
+              <div className="mt-0.5 text-[10px] text-muted/60" aria-hidden>
+                →
+              </div>
+            </div>
+            <div className="flex-1 text-center">
+              <div className="font-mono text-lg font-bold leading-none tabular-nums text-amber-200">
+                ≈{cutPower}
+              </div>
+              <div className="mt-1 text-[10px] text-muted">2+ targets</div>
+            </div>
+          </div>
+          <p className="mt-2 text-[11px] leading-snug text-muted">
+            {spread.hitsAlly
+              ? "Hits both foes and your ally, all at ×0.75. Your ally counts as a target — full power only once one other Pokémon is left."
+              : "Hits both foes at ×0.75. Into a lone foe it lands at full power — Protect or an immunity doesn't give the cut back, only an empty slot does."}
+          </p>
+          <p className="mt-1 text-[10px] leading-snug text-muted/70">
+            ≈ effective power — the ×0.75 lands on damage, not on base power.
+          </p>
+        </div>
+      )}
+
+      {note && <p className="mt-2 text-[11px] leading-snug text-muted">{note}</p>}
+
       {benchmark && (benchmark.ohkoCount > 0 || benchmark.twoCount > 0) && (
         <div className="mt-3 rounded-xl bg-surface-2/70 p-2.5">
           <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wide text-muted">
             Off its common set, vs the top meta
+            {/* Muted, not amber: the amber OHKO/2HKO labels an inch below are
+                verdicts, and a second amber here would compete with them. */}
+            {spread && <span className="font-medium normal-case text-muted/70"> · ×0.75 already applied</span>}
           </p>
           <div className="flex flex-col gap-1 text-xs">
             {benchmark.ohkoCount > 0 && (
