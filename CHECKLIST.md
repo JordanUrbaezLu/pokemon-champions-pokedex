@@ -366,6 +366,34 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   it) — `itemOptions` now appends any held item the fixed `ITEMS` list lacks. 87 tests (was 80) · tsc ·
   lint · online audit (299 usages cross-checked, 0 mismatched) · build 248 pages · 375px screenshot.
 
+- ✅ **2026-08-08 refresh Action hardening (owner: "run it twice a week; if one's set up it may need
+  fixing — last update was 12 days ago").** Forensics first: the Action existed (Mondays 09:00 UTC) and
+  had failed **5 of its last 9 scheduled runs, all silently** — Jun 15/22/29 on the missing-Mega-ability
+  data hole (since fixed), Jul 6 on the then-missing "allow Actions to create PRs" repo setting (enabled
+  ~Jul 11), and Aug 3 on the damage-parity suite catching the real Body Press/Knock Off engine bugs
+  (fixed in PR #25) — that last one is exactly why the data sat 12 days stale. Changes: cron → **Mon +
+  Thu 09:00 UTC**; the job now runs the literal **`npm run refresh`** (it previously hand-rolled 4 of
+  its 5 steps and skipped the offline audit); **found + fixed a latent deploy bug** — `add-paths` shipped
+  only the three JSONs while `generate-competitive.mjs` also stamps `public/sw.js`'s cache VERSION from
+  the data hash, so every auto-merged refresh deployed a byte-identical service worker (old caches never
+  purged, offline fallback stale; verified: merged auto-PR #23 contains no sw.js) — sw.js now rides along;
+  **failure alarm**: any failed run files/updates a stable-titled GitHub issue ("Scheduled data refresh is
+  failing") with a triage list, so silence is impossible (`issues: write` added); checkout/setup-node
+  bumped v4→v7 (verified current; drop-in); stale "232 pages" PR copy fixed. A 4-agent adversarial
+  verify pass (22 findings, 10 real) then hardened the hardening: **45-min STEP timeout** so a hung run
+  (PokeAPI-backoff → 6h GitHub kill = "cancelled") still fires the `failure()` alarm; **a second alarm
+  for the green-but-salvaged teams bake** — on a regulation rotation the generator deliberately exits 0
+  and status/audit stay soft, so stale teams would have auto-merged twice a week forever with zero
+  signal (both drift branches tested: rotation = format mismatch, blip = generatedAt mismatch) — plus a
+  `teams_thread` dispatch input so the KNOWN_THREADS hotfix is runnable from the Actions UI; 3-try
+  retry on `gh pr merge` (fresh-PR mergeability is computed async — a transient refusal would have
+  filed a false alarm); truthful summary branches for cancelled/"closed" runs (v6 leaves the operation
+  output EMPTY, not "none"); comment warning that branch protection on main would break GITHUB_TOKEN
+  auto-merge unfixably. Verified live: "Actions may create PRs" is ON, main is unprotected. Known
+  accepted churn (reported, not changed): generatedAt restamps every bake → scheduled runs always merge
+  a dated diff. Brief updated. NOTE: merge PR #25 before the next scheduled run — the parity failure is
+  in main's engine until then.
+
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as
   repo bloat vs the ~80ms prod nav already in place)
