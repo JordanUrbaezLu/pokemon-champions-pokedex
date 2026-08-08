@@ -387,9 +387,15 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   signal (both drift branches tested: rotation = format mismatch, blip = generatedAt mismatch) — plus a
   `teams_thread` dispatch input so the KNOWN_THREADS hotfix is runnable from the Actions UI; 3-try
   retry on `gh pr merge` (fresh-PR mergeability is computed async — a transient refusal would have
-  filed a false alarm); truthful summary branches for cancelled/"closed" runs (v6 leaves the operation
-  output EMPTY, not "none"); comment warning that branch protection on main would break GITHUB_TOKEN
-  auto-merge unfixably. Verified live: "Actions may create PRs" is ON, main is unprotected. Known
+  filed a false alarm); truthful summary branches for cancelled/"closed" runs (the action leaves the
+  operation output EMPTY, not "none"); comment warning that branch protection on main would break
+  GITHUB_TOKEN auto-merge unfixably. **Then a LIVE smoke test (workflow_dispatch on the PR branch)
+  caught what four adversarial reviewers checking each action in isolation could not:** checkout@v6+
+  changed credential persistence, and create-pull-request@v6 adds its own Authorization extraheader —
+  git sends both → GitHub 400 "Duplicate header" → the PR step dies. Pairing rule now in the YAML:
+  **checkout ≥ v6 requires create-pull-request ≥ v8** (v8 verified: same inputs/outputs for everything
+  used). The same failed run also proved the alarm end-to-end — it filed issue #27 in production.
+  Verified live: "Actions may create PRs" is ON, main is unprotected. Known
   accepted churn (reported, not changed): generatedAt restamps every bake → scheduled runs always merge
   a dated diff. Brief updated. NOTE: merge PR #25 before the next scheduled run — the parity failure is
   in main's engine until then.

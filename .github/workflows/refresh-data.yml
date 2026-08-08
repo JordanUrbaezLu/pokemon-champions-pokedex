@@ -98,9 +98,17 @@ jobs:
       # without it deploys a byte-identical service worker — browsers never
       # fire the update, old caches are never purged, and offline fallbacks
       # stay stale. (Auto-PRs before 2026-08 had exactly this bug.)
+      #
+      # VERSION PAIRING (learned from a live failure, not docs): checkout@v6+
+      # changed how it persists git credentials, and create-pull-request@v6
+      # then adds its own Authorization extraheader — git sends BOTH, GitHub
+      # answers 400 'Duplicate header: "Authorization"', and this step dies at
+      # `git remote prune origin`. checkout >= v6 requires create-pull-request
+      # >= v8 (the major updated for the new checkout). v8 keeps the same
+      # inputs/outputs as v6 for everything used here (verified in action.yml).
       - name: Open PR for the data diff
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v8
         with:
           commit-message: "Refresh baked battle data (latest Smogon month)"
           title: "Data refresh: latest Smogon snapshot + movepools"
