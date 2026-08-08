@@ -74,14 +74,25 @@ purpose when Teams + Calc shipped.)
    regulation (auto-detected), then status → offline audit → tests → build. Green = ready to commit.
 3. `npm run audit` — the correctness net (run the online form for the freshness + usage cross-check).
    New failure modes get a check ADDED here so they can never regress silently.
-That's the entire contract. The weekly Action runs `refresh` and opens/auto-merges the data PR.
+That's the entire contract. The twice-weekly Action runs `refresh` and opens/auto-merges the data PR.
 - `npm run shot -- /pokemon/kingambit out.png` — 375px screenshot of a running app
   (`PORT=3210` env to target another port). Use it after every visual change.
-- A weekly GitHub Action (`.github/workflows/refresh-data.yml`, Mondays 09:00 UTC) runs the same
-  `npm run refresh`, opens a PR with the data diff, and **auto-merges it when green** (manual run:
-  Actions tab → Run workflow, optional `stats_month` to pin). **One-time repo setting required:**
+- A twice-weekly GitHub Action (`.github/workflows/refresh-data.yml`, **Mon + Thu 09:00 UTC**) runs
+  the same `npm run refresh`, opens a PR with the data diff **+ `public/sw.js`** (its cache VERSION is
+  stamped from the data — omit it and deployed service workers never purge old caches; the pre-2026-08
+  auto-PRs had that bug), and **auto-merges when green** (manual run: Actions tab → Run workflow,
+  optional `stats_month` / `teams_thread` inputs to pin). **"Never silent": on ANY failure it
+  files/updates the issue "Scheduled data refresh is failing"** (added after five 2026 runs failed with
+  nobody noticing; a red parity test there is usually a REAL signal — fresh data exercising an engine
+  gap, per the Body Press/Knock Off incident); a **45-min step timeout** turns a hung run into that
+  same alarm (a cancelled run never satisfies `failure()`); and a **green-but-salvaged teams bake**
+  (regulation rotation) files its own issue — refresh deliberately stays green on salvage, so without
+  that check stale teams would auto-merge twice a week forever. **One-time repo setting required:**
   Settings → Actions → General → Workflow permissions → enable *"Allow GitHub Actions to create and
-  approve pull requests"* — without it the PR step fails with *"not permitted to create pull requests"*.
+  approve pull requests"* — without it the PR step fails with *"not permitted to create pull requests"*
+  (killed the 2026-07-06 run). **Never add branch protection/required checks to main** without moving
+  this workflow off `GITHUB_TOKEN` (its PRs can't trigger required checks or self-approve). Known
+  accepted churn: `generatedAt` restamps every bake, so scheduled runs always merge a dated diff.
 
 **Hard-won facts — do not re-learn these**
 - Smogon chaos `Checks and Counters` is **empty for every mon** in this format. Never plan on it.

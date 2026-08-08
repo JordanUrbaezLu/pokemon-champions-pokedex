@@ -1,34 +1,59 @@
-# Keeps the baked data fresh without anyone remembering to. Every Monday it
+# Keeps the baked data fresh without anyone remembering to. Twice a week it
 # re-bakes both datasets (the competitive generator auto-detects the newest
-# published Smogon month), verifies every integrity check + the unit suite +
-# the build, opens a PR with just the data diff, and AUTO-MERGES it once
-# everything is green. Merge -> the host redeploys from main.
+# published Smogon month), verifies every integrity check + the offline audit +
+# the unit suite + the build, opens a PR with just the data diff, and
+# AUTO-MERGES it once everything is green. Merge -> the host redeploys from main.
 #
-# Same steps a human runs locally in one command: `npm run refresh`.
+# Runs the SAME `npm run refresh` a human runs locally — one source of truth.
+#
+# "Never silent" charter: every way this pipeline can rot must end in a GitHub
+# issue, not a quietly red (or quietly green-but-stale) Actions tab. The 2026-08
+# stale-data incident happened because the job had been failing for a week and
+# nothing surfaced it. Three alarms below enforce that:
+#   1. any step failure           -> "Scheduled data refresh is failing" issue
+#   2. a HUNG run                 -> step timeout turns it into a failure (a
+#      cancelled run never satisfies failure(), so without the timeout a hang
+#      at GitHub's 6h kill would file nothing)
+#   3. a green-but-salvaged teams bake (regulation rotation / thread fetch
+#      blip — deliberately NOT a refresh failure) -> its own issue
 name: Refresh battle data
 
 on:
   schedule:
-    # Mondays 09:00 UTC. Smogon publishes each month's stats in the first days
-    # of the following month, so a weekly cadence catches a new month within a
-    # week and picks up roster/movepool corrections in between.
-    - cron: "0 9 * * 1"
+    # Mondays + Thursdays 09:00 UTC. Smogon publishes each month's stats in the
+    # first days of the following month, so this catches a new month within
+    # ~3.5 days and picks up roster/movepool/sample-team corrections in between.
+    - cron: "0 9 * * 1,4"
   workflow_dispatch:
     inputs:
       stats_month:
         description: "Pin a Smogon month YYYY-MM (blank = auto-detect newest published)."
         required: false
         default: ""
+      teams_thread:
+        description: "Pin the sample-teams thread URL (the KNOWN_THREADS hotfix for a regulation rotation, runnable from this UI)."
+        required: false
+        default: ""
 
-# contents: write -> push the branch + merge the PR. pull-requests: write -> open it.
-# ALSO REQUIRES the repo setting "Allow GitHub Actions to create and approve pull
-# requests" (Settings -> Actions -> General -> Workflow permissions). Without it the
-# PR step fails with "GitHub Actions is not permitted to create or approve pull requests".
+# contents: write -> push the branch + merge the PR. pull-requests: write -> open
+# it. issues: write -> file the alarm issues. ALSO REQUIRES the repo setting
+# "Allow GitHub Actions to create and approve pull requests" (Settings ->
+# Actions -> General -> Workflow permissions) — without it the PR step fails
+# with "GitHub Actions is not permitted to create or approve pull requests"
+# (exactly how the 2026-07-06 run died).
+#
+# Do NOT add branch protection / required status checks to main without
+# rethinking this workflow: PRs created and merged with GITHUB_TOKEN never
+# trigger required checks (GitHub suppresses workflows for GITHUB_TOKEN events)
+# and the token cannot approve its own PR, so every auto-merge would fail —
+# loudly (the alarm fires), but unfixably from inside this file. It would need
+# a PAT or GitHub App token instead.
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
-# Never let a manual dispatch race the weekly cron.
+# Never let a manual dispatch race a scheduled run (or the two crons each other).
 concurrency:
   group: refresh-data
   cancel-in-progress: false
@@ -36,29 +61,43 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    # Backstop only — the step timeout below is the one that matters (a JOB
+    # timeout marks the run cancelled, which failure() ignores; a STEP timeout
+    # marks the step failed, which fires the alarm).
+    timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - run: npm ci
 
-      # The whole verification bar, mirroring `npm run refresh` locally: re-bake
-      # BOTH datasets (keeps their generatedAt in sync -- data:comp alone would
-      # fail the date check), assert every integrity check, run the unit suite
-      # if one exists yet, and confirm the app still builds. Any blank/un-tappable
-      # sheet, orphan move ref, date mismatch, failing test, or build break fails
-      # HERE, before a PR is ever opened.
-      - name: Refresh + verify (data:all -> status -> test -> build)
+      # The whole verification bar, IDENTICAL to a human running `npm run
+      # refresh` locally: data:all -> status -> offline audit -> tests -> build.
+      # Any blank/un-tappable sheet, orphan move ref, date mismatch, target
+      # drift, failing parity test, or build break fails HERE, before a PR is
+      # ever opened. (The parity suite is a feature, not an obstacle: the
+      # 2026-08-03 run failed because fresh data exercised two real damage-
+      # engine bugs — the failure was the alarm working.)
+      #
+      # timeout-minutes: normal runtime is ~2min; the generators deliberately
+      # ride out PokeAPI 502 storms with patient exponential backoff, so a long
+      # upstream outage stretches the run instead of failing it. 45min ≈ far
+      # beyond any healthy run — past that we WANT a failure (not a hang), so
+      # the alarm below fires.
+      - name: Refresh + verify (npm run refresh)
+        timeout-minutes: 45
         env:
           STATS_MONTH: ${{ github.event.inputs.stats_month }}
-        run: |
-          npm run data:all
-          npm run status
-          npm test --if-present
-          npm run build
+          TEAMS_THREAD: ${{ github.event.inputs.teams_thread }}
+        run: npm run refresh
 
+      # public/sw.js MUST ride along: generate-competitive.mjs stamps its cache
+      # VERSION from a hash of the baked data, so a data refresh that ships
+      # without it deploys a byte-identical service worker — browsers never
+      # fire the update, old caches are never purged, and offline fallbacks
+      # stay stale. (Auto-PRs before 2026-08 had exactly this bug.)
       - name: Open PR for the data diff
         id: cpr
         uses: peter-evans/create-pull-request@v6
@@ -66,31 +105,122 @@ jobs:
           commit-message: "Refresh baked battle data (latest Smogon month)"
           title: "Data refresh: latest Smogon snapshot + movepools"
           body: |
-            Automated weekly refresh of `src/data/generated/*.json` — re-fetched
-            from Smogon (latest published month, both brackets), Serebii, PokeAPI
-            and Showdown, with KO benchmarks rebaked.
+            Automated twice-weekly refresh of `src/data/generated/*.json` (plus
+            the service worker's cache-version stamp) — re-fetched from Smogon
+            (latest published month, both brackets), Serebii, PokeAPI and
+            Showdown, with KO benchmarks rebaked.
 
             Verified in CI before this PR opened: all `npm run status` integrity
-            checks, the unit suite, and `next build` (232 pages) are green.
+            checks, the offline data audit, the unit suite (incl. the
+            damage-engine parity sweep against @smogon/calc), and `next build`
+            are green.
           branch: auto/data-refresh
           delete-branch: true
-          add-paths: src/data/generated/*.json
+          add-paths: |
+            src/data/generated/*.json
+            public/sw.js
 
       # The checks above already ran in THIS job, so once the PR exists it is
       # safe to merge immediately. Skipped when nothing changed (create-pull-
-      # request reports operation "none").
+      # request then leaves the operation output EMPTY — v6 has no "none"
+      # value). Retried because GitHub computes a fresh PR's mergeability
+      # asynchronously: an immediate merge can transiently refuse, which would
+      # otherwise fail the step and file a false alarm for a healthy refresh.
       - name: Auto-merge the refresh PR
         if: steps.cpr.outputs.pull-request-operation == 'created' || steps.cpr.outputs.pull-request-operation == 'updated'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --squash --delete-branch
+          PR: ${{ steps.cpr.outputs.pull-request-number }}
+        run: |
+          for i in 1 2 3; do
+            if gh pr merge "$PR" --squash --delete-branch; then exit 0; fi
+            echo "merge attempt $i refused (mergeability likely still computing) — retrying in 15s"
+            sleep 15
+          done
+          echo "::error::PR #$PR would not merge after 3 attempts"
+          exit 1
+
+      # ALARM 3 — the green-but-stale case. On a regulation rotation the teams
+      # generator deliberately salvages the committed teams.json and exits 0
+      # (status soft-warns, the offline audit files it as MEDIUM, refresh stays
+      # green) — correct behavior for the DATA, but without this step the
+      # pipeline would auto-merge teams a regulation behind twice a week
+      # forever with no human signal. generatedAt divergence = salvage of any
+      # kind; format divergence = the rotation specifically (needs a
+      # KNOWN_THREADS line in scripts/generate-teams.mjs, or a one-off
+      # teams_thread dispatch input above).
+      - name: Alarm if meta teams were salvaged (regulation rotation)
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          drift="$(node -e '
+            const t = require("./src/data/generated/teams.json").meta;
+            const c = require("./src/data/generated/competitive.json").meta;
+            if (t.format !== c.format) console.log(`rotation: ladder is ${c.format} but teams are still ${t.format}`);
+            else if (t.generatedAt !== c.generatedAt) console.log(`salvage: teams stamped ${t.generatedAt} vs ladder ${c.generatedAt} (thread fetch blip?)`);
+          ')"
+          if [ -z "$drift" ]; then
+            echo "teams in sync with the ladder snapshot"
+            exit 0
+          fi
+          title="Meta teams are stale — the teams bake was salvaged"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          body="The [$(date -u +%F) refresh run]($run_url) went green but the teams bake was SALVAGED: $drift
+
+          Fix: add the new regulation's sample-teams thread as one line in \`KNOWN_THREADS\` (\`scripts/generate-teams.mjs\`), or re-run this workflow from the Actions tab with the \`teams_thread\` input pinned to the thread URL. Details: AGENTS.md hard-won facts (the thread id is per-regulation and not derivable)."
+          existing="$(gh issue list --repo "$REPO" --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" --body "$body"
+          else
+            gh issue create --repo "$REPO" --title "$title" --body "$body"
+          fi
+
+      # ALARM 1 — any failed step (including a 45-min step timeout, which
+      # counts as failure) files an issue, or comments on the open one, so a
+      # broken refresh can never rot silently again: five 2026 runs failed with
+      # nobody noticing until the data was visibly stale. Stable title so
+      # repeat failures pile onto one issue instead of spamming new ones.
+      # Deliberately failure()-gated, NOT always(): a manual cancel is a human
+      # decision and should not page anyone.
+      - name: File an issue so a failed refresh is never silent
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          title="Scheduled data refresh is failing"
+          run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          body="The [$(date -u +%F) refresh run]($run_url) failed (trigger: ${{ github.event_name }}).
+
+          Triage in order:
+          1. Read the failed step's log — the parity/status/audit failures are usually REAL signals (bad upstream data or a genuine engine gap), not flakes.
+          2. Reproduce locally with \`npm run refresh\`.
+          3. AGENTS.md \"hard-won facts\" lists every failure mode seen so far (regulation rotations need a KNOWN_THREADS line; PokeAPI 502s are salvaged automatically; a red parity test means suspect the damage engine before the data)."
+          existing="$(gh issue list --repo "$REPO" --state open --search "in:title \"$title\"" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "$REPO" --body "$body"
+          else
+            gh issue create --repo "$REPO" --title "$title" --body "$body"
+          fi
 
       - name: Job summary
         if: always()
         run: |
           op="${{ steps.cpr.outputs.pull-request-operation }}"
-          if [ -z "$op" ] || [ "$op" = "none" ]; then
-            echo "✅ Data already current for the newest published month — nothing to merge." >> "$GITHUB_STEP_SUMMARY"
-          else
+          status="${{ job.status }}"
+          if [ "$status" = "cancelled" ]; then
+            echo "🚫 Run cancelled — no alarm filed (cancellation is a human decision)." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$status" != "success" ]; then
+            echo "❌ Refresh failed — an alarm issue was filed/updated. See the failed step's log." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$op" = "created" ] || [ "$op" = "updated" ]; then
             echo "✅ Refreshed data merged via PR #${{ steps.cpr.outputs.pull-request-number }} (op: $op)." >> "$GITHUB_STEP_SUMMARY"
+          elif [ "$op" = "closed" ]; then
+            echo "♻️ Stale refresh PR closed (its diff disappeared) — nothing to merge." >> "$GITHUB_STEP_SUMMARY"
+          else
+            # Note: scheduled runs restamp generatedAt with the run date, so on
+            # different days the diff is never empty — this branch is reachable
+            # mainly by a same-day re-dispatch.
+            echo "✅ Data already current for the newest published month — nothing to merge." >> "$GITHUB_STEP_SUMMARY"
           fi
