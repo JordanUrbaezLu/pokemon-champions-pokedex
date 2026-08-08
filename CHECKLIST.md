@@ -346,6 +346,26 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   Dead `move.spreadHit` assignments removed (verified no-ops). tsc/lint/80 tests/audit/build (248
   pages) green + 375px screenshots of both sheet variants, the single-target control case and /calc.
 
+- ✅ **2026-08-08 data refresh (Smogon 2026-07) + the two calc bugs it exposed.** Routine `npm run refresh`
+  onto the newly-published month (still Reg M-B, no rotation): 1.16M → **1.76M battles**, 282 Master+
+  profiles (276 with KO benchmarks), 301 all-ranks, 14 meta teams. Meta moved a lot — **Kingambit
+  24.6→36.8%** (now #1) and **Mega Charizard Y 17.9→30.6%** lead the risers (Venusaur +4.8, Mega Aerodactyl
+  +4.6 — sun is up); rain/trick-room slid (Pelipper −5.7, Mega Swampert −6.1, Sinistcha 33.2→26.1%,
+  Mega Metagross −6.9). **The re-bake turned `damage.test.ts` red, and it was RIGHT twice over:**
+  ① **Body Press** attacked with the user's **Atk** instead of its **Def** (Mega Metagross overstated ~16%);
+  ② **Knock Off** never applied its **×1.5 vs a target holding a removable item** (understated ~33%). Both
+  had been wrong since the engine shipped and were invisible only because Group A's sample (top-34
+  attackers × top-5 moves) had never picked those combos up — the ladder shifting is what surfaced them.
+  33 meta mons run Body Press, 43 run Knock Off. Fixed in `damage.ts`, with `isMegaStone` for the one
+  un-knockable item (Mega Stone on its own Mega); @smogon/calc can't referee that (Champions invents its
+  own stones), so the predicate is pinned against the baked item pool instead. **Guards added:** 5 hand-built
+  Group-B pins (Body Press ±Def boost, Knock Off with item / without / vs a Mega Stone) + 2 `isMegaStone`
+  tests — all verified to go red when each fix is reverted, so neither can hide behind the sample again.
+  **Bug found while verifying:** a `<select>` whose value matches no option renders as the first one, so
+  every Mega's Item field in /calc read **"None"** while the mon actually held its stone (one tap discarded
+  it) — `itemOptions` now appends any held item the fixed `ITEMS` list lacks. 87 tests (was 80) · tsc ·
+  lint · online audit (299 usages cross-checked, 0 mismatched) · build 248 pages · 375px screenshot.
+
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as
   repo bloat vs the ~80ms prod nav already in place)

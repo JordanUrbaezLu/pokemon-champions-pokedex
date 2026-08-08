@@ -162,6 +162,23 @@ That's the entire contract. The weekly Action runs `refresh` and opens/auto-merg
   `field.gameType`. Setting it was a verified no-op (identical 16-roll arrays); both call sites are gone.
   Consequence: the baked KO benchmarks in `competitive.json` were ALWAYS already ×0.75-reduced for spread
   moves (verified 208/208 rows), which is what the move sheet labels "×0.75 already applied".
+- **`damage.test.ts`'s meta sweep only covers the moves the CURRENT month happens to sample.** Group A
+  walks the top-34 attackers × their top-5 moves, so a move nobody in that slice runs is UNTESTED, not
+  correct. Two were silently wrong until the 2026-07 re-bake moved the ladder: **Body Press** (attacks with
+  the user's **Def**, not Atk — was overstating Mega Metagross ~16%) and **Knock Off** (**×1.5 BP** when the
+  target holds a removable item — was understating it ~33%; 33 and 43 meta mons run them). Both are now
+  hand-pinned in Group B so the sample's luck can't hide them again. **When a re-bake turns the parity test
+  red, suspect a real port gap before suspecting the data.**
+- Knock Off's 1.5× needs "is the item removable", and in this format the only un-removable one is a **Mega
+  Stone** held by its own Mega. `isMegaStone` (damage.ts) decides by name: ends in `-ite` (+ optional X/Y),
+  minus **Eviolite**, the one selectable item that ends the same way. @smogon/calc can't be the oracle —
+  it has never heard of Champions-original stones (Chimechite, Scovillainite, Meganiumite…) — so the test
+  pins the rule against the baked pool: an item ends in `-ite` **iff** only Mega forms ever hold it.
+- A `<select>` whose `value` matches **no `<option>` renders as the FIRST option**, silently. Mega presets
+  carry their stone (`items[0]` is 100% Metagrossite/etc.) but `Calc.tsx`'s fixed `ITEMS` list has no
+  stones, so every Mega's Item field read **"None"** while the mon really held the stone — and one tap
+  threw it away. `itemOptions` now appends any held item the list lacks. Check this whenever a baked value
+  feeds a fixed-option select.
 - **Champions Stat Points, not EVs.** Real sets use Stat Points (≤32/stat, 66 total); the mapping is
   the app's own (`generate-competitive.mjs:parseSpread`): **`EV = min(252, SP × 8)`**, trimmed ≤508.
   `stat-points.ts` is the single home for it. So `competitive.json.spread.evs` is EV-space (252-style)

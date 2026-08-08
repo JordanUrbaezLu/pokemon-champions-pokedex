@@ -16,7 +16,7 @@ import { describe, it, expect } from "vitest";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
 import competitive from "../data/generated/competitive.json";
 import dataset from "../data/generated/pokemon.json";
-import { computeDamage, moveToCalcMove, type CalcPokemon } from "./damage";
+import { computeDamage, isMegaStone, moveToCalcMove, type CalcPokemon } from "./damage";
 import { isSpreadMove } from "./spread";
 import type { MoveSummary, PokemonType } from "./types";
 
@@ -283,6 +283,16 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
     { name: "Light Screen (doubles)", atk: "Charizard", def: "Incineroar", move: "flamethrower", field: new Field({ gameType: "Doubles", defenderSide: { isLightScreen: true } }) },
     { name: "Helping Hand", atk: "Garchomp", def: "Incineroar", move: "earthquake", field: new Field({ gameType: "Doubles", attackerSide: { isHelpingHand: true } }) },
     { name: "Sun boosts Fire", atk: "Charizard", def: "Incineroar", move: "flamethrower", field: new Field({ gameType: "Doubles", weather: "Sun" }) },
+    // Moves that swap which stat attacks / how BP is set. These two shipped
+    // WRONG for months purely because the meta sample above never happened to
+    // pick them up (Body Press only reached the sample when Mega Metagross
+    // climbed the ladder), so they are pinned by hand here — not left to the
+    // sample's luck.
+    { name: "Body Press (attacks with user's Def)", atk: "Garchomp", def: "Incineroar", move: "body-press" },
+    { name: "Body Press +2 Def (Iron Defense combo)", atk: "Garchomp", def: "Incineroar", move: "body-press", atkBoosts: { def: 2 } },
+    { name: "Knock Off ×1.5 (target holds an item)", atk: "Garchomp", def: "Incineroar", move: "knock-off", dItem: "Sitrus Berry" },
+    { name: "Knock Off plain (target has no item)", atk: "Garchomp", def: "Incineroar", move: "knock-off" },
+    { name: "Knock Off plain (Mega Stone can't be removed)", atk: "Garchomp", def: "Charizard-Mega-Y", move: "knock-off", dItem: "Charizardite Y" },
     // Variable-power moves (BP from weight / speed).
     { name: "Low Kick (target weight)", atk: "Garchomp", def: "Kingambit", move: "low-kick" },
     { name: "Grass Knot (target weight)", atk: "Garchomp", def: "Kingambit", move: "grass-knot" },
@@ -325,4 +335,47 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
       expect(got, c.name).toEqual(expected);
     });
   }
+});
+
+// Knock Off's 1.5× hinges entirely on "is this item removable", and in this
+// format the only un-removable item is a Mega Stone. `isMegaStone` decides that
+// by name, so this pins the naming rule against the app's own item pool: an
+// item ends in "-ite" if and only if only Mega forms are ever seen holding it.
+// (Champions invents its own stones — Chimechite, Scovillainite, Meganiumite —
+// which @smogon/calc's item table doesn't know, so the data IS the oracle here.)
+describe("isMegaStone — the un-knockable-item rule", () => {
+  it("matches which items only Mega forms hold, across both brackets", () => {
+    const holders = new Map<string, string[]>();
+    for (const bracket of Object.values(competitive.brackets) as any[]) {
+      for (const [slug, p] of Object.entries(bracket) as [string, any][]) {
+        for (const it of p.items ?? []) {
+          const list = holders.get(it.displayName) ?? [];
+          list.push(p.smogonName ?? slug);
+          holders.set(it.displayName, list);
+        }
+      }
+    }
+    expect(holders.size).toBeGreaterThan(50);
+
+    const wrong: string[] = [];
+    let stones = 0;
+    for (const [item, mons] of holders) {
+      const megaOnly = mons.every((m) => /-Mega|-Primal/.test(m));
+      if (megaOnly) stones++;
+      if (isMegaStone(item) !== megaOnly) {
+        wrong.push(`${item}: isMegaStone=${isMegaStone(item)} but held by ${mons.slice(0, 3).join(", ")}`);
+      }
+    }
+    expect(stones).toBeGreaterThan(20);
+    expect(wrong, `\n${wrong.join("\n")}`).toEqual([]);
+  });
+
+  it("does not mistake Eviolite for a Mega Stone", () => {
+    // The one selectable item that ends in "-ite" without being a stone; if it
+    // were misread, Knock Off would silently lose its 1.5× against Eviolite users.
+    expect(isMegaStone("Eviolite")).toBe(false);
+    expect(isMegaStone(null)).toBe(false);
+    expect(isMegaStone("Charizardite Y")).toBe(true);
+    expect(isMegaStone("Metagrossite")).toBe(true);
+  });
 });
