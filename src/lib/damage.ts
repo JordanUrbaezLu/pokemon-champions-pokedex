@@ -163,6 +163,27 @@ export const VARIABLE_MOVES = new Set([
   "grassknot", "lowkick", "heavyslam", "heatcrash", "gyroball", "electroball",
 ]);
 
+/**
+ * Knock Off only gets its 1.5× when there is an item it can actually remove.
+ * In this format the sole unremovable item is a **Mega Stone** held by its own
+ * Mega — and every Mega Stone name ends in "-ite" (optionally with an X/Y
+ * suffix: Charizardite Y, Raichunite X). `Eviolite` is the one item in the pool
+ * that ends the same way and is NOT a stone, so it is excluded by name.
+ *
+ * Champions invents its own stones (Chimechite, Scovillainite, Meganiumite…)
+ * that @smogon/calc's item table has never heard of, so the library can't be the
+ * oracle here — `damage.test.ts` instead pins the rule against the baked item
+ * pool: an item ends in "-ite" iff only Mega forms are ever seen holding it.
+ */
+const NOT_A_MEGA_STONE = new Set(["eviolite"]);
+
+export function isMegaStone(item: string | null | undefined): boolean {
+  if (!item) return false;
+  const id = stripId(item);
+  if (NOT_A_MEGA_STONE.has(id)) return false;
+  return /ite[xy]?$/.test(id);
+}
+
 /** Grass Knot / Low Kick: base power by the TARGET's weight (kg). */
 function weightBP(kg: number): number {
   if (kg >= 200) return 120;
@@ -298,6 +319,11 @@ export function computeDamage(
   const bpMods: number[] = [];
   // Acrobatics doubles when the user is holding no item.
   if (has(move.name, "Acrobatics") && !attacker.item) bpMods.push(8192);
+  // Knock Off is 1.5× only when the target actually has an item to lose — no
+  // item (or an un-knockable Mega Stone) leaves it at its plain 65 BP.
+  if (has(move.name, "Knock Off") && defender.item && !isMegaStone(defender.item)) {
+    bpMods.push(6144);
+  }
   if (field.helpingHand) bpMods.push(6144);
   if (has(attacker.ability, "Technician") && bp <= 60) bpMods.push(6144);
   if (has(attacker.ability, "Sheer Force") && move.hasSecondary) bpMods.push(5325);
@@ -307,7 +333,10 @@ export function computeDamage(
   // --- attack stat --------------------------------------------------------------
   // Foul Play uses the DEFENDER's Attack stat (+ its boosts); the attacker's
   // own abilities/items (Choice Band, Guts, …) still apply via the mod chain.
-  const atkStat: BoostStat = physical ? "atk" : "spa";
+  // Body Press is a Physical move that attacks with the USER's Defense stat
+  // (its own Def boosts included — that's the Iron Defense combo).
+  const bodyPress = physical && has(move.name, "Body Press");
+  const atkStat: BoostStat = bodyPress ? "def" : physical ? "atk" : "spa";
   const foulPlay = physical && has(move.name, "Foul Play");
   let attack = (foulPlay ? dStats : aStats)[atkStat];
   const atkBoost = (foulPlay ? defender.boosts : attacker.boosts)?.[atkStat] ?? 0;

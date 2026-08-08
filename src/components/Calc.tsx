@@ -446,6 +446,18 @@ function MonCard({
   const pickForm = (i: number) => setState(defaultMon(entry, i));
   const patch = (p: Partial<MonState>) => setState({ ...state, ...p });
 
+  // A Mega's baked set holds its Mega Stone, which isn't in the generic ITEMS
+  // list — and a <select> whose value matches no <option> renders as the FIRST
+  // one. So Mega Metagross silently read "None" while really holding
+  // Metagrossite: the field lied, and one tap on it threw the stone away.
+  // Any held item the list doesn't already carry gets appended.
+  const itemOptions = useMemo(() => {
+    const extra = [state.item, form.preset?.item].filter(
+      (it): it is string => !!it && !(ITEMS as readonly string[]).includes(it),
+    );
+    return extra.length ? [...ITEMS, ...new Set(extra)] : (ITEMS as readonly string[]);
+  }, [state.item, form.preset?.item]);
+
   // Saving appends to a section that may be off-screen (or not exist yet) —
   // without an on-the-spot confirmation, three hopeful taps mint three
   // duplicate sets. The glyph flips to ✓ "saved" for a beat instead.
@@ -551,7 +563,7 @@ function MonCard({
         </Field>
         <Field label="Item">
           <Select value={state.item} onChange={(v) => patch({ item: v })}>
-            {ITEMS.map((it) => <option key={it} value={it}>{it}</option>)}
+            {itemOptions.map((it) => <option key={it} value={it}>{it}</option>)}
           </Select>
         </Field>
         <Field label={`Nature${nat ? ` +${nat.up}/−${nat.down}` : ""}`}>
