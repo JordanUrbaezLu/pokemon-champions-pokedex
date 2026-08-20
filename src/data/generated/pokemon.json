@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-17",
+  "generatedAt": "2026-08-20",
   "pokemon": [
     {
       "id": 3,
@@ -1544,16 +1544,16 @@
       },
       "abilities": [
         {
-          "name": "chlorophyll",
-          "displayName": "Chlorophyll",
-          "isHidden": false,
-          "shortEffect": "Doubles Speed during strong sunlight."
-        },
-        {
           "name": "effect-spore",
           "displayName": "Effect Spore",
           "isHidden": true,
           "shortEffect": "Has a 30% chance of inflcting either paralysis, poison, or sleep on attacking Pokémon on contact."
+        },
+        {
+          "name": "chlorophyll",
+          "displayName": "Chlorophyll",
+          "isHidden": false,
+          "shortEffect": "Doubles Speed during strong sunlight."
         }
       ],
       "heightM": 1.2,
@@ -1741,16 +1741,16 @@
       },
       "abilities": [
         {
-          "name": "intimidate",
-          "displayName": "Intimidate",
-          "isHidden": false,
-          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
-        },
-        {
           "name": "flash-fire",
           "displayName": "Flash Fire",
           "isHidden": false,
           "shortEffect": "Protects against Fire moves. Once one has been blocked, the Pokémon's own Fire moves inflict 1.5× damage until it leaves battle."
+        },
+        {
+          "name": "intimidate",
+          "displayName": "Intimidate",
+          "isHidden": false,
+          "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
         },
         {
           "name": "rock-head",
@@ -4881,16 +4881,16 @@
       },
       "abilities": [
         {
-          "name": "thick-fat",
-          "displayName": "Thick Fat",
-          "isHidden": false,
-          "shortEffect": "Halves damage from Fire and Ice moves."
-        },
-        {
           "name": "huge-power",
           "displayName": "Huge Power",
           "isHidden": false,
           "shortEffect": "Doubles Attack in battle."
+        },
+        {
+          "name": "thick-fat",
+          "displayName": "Thick Fat",
+          "isHidden": false,
+          "shortEffect": "Halves damage from Fire and Ice moves."
         },
         {
           "name": "sap-sipper",
@@ -4992,10 +4992,10 @@
       },
       "abilities": [
         {
-          "name": "water-absorb",
-          "displayName": "Water Absorb",
-          "isHidden": false,
-          "shortEffect": "Absorbs Water moves, healing for 1/4 max HP."
+          "name": "drizzle",
+          "displayName": "Drizzle",
+          "isHidden": true,
+          "shortEffect": "Summons rain that lasts indefinitely upon entering battle."
         },
         {
           "name": "damp",
@@ -5004,10 +5004,10 @@
           "shortEffect": "Prevents Self-Destruct, Explosion, and Aftermath from working while the Pokémon is in battle."
         },
         {
-          "name": "drizzle",
-          "displayName": "Drizzle",
-          "isHidden": true,
-          "shortEffect": "Summons rain that lasts indefinitely upon entering battle."
+          "name": "water-absorb",
+          "displayName": "Water Absorb",
+          "isHidden": false,
+          "shortEffect": "Absorbs Water moves, healing for 1/4 max HP."
         }
       ],
       "heightM": 1.1,
@@ -6944,16 +6944,16 @@
       },
       "abilities": [
         {
-          "name": "torrent",
-          "displayName": "Torrent",
-          "isHidden": false,
-          "shortEffect": "Strengthens Water moves to inflict 1.5× damage at 1/3 max HP or less."
-        },
-        {
           "name": "damp",
           "displayName": "Damp",
           "isHidden": true,
           "shortEffect": "Prevents Self-Destruct, Explosion, and Aftermath from working while the Pokémon is in battle."
+        },
+        {
+          "name": "torrent",
+          "displayName": "Torrent",
+          "isHidden": false,
+          "shortEffect": "Strengthens Water moves to inflict 1.5× damage at 1/3 max HP or less."
         }
       ],
       "heightM": 1.5,
@@ -8583,6 +8583,12 @@
       },
       "abilities": [
         {
+          "name": "cute-charm",
+          "displayName": "Cute Charm",
+          "isHidden": true,
+          "shortEffect": "Has a 30% chance of infatuating attacking Pokémon on contact."
+        },
+        {
           "name": "marvel-scale",
           "displayName": "Marvel Scale",
           "isHidden": false,
@@ -8593,12 +8599,6 @@
           "displayName": "Competitive",
           "isHidden": false,
           "shortEffect": "Raises Special Attack by two stages upon having any stat lowered."
-        },
-        {
-          "name": "cute-charm",
-          "displayName": "Cute Charm",
-          "isHidden": true,
-          "shortEffect": "Has a 30% chance of infatuating attacking Pokémon on contact."
         }
       ],
       "heightM": 6.2,
@@ -11064,16 +11064,16 @@
       },
       "abilities": [
         {
-          "name": "snow-warning",
-          "displayName": "Snow Warning",
-          "isHidden": false,
-          "shortEffect": "Summons hail that lasts indefinitely upon entering battle."
-        },
-        {
           "name": "soundproof",
           "displayName": "Soundproof",
           "isHidden": true,
           "shortEffect": "Protects against sound-based moves."
+        },
+        {
+          "name": "snow-warning",
+          "displayName": "Snow Warning",
+          "isHidden": false,
+          "shortEffect": "Summons hail that lasts indefinitely upon entering battle."
         }
       ],
       "heightM": 2.2,
@@ -11876,16 +11876,16 @@
           "shortEffect": "Raises Speed one stage upon flinching."
         },
         {
-          "name": "sharpness",
-          "displayName": "Sharpness",
-          "isHidden": false,
-          "shortEffect": "Powers up slicing moves."
-        },
-        {
           "name": "justified",
           "displayName": "Justified",
           "isHidden": true,
           "shortEffect": "Raises Attack one stage upon taking damage from a Dark move."
+        },
+        {
+          "name": "sharpness",
+          "displayName": "Sharpness",
+          "isHidden": false,
+          "shortEffect": "Powers up slicing moves."
         }
       ],
       "heightM": 1.6,
@@ -13300,16 +13300,16 @@
       },
       "abilities": [
         {
-          "name": "gluttony",
-          "displayName": "Gluttony",
-          "isHidden": false,
-          "shortEffect": "Makes the Pokémon eat any held Berry triggered by low HP below 1/2 its max HP."
-        },
-        {
           "name": "overgrow",
           "displayName": "Overgrow",
           "isHidden": true,
           "shortEffect": "Strengthens Grass moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        {
+          "name": "gluttony",
+          "displayName": "Gluttony",
+          "isHidden": false,
+          "shortEffect": "Makes the Pokémon eat any held Berry triggered by low HP below 1/2 its max HP."
         }
       ],
       "heightM": 1.1,
@@ -13671,6 +13671,12 @@
       },
       "abilities": [
         {
+          "name": "mold-breaker",
+          "displayName": "Mold Breaker",
+          "isHidden": true,
+          "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
+        },
+        {
           "name": "sand-rush",
           "displayName": "Sand Rush",
           "isHidden": false,
@@ -13681,12 +13687,6 @@
           "displayName": "Sand Force",
           "isHidden": false,
           "shortEffect": "Strengthens Rock, Ground, and Steel moves to 1.3× their power during a sandstorm. Protects against sandstorm damage."
-        },
-        {
-          "name": "mold-breaker",
-          "displayName": "Mold Breaker",
-          "isHidden": true,
-          "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
         }
       ],
       "heightM": 0.7,
@@ -13947,16 +13947,16 @@
           "shortEffect": "Increases Attack to 1.5× with a major status ailment."
         },
         {
-          "name": "sheer-force",
-          "displayName": "Sheer Force",
-          "isHidden": false,
-          "shortEffect": "Strengthens moves with extra effects to 1.3× their power, but prevents their extra effects."
-        },
-        {
           "name": "iron-fist",
           "displayName": "Iron Fist",
           "isHidden": true,
           "shortEffect": "Strengthens punch-based moves to 1.2× their power."
+        },
+        {
+          "name": "sheer-force",
+          "displayName": "Sheer Force",
+          "isHidden": false,
+          "shortEffect": "Strengthens moves with extra effects to 1.3× their power, but prevents their extra effects."
         }
       ],
       "heightM": 1.4,
@@ -14048,6 +14048,12 @@
       },
       "abilities": [
         {
+          "name": "speed-boost",
+          "displayName": "Speed Boost",
+          "isHidden": true,
+          "shortEffect": "Raises Speed one stage after each turn."
+        },
+        {
           "name": "poison-point",
           "displayName": "Poison Point",
           "isHidden": false,
@@ -14058,12 +14064,6 @@
           "displayName": "Swarm",
           "isHidden": false,
           "shortEffect": "Strengthens Bug moves to inflict 1.5× damage at 1/3 max HP or less."
-        },
-        {
-          "name": "speed-boost",
-          "displayName": "Speed Boost",
-          "isHidden": true,
-          "shortEffect": "Raises Speed one stage after each turn."
         }
       ],
       "heightM": 2.5,
@@ -14177,10 +14177,10 @@
       },
       "abilities": [
         {
-          "name": "prankster",
-          "displayName": "Prankster",
-          "isHidden": false,
-          "shortEffect": "Raises non-damaging moves' priority by one stage."
+          "name": "chlorophyll",
+          "displayName": "Chlorophyll",
+          "isHidden": true,
+          "shortEffect": "Doubles Speed during strong sunlight."
         },
         {
           "name": "infiltrator",
@@ -14189,10 +14189,10 @@
           "shortEffect": "Bypasses Light Screen, Reflect, and Safeguard."
         },
         {
-          "name": "chlorophyll",
-          "displayName": "Chlorophyll",
-          "isHidden": true,
-          "shortEffect": "Doubles Speed during strong sunlight."
+          "name": "prankster",
+          "displayName": "Prankster",
+          "isHidden": false,
+          "shortEffect": "Raises non-damaging moves' priority by one stage."
         }
       ],
       "heightM": 0.7,
@@ -14652,16 +14652,16 @@
           "shortEffect": "Has a 10% chance of making target Pokémon flinch with each hit."
         },
         {
-          "name": "weak-armor",
-          "displayName": "Weak Armor",
-          "isHidden": false,
-          "shortEffect": "Raises Speed and lowers Defense by one stage each upon being hit by a physical move."
-        },
-        {
           "name": "aftermath",
           "displayName": "Aftermath",
           "isHidden": true,
           "shortEffect": "Damages the attacker for 1/4 its max HP when knocked out by a contact move."
+        },
+        {
+          "name": "weak-armor",
+          "displayName": "Weak Armor",
+          "isHidden": false,
+          "shortEffect": "Raises Speed and lowers Defense by one stage each upon being hit by a physical move."
         }
       ],
       "heightM": 1.9,
@@ -14954,16 +14954,16 @@
       },
       "abilities": [
         {
-          "name": "overcoat",
-          "displayName": "Overcoat",
-          "isHidden": false,
-          "shortEffect": "Protects against damage from weather."
-        },
-        {
           "name": "magic-guard",
           "displayName": "Magic Guard",
           "isHidden": false,
           "shortEffect": "Protects against damage not directly caused by a move."
+        },
+        {
+          "name": "overcoat",
+          "displayName": "Overcoat",
+          "isHidden": false,
+          "shortEffect": "Protects against damage from weather."
         },
         {
           "name": "regenerator",
@@ -15624,12 +15624,6 @@
       },
       "abilities": [
         {
-          "name": "static",
-          "displayName": "Static",
-          "isHidden": false,
-          "shortEffect": "Has a 30% chance of paralyzing attacking Pokémon on contact."
-        },
-        {
           "name": "limber",
           "displayName": "Limber",
           "isHidden": false,
@@ -15640,6 +15634,12 @@
           "displayName": "Sand Veil",
           "isHidden": true,
           "shortEffect": "Increases evasion to 1.25× during a sandstorm. Protects against sandstorm damage."
+        },
+        {
+          "name": "static",
+          "displayName": "Static",
+          "isHidden": false,
+          "shortEffect": "Has a 30% chance of paralyzing attacking Pokémon on contact."
         }
       ],
       "heightM": 0.7,
@@ -16790,16 +16790,16 @@
       },
       "abilities": [
         {
-          "name": "shield-dust",
-          "displayName": "Shield Dust",
-          "isHidden": false,
-          "shortEffect": "Protects against incoming moves' extra effects."
-        },
-        {
           "name": "compound-eyes",
           "displayName": "Compound Eyes",
           "isHidden": false,
           "shortEffect": "Increases moves' accuracy to 1.3×."
+        },
+        {
+          "name": "shield-dust",
+          "displayName": "Shield Dust",
+          "isHidden": false,
+          "shortEffect": "Protects against incoming moves' extra effects."
         },
         {
           "name": "friend-guard",
@@ -20026,16 +20026,16 @@
       },
       "abilities": [
         {
-          "name": "blaze",
-          "displayName": "Blaze",
-          "isHidden": false,
-          "shortEffect": "Strengthens Fire moves to inflict 1.5× damage at 1/3 max HP or less."
-        },
-        {
           "name": "intimidate",
           "displayName": "Intimidate",
           "isHidden": true,
           "shortEffect": "Lowers opponents' Attack one stage upon entering battle."
+        },
+        {
+          "name": "blaze",
+          "displayName": "Blaze",
+          "isHidden": false,
+          "shortEffect": "Strengthens Fire moves to inflict 1.5× damage at 1/3 max HP or less."
         }
       ],
       "heightM": 1.8,
@@ -20605,12 +20605,6 @@
       },
       "abilities": [
         {
-          "name": "merciless",
-          "displayName": "Merciless",
-          "isHidden": false,
-          "shortEffect": "This Pokémon's moves critical hit against poisoned targets."
-        },
-        {
           "name": "limber",
           "displayName": "Limber",
           "isHidden": false,
@@ -20621,6 +20615,12 @@
           "displayName": "Regenerator",
           "isHidden": true,
           "shortEffect": "Heals for 1/3 max HP upon switching out."
+        },
+        {
+          "name": "merciless",
+          "displayName": "Merciless",
+          "isHidden": false,
+          "shortEffect": "This Pokémon's moves critical hit against poisoned targets."
         }
       ],
       "heightM": 0.7,
@@ -20792,16 +20792,16 @@
       },
       "abilities": [
         {
-          "name": "water-bubble",
-          "displayName": "Water Bubble",
-          "isHidden": false,
-          "shortEffect": "Halves damage from Fire moves, doubles damage of Water moves, and prevents burns."
-        },
-        {
           "name": "water-absorb",
           "displayName": "Water Absorb",
           "isHidden": true,
           "shortEffect": "Absorbs Water moves, healing for 1/4 max HP."
+        },
+        {
+          "name": "water-bubble",
+          "displayName": "Water Bubble",
+          "isHidden": false,
+          "shortEffect": "Halves damage from Fire moves, doubles damage of Water moves, and prevents burns."
         }
       ],
       "heightM": 1.8,
@@ -21542,12 +21542,6 @@
       },
       "abilities": [
         {
-          "name": "bulletproof",
-          "displayName": "Bulletproof",
-          "isHidden": false,
-          "shortEffect": "Protects against bullet, ball, and bomb-based moves."
-        },
-        {
           "name": "soundproof",
           "displayName": "Soundproof",
           "isHidden": false,
@@ -21558,6 +21552,12 @@
           "displayName": "Overcoat",
           "isHidden": true,
           "shortEffect": "Protects against damage from weather."
+        },
+        {
+          "name": "bulletproof",
+          "displayName": "Bulletproof",
+          "isHidden": false,
+          "shortEffect": "Protects against bullet, ball, and bomb-based moves."
         }
       ],
       "heightM": 1.6,
@@ -22046,16 +22046,16 @@
       },
       "abilities": [
         {
-          "name": "weak-armor",
-          "displayName": "Weak Armor",
-          "isHidden": false,
-          "shortEffect": "Raises Speed and lowers Defense by one stage each upon being hit by a physical move."
-        },
-        {
           "name": "cursed-body",
           "displayName": "Cursed Body",
           "isHidden": true,
           "shortEffect": "Has a 30% chance of Disabling any move that hits the Pokémon."
+        },
+        {
+          "name": "weak-armor",
+          "displayName": "Weak Armor",
+          "isHidden": false,
+          "shortEffect": "Raises Speed and lowers Defense by one stage each upon being hit by a physical move."
         }
       ],
       "heightM": 0.2,
@@ -22589,16 +22589,16 @@
       },
       "abilities": [
         {
-          "name": "sweet-veil",
-          "displayName": "Sweet Veil",
-          "isHidden": false,
-          "shortEffect": "Prevents friendly Pokémon from sleeping."
-        },
-        {
           "name": "aroma-veil",
           "displayName": "Aroma Veil",
           "isHidden": true,
           "shortEffect": "Protects allies against moves that affect their mental state."
+        },
+        {
+          "name": "sweet-veil",
+          "displayName": "Sweet Veil",
+          "isHidden": false,
+          "shortEffect": "Prevents friendly Pokémon from sleeping."
         }
       ],
       "heightM": 0.3,
@@ -23865,6 +23865,12 @@
       },
       "abilities": [
         {
+          "name": "technician",
+          "displayName": "Technician",
+          "isHidden": true,
+          "shortEffect": "Strengthens moves of 60 base power or less to 1.5× their power."
+        },
+        {
           "name": "friend-guard",
           "displayName": "Friend Guard",
           "isHidden": false,
@@ -23875,12 +23881,6 @@
           "displayName": "Cheek Pouch",
           "isHidden": false,
           "shortEffect": "Restores HP upon eating a Berry, in addition to the Berry's effect."
-        },
-        {
-          "name": "technician",
-          "displayName": "Technician",
-          "isHidden": true,
-          "shortEffect": "Strengthens moves of 60 base power or less to 1.5× their power."
         }
       ],
       "heightM": 0.3,
@@ -24559,16 +24559,16 @@
       },
       "abilities": [
         {
-          "name": "mold-breaker",
-          "displayName": "Mold Breaker",
-          "isHidden": false,
-          "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
-        },
-        {
           "name": "own-tempo",
           "displayName": "Own Tempo",
           "isHidden": false,
           "shortEffect": "Prevents confusion."
+        },
+        {
+          "name": "mold-breaker",
+          "displayName": "Mold Breaker",
+          "isHidden": false,
+          "shortEffect": "Bypasses targets' abilities if they could hinder or prevent a move."
         },
         {
           "name": "pickpocket",
@@ -25181,6 +25181,12 @@
       },
       "abilities": [
         {
+          "name": "sap-sipper",
+          "displayName": "Sap Sipper",
+          "isHidden": true,
+          "shortEffect": "Absorbs Grass moves, raising Attack one stage."
+        },
+        {
           "name": "cud-chew",
           "displayName": "Cud Chew",
           "isHidden": false,
@@ -25191,12 +25197,6 @@
           "displayName": "Armor Tail",
           "isHidden": false,
           "shortEffect": "Prevents the opponent from using any moves that have priority, such as Quick Attack."
-        },
-        {
-          "name": "sap-sipper",
-          "displayName": "Sap Sipper",
-          "isHidden": true,
-          "shortEffect": "Absorbs Grass moves, raising Attack one stage."
         }
       ],
       "heightM": 3.2,
@@ -25547,16 +25547,16 @@
       },
       "abilities": [
         {
-          "name": "stamina",
-          "displayName": "Stamina",
-          "isHidden": false,
-          "shortEffect": "Raises this Pokémon's Defense by one stage when it takes damage from a move."
-        },
-        {
           "name": "sturdy",
           "displayName": "Sturdy",
           "isHidden": false,
           "shortEffect": "Prevents being KOed from full HP, leaving 1 HP instead. Protects against the one-hit KO moves regardless of HP."
+        },
+        {
+          "name": "stamina",
+          "displayName": "Stamina",
+          "isHidden": false,
+          "shortEffect": "Raises this Pokémon's Defense by one stage when it takes damage from a move."
         },
         {
           "name": "stalwart",
