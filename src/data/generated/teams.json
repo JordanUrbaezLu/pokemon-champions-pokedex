@@ -4,7 +4,7 @@
     "regulationLabel": "Reg M-B",
     "source": "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
     "sourceLabel": "Smogon Champions Reg M-B Sample Teams",
-    "generatedAt": "2026-08-31",
+    "generatedAt": "2026-09-03",
     "topN": 5,
     "count": 14
   },
@@ -21,7 +21,7 @@
       },
       "isRecreation": true,
       "pasteUrl": "https://pokepast.es/5045d4dfc5ec569b",
-      "metaFootprint": 138.6,
+      "metaFootprint": 131.8,
       "members": [
         {
           "slug": "garchomp",
@@ -50,7 +50,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 33.2
+          "usagePct": 32.2
         },
         {
           "slug": "farigiraf",
@@ -79,7 +79,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 20.2
+          "usagePct": 18.5
         },
         {
           "slug": "sylveon",
@@ -108,7 +108,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 17.5
+          "usagePct": 18.4
         },
         {
           "slug": "charizard",
@@ -138,7 +138,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "incineroar",
@@ -167,7 +167,7 @@
             "Parting Shot"
           ],
           "gender": "F",
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "aerodactyl",
@@ -196,7 +196,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 3.2
+          "usagePct": 2.6
         }
       ],
       "rank": 1
@@ -213,7 +213,7 @@
       },
       "isRecreation": true,
       "pasteUrl": "https://pokepast.es/167ae70e3741626d",
-      "metaFootprint": 105.8,
+      "metaFootprint": 91.6,
       "members": [
         {
           "slug": "venusaur",
@@ -242,7 +242,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 7.4
+          "usagePct": 8.6
         },
         {
           "slug": "grimmsnarl",
@@ -271,7 +271,7 @@
             "Parting Shot"
           ],
           "gender": null,
-          "usagePct": 10.4
+          "usagePct": 6.6
         },
         {
           "slug": "pelipper",
@@ -302,7 +302,7 @@
             "Wide Guard"
           ],
           "gender": null,
-          "usagePct": 12.9
+          "usagePct": 8.3
         },
         {
           "slug": "archaludon",
@@ -333,7 +333,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 14.3
+          "usagePct": 10.1
         },
         {
           "slug": "charizard",
@@ -363,7 +363,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "basculegion",
@@ -393,7 +393,7 @@
             "Aqua Jet"
           ],
           "gender": null,
-          "usagePct": 30.2
+          "usagePct": 31.5
         }
       ],
       "rank": 2
@@ -410,7 +410,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/1ca814417e498f42",
-      "metaFootprint": 161.9,
+      "metaFootprint": 165.3,
       "members": [
         {
           "slug": "aerodactyl",
@@ -441,7 +441,7 @@
             "Wide Guard"
           ],
           "gender": "M",
-          "usagePct": 9.9
+          "usagePct": 7.4
         },
         {
           "slug": "kingambit",
@@ -472,7 +472,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 36.8
+          "usagePct": 47.2
         },
         {
           "slug": "sylveon",
@@ -501,7 +501,7 @@
             "Quick Attack"
           ],
           "gender": "M",
-          "usagePct": 17.5
+          "usagePct": 18.4
         },
         {
           "slug": "garchomp",
@@ -531,7 +531,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 33.2
+          "usagePct": 32.2
         },
         {
           "slug": "charizard",
@@ -561,7 +561,7 @@
             "Weather Ball"
           ],
           "gender": "M",
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "incineroar",
@@ -590,7 +590,7 @@
             "Parting Shot"
           ],
           "gender": "M",
-          "usagePct": 33.9
+          "usagePct": 33.6
         }
       ],
       "rank": 3
@@ -607,7 +607,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/a17f2d13aa4796d8",
-      "metaFootprint": 113.1,
+      "metaFootprint": 106,
       "members": [
         {
           "slug": "charizard",
@@ -636,7 +636,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "venusaur",
@@ -665,7 +665,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 7.4
+          "usagePct": 8.6
         },
         {
           "slug": "mamoswine",
@@ -694,7 +694,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 2.9
+          "usagePct": 1.1
         },
         {
           "slug": "garchomp",
@@ -723,7 +723,7 @@
             "Stomping Tantrum"
           ],
           "gender": "M",
-          "usagePct": 33.2
+          "usagePct": 32.2
         },
         {
           "slug": "incineroar",
@@ -753,7 +753,7 @@
             "Fake Out"
           ],
           "gender": "M",
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "toxapex",
@@ -782,7 +782,7 @@
             "Baneful Bunker"
           ],
           "gender": "M",
-          "usagePct": 5.1
+          "usagePct": 4
         }
       ],
       "rank": 4
@@ -799,7 +799,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/a8f447c2e7790a1a",
-      "metaFootprint": 79.2,
+      "metaFootprint": 62,
       "members": [
         {
           "slug": "grimmsnarl",
@@ -828,7 +828,7 @@
             "Light Screen"
           ],
           "gender": "M",
-          "usagePct": 10.4
+          "usagePct": 6.6
         },
         {
           "slug": "swampert",
@@ -857,7 +857,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 8.5
+          "usagePct": 7.2
         },
         {
           "slug": "pelipper",
@@ -888,7 +888,7 @@
             "Wide Guard"
           ],
           "gender": "M",
-          "usagePct": 12.9
+          "usagePct": 8.3
         },
         {
           "slug": "archaludon",
@@ -918,7 +918,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 14.3
+          "usagePct": 10.1
         },
         {
           "slug": "sinistcha",
@@ -976,7 +976,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 7
+          "usagePct": 3.7
         }
       ],
       "rank": 5
@@ -993,7 +993,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/9839322d1ed7ceab",
-      "metaFootprint": 134.8,
+      "metaFootprint": 162,
       "members": [
         {
           "slug": "sneasler",
@@ -1022,7 +1022,7 @@
             "Quick Guard"
           ],
           "gender": "M",
-          "usagePct": 20.9
+          "usagePct": 31.4
         },
         {
           "slug": "blastoise",
@@ -1051,7 +1051,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 8.5
+          "usagePct": 10.9
         },
         {
           "slug": "kingambit",
@@ -1080,7 +1080,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 36.8
+          "usagePct": 47.2
         },
         {
           "slug": "incineroar",
@@ -1110,7 +1110,7 @@
             "Fake Out"
           ],
           "gender": "M",
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "delphox",
@@ -1140,7 +1140,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 8.6
+          "usagePct": 12.8
         },
         {
           "slug": "sinistcha",
@@ -1186,7 +1186,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/5004c67434e6f875",
-      "metaFootprint": 115,
+      "metaFootprint": 107.3,
       "members": [
         {
           "slug": "garchomp",
@@ -1215,7 +1215,7 @@
             "Stomping Tantrum"
           ],
           "gender": null,
-          "usagePct": 33.2
+          "usagePct": 32.2
         },
         {
           "slug": "venusaur",
@@ -1245,7 +1245,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 7.4
+          "usagePct": 8.6
         },
         {
           "slug": "incineroar",
@@ -1275,7 +1275,7 @@
             "Parting Shot"
           ],
           "gender": null,
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "charizard",
@@ -1305,7 +1305,7 @@
             "Helping Hand"
           ],
           "gender": null,
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "toxapex",
@@ -1334,7 +1334,7 @@
             "Baneful Bunker"
           ],
           "gender": null,
-          "usagePct": 5.1
+          "usagePct": 4
         },
         {
           "slug": "annihilape",
@@ -1364,7 +1364,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 4.8
+          "usagePct": 2.4
         }
       ],
       "rank": 7
@@ -1381,7 +1381,7 @@
       },
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/f40af08d4182d5cb",
-      "metaFootprint": 93.6,
+      "metaFootprint": 96.2,
       "members": [
         {
           "slug": "sinistcha",
@@ -1440,7 +1440,7 @@
             "Parting Shot"
           ],
           "gender": null,
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "milotic",
@@ -1469,7 +1469,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 7.1
+          "usagePct": 6
         },
         {
           "slug": "raichu",
@@ -1497,7 +1497,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 7
+          "usagePct": 11
         },
         {
           "slug": "floette",
@@ -1525,7 +1525,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 15
+          "usagePct": 17.1
         },
         {
           "slug": "ceruledge",
@@ -1554,7 +1554,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 4.5
+          "usagePct": 2.4
         }
       ],
       "rank": 8
@@ -1571,7 +1571,7 @@
       },
       "isRecreation": true,
       "pasteUrl": "https://pokepast.es/3aef3e8155dce8c5",
-      "metaFootprint": 78.2,
+      "metaFootprint": 75.6,
       "members": [
         {
           "slug": "pyroar",
@@ -1600,7 +1600,7 @@
             "Solar Beam"
           ],
           "gender": null,
-          "usagePct": 1.6
+          "usagePct": 1.2
         },
         {
           "slug": "vileplume",
@@ -1629,7 +1629,7 @@
             "Solar Beam"
           ],
           "gender": null,
-          "usagePct": 1.4
+          "usagePct": 0.4
         },
         {
           "slug": "torkoal",
@@ -1657,7 +1657,7 @@
             "Weather Ball"
           ],
           "gender": null,
-          "usagePct": 6.1
+          "usagePct": 4.8
         },
         {
           "slug": "incineroar",
@@ -1686,7 +1686,7 @@
             "Close Combat"
           ],
           "gender": null,
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "floette",
@@ -1714,7 +1714,7 @@
             "Draining Kiss"
           ],
           "gender": null,
-          "usagePct": 15
+          "usagePct": 17.1
         },
         {
           "slug": "farigiraf",
@@ -1743,7 +1743,7 @@
             "Thunderbolt"
           ],
           "gender": null,
-          "usagePct": 20.2
+          "usagePct": 18.5
         }
       ],
       "rank": 9
@@ -1756,7 +1756,7 @@
       "credit": null,
       "isRecreation": true,
       "pasteUrl": "https://pokepast.es/3195ce95fd71d16c",
-      "metaFootprint": 168.3,
+      "metaFootprint": 178,
       "members": [
         {
           "slug": "whimsicott",
@@ -1785,7 +1785,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 22.5
+          "usagePct": 23.5
         },
         {
           "slug": "charizard",
@@ -1814,7 +1814,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 30.6
+          "usagePct": 26.5
         },
         {
           "slug": "garchomp",
@@ -1844,7 +1844,7 @@
             "Earthquake"
           ],
           "gender": null,
-          "usagePct": 33.2
+          "usagePct": 32.2
         },
         {
           "slug": "floette",
@@ -1872,7 +1872,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 15
+          "usagePct": 17.1
         },
         {
           "slug": "basculegion",
@@ -1902,7 +1902,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 30.2
+          "usagePct": 31.5
         },
         {
           "slug": "kingambit",
@@ -1931,7 +1931,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 36.8
+          "usagePct": 47.2
         }
       ],
       "rank": 10
@@ -1944,7 +1944,7 @@
       "credit": null,
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/6b17aa37586a40ee",
-      "metaFootprint": 141.3,
+      "metaFootprint": 168.2,
       "members": [
         {
           "slug": "delphox",
@@ -1974,7 +1974,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 8.6
+          "usagePct": 12.8
         },
         {
           "slug": "floette",
@@ -2003,7 +2003,7 @@
             "Protect"
           ],
           "gender": "F",
-          "usagePct": 15
+          "usagePct": 17.1
         },
         {
           "slug": "sneasler",
@@ -2032,7 +2032,7 @@
             "Quick Guard"
           ],
           "gender": null,
-          "usagePct": 20.9
+          "usagePct": 31.4
         },
         {
           "slug": "incineroar",
@@ -2062,7 +2062,7 @@
             "Parting Shot"
           ],
           "gender": null,
-          "usagePct": 33.9
+          "usagePct": 33.6
         },
         {
           "slug": "sinistcha",
@@ -2121,7 +2121,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 36.8
+          "usagePct": 47.2
         }
       ],
       "rank": 11
@@ -2134,7 +2134,7 @@
       "credit": null,
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/96c8739cd552e6d8",
-      "metaFootprint": 115.4,
+      "metaFootprint": 126.7,
       "members": [
         {
           "slug": "blaziken",
@@ -2163,7 +2163,7 @@
             "Detect"
           ],
           "gender": null,
-          "usagePct": 3.1
+          "usagePct": 1.5
         },
         {
           "slug": "kingambit",
@@ -2194,7 +2194,7 @@
             "Iron Head"
           ],
           "gender": null,
-          "usagePct": 36.8
+          "usagePct": 47.2
         },
         {
           "slug": "basculegion",
@@ -2223,7 +2223,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 30.2
+          "usagePct": 31.5
         },
         {
           "slug": "ninetales-alola",
@@ -2283,7 +2283,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 4.9
+          "usagePct": 6.4
         },
         {
           "slug": "incineroar",
@@ -2312,7 +2312,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 33.9
+          "usagePct": 33.6
         }
       ],
       "rank": 12
@@ -2325,7 +2325,7 @@
       "credit": null,
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/9c81640ed1fd414e",
-      "metaFootprint": 94.7,
+      "metaFootprint": 122.7,
       "members": [
         {
           "slug": "froslass",
@@ -2355,7 +2355,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 3.7
+          "usagePct": 7.6
         },
         {
           "slug": "scovillain",
@@ -2385,7 +2385,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 3.1
+          "usagePct": 4.8
         },
         {
           "slug": "basculegion",
@@ -2415,7 +2415,7 @@
             "Protect"
           ],
           "gender": "M",
-          "usagePct": 30.2
+          "usagePct": 31.5
         },
         {
           "slug": "kingambit",
@@ -2444,7 +2444,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 36.8
+          "usagePct": 47.2
         },
         {
           "slug": "sneasler",
@@ -2473,7 +2473,7 @@
             "Fake Out"
           ],
           "gender": null,
-          "usagePct": 20.9
+          "usagePct": 31.4
         },
         {
           "slug": "lycanroc",
@@ -2501,7 +2501,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 0
+          "usagePct": 0.2
         }
       ],
       "rank": 13
@@ -2514,7 +2514,7 @@
       "credit": null,
       "isRecreation": false,
       "pasteUrl": "https://pokepast.es/e2cacc9d8e944e28",
-      "metaFootprint": 81.1,
+      "metaFootprint": 66.7,
       "members": [
         {
           "slug": "grimmsnarl",
@@ -2544,7 +2544,7 @@
             "Parting Shot"
           ],
           "gender": "M",
-          "usagePct": 10.4
+          "usagePct": 6.6
         },
         {
           "slug": "swampert",
@@ -2573,7 +2573,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 8.5
+          "usagePct": 7.2
         },
         {
           "slug": "pelipper",
@@ -2603,7 +2603,7 @@
             "Wide Guard"
           ],
           "gender": null,
-          "usagePct": 12.9
+          "usagePct": 8.3
         },
         {
           "slug": "archaludon",
@@ -2634,7 +2634,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 14.3
+          "usagePct": 10.1
         },
         {
           "slug": "venusaur",
@@ -2664,7 +2664,7 @@
             "Protect"
           ],
           "gender": null,
-          "usagePct": 4.8
+          "usagePct": 3
         },
         {
           "slug": "basculegion",
@@ -2693,7 +2693,7 @@
             "Flip Turn"
           ],
           "gender": "M",
-          "usagePct": 30.2
+          "usagePct": 31.5
         }
       ],
       "rank": 14
