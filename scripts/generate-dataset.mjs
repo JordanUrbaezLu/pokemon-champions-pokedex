@@ -34,6 +34,31 @@ const CONCURRENCY = 5;
 // every movepool no matter which source supplied them.
 const EXCLUDED_MOVES = new Set(["tera-blast", "tera-starstorm"]);
 
+/**
+ * Champions-only move STATS that the upstream sources don't carry.
+ *
+ * Division of labour, learned the hard way — get this wrong and you patch the
+ * wrong layer:
+ *   • Per-mon MOVEPOOLS already come from Serebii's Champions pages, so
+ *     legality changes need NO curation here. v1.2.0 removed Pound from
+ *     Politoed and Mirror Coat / Metal Burst from Archaludon, and a re-bake
+ *     picked all three up on its own (verified 2026-09-10). Same for a move
+ *     being switched ON — v1.2.0 enabled Slash, which arrives via Serebii.
+ *   • Global move stats (power/PP/accuracy) come from PokeAPI, which serves
+ *     MAINLINE values — it does not model Champions' balance patches. That is
+ *     the only gap this table fills.
+ *
+ * Champions does not share mainline's PP baselines (Wish/Strength Sap sat at
+ * 12 pre-patch where mainline has 10), so treat a value here as the game's
+ * number, not as a delta from PokeAPI.
+ * Source: Serebii's v1.2.0 patch notes, 2026-09-09.
+ */
+const CHAMPIONS_MOVE_OVERRIDES = {
+  // v1.2.0: "Wish and Strength Sap have both had PP reduced from 12 to 8."
+  wish: { pp: 8 },
+  "strength-sap": { pp: 8 },
+};
+
 /** Fetch JSON with patient retries — PokeAPI 5xx blips can last a while. */
 async function getJson(url, attempt = 1) {
   try {
@@ -88,7 +113,15 @@ function rosterDisplayName(slug) {
 // PokeAPI (a move's type/power/category is consistent across games).
 const SEREBII_BASE = "https://www.serebii.net/pokedex-champions";
 // roster.json normalizes Serebii's dotted slugs (mr.rime) for PokeAPI; map back.
-const SEREBII_SLUG = { "mr-rime": "mr.rime" };
+// Serebii slugs a name's punctuation instead of dropping it, so these don't
+// round-trip from our PokeAPI slugs. Missing one is silent: the page 404s and
+// the mon falls back to its full mainline movepool.
+const SEREBII_SLUG = {
+  "mr-rime": "mr.rime",
+  "mr-mime": "mr.mime",
+  farfetchd: "farfetch'd",
+  sirfetchd: "sirfetch'd",
+};
 const USER_AGENT = "Mozilla/5.0 (compatible; ChampionsPokedexBuild/1.0)";
 
 async function getText(url, attempt = 1) {
@@ -111,9 +144,16 @@ const slugifyMove = (s) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-// Variant roster entries (regional / Rotom appliance forms) have no Serebii
-// Champions page of their own — their moves live on the base species' page.
-const VARIANT_SUFFIX = /-(alola|galar|hisui|paldea|wash|heat|frost|mow|fan)(-.*)?$/;
+// Variant roster entries (regional / Rotom appliance / gender / plumage forms)
+// have no Serebii Champions page of their own — their moves live on the base
+// species' page, which is a multi-form UNION, so the caller intersects it with
+// the per-form PokeAPI/Showdown learnset (see `speciesFormCount` below).
+// The gender/plumage suffixes arrived with the v1.2.0 roster: Champions ships
+// both Indeedee, both Toxtricity and all four Squawkabilly, and PokeAPI has no
+// bare `indeedee`/`toxtricity`/`squawkabilly` entry to fall back on. Miss one
+// here and the mon silently gets the full MAINLINE movepool instead.
+const VARIANT_SUFFIX =
+  /-(alola|galar|hisui|paldea|wash|heat|frost|mow|fan|amped|low-key|male|female|(green|blue|yellow|white)-plumage)(-.*)?$/;
 const speciesPageSlug = (slug) => slug.replace(VARIANT_SUFFIX, "");
 
 // Cache Serebii pages by species so Ninetales + Alolan Ninetales fetch once.
@@ -272,6 +312,7 @@ async function buildMove(slug) {
     critRate: m.crit_rate || 0,
     minHits: m.min_hits ?? null,
     maxHits: m.max_hits ?? null,
+    ...(CHAMPIONS_MOVE_OVERRIDES[data.name] ?? {}),
   };
 }
 
@@ -393,6 +434,7 @@ function buildMoveFromShowdown(slug, sd) {
     minHits: Array.isArray(sd.multihit) ? sd.multihit[0] : sd.multihit ?? null,
     maxHits: Array.isArray(sd.multihit) ? sd.multihit[1] : sd.multihit ?? null,
     flags: showdownFlags(sd),
+    ...(CHAMPIONS_MOVE_OVERRIDES[slug] ?? {}),
   };
 }
 
@@ -455,7 +497,7 @@ function showdownLearnsetOf(slug, pageSlug) {
 
 /** Human label for a Mega/Primal form, e.g. "charizard-mega-x" -> "Mega Charizard X". */
 function formLabel(formSlug, baseDisplay) {
-  const megaMatch = formSlug.match(/-mega(?:-([xy]))?$/);
+  const megaMatch = formSlug.match(/-mega(?:-([xyz]))?$/);
   if (megaMatch) {
     const suffix = megaMatch[1] ? ` ${megaMatch[1].toUpperCase()}` : "";
     return `Mega ${baseDisplay}${suffix}`;
@@ -465,16 +507,21 @@ function formLabel(formSlug, baseDisplay) {
 }
 
 /**
- * A battle form is a Mega Evolution (`-mega`, `-mega-x`, `-mega-y`) or Primal
- * Reversion (`-primal`). We match by exact suffix rather than a hardcoded list
- * because Pokémon Champions ships its OWN Mega roster — including new ones the
- * classic games never had (Mega Dragonite, Mega Greninja, …) — and this
- * PokeAPI instance carries that Champions data.
+ * A battle form is a Mega Evolution (`-mega`, `-mega-x`, `-mega-y`, `-mega-z`)
+ * or Primal Reversion (`-primal`). We match by exact suffix rather than a
+ * hardcoded list because Pokémon Champions ships its OWN Mega roster —
+ * including new ones the classic games never had (Mega Dragonite, Mega
+ * Greninja, …) — and this PokeAPI instance carries that Champions data.
  *
- * The strict pattern deliberately rejects junk variants like `-mega-z` that the
- * API also serves but the game does not include.
+ * `-mega-z` used to be excluded here as an API-only junk variant. That flipped
+ * with Champions v1.2.0 / Regulation M-C (2026-09-09), which introduced **Z
+ * Mega Evolution** as a real mechanic: Mega Lucario Z (Aura Guard), Mega
+ * Garchomp Z (Levitate) and Mega Absol Z (Sharpness) are distinct battle forms
+ * with their own stat lines, and a species can now carry BOTH a plain Mega and
+ * a Mega Z (Lucario/Garchomp/Absol all do). Anything that assumes at most one
+ * Mega per species — or an X/Y-only suffix — is wrong post-1.2.
  */
-const BATTLE_FORM_RE = /-(mega(-[xy])?|primal)$/;
+const BATTLE_FORM_RE = /-(mega(-[xyz])?|primal)$/;
 
 function isBattleForm(slug) {
   return BATTLE_FORM_RE.test(slug);
@@ -523,10 +570,14 @@ let previousPokemon = new Map();
  * fact about it. Abilities PokeAPI knows (tough-claws, contrary, …) get their
  * effect text fetched live; Champions-original abilities (Eelevate, Fire Mane)
  * carry their effect text inline since no PokeAPI entry exists.
- * Verified against https://www.serebii.net/pokedex-champions/<mon>/ on 2026-06-17.
+ * Verified against https://www.serebii.net/pokedex-champions/<mon>/ on 2026-06-17,
+ * re-verified there for the v1.2.0 / Reg M-C Megas on 2026-09-10. (The three Z
+ * Megas are NOT here — PokeAPI serves their abilities, including the
+ * Champions-original Aura Guard, with effect text.)
  */
 const MEGA_FORM_ABILITIES = {
   "barbaracle-mega": [{ name: "tough-claws" }],
+  "baxcalibur-mega": [{ name: "thermal-exchange" }],
   "dragalge-mega": [{ name: "regenerator" }],
   "eelektross-mega": [
     {
@@ -537,6 +588,7 @@ const MEGA_FORM_ABILITIES = {
     },
   ],
   "falinks-mega": [{ name: "defiant" }],
+  "golisopod-mega": [{ name: "tough-claws" }],
   "malamar-mega": [{ name: "contrary" }],
   "pyroar-mega": [
     {

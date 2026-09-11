@@ -18,10 +18,37 @@ import type { CalcEntry, CalcForm, CalcIndex, CalcMoveLite } from "@/lib/calc-da
 import type { EvStat } from "@/lib/types";
 
 // Items that change the damage math (others are cosmetic on this screen).
+/**
+ * Champions' real held-item pool, NOT the mainline VGC one.
+ *
+ * This list used to offer Choice Band, Choice Specs, Assault Vest, Eviolite,
+ * Safety Goggles, Covert Cloak and Booster Energy — none of which exist in
+ * Champions. Serebii's Champions item list omits all seven, and across a full
+ * ladder month (132 distinct items) not one Pokémon is recorded holding any of
+ * them, while Choice SCARF shows up on 133. They were mainline assumptions, and
+ * they let a trainer build a calc on an item they can never actually bring.
+ * (`damage.ts` still MODELS those items — it's a faithful port of the gen9
+ * formula and the format simply never presents them. Don't "clean that up":
+ * the parity test exercises those branches against @smogon/calc.)
+ *
+ * Ordered by what a mid-battle trainer reaches for: damage-affecting first,
+ * then bulk/utility, then the rest of the v1.2.0 additions. Of the twelve items
+ * v1.2.0 added, only Normal Gem and Air Balloon change a damage roll — the
+ * others are selectable and correctly leave the number alone. The four terrain
+ * Seeds boost a stat only while their terrain is up, which this calc doesn't
+ * model, so express one with the Def/SpD boost fields instead.
+ */
 const ITEMS = [
-  "None", "Life Orb", "Choice Band", "Choice Specs", "Choice Scarf", "Assault Vest",
-  "Eviolite", "Expert Belt", "Focus Sash", "Sitrus Berry", "Leftovers", "Rocky Helmet",
-  "Safety Goggles", "Covert Cloak", "Booster Energy",
+  "None",
+  // Change the damage number.
+  "Life Orb", "Choice Scarf", "Expert Belt", "Normal Gem",
+  // Bulk / survival.
+  "Focus Sash", "Sitrus Berry", "Leftovers", "Rocky Helmet", "Air Balloon",
+  // Utility with real ladder usage.
+  "Mental Herb", "White Herb", "Wide Lens", "Scope Lens", "Light Clay",
+  // Remaining v1.2.0 additions.
+  "Terrain Extender", "Electric Seed", "Grassy Seed", "Psychic Seed", "Misty Seed",
+  "Leek", "Red Card", "Binding Band", "Eject Button",
 ] as const;
 
 const WEATHERS: { label: string; value: Weather }[] = [

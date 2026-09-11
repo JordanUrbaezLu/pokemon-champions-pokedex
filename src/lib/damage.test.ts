@@ -293,6 +293,11 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
     { name: "Knock Off ×1.5 (target holds an item)", atk: "Garchomp", def: "Incineroar", move: "knock-off", dItem: "Sitrus Berry" },
     { name: "Knock Off plain (target has no item)", atk: "Garchomp", def: "Incineroar", move: "knock-off" },
     { name: "Knock Off plain (Mega Stone can't be removed)", atk: "Garchomp", def: "Charizard-Mega-Y", move: "knock-off", dItem: "Charizardite Y" },
+    // v1.2.0 held items that change a damage roll. The 2026-08 ladder predates
+    // the update, so NO meta sample can reach these — pinned by hand, same as
+    // Body Press / Knock Off.
+    { name: "Normal Gem ×1.3 on a Normal move", atk: "Kingambit", def: "Garchomp", move: "body-slam", item: "Normal Gem" },
+    { name: "Normal Gem does nothing off-type", atk: "Kingambit", def: "Garchomp", move: "iron-head", item: "Normal Gem" },
     // Variable-power moves (BP from weight / speed).
     { name: "Low Kick (target weight)", atk: "Garchomp", def: "Kingambit", move: "low-kick" },
     { name: "Grass Knot (target weight)", atk: "Garchomp", def: "Kingambit", move: "grass-knot" },
@@ -340,7 +345,8 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
 // Knock Off's 1.5× hinges entirely on "is this item removable", and in this
 // format the only un-removable item is a Mega Stone. `isMegaStone` decides that
 // by name, so this pins the naming rule against the app's own item pool: an
-// item ends in "-ite" if and only if only Mega forms are ever seen holding it.
+// item ends in "-ite" (with an optional X/Y/Z form suffix) if and only if only
+// Mega forms are ever seen holding it.
 // (Champions invents its own stones — Chimechite, Scovillainite, Meganiumite —
 // which @smogon/calc's item table doesn't know, so the data IS the oracle here.)
 describe("isMegaStone — the un-knockable-item rule", () => {
@@ -377,5 +383,53 @@ describe("isMegaStone — the un-knockable-item rule", () => {
     expect(isMegaStone(null)).toBe(false);
     expect(isMegaStone("Charizardite Y")).toBe(true);
     expect(isMegaStone("Metagrossite")).toBe(true);
+  });
+
+  // Air Balloon is the format's only ITEM-granted immunity (v1.2.0). Asserted
+  // on the verdict rather than through the parity sweep because @smogon/calc
+  // returns a bare 0 for an immune matchup, not a 16-roll array.
+  it("Air Balloon makes the holder immune to Ground", () => {
+    const find = (name: string) =>
+      Object.values(master).find((p: any) => p.smogonName === name && !p.asForm) as any;
+    const chomp = find("Garchomp");
+    const lax = find("Kingambit");
+    const eq = MOVES["earthquake"];
+    if (!chomp || !lax || !eq) return;
+    const move = moveToCalcMove(eq)!;
+    const attacker = build(chomp, "Illuminate", undefined).mine;
+
+    const balloon = computeDamage(attacker, build(lax, "Illuminate", "Air Balloon").mine, move, { gameType: "Doubles" as const });
+    expect(balloon.immune, "Air Balloon should zero a Ground move").toBe(true);
+    expect(balloon.maxDamage).toBe(0);
+
+    // Same matchup without the balloon must still take real damage, so the
+    // test can't pass by the move being a no-op for another reason.
+    const bare = computeDamage(attacker, build(lax, "Illuminate", undefined).mine, move, { gameType: "Doubles" as const });
+    expect(bare.immune).toBe(false);
+    expect(bare.maxDamage).toBeGreaterThan(0);
+
+    // …and the balloon must not blanket-block non-Ground moves.
+    const rock = MOVES["rock-slide"];
+    if (rock) {
+      const rockRes = computeDamage(attacker, build(lax, "Illuminate", "Air Balloon").mine, moveToCalcMove(rock)!, { gameType: "Doubles" as const });
+      expect(rockRes.immune, "Air Balloon should only stop Ground").toBe(false);
+    }
+  });
+
+  // Pinned by hand rather than left to the pool test above: Z Mega Evolution
+  // shipped in v1.2.0 (Reg M-C) but Smogon's first M-C stats month is 2026-09,
+  // so until that data lands NO Z stone appears in the item pool and the sweep
+  // would pass while the rule was wrong. It WAS wrong — the pattern stopped at
+  // X/Y, so a Z stone read as removable and Knock Off took a bogus 1.5× against
+  // a Z Mega holding its own stone. Same lesson as Body Press / Knock Off: a
+  // move or item the current month doesn't sample is untested, not correct.
+  it("treats the v1.2.0 Z Mega stones as un-knockable", () => {
+    expect(isMegaStone("Lucarionite Z")).toBe(true);
+    expect(isMegaStone("Garchompite Z")).toBe(true);
+    expect(isMegaStone("Absolite Z")).toBe(true);
+    // The plain Megas of the same three species keep working.
+    expect(isMegaStone("Lucarionite")).toBe(true);
+    expect(isMegaStone("Garchompite")).toBe(true);
+    expect(isMegaStone("Absolite")).toBe(true);
   });
 });

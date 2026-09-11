@@ -41,6 +41,15 @@ const USER_AGENT = "Mozilla/5.0 (compatible; ChampionsPokedexBuild/1.0)";
 // regulation, add one line here (or pin TEAMS_THREAD=<url> for a one-off) — the
 // generator warns loudly and salvages the committed data until then, so a
 // rotation never hard-fails the refresh; it just flags "teams are a reg behind".
+// NOTE (2026-09-10): Regulation M-C went live in-game with v1.2.0 on 2026-09-09,
+// but Smogon has not posted its sample-teams thread yet (only a Reg M-C metagame
+// discussion thread exists). Nothing to map until it does. Until then the
+// generator warns and salvages the committed teams.json, so /teams stays a
+// regulation behind rather than going blank — add the line below the moment the
+// thread appears, or pin it once with TEAMS_THREAD=<url>:
+//   gen9championsvgc2026regmc: "https://www.smogon.com/forums/threads/…",
+// This is also not urgent: the ladder data that selects the format is still
+// M-B until Smogon publishes the 2026-09 stats in early October.
 const KNOWN_THREADS = {
   gen9championsvgc2026regmb:
     "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
