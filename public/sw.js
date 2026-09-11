@@ -16,7 +16,7 @@
  * `activate` deletes the previous version's caches. Do not edit VERSION by hand.
  */
 
-const VERSION = "cpx-8dc03421bd84";
+const VERSION = "cpx-aea92135bc69";
 const STATIC_CACHE = `cpx-static-${VERSION}`;
 const IMAGE_CACHE = `cpx-images-${VERSION}`;
 const PAGE_CACHE = `cpx-pages-${VERSION}`;

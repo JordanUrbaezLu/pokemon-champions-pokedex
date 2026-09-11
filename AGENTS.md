@@ -52,7 +52,9 @@ purpose when Teams + Calc shipped.)
   script **auto-detects both the current ladder REGULATION and the newest published Smogon
   month** — it reads each month's chaos index newest-first and takes the highest-lettered
   `gen9championsvgc2026regm*` (…regmb > …regma), so a game regulation rotation needs no code edit.
-  Pin either: `STATS_FORMAT=gen9championsvgc2026regmb` / `STATS_MONTH=YYYY-MM`. (Currently Reg M-B.)
+  Pin either: `STATS_FORMAT=gen9championsvgc2026regmb` / `STATS_MONTH=YYYY-MM`. (**Game is on Reg M-C**
+  since v1.2.0 on 2026-09-09; the LADDER data is still M-B until Smogon publishes the 2026-09 stats in
+  early October, at which point auto-detection picks up `…regmc` with no code edit.)
 - **`npm run refresh` — the one-command manual data update (use THIS, not `data:comp`):**
   `data:all → status → test → build`. It re-bakes both files (keeping `generatedAt` in sync —
   `data:comp` alone fails the status date check), runs every integrity check + the unit suite +
@@ -116,8 +118,30 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   learnsets **including the Showdown prevo chain**. Tera moves are excluded everywhere.
 - PokeAPI sometimes 502s persistently on single endpoints; the generator salvages those entries
   from the committed dataset and logs it. Patient exponential backoff is already in place.
-- Serebii variant forms (Alolan, Rotom appliances) share the base species' page; the page is a
-  multi-form union — hence the learnset intersection. Serebii HTML needs `grep -a` (stray bytes).
+- Serebii variant forms (Alolan, Rotom appliances, and since v1.2.0 gender/plumage forms) share the
+  base species' page; the page is a multi-form union — hence the learnset intersection. Serebii HTML
+  needs `grep -a` (stray bytes).
+- **Two Serebii slug traps, both SILENT.** (1) Serebii keeps a name's punctuation where our PokeAPI
+  slugs drop it — `mr.mime`, `mr.rime`, `farfetch'd`, `sirfetch'd` — so those need a `SEREBII_SLUG`
+  entry. (2) A form-split roster slug (`indeedee-male`, `toxtricity-amped`, `squawkabilly-*-plumage`)
+  has no page of its own and needs a `VARIANT_SUFFIX` entry to fall back to the base page. Miss either
+  and the page 404s, the mon quietly falls back to its **full mainline movepool**, and nothing turns
+  red — it just shows moves Champions doesn't have. This bit 11 of the 29 mons added for Reg M-C.
+  `npm run status` now guards it with the v1.2.0 removals as a canary (Politoed/Pound, Archaludon/
+  Mirror Coat + Metal Burst): those come back the moment a movepool falls back to mainline.
+- **Which layer owns a balance patch.** Per-mon MOVEPOOLS come from Serebii's Champions pages, so
+  legality changes need NO code — a re-bake picks them up (v1.2.0 removing Pound from Politoed, and
+  ENABLING Slash, which went 0 → 36 movepools on its own). Global move STATS (power/PP/accuracy) come
+  from PokeAPI, which serves **mainline** values and does not model Champions' patches — that gap is
+  `CHAMPIONS_MOVE_OVERRIDES` in `generate-dataset.mjs` (v1.2.0 cut Wish + Strength Sap to 8 PP).
+  Champions doesn't share mainline's PP baselines, so a value there is the game's number, not a delta.
+- **Z Mega Evolution is real** (v1.2.0 / Reg M-C, 2026-09-09) — `-mega-z` used to be filtered out of
+  `BATTLE_FORM_RE` as an API-only junk variant, and that comment is now the opposite of true. Mega
+  Lucario Z (**Aura Guard**, a Champions-original ability PokeAPI does carry, with effect text), Mega
+  Garchomp Z (Levitate) and Mega Absol Z (Sharpness) are real battle forms, and a species can now hold
+  **both** a plain Mega and a Mega Z — so nothing may assume one Mega per species or an X/Y-only
+  suffix. `pokedex.ts`'s list-card summary still shows only the first Mega (fine, it's a thumbnail);
+  the detail page maps over every form, so the tabs work. status asserts both forms survive.
 - PokeAPI serves several **Champions-original Megas with `abilities: []`** (Mega Eelektross,
   Staraptor, Pyroar, Scolipede, Dragalge, Malamar, Scrafty, Barbaracle, Falinks). A Mega's ability
   is its single most battle-defining fact, so `MEGA_FORM_ABILITIES` in `generate-dataset.mjs`
@@ -181,15 +205,37 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   hand-pinned in Group B so the sample's luck can't hide them again. **When a re-bake turns the parity test
   red, suspect a real port gap before suspecting the data.**
 - Knock Off's 1.5× needs "is the item removable", and in this format the only un-removable one is a **Mega
-  Stone** held by its own Mega. `isMegaStone` (damage.ts) decides by name: ends in `-ite` (+ optional X/Y),
+  Stone** held by its own Mega. `isMegaStone` (damage.ts) decides by name: ends in `-ite` (+ optional X/Y/**Z**),
   minus **Eviolite**, the one selectable item that ends the same way. @smogon/calc can't be the oracle —
   it has never heard of Champions-original stones (Chimechite, Scovillainite, Meganiumite…) — so the test
-  pins the rule against the baked pool: an item ends in `-ite` **iff** only Mega forms ever hold it.
+  pins the rule against the baked pool: an item ends in `-ite` **iff** only Mega forms ever hold it. The
+  **Z** suffix was added for v1.2.0's Z stones (Lucarionite Z…) — until then the pattern stopped at X/Y and
+  Knock Off took a bogus 1.5× against a Z Mega holding its own stone. The pool sweep could NOT have caught
+  it (no M-C ladder data yet), so the Z stones are hand-pinned in `damage.test.ts`; any future suffix needs
+  the same treatment.
 - A `<select>` whose `value` matches **no `<option>` renders as the FIRST option**, silently. Mega presets
   carry their stone (`items[0]` is 100% Metagrossite/etc.) but `Calc.tsx`'s fixed `ITEMS` list has no
   stones, so every Mega's Item field read **"None"** while the mon really held the stone — and one tap
   threw it away. `itemOptions` now appends any held item the list lacks. Check this whenever a baked value
   feeds a fixed-option select.
+- **Champions' item pool is NOT mainline's, and the calc quietly assumed it was.** Champions has **no
+  Choice Band, Choice Specs, Assault Vest, Eviolite, Safety Goggles, Covert Cloak or Booster Energy** —
+  only Choice SCARF. Two independent sources agree: Serebii's Champions item list omits all seven, and
+  across a full ladder month (132 distinct items) not one mon holds any of them while Choice Scarf shows
+  on 133. `Calc.tsx`'s `ITEMS` offered all seven, so a trainer could build a calc on an item they can
+  never bring. Fixed there — but `damage.ts` still MODELS them (faithful gen9 port; the parity test
+  exercises those branches), so don't "clean that up". Check a new item against the pool, not memory.
+- v1.2.0 added 12 held items; only two change a damage roll and both are modelled: **Normal Gem**
+  (1.3× on Normal moves — the constant is **5325**, NOT the 5324 Life Orb uses; reaching for the wrong
+  one shifts the roll array by one and the parity test catches it) and **Air Balloon** (the format's only
+  ITEM-granted immunity — Ground moves read "immune", so it lives in `typeEffectiveness`, not a mod
+  chain). The four terrain Seeds need terrain, which the engine does NOT model — express them with the
+  Def/SpD boost fields. Rocky Helmet / Red Card / Eject Button / Binding Band / Terrain Extender / Leek
+  correctly leave the number alone.
+- **Serebii has per-topic Champions pages that beat scraping each mon** — cross-check against these
+  first: `/pokemonchampions/items.shtml` (the authoritative item pool), `megaabilities.shtml` (every
+  Mega's ability in one table — confirmed the Reg M-C Megas in one fetch), `newabilities.shtml`
+  (Champions-original abilities), `moves.shtml`, and `patch.shtml` (patch notes).
 - **Champions Stat Points, not EVs.** Real sets use Stat Points (≤32/stat, 66 total); the mapping is
   the app's own (`generate-competitive.mjs:parseSpread`): **`EV = min(252, SP × 8)`**, trimmed ≤508.
   `stat-points.ts` is the single home for it. So `competitive.json.spread.evs` is EV-space (252-style)
@@ -207,5 +253,5 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   Type Matchups at the bottom by owner request).
 
 **Verification bar for any change**
-`npx tsc --noEmit` + `npm run lint` + `npm test` + `npm run build` (248 static pages) must stay
+`npx tsc --noEmit` + `npm run lint` + `npm test` + `npm run build` (277 static pages) must stay
 green, and visual changes get a `npm run shot` screenshot check at 375px before they're called done.

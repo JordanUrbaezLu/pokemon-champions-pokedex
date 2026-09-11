@@ -107,8 +107,13 @@ const sample = (arr) => [...arr].slice(0, 8).join(", ") + (([...arr].length > 8)
 // a collapse — and a total KO-benchmark wipeout — red.
 const hasAnyData = (p, b) =>
   [p.name, ...(p.forms ?? []).map((f) => f.key)].some((k) => b?.[k]);
-const coveredAll = mons.filter((p) => hasAnyData(p, comp.brackets.all)).length;
-const coverageFloor = mons.length - 25; // ~full today; trips on a match collapse
+// Measured over ESTABLISHED mons only. Newcomers carry no ladder data by
+// definition — that's what `isNew` means — so counting them would make a
+// roster expansion (29 mons for v1.2.0 / Reg M-C) look like a data collapse,
+// and the honest fix would get mistaken for "just lower the floor".
+const established = mons.filter((p) => !p.isNew);
+const coveredAll = established.filter((p) => hasAnyData(p, comp.brackets.all)).length;
+const coverageFloor = established.length - 25; // ~full today; trips on a match collapse
 const benchedMaster = Object.values(comp.brackets.master ?? {}).filter(
   (p) => p.benchmarks?.length,
 ).length;
@@ -147,8 +152,38 @@ const checks = [
   ["every battle form carries an ability", mons.every((p) => (p.forms ?? []).every((f) => f.abilities?.length > 0 && f.abilities.every((a) => a.shortEffect)))],
   // Newcomers (no ladder data yet) are flagged so the NEW badge + filter work.
   ["new-to-Champions mons are flagged isNew", mons.some((p) => p.isNew)],
+  // Z Mega Evolution (v1.2.0). The form matcher in generate-dataset.mjs used to
+  // reject `-mega-z` as an API-only junk variant; if anyone re-tightens it, the
+  // three Z Megas vanish from the dex silently. A species can carry BOTH a plain
+  // Mega and a Mega Z, so assert both survive.
+  [
+    "Z Megas are baked alongside their plain Mega (v1.2.0)",
+    ["lucario", "garchomp", "absol"].every((s) => {
+      const keys = (byName.get(s)?.forms ?? []).map((f) => f.key);
+      return keys.includes(`${s}-mega`) && keys.includes(`${s}-mega-z`);
+    }),
+    "a Z Mega (or its plain Mega) is missing — check BATTLE_FORM_RE",
+  ],
+  // Champions balance patches vs upstream sources. PokeAPI serves MAINLINE move
+  // stats, so PP that the game changed only exists in CHAMPIONS_MOVE_OVERRIDES.
+  [
+    "Champions PP overrides applied (Wish / Strength Sap = 8)",
+    moveIndex["wish"]?.pp === 8 && moveIndex["strength-sap"]?.pp === 8,
+    `wish=${moveIndex["wish"]?.pp}, strength-sap=${moveIndex["strength-sap"]?.pp} — expected 8 (see CHAMPIONS_MOVE_OVERRIDES)`,
+  ],
+  // The other half of that split: MOVEPOOLS come from Serebii's Champions pages,
+  // so v1.2.0's legality changes need no curation — but if a Serebii page 404s
+  // (a slug that didn't round-trip, e.g. mr.mime / farfetch'd) the mon silently
+  // falls back to its full MAINLINE movepool. These three removals are the canary.
+  [
+    "v1.2.0 movepool removals held (Serebii movepools, not mainline)",
+    !(byName.get("politoed")?.moveSlugs.includes("pound") ?? true) &&
+      !(byName.get("archaludon")?.moveSlugs.includes("mirror-coat") ?? true) &&
+      !(byName.get("archaludon")?.moveSlugs.includes("metal-burst") ?? true),
+    "a move v1.2.0 removed is back — a Serebii page probably 404'd and fell back to the mainline movepool",
+  ],
   // Ladder coverage floors — catch a silent name-matching collapse / benchmark wipeout.
-  [`ladder coverage intact (≥${coverageFloor} mons have all-ranks data)`, coveredAll >= coverageFloor, `only ${coveredAll}/${mons.length} mons have any all-ranks data`],
+  [`ladder coverage intact (≥${coverageFloor} mons have all-ranks data)`, coveredAll >= coverageFloor, `only ${coveredAll}/${established.length} established (non-newcomer) mons have any all-ranks data`],
   ["master bracket has KO benchmarks baked", benchedMaster >= 40, `only ${benchedMaster} master profiles carry benchmarks`],
   // --- no blank/un-tappable sheets, current or future ---
   [`every move shows a description (${Object.keys(moveIndex).length} moves)`, movesNoDesc.length === 0, `${movesNoDesc.length} blank: ${sample(movesNoDesc.map((m) => m.name))}`],

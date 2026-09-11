@@ -166,9 +166,16 @@ export const VARIABLE_MOVES = new Set([
 /**
  * Knock Off only gets its 1.5× when there is an item it can actually remove.
  * In this format the sole unremovable item is a **Mega Stone** held by its own
- * Mega — and every Mega Stone name ends in "-ite" (optionally with an X/Y
- * suffix: Charizardite Y, Raichunite X). `Eviolite` is the one item in the pool
- * that ends the same way and is NOT a stone, so it is excluded by name.
+ * Mega — and every Mega Stone name ends in "-ite", optionally with a form
+ * suffix: Charizardite Y, Raichunite X, and since Champions v1.2.0 the **Z**
+ * stones Lucarionite Z / Garchompite Z / Absolite Z that trigger Z Mega
+ * Evolution. `Eviolite` is the one item in the pool that ends the same way and
+ * is NOT a stone, so it is excluded by name.
+ *
+ * The Z suffix is the whole reason this is a regex and not `endsWith("ite")`:
+ * before v1.2.0 the pattern stopped at X/Y, so a Z stone read as removable and
+ * Knock Off wrongly took its 1.5× against the three Z Megas holding their own
+ * stone. Any future suffix needs adding HERE and to the pool test.
  *
  * Champions invents its own stones (Chimechite, Scovillainite, Meganiumite…)
  * that @smogon/calc's item table has never heard of, so the library can't be the
@@ -181,7 +188,7 @@ export function isMegaStone(item: string | null | undefined): boolean {
   if (!item) return false;
   const id = stripId(item);
   if (NOT_A_MEGA_STONE.has(id)) return false;
-  return /ite[xy]?$/.test(id);
+  return /ite[xyz]?$/.test(id);
 }
 
 /** Grass Knot / Low Kick: base power by the TARGET's weight (kg). */
@@ -249,9 +256,10 @@ const IMMUNITY: Record<string, PokemonType> = {
 
 /**
  * Type effectiveness including defender ability immunities (Levitate, Flash
- * Fire, …) and Wonder Guard. Ability-based HALVING (Thick Fat, Multiscale, …)
- * lives in the mod chains below, exactly as `@smogon/calc` partitions it — so
- * this returns pure type math plus hard immunities only.
+ * Fire, …), the one ITEM immunity in the format (Air Balloon, added in v1.2.0),
+ * and Wonder Guard. Ability-based HALVING (Thick Fat, Multiscale, …) lives in
+ * the mod chains below, exactly as `@smogon/calc` partitions it — so this
+ * returns pure type math plus hard immunities only.
  */
 function typeEffectiveness(move: CalcMove, defender: CalcPokemon): number {
   let eff = defensiveMultiplier(move.type, defender.types);
@@ -261,6 +269,10 @@ function typeEffectiveness(move: CalcMove, defender: CalcPokemon): number {
   }
   const ab = defender.ability ? stripId(defender.ability) : "";
   if (ab && IMMUNITY[ab] === move.type) eff = 0;
+  // Air Balloon (v1.2.0): Ground moves miss the holder entirely, same as
+  // Levitate. Modelled here rather than in the mod chain because it is a hard
+  // immunity — the calc must report "immune", not "0 damage".
+  if (move.type === "ground" && has(defender.item, "Air Balloon")) eff = 0;
   if (ab === "wonderguard" && eff <= 1) eff = 0;
   return eff;
 }
@@ -324,6 +336,11 @@ export function computeDamage(
   if (has(move.name, "Knock Off") && defender.item && !isMegaStone(defender.item)) {
     bpMods.push(6144);
   }
+  // Normal Gem (v1.2.0) — the format's only Gem. 1.3× on the matching type,
+  // in the BP chain (one-shot in game; the calc always shows the boosted roll).
+  // 5325, NOT the 5324 Life Orb uses — @smogon/calc distinguishes them and the
+  // parity test catches the one-roll drift if you reach for the wrong constant.
+  if (has(attacker.item, "Normal Gem") && move.type === "normal") bpMods.push(5325);
   if (field.helpingHand) bpMods.push(6144);
   if (has(attacker.ability, "Technician") && bp <= 60) bpMods.push(6144);
   if (has(attacker.ability, "Sheer Force") && move.hasSecondary) bpMods.push(5325);
