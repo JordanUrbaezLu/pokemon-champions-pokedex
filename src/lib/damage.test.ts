@@ -16,7 +16,7 @@ import { describe, it, expect } from "vitest";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
 import competitive from "../data/generated/competitive.json";
 import dataset from "../data/generated/pokemon.json";
-import { computeDamage, isMegaStone, moveToCalcMove, type CalcPokemon } from "./damage";
+import { computeDamage, isMegaStone, moveToCalcMove, type CalcPokemon, type Terrain } from "./damage";
 import { isSpreadMove } from "./spread";
 import type { MoveSummary, PokemonType } from "./types";
 
@@ -249,6 +249,8 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
   const find = (name: string) =>
     Object.values(master).find((p: any) => p.smogonName === name && !p.asForm) as any;
 
+  const terrain = (t: NonNullable<Terrain>) => new Field({ gameType: "Doubles", terrain: t });
+
   interface Case {
     name: string;
     atk: string;
@@ -304,6 +306,30 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
     { name: "Heavy Slam (weight ratio)", atk: "Kingambit", def: "Garchomp", move: "heavy-slam" },
     { name: "Gyro Ball (speed)", atk: "Kingambit", def: "Garchomp", move: "gyro-ball" },
     { name: "Electro Ball (speed)", atk: "Garchomp", def: "Kingambit", move: "electro-ball" },
+    // Terrain + the moves that fail outright. Reg M-C (2026-09) made terrain
+    // central — Indeedee-F's Psychic Surge on ~1 in 5 teams — and Steel Roller
+    // reached Mega Metagross's top moves, which is how the 2026-10-01 refresh
+    // went red: the engine rolled full damage where the move FAILS with no
+    // terrain. Every terrain branch is pinned here, not left to the sample.
+    { name: "Steel Roller fails with no terrain", atk: "Kingambit", def: "Incineroar", move: "steel-roller" },
+    { name: "Steel Roller hits in any terrain", atk: "Kingambit", def: "Incineroar", move: "steel-roller", field: terrain("Psychic") },
+    { name: "Poltergeist fails into an itemless target", atk: "Kingambit", def: "Incineroar", move: "poltergeist" },
+    { name: "Poltergeist hits a target holding an item", atk: "Kingambit", def: "Incineroar", move: "poltergeist", dItem: "Sitrus Berry" },
+    { name: "Psychic Terrain blocks priority into a grounded target", atk: "Incineroar", def: "Garchomp", move: "fake-out", field: terrain("Psychic") },
+    { name: "Psychic Terrain lets priority hit a Flying target", atk: "Incineroar", def: "Charizard", move: "fake-out", field: terrain("Psychic") },
+    { name: "Psychic Terrain boosts a grounded user's Psychic move", atk: "Incineroar", def: "Garchomp", move: "psychic", field: terrain("Psychic") },
+    { name: "Expanding Force goes spread ×1.5 in Psychic Terrain", atk: "Incineroar", def: "Garchomp", move: "expanding-force", field: terrain("Psychic") },
+    { name: "Electric Terrain boosts a grounded user's Electric move", atk: "Garchomp", def: "Incineroar", move: "thunderbolt", field: terrain("Electric") },
+    { name: "Electric Terrain skips a Flying user", atk: "Charizard", def: "Incineroar", move: "thunderbolt", field: terrain("Electric") },
+    { name: "Rising Voltage doubles into a grounded target", atk: "Garchomp", def: "Incineroar", move: "rising-voltage", field: terrain("Electric") },
+    { name: "Terrain Pulse turns Electric at double power", atk: "Garchomp", def: "Incineroar", move: "terrain-pulse", field: terrain("Electric") },
+    { name: "Grassy Terrain boosts a grounded user's Grass move", atk: "Garchomp", def: "Incineroar", move: "energy-ball", field: terrain("Grassy") },
+    { name: "Grassy Terrain halves Earthquake", atk: "Garchomp", def: "Incineroar", move: "earthquake", field: terrain("Grassy") },
+    { name: "Misty Terrain halves Dragon into a grounded target", atk: "Garchomp", def: "Incineroar", move: "dragon-claw", field: terrain("Misty") },
+    { name: "Misty Explosion ×1.5 in Misty Terrain", atk: "Garchomp", def: "Incineroar", move: "misty-explosion", field: terrain("Misty") },
+    { name: "Grassy Seed: +1 Def in Grassy Terrain", atk: "Garchomp", def: "Incineroar", move: "dragon-claw", dItem: "Grassy Seed", field: terrain("Grassy") },
+    { name: "Psychic Seed: +1 SpD in Psychic Terrain", atk: "Charizard", def: "Incineroar", move: "flamethrower", dItem: "Psychic Seed", field: terrain("Psychic") },
+    { name: "spent Seed no longer powers Knock Off", atk: "Garchomp", def: "Incineroar", move: "knock-off", dItem: "Grassy Seed", field: terrain("Grassy") },
   ];
 
   for (const c of cases) {
@@ -335,6 +361,7 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
         reflect: field.defenderSide.isReflect,
         lightScreen: field.defenderSide.isLightScreen,
         auroraVeil: field.defenderSide.isAuroraVeil,
+        terrain: (field.terrain as Terrain) || null,
       }).damage;
 
       expect(got, c.name).toEqual(expected);
@@ -431,5 +458,38 @@ describe("isMegaStone — the un-knockable-item rule", () => {
     expect(isMegaStone("Lucarionite")).toBe(true);
     expect(isMegaStone("Garchompite")).toBe(true);
     expect(isMegaStone("Absolite")).toBe(true);
+  });
+});
+
+// The UI shows "Fails" + this reason instead of "No effect", so a trainer can
+// tell "Steel Roller does nothing here" from "this target is immune". Parity
+// above only proves the zeros; this pins the contract the verdict row reads.
+describe("moves that fail outright", () => {
+  const find = (name: string) =>
+    Object.values(master).find((p: any) => p.smogonName === name && !p.asForm) as any;
+
+  it("reports why, distinct from an immunity", () => {
+    const a = find("Kingambit");
+    const d = find("Incineroar");
+    if (!a || !d) return;
+    const atk = build(a, "Illuminate", undefined).mine;
+    const def = build(d, "Illuminate", undefined).mine;
+    const roller = moveToCalcMove(MOVES["steel-roller"])!;
+
+    const flat = computeDamage(atk, def, roller, { gameType: "Doubles" });
+    expect(flat.fails).toBe("needs a terrain up");
+    expect(flat.immune).toBe(false);
+    expect(flat.verdict.label).toBe("Fails");
+    expect(flat.maxDamage).toBe(0);
+
+    const up = computeDamage(atk, def, roller, { gameType: "Doubles", terrain: "Grassy" });
+    expect(up.fails).toBeNull();
+    expect(up.maxDamage).toBeGreaterThan(0);
+
+    const fakeOut = moveToCalcMove(MOVES["fake-out"])!;
+    const blocked = computeDamage(def, build(find("Garchomp") ?? a, "Illuminate", undefined).mine, fakeOut, {
+      gameType: "Doubles", terrain: "Psychic",
+    });
+    expect(blocked.fails).toBe("Psychic Terrain blocks priority");
   });
 });
