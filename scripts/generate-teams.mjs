@@ -27,6 +27,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { SHOWDOWN_TO_ROSTER } from "./species-aliases.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const POKEMON_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
@@ -41,15 +42,15 @@ const USER_AGENT = "Mozilla/5.0 (compatible; ChampionsPokedexBuild/1.0)";
 // regulation, add one line here (or pin TEAMS_THREAD=<url> for a one-off) — the
 // generator warns loudly and salvages the committed data until then, so a
 // rotation never hard-fails the refresh; it just flags "teams are a reg behind".
-// NOTE (2026-09-10): Regulation M-C went live in-game with v1.2.0 on 2026-09-09,
-// but Smogon has not posted its sample-teams thread yet (only a Reg M-C metagame
-// discussion thread exists). Nothing to map until it does. Until then the
-// generator warns and salvages the committed teams.json, so /teams stays a
-// regulation behind rather than going blank — add the line below the moment the
-// thread appears, or pin it once with TEAMS_THREAD=<url>:
+// NOTE (2026-10-02): the ladder rotated to Reg M-C with Smogon's 2026-09 stats,
+// but there is still no M-C sample-teams thread — the VGC forum has only the M-C
+// metagame-discussion, speed-tier and teams-of-the-week threads (the M-B thread
+// appeared ~2 weeks into M-B). Until it does, the generator salvages the
+// committed Reg M-B teams.json (so /teams stays a regulation behind, labelled as
+// such, rather than going blank) and the workflow keeps the "Meta teams are
+// stale" issue open. The moment the thread appears, add ONE line here (or pin
+// it once with TEAMS_THREAD=<url>):
 //   gen9championsvgc2026regmc: "https://www.smogon.com/forums/threads/…",
-// This is also not urgent: the ladder data that selects the format is still
-// M-B until Smogon publishes the 2026-09 stats in early October.
 const KNOWN_THREADS = {
   gen9championsvgc2026regmb:
     "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
@@ -78,6 +79,22 @@ async function getText(url, attempt = 1) {
     if (attempt >= 6) throw err;
     await new Promise((r) => setTimeout(r, 700 * attempt));
     return getText(url, attempt + 1);
+  }
+}
+
+// Smogon's forum intermittently answers GitHub's runners with HTTP 403 (bot
+// protection) — that is what salvaged the 2026-09-21 teams bake. A 403 burst
+// outlasts getText's quick retries, so the thread gets a patient outer loop
+// (worst case ~2.5 min, far inside the workflow's 45-min step timeout).
+async function getThreadHtml(url) {
+  for (let round = 1; ; round++) {
+    try {
+      return await getText(url);
+    } catch (err) {
+      if (round >= 4) throw err;
+      console.warn(`  ~ thread fetch failed (${err.message}) — retrying in ${15 * round}s`);
+      await new Promise((r) => setTimeout(r, 15000 * round));
+    }
   }
 }
 
@@ -201,7 +218,10 @@ function buildResolver(pokemon) {
    * Resolve a form slug (from the thread minisprite alt, e.g. "charizard-mega-y")
    * to a route slug + form key + display label + types + sprite.
    */
-  return function resolve(altSlug) {
+  return function resolve(rawSlug) {
+    // Showdown spells a few forms differently from our PokeAPI slugs
+    // (:indeedee-f: is indeedee-female) — without this they'd resolve to nothing.
+    const altSlug = SHOWDOWN_TO_ROSTER[rawSlug] ?? rawSlug;
     // 1) Its own roster entry (regional forms, Rotom appliances live as species).
     if (byName.has(altSlug)) {
       const p = byName.get(altSlug);
@@ -356,7 +376,7 @@ async function main() {
 
   let descriptors, pasteIds;
   try {
-    ({ descriptors, pasteIds } = parseThread(await getText(threadUrl)));
+    ({ descriptors, pasteIds } = parseThread(await getThreadHtml(threadUrl)));
   } catch (err) {
     const ok = await salvage(`could not fetch the sample-teams thread (${err.message})`);
     process.exit(ok ? 0 : 1);

@@ -138,6 +138,20 @@ if (teams) {
   }
 }
 
+// --- Ladder species no page claims -------------------------------------------
+// The generator records every ladder species (≥0.5% usage) that no roster page
+// resolved to. A big one means a whole page shipped without its data and every
+// teammate link to it went dead — Indeedee-F (22% of Reg M-C teams) baked blank
+// on 2026-10-01 because Showdown says "Indeedee-F" where the roster says
+// "indeedee-female", and the generator's warning scrolled past in a CI log.
+const UNMATCHED_FAIL_PCT = 2;
+const unmatchedByBracket = comp.meta.unmatched;
+const unmatched = Object.entries(unmatchedByBracket ?? {}).flatMap(([bracket, list]) =>
+  list.map((u) => ({ ...u, bracket })),
+);
+const bigUnmatched = unmatched.filter((u) => u.usagePct >= UNMATCHED_FAIL_PCT);
+const smallUnmatched = [...new Set(unmatched.filter((u) => u.usagePct < UNMATCHED_FAIL_PCT).map((u) => u.key))];
+
 // Integrity invariants — each guards a bug this project actually hit once.
 const checks = [
   ["no Tera moves anywhere (Champions has no Tera)", mons.every((p) => !p.moveSlugs.includes("tera-blast"))],
@@ -183,6 +197,13 @@ const checks = [
     "a move v1.2.0 removed is back — a Serebii page probably 404'd and fell back to the mainline movepool",
   ],
   // Ladder coverage floors — catch a silent name-matching collapse / benchmark wipeout.
+  [
+    `every ladder species ≥${UNMATCHED_FAIL_PCT}% resolves to a page (Showdown ↔ roster names)`,
+    !!unmatchedByBracket && bigUnmatched.length === 0,
+    unmatchedByBracket
+      ? `${sample(bigUnmatched.map((u) => `${u.key} ${u.usagePct}% (${u.bracket})`))} — add to scripts/species-aliases.mjs (or roster.json if truly missing)`
+      : "competitive.json predates the unmatched list — run `npm run data:comp`",
+  ],
   [`ladder coverage intact (≥${coverageFloor} mons have all-ranks data)`, coveredAll >= coverageFloor, `only ${coveredAll}/${established.length} established (non-newcomer) mons have any all-ranks data`],
   ["master bracket has KO benchmarks baked", benchedMaster >= 40, `only ${benchedMaster} master profiles carry benchmarks`],
   // --- no blank/un-tappable sheets, current or future ---
@@ -210,6 +231,12 @@ const ageDays = dex.generatedAt
   : null;
 if (ageDays != null && ageDays > 14) {
   console.log(`\n  ⚠ data is ${ageDays} days old — consider \`npm run data:all\``);
+}
+
+if (smallUnmatched.length) {
+  console.log(
+    `\n  ⚠ ladder species (0.5–${UNMATCHED_FAIL_PCT}%) with no page: ${smallUnmatched.join(", ")} — unmodeled forms fall back to the base species`,
+  );
 }
 
 // Soft freshness note: the teams generator pins its date to the competitive

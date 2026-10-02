@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HomeIcon } from "./HomeIcon";
 import { TypeBadge } from "./TypeBadge";
-import { computeDamage, moveToCalcMove, type CalcField, type CalcPokemon, type DamageResult, type Weather } from "@/lib/damage";
+import { computeDamage, moveToCalcMove, type CalcField, type CalcPokemon, type DamageResult, type Terrain, type Weather } from "@/lib/damage";
 import { lv50Stats } from "@/lib/battle";
 import { NATURES, natureEffect } from "@/lib/format";
 import {
@@ -35,8 +35,8 @@ import type { EvStat } from "@/lib/types";
  * then bulk/utility, then the rest of the v1.2.0 additions. Of the twelve items
  * v1.2.0 added, only Normal Gem and Air Balloon change a damage roll — the
  * others are selectable and correctly leave the number alone. The four terrain
- * Seeds boost a stat only while their terrain is up, which this calc doesn't
- * model, so express one with the Def/SpD boost fields instead.
+ * Seeds boost a stat only while their terrain is up — pick the Terrain and the
+ * engine fires (and spends) the Seed, exactly as @smogon/calc does.
  */
 const ITEMS = [
   "None",
@@ -54,6 +54,15 @@ const ITEMS = [
 const WEATHERS: { label: string; value: Weather }[] = [
   { label: "—", value: null }, { label: "☀ Sun", value: "Sun" }, { label: "🌧 Rain", value: "Rain" },
   { label: "🏜 Sand", value: "Sand" }, { label: "❄ Snow", value: "Snow" },
+];
+
+// Reg M-C runs on terrain — Rillaboom's Grassy Surge (#1, ~47% of teams) and
+// Indeedee's Psychic Surge (~26%) — and it decides whole moves, not just
+// numbers: Steel Roller fails without one and Psychic Terrain stops Fake Out
+// cold. So it is field state, next to weather.
+const TERRAINS: { label: string; value: Terrain }[] = [
+  { label: "—", value: null }, { label: "Electric", value: "Electric" }, { label: "Grassy", value: "Grassy" },
+  { label: "Psychic", value: "Psychic" }, { label: "Misty", value: "Misty" },
 ];
 
 const SP_LABEL: Record<EvStat, string> = { hp: "HP", atk: "Atk", def: "Def", spa: "SpA", spd: "SpD", spe: "Spe" };
@@ -170,6 +179,7 @@ export function Calc({ index }: { index: CalcIndex }) {
   const [attacker, setAttacker] = useState<MonState>(() => defaultMon(first));
   const [defender, setDefender] = useState<MonState>(() => defaultMon(second));
   const [weather, setWeather] = useState<Weather>(null);
+  const [terrain, setTerrain] = useState<Terrain>(null);
   // Spread moves lose the ×0.75 once only one target is left standing — the
   // single biggest swing the calc couldn't express before.
   const [singleTarget, setSingleTarget] = useState(false);
@@ -205,14 +215,17 @@ export function Calc({ index }: { index: CalcIndex }) {
 
   // Only surface the target-count control when a spread move is actually
   // selected — for single-target moves it changes nothing and is pure noise.
-  const spreadInPlay = isSpreadMove(aMove?.target) || isSpreadMove(dMove?.target);
+  // Expanding Force turns spread in Psychic Terrain, so it counts then too.
+  const spreads = (m: CalcMoveLite | undefined) =>
+    isSpreadMove(m?.target) || (terrain === "Psychic" && m?.slug === "expanding-force");
+  const spreadInPlay = spreads(aMove) || spreads(dMove);
 
   const fwdField: CalcField = {
-    gameType: "Doubles", weather, singleTarget,
+    gameType: "Doubles", weather, terrain, singleTarget,
     helpingHand: attacker.helpingHand, auroraVeil: defender.screens, friendGuard: defender.friendGuard,
   };
   const backField: CalcField = {
-    gameType: "Doubles", weather, singleTarget,
+    gameType: "Doubles", weather, terrain, singleTarget,
     helpingHand: defender.helpingHand, auroraVeil: attacker.screens, friendGuard: attacker.friendGuard,
   };
 
@@ -306,6 +319,8 @@ export function Calc({ index }: { index: CalcIndex }) {
           setDefender={setDefender}
           weather={weather}
           setWeather={setWeather}
+          terrain={terrain}
+          setTerrain={setTerrain}
           spreadInPlay={spreadInPlay}
           singleTarget={singleTarget}
           setSingleTarget={setSingleTarget}
@@ -389,13 +404,15 @@ function VerdictRow({
   move: CalcMoveLite | undefined;
   result: DamageResult | null;
 }) {
-  const label = result && !result.immune ? result.verdict.label : null;
+  // No damage at all: an immunity ("No effect") or a move that fails outright.
+  const blank = !!result && (result.immune || !!result.fails);
+  const label = result && !blank ? result.verdict.label : null;
   const kills = label != null && (label === "OHKO" || label.startsWith("OHKO"));
   const twoHit = label != null && label.startsWith("2HKO");
   // The green Kill-shot pill = "you KO it"; accent = "it KOs you"; amber = a
   // roll-dependent 2HKO — the app's existing color grammar, reused verbatim.
   const pill =
-    !result || result.immune
+    !result || blank
       ? "border-border bg-surface-2 text-muted"
       : kills
         ? tone === "hit"
@@ -405,7 +422,7 @@ function VerdictRow({
           ? "border-amber-300/40 bg-amber-300/10 text-amber-300"
           : "border-border bg-surface-2 text-foreground/80";
   const partialOhko =
-    result && !result.immune && !result.verdict.guaranteed &&
+    result && !blank && !result.verdict.guaranteed &&
     result.verdict.ohkoChance > 0 && result.verdict.ohkoChance < 100;
 
   return (
@@ -423,10 +440,13 @@ function VerdictRow({
           <span className="rounded-md border border-border bg-surface-2 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted">
             not calculated
           </span>
-        ) : result.immune ? (
-          <span className="rounded-md border border-border bg-surface-2 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-muted">
-            No effect
-          </span>
+        ) : blank ? (
+          <>
+            <span className="rounded-md border border-border bg-surface-2 px-2 py-1 text-[11px] font-bold uppercase tracking-wide text-muted">
+              {result.fails ? "Fails" : "No effect"}
+            </span>
+            {result.fails && <span className="text-[10px] text-muted">{result.fails}</span>}
+          </>
         ) : (
           <>
             <div className="font-mono text-xl font-bold leading-none tabular-nums">
@@ -728,6 +748,42 @@ function Select({
 // then the attacker column and the defender column. Full-width, so the controls
 // stay 44px-tappable instead of being crushed into the narrow set panels.
 
+/** One labelled row of mutually exclusive field-condition chips (Weather, Terrain). */
+function ChoiceRow<T extends string | null>({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { label: string; value: T }[];
+  value: T;
+  onChange: (v: T) => void;
+}) {
+  return (
+    <div className="mb-3 flex items-center gap-2">
+      <span className="w-16 shrink-0 text-[10px] uppercase tracking-wide text-muted">{label}</span>
+      <div className="flex flex-1 flex-wrap gap-1">
+        {options.map((o) => (
+          <button
+            key={o.label}
+            onClick={() => onChange(o.value)}
+            aria-pressed={value === o.value}
+            className={`tap-target rounded-md px-2 py-1 text-[11px] font-medium ring-1 ring-inset transition-colors ${
+              value === o.value
+                ? // Neutral on-state: field condition is input, not threat.
+                  "bg-white/10 text-foreground ring-white/30"
+                : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
+            }`}
+          >
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function FieldControls({
   attacker,
   setAttacker,
@@ -735,6 +791,8 @@ function FieldControls({
   setDefender,
   weather,
   setWeather,
+  terrain,
+  setTerrain,
   spreadInPlay,
   singleTarget,
   setSingleTarget,
@@ -747,6 +805,8 @@ function FieldControls({
   setDefender: (s: MonState) => void;
   weather: Weather;
   setWeather: (w: Weather) => void;
+  terrain: Terrain;
+  setTerrain: (t: Terrain) => void;
   spreadInPlay: boolean;
   singleTarget: boolean;
   setSingleTarget: (v: boolean) => void;
@@ -760,26 +820,8 @@ function FieldControls({
     <div className="rounded-xl glass-quiet p-3">
       <h2 className="hud-label mb-2 text-[11px]">Field &amp; battle state</h2>
 
-      <div className="mb-3 flex items-center gap-2">
-        <span className="w-16 shrink-0 text-[10px] uppercase tracking-wide text-muted">Weather</span>
-        <div className="flex flex-1 flex-wrap gap-1">
-          {WEATHERS.map((w) => (
-            <button
-              key={w.label}
-              onClick={() => setWeather(w.value)}
-              aria-pressed={weather === w.value}
-              className={`tap-target rounded-md px-2 py-1 text-[11px] font-medium ring-1 ring-inset transition-colors ${
-                weather === w.value
-                  ? // Neutral on-state: field condition is input, not threat.
-                    "bg-white/10 text-foreground ring-white/30"
-                  : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
-              }`}
-            >
-              {w.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <ChoiceRow label="Weather" options={WEATHERS} value={weather} onChange={setWeather} />
+      <ChoiceRow label="Terrain" options={TERRAINS} value={terrain} onChange={setTerrain} />
 
       {/* Shown only with a spread move selected. It gates the ×0.75 on base
           damage, so the %, the KO label and the OHKO odds all recompute —

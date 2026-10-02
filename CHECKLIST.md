@@ -2,6 +2,40 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Reg M-C ladder data + refresh-pipeline repair — 2026-10-02
+User: "update the app with the latest data — the pipeline doesn't seem to be working."
+- ✅ **Why it broke (issue #45):** the 2026-10-01 run auto-detected the first Reg M-C month
+  (`gen9championsvgc2026regmc` 2026-09, 1.63M battles) and the damage-engine parity test went red —
+  Steel Roller had reached Mega Metagross's top moves, @smogon/calc says it FAILS with no terrain, and
+  `damage.ts` rolled full damage. Fixed by porting terrain, not by excluding the move from the sweep.
+- ✅ **Terrain in the calc** — `CalcField.terrain` + a Terrain chip row beside Weather: grounded 1.3×
+  boosts, Misty/Grassy halving, Psychic Terrain blocking priority (Fake Out) into grounded targets,
+  Expanding Force (spread ×1.5), Rising Voltage, Terrain Pulse, Misty Explosion, Seeds (fire + spent).
+  Moves that fail outright (Steel Roller, Poltergeist, blocked priority) show **"Fails · reason"**, not
+  "No effect" (`DamageResult.fails`). 19 new parity pins vs @smogon/calc, mutation-checked (15 fail on
+  the old engine; the 4 that pass are the no-effect controls). Normal Gem moved to @smogon/calc's chain
+  position. Baked KO benchmarks stay neutral-field.
+- ✅ **Silent data gap — Indeedee-F (#7, 20%) shipped with NO ladder data.** Showdown names
+  (`Indeedee-F`, `Indeedee`, `Toxtricity`, `Meowstic-F-Mega`, `Squawkabilly`) never matched the roster's
+  PokeAPI slugs, so those pages + every teammate link to them were blank; the warning only scrolled past
+  in CI. New `scripts/species-aliases.mjs` (renames + Smogon-POOLED forms → `asForm` "(all forms)" — the
+  offline audit caught Toxtricity/Squawkabilly carrying other forms' abilities on the first pass), the
+  bake records `meta.unmatched`, and `npm run status` fails on any unclaimed ladder species ≥2%. Now 0
+  teammate links without a page.
+- ✅ **Teams alarm was one run late (issue #30)** — it ran after `create-pull-request`, which restores
+  the pre-run tree, so the run that really salvaged (2026-09-21, Smogon 403) filed nothing and the
+  healthy next run filed it. Now read before the PR step; the thread fetch also retries ~2.5 min on 403s.
+- ✅ **Data:** Reg M-B 2026-08 → **Reg M-C 2026-09**. Master+ 284 → 299 profiles, all-ranks 302 → 333.
+  Meta shift: Rillaboom #1 (46.6%, new), Sneasler #2 (37.1%), Incineroar #3, Mega Salamence #4 (new),
+  Kingambit #1 → #5 (47.2% → 25.3%), Indeedee-F #7 (new), Gholdengo #21 → #8, Mega Golisopod #10 (new);
+  Sinistcha and Whimsicott fell out of the top 20.
+- ⏳ **Meta Teams stay Reg M-B** — Smogon has not posted a Reg M-C sample-teams thread (checked
+  2026-10-02: only M-C discussion / speed tiers / teams-of-the-week). Add the `KNOWN_THREADS` line when it
+  appears; issue #30 stays open until then.
+- ⏳ Lycanroc-Dusk (~1% of M-C) is an unmodeled form — the roster has only base Lycanroc.
+- Verified: tsc, lint, 111 tests, build (277 pages), status all ✓, audit (offline + online: 331 usages,
+  0 mismatched) 0 HIGH / 1 MEDIUM (= the teams salvage), 375px shots of the calc + Indeedee-F/Toxtricity.
+
 ### Battle Calc — full damage calculator — 2026-07-19
 User asked for a Pokémon damage calculator (the online-calc experience, in-app): pick two mons,
 build their sets, see who OHKOs / what survives. Explicitly chose the **full builder** (edit

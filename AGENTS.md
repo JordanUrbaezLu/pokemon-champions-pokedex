@@ -41,7 +41,8 @@ purpose when Teams + Calc shipped.)
   UI sheets (move/item/briefing) share `src/components/Sheet.tsx` — see hard-won facts.
 - `scripts/`: `generate-dataset.mjs` (roster/movepools/moves), `generate-competitive.mjs`
   (both ladder brackets + baked KO benchmarks via @smogon/calc), `generate-teams.mjs` (real meta teams
-  from Smogon's sample-teams thread → `teams.json`), `status.mjs`, `screenshot.mjs`.
+  from Smogon's sample-teams thread → `teams.json`), `species-aliases.mjs` (Showdown ↔ roster form
+  names, shared by both), `status.mjs`, `screenshot.mjs`.
 - `CHECKLIST.md` = living log of everything requested/built. `README.md` = user-facing.
 
 **Commands**
@@ -52,9 +53,8 @@ purpose when Teams + Calc shipped.)
   script **auto-detects both the current ladder REGULATION and the newest published Smogon
   month** — it reads each month's chaos index newest-first and takes the highest-lettered
   `gen9championsvgc2026regm*` (…regmb > …regma), so a game regulation rotation needs no code edit.
-  Pin either: `STATS_FORMAT=gen9championsvgc2026regmb` / `STATS_MONTH=YYYY-MM`. (**Game is on Reg M-C**
-  since v1.2.0 on 2026-09-09; the LADDER data is still M-B until Smogon publishes the 2026-09 stats in
-  early October, at which point auto-detection picks up `…regmc` with no code edit.)
+  Pin either: `STATS_FORMAT=gen9championsvgc2026regmb` / `STATS_MONTH=YYYY-MM`. (Game + ladder are on
+  **Reg M-C** — v1.2.0, 2026-09-09; Smogon's 2026-09 stats were the first M-C month, auto-detected.)
 - **`npm run refresh` — the one-command manual data update (use THIS, not `data:comp`):**
   `data:all → status → test → build`. It re-bakes both files (keeping `generatedAt` in sync —
   `data:comp` alone fails the status date check), runs every integrity check + the unit suite +
@@ -89,7 +89,11 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   gap, per the Body Press/Knock Off incident); a **45-min step timeout** turns a hung run into that
   same alarm (a cancelled run never satisfies `failure()`); and a **green-but-salvaged teams bake**
   (regulation rotation) files its own issue — refresh deliberately stays green on salvage, so without
-  that check stale teams would auto-merge twice a week forever. **One-time repo setting required:**
+  that check stale teams would auto-merge twice a week forever. **`create-pull-request` restores the
+  working tree to the pre-run checkout**, so a step after it reads the PREVIOUS run's data — the salvage
+  alarm sat there and filed every alarm one run late (the run that really salvaged filed nothing); it
+  now reads the stamps in a step BEFORE the PR. Smogon's forum 403s the runners in bursts, so the
+  thread fetch retries ~2.5 min before salvaging. **One-time repo setting required:**
   Settings → Actions → General → Workflow permissions → enable *"Allow GitHub Actions to create and
   approve pull requests"* — without it the PR step fails with *"not permitted to create pull requests"*
   (killed the 2026-07-06 run). **Never add branch protection/required checks to main** without moving
@@ -129,6 +133,16 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   red — it just shows moves Champions doesn't have. This bit 11 of the 29 mons added for Reg M-C.
   `npm run status` now guards it with the v1.2.0 removals as a canary (Politoed/Pound, Archaludon/
   Mirror Coat + Metal Burst): those come back the moment a movepool falls back to mainline.
+- **Showdown names some forms differently from the roster — also SILENT.** `Indeedee-F`/`Indeedee` ↔
+  `indeedee-female`/`-male`, `Meowstic-F-Mega` ↔ the one collapsed `meowstic-male-mega`, `Basculegion-F`.
+  Miss one and the page ships with NO ladder data + dead teammate links: Indeedee-F (#7, 20% of Reg M-C)
+  did exactly that on the first M-C bake. `scripts/species-aliases.mjs` is the single table (competitive
+  bake + teams minisprites). A rename is the SAME mon — never `asForm` (that blanks its move/ability
+  usage and drops it from KO benchmarks). But Smogon **pools** some forms under the bare name (no
+  `Toxtricity-Low-Key` / `Squawkabilly-Blue` keys exist — "Toxtricity" carries Low Key's Minus), so those
+  are `STATS_POOLED`: borrowed as `asForm` "X (all forms)" — the audit's ability check caught that.
+  Unclaimed ladder species land in `competitive.meta.unmatched`; status FAILS on any ≥2% (Lycanroc-Dusk
+  ~1% is the known unmodeled form — roster has only base Lycanroc).
 - **Which layer owns a balance patch.** Per-mon MOVEPOOLS come from Serebii's Champions pages, so
   legality changes need NO code — a re-bake picks them up (v1.2.0 removing Pound from Politoed, and
   ENABLING Slash, which went 0 → 36 movepools on its own). Global move STATS (power/PP/accuracy) come
@@ -185,7 +199,7 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   which also swaps the screen modifier 2732→2048). Protect/Wide Guard/immunities do NOT give the cut back;
   only an empty slot does. For `all-other-pokemon` your own ally counts as a target. **Dragon Darts** is the
   only damaging move that hits both foes at full power; **Expanding Force** is the reverse gotcha (becomes
-  spread in Psychic Terrain, unmodelled — both carry a note in `MoveModal.MOVE_NOTES`).
+  spread in Psychic Terrain — modelled since the terrain port; both carry a note in `MoveModal.MOVE_NOTES`).
 - **PokeAPI move targets are not trustworthy for spread.** It served Matcha Gotcha (Sinistcha's 99%-usage
   signature move) as single-target, so the app skipped the ×0.75 and overstated it 33%. `generate-dataset.mjs`
   now lets Showdown win **on the spread axis only** (`reconciledSpreadTarget`) — deliberately narrow, because
@@ -229,9 +243,19 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   (1.3× on Normal moves — the constant is **5325**, NOT the 5324 Life Orb uses; reaching for the wrong
   one shifts the roll array by one and the parity test catches it) and **Air Balloon** (the format's only
   ITEM-granted immunity — Ground moves read "immune", so it lives in `typeEffectiveness`, not a mod
-  chain). The four terrain Seeds need terrain, which the engine does NOT model — express them with the
-  Def/SpD boost fields. Rocky Helmet / Red Card / Eject Button / Binding Band / Terrain Extender / Leek
-  correctly leave the number alone.
+  chain). The four terrain Seeds fire (+1 Def/SpD, and are SPENT) when the calc's Terrain matches.
+  Rocky Helmet / Red Card / Eject Button / Binding Band / Terrain Extender / Leek correctly leave the
+  number alone.
+- **Terrain is modelled (`CalcField.terrain` + the calc's Terrain row) — Reg M-C forced it.** Rillaboom's
+  Grassy Surge (#1, ~47%) and Indeedee's Psychic Surge (~26%) put a terrain up in most games, Steel Roller
+  reached Mega Metagross's top moves, and the 2026-10-01 refresh went red: the engine rolled full damage
+  where @smogon/calc says the move FAILS with no terrain. Ported + hand-pinned (mutation-checked against
+  the old engine): grounded 1.3× (5325) Electric/Grass/Psychic, Misty halving Dragon / Grassy halving
+  EQ+Bulldoze into grounded targets, Psychic Terrain blocking priority (Fake Out!) into grounded targets,
+  Expanding Force / Rising Voltage / Terrain Pulse / Misty Explosion, Seeds. Grounded = not Flying /
+  Levitate / Air Balloon, or holding Iron Ball. Moves that fail outright (also Poltergeist into an
+  itemless target) set `DamageResult.fails` → the UI's "Fails · reason", distinct from "No effect". Baked
+  KO benchmarks stay NEUTRAL-field by design, so Steel Roller has no benchmark rows.
 - **Serebii has per-topic Champions pages that beat scraping each mon** — cross-check against these
   first: `/pokemonchampions/items.shtml` (the authoritative item pool), `megaabilities.shtml` (every
   Mega's ability in one table — confirmed the Reg M-C Megas in one fetch), `newabilities.shtml`

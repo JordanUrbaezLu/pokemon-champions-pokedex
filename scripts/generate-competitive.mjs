@@ -19,6 +19,7 @@ import { createHash } from "node:crypto";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
+import { ROSTER_TO_SHOWDOWN, SHOWDOWN_TO_ROSTER, STATS_POOLED } from "./species-aliases.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
@@ -496,6 +497,8 @@ async function main() {
   const teammateSlug = (name) => {
     const s = slugify(name);
     if (rosterSlugs.has(s)) return s;
+    // Indeedee-F → indeedee-female: its bare base ("indeedee") is no roster page.
+    if (rosterSlugs.has(SHOWDOWN_TO_ROSTER[s])) return SHOWDOWN_TO_ROSTER[s];
     const base = s.split("-")[0];
     return rosterSlugs.has(base) ? base : null;
   };
@@ -504,7 +507,7 @@ async function main() {
   // These must NOT be grabbed as a base form's fallback — only default-form
   // naming (e.g. Gourgeist-Average, Lycanroc-Midday) may fall back.
   const EXCLUDE_FALLBACK =
-    /-(mega(-[xy])?|primal|alola|galar|hisui|paldea|wash|heat|frost|mow|fan)$/;
+    /-(mega(-[xyz])?|primal|alola|galar|hisui|paldea|wash|heat|frost|mow|fan)$/;
 
   function buildProfile(data, key, asForm) {
     const m = data[key];
@@ -584,6 +587,18 @@ async function main() {
           .sort((a, b) => b.usage - a.usage)[0];
         if (exact) return exact;
       }
+      // A form whose stats Smogon POOLS under the bare species (every Toxtricity
+      // is "Toxtricity") — borrowed as an asForm profile, labelled as pooled.
+      const pooled = STATS_POOLED[slug] && keyIndex.find((c) => c.slug === STATS_POOLED[slug]);
+      if (pooled) return { ...pooled, pooledAs: `${pooled.key} (all forms)` };
+      // A form Showdown simply NAMES differently (Indeedee-F ↔ indeedee-female,
+      // see species-aliases.mjs). Same Pokémon, so `alias` keeps it from being
+      // treated as an asForm borrow; `siblings` lets every key it covers count
+      // as claimed (both Mega Meowstic keys feed the one Mega form).
+      const named = keyIndex
+        .filter((c) => (ROSTER_TO_SHOWDOWN[slug] ?? []).includes(c.slug))
+        .sort((a, b) => b.usage - a.usage);
+      if (named.length) return { ...named[0], alias: true, siblings: named.map((c) => c.key) };
       return (
         keyIndex
           .filter((c) => c.slug.startsWith(`${slug}-`) && !EXCLUDE_FALLBACK.test(c.slug))
@@ -591,19 +606,22 @@ async function main() {
       );
     }
 
+    // asForm is set only for a genuinely different form's data (not a "-breed"
+    // naming artifact, nor a Showdown rename) — and says so when it is pooled.
+    const norm = (s) => s.replace(/-breed$/, "");
+    const asFormOf = (match, slug) =>
+      match.pooledAs ?? (match.alias || match.slug === norm(slug) ? null : match.key);
+
     const profiles = {};
     const misses = [];
     // Ladder keys a roster form actually claimed — for reverse coverage below.
     const consumed = new Set();
     for (const p of pokemonData.pokemon) {
-      // asForm is set only for a genuinely different form (not a "-breed"
-      // naming artifact), so the same Pokémon keeps its real usage tables.
-      const norm = (s) => s.replace(/-breed$/, "");
       // Base form (exact key, e.g. base Ninetales — not its Alolan variant).
       const base = bestKey(p.name);
       if (base) {
-        consumed.add(base.key);
-        profiles[p.name] = buildProfile(data, base.key, base.slug !== norm(p.name) ? base.key : null);
+        for (const k of base.siblings ?? [base.key]) consumed.add(k);
+        profiles[p.name] = buildProfile(data, base.key, asFormOf(base, p.name));
       } else {
         misses.push(p.name);
       }
@@ -633,8 +651,8 @@ async function main() {
         // Each Mega/Primal form, by its exact Smogon key.
         const mega = bestKey(form.key);
         if (mega) {
-          consumed.add(mega.key);
-          profiles[form.key] = buildProfile(data, mega.key, mega.slug !== norm(form.key) ? mega.key : null);
+          for (const k of mega.siblings ?? [mega.key]) consumed.add(k);
+          profiles[form.key] = buildProfile(data, mega.key, asFormOf(mega, form.key));
         }
       }
     }
@@ -645,7 +663,7 @@ async function main() {
     const unmatched = keyIndex
       .filter((c) => c.usage >= 0.005 && !consumed.has(c.key))
       .sort((a, b) => b.usage - a.usage)
-      .map((c) => `${c.key} ${(c.usage * 100).toFixed(1)}%`);
+      .map((c) => ({ key: c.key, usagePct: Math.round(c.usage * 1000) / 10 }));
     return { profiles, misses, unmatched };
   }
 
@@ -653,7 +671,7 @@ async function main() {
   for (const [name, def] of Object.entries(BRACKETS)) {
     const { data, backfilled } = mergeCutoffs(def.cutoffs);
     const { profiles, misses, unmatched } = buildBracket(data);
-    brackets[name] = { profiles, misses };
+    brackets[name] = { profiles, misses, unmatched };
     console.log(
       `  ${name}: ${Object.keys(profiles).length} profiles` +
         (backfilled ? ` (${backfilled} backfilled from ${def.cutoffs.slice(1).join("/")})` : "") +
@@ -661,7 +679,7 @@ async function main() {
     );
     if (unmatched.length) {
       console.warn(
-        `  ⚠ ${name}: ${unmatched.length} ladder species (≥0.5%) with NO roster page — add to roster.json if in Champions: ${unmatched.join(", ")}`,
+        `  ⚠ ${name}: ${unmatched.length} ladder species (≥0.5%) with NO roster page — add to roster.json if in Champions (or to species-aliases.mjs if the roster has it under another name): ${unmatched.map((u) => `${u.key} ${u.usagePct}%`).join(", ")}`,
       );
     }
   }
@@ -813,6 +831,12 @@ async function main() {
       generatedAt: new Date().toISOString().slice(0, 10),
       bracketLabels: Object.fromEntries(
         Object.entries(BRACKETS).map(([name, def]) => [name, def.label]),
+      ),
+      // Ladder species (≥0.5% usage) no roster page claims, per bracket — kept
+      // in the data so `npm run status` can fail on a big one instead of the
+      // warning scrolling past in a CI log (Indeedee-F, 2026-10-01).
+      unmatched: Object.fromEntries(
+        Object.entries(brackets).map(([name, b]) => [name, b.unmatched]),
       ),
     },
     brackets: Object.fromEntries(

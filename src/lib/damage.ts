@@ -55,6 +55,7 @@ const stripId = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]/g, "")
 export type BoostStat = "atk" | "def" | "spa" | "spd" | "spe";
 export type Status = "brn" | "par" | "psn" | "tox" | "slp" | "frz" | null;
 export type Weather = "Sun" | "Rain" | "Sand" | "Snow" | null;
+export type Terrain = "Electric" | "Grassy" | "Psychic" | "Misty" | null;
 
 /** One combatant, resolved from the roster + the trainer's edits. */
 export interface CalcPokemon {
@@ -106,6 +107,16 @@ export interface CalcField {
    */
   singleTarget?: boolean;
   weather?: Weather;
+  /**
+   * Active terrain — every damage effect @smogon/calc models, pinned in
+   * damage.test.ts: 1.3× (5325) on a GROUNDED attacker's matching Electric/
+   * Grass/Psychic move; Misty halving Dragon moves (and Grassy halving
+   * Earthquake/Bulldoze) into a grounded target; Psychic Terrain blocking
+   * priority moves into a grounded target; Steel Roller FAILING with none up;
+   * the terrain-keyed moves (Expanding Force, Rising Voltage, Terrain Pulse,
+   * Misty Explosion); and a matching Seed's +1 Def/SpD.
+   */
+  terrain?: Terrain;
   /** Attacker's side. */
   helpingHand?: boolean;
   /** Defender's side. */
@@ -136,7 +147,14 @@ export interface DamageResult {
   minPct: number;
   maxPct: number;
   typeEffectiveness: number;
+  /** Type/ability/item immunity — "No effect". */
   immune: boolean;
+  /**
+   * Why the move FAILS outright (no immunity involved): Steel Roller with no
+   * terrain, Poltergeist into an itemless target, a priority move into Psychic
+   * Terrain. Null when it connects. Damage is all zeros when set.
+   */
+  fails: string | null;
   /** Number of hits folded into each roll (1 for normal moves). */
   hits: number;
   verdict: KoVerdict;
@@ -239,6 +257,60 @@ function variableBasePower(
   }
 }
 
+/**
+ * On the ground for terrain purposes — @smogon/calc's `isGrounded` (Gravity
+ * isn't in this format). Flying types, Levitate and Air Balloon float; an Iron
+ * Ball (Hippowdon, Musharna run it for Trick Room) pins anything down.
+ */
+function isGrounded(mon: CalcPokemon): boolean {
+  if (has(mon.item, "Iron Ball")) return true;
+  return !mon.types.includes("flying") && !has(mon.ability, "Levitate") && !has(mon.item, "Air Balloon");
+}
+
+/** The move type each terrain powers up for a grounded user (Misty powers none). */
+const TERRAIN_BOOSTED_TYPE: Partial<Record<NonNullable<Terrain>, PokemonType>> = {
+  Electric: "electric",
+  Grassy: "grass",
+  Psychic: "psychic",
+};
+
+/** Terrain Pulse's type under each terrain. */
+const TERRAIN_PULSE_TYPE: Record<NonNullable<Terrain>, PokemonType> = {
+  Electric: "electric",
+  Grassy: "grass",
+  Misty: "fairy",
+  Psychic: "psychic",
+};
+
+/**
+ * A Seed fires — and is used up — the moment its terrain is up: +1 Def
+ * (Electric/Grassy Seed) or +1 SpD (Psychic/Misty Seed), inverted by Contrary.
+ * Mirrors @smogon/calc's `checkSeedBoost`, item consumption included (so a
+ * spent Seed no longer powers up Knock Off or saves a Poltergeist target).
+ */
+function withSeedBoost(mon: CalcPokemon, terrain: Terrain | undefined): CalcPokemon {
+  if (!terrain || !has(mon.item, `${terrain} Seed`)) return mon;
+  const stat: BoostStat = terrain === "Electric" || terrain === "Grassy" ? "def" : "spd";
+  const cur = mon.boosts?.[stat] ?? 0;
+  const next = has(mon.ability, "Contrary") ? Math.max(-6, cur - 1) : Math.min(6, cur + 1);
+  return { ...mon, item: null, boosts: { ...mon.boosts, [stat]: next } };
+}
+
+/**
+ * Why a move fails before any damage is rolled, or null — the same conditions
+ * (and order) as @smogon/calc's early returns. Steel Roller topped Mega
+ * Metagross's sets once Indeedee-F's Psychic Surge took over Reg M-C, which is
+ * how this surfaced: the engine used to roll full damage with no terrain up.
+ */
+function failureOf(move: CalcMove, defender: CalcPokemon, field: CalcField): string | null {
+  if (has(move.name, "Steel Roller") && !field.terrain) return "needs a terrain up";
+  if (has(move.name, "Poltergeist") && !defender.item) return "target holds no item";
+  if ((move.priority ?? 0) > 0 && field.terrain === "Psychic" && isGrounded(defender)) {
+    return "Psychic Terrain blocks priority";
+  }
+  return null;
+}
+
 /** Move types a defender ability makes it flat-out immune to (→ effectiveness 0). */
 const IMMUNITY: Record<string, PokemonType> = {
   levitate: "ground",
@@ -298,6 +370,23 @@ export function computeDamage(
   const gameType = field.gameType ?? "Doubles";
   const isDoubles = gameType !== "Singles";
   const crit = !!field.isCritical;
+  const terrain = field.terrain ?? null;
+
+  attacker = withSeedBoost(attacker, terrain);
+  defender = withSeedBoost(defender, terrain);
+  // Terrain-keyed moves change shape before anything reads them: Terrain Pulse
+  // takes the terrain's type at double power (grounded user), Rising Voltage
+  // doubles into a grounded target in Electric Terrain, and Expanding Force
+  // becomes a SPREAD move for a grounded user in Psychic Terrain (its 1.5× is
+  // in the BP chain below; the ×0.75 then applies like any spread move).
+  if (terrain && has(move.name, "Terrain Pulse") && isGrounded(attacker)) {
+    move = { ...move, type: TERRAIN_PULSE_TYPE[terrain], basePower: move.basePower * 2 };
+  }
+  if (terrain === "Electric" && has(move.name, "Rising Voltage") && isGrounded(defender)) {
+    move = { ...move, basePower: move.basePower * 2 };
+  }
+  const expandingForce = terrain === "Psychic" && has(move.name, "Expanding Force") && isGrounded(attacker);
+  if (expandingForce) move = { ...move, target: "all-opponents" };
 
   const aStats = rawStats(attacker);
   const dStats = rawStats(defender);
@@ -307,11 +396,12 @@ export function computeDamage(
   const eff = typeEffectiveness(move, defender);
   const hits = hitCount(move);
 
-  if (eff === 0) {
+  const fails = eff === 0 ? null : failureOf(move, defender, field);
+  if (eff === 0 || fails) {
     return {
       damage: new Array(16).fill(0), minDamage: 0, maxDamage: 0, hp, maxHp,
-      minPct: 0, maxPct: 0, typeEffectiveness: 0, immune: true, hits,
-      verdict: { label: "No effect", guaranteed: false, ohkoChance: 0 },
+      minPct: 0, maxPct: 0, typeEffectiveness: eff, immune: eff === 0, fails, hits,
+      verdict: { label: fails ? "Fails" : "No effect", guaranteed: false, ohkoChance: 0 },
     };
   }
 
@@ -336,15 +426,25 @@ export function computeDamage(
   if (has(move.name, "Knock Off") && defender.item && !isMegaStone(defender.item)) {
     bpMods.push(6144);
   }
+  if (expandingForce) bpMods.push(6144);
+  if (terrain === "Misty" && has(move.name, "Misty Explosion") && isGrounded(attacker)) bpMods.push(6144);
+  if (field.helpingHand) bpMods.push(6144);
+  // Terrain sits right after Helping Hand, as @smogon/calc chains it.
+  if (terrain && isGrounded(attacker) && TERRAIN_BOOSTED_TYPE[terrain] === move.type) bpMods.push(5325);
+  if (isGrounded(defender) && ((terrain === "Misty" && move.type === "dragon") ||
+      (terrain === "Grassy" && has(move.name, "Earthquake", "Bulldoze")))) {
+    bpMods.push(2048);
+  }
+  if (has(attacker.ability, "Technician") && bp <= 60) bpMods.push(6144);
+  if (has(attacker.ability, "Sheer Force") && move.hasSecondary) bpMods.push(5325);
+  else if (has(attacker.ability, "Tough Claws") && move.flags?.includes("contact")) bpMods.push(5325);
   // Normal Gem (v1.2.0) — the format's only Gem. 1.3× on the matching type,
   // in the BP chain (one-shot in game; the calc always shows the boosted roll).
   // 5325, NOT the 5324 Life Orb uses — @smogon/calc distinguishes them and the
   // parity test catches the one-roll drift if you reach for the wrong constant.
+  // It goes LAST, where @smogon/calc chains it: the chain rounds at every step,
+  // so order is part of the spec (Gem → HH → Technician lands one unit off).
   if (has(attacker.item, "Normal Gem") && move.type === "normal") bpMods.push(5325);
-  if (field.helpingHand) bpMods.push(6144);
-  if (has(attacker.ability, "Technician") && bp <= 60) bpMods.push(6144);
-  if (has(attacker.ability, "Sheer Force") && move.hasSecondary) bpMods.push(5325);
-  else if (has(attacker.ability, "Tough Claws") && move.flags?.includes("contact")) bpMods.push(5325);
   bp = Math.max(1, pokeRound((bp * chainMods(bpMods, 41, 2097152)) / 4096));
 
   // --- attack stat --------------------------------------------------------------
@@ -466,6 +566,7 @@ export function computeDamage(
     maxPct: (maxDamage / hp) * 100,
     typeEffectiveness: eff,
     immune: false,
+    fails: null,
     hits,
     verdict: verdictOf(damage, hp),
   };
