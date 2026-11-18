@@ -7,10 +7,16 @@
  *   npm run shot -- / /tmp/home.png
  *   npm run shot -- /pokemon/kingambit /tmp/kingambit.png "Threat Profile"
  *   PORT=3300 npm run shot -- / /tmp/dev-home.png        # target the dev server
+ *   TAP="Frost Breath" npm run shot -- "/pokemon/froslass?form=froslass-mega" /tmp/sheet.png
+ *   TAP="Show all|Dragon Cheer" npm run shot -- /pokemon/dragonite /tmp/sheet.png
  *
  * When a section heading is given, only that <section> is captured (scrolled
- * into view first). Requires Google Chrome at the default macOS location and
- * a server already running (default port 3210).
+ * into view first). `TAP=<text>` first taps the first button whose text
+ * contains it — a move row, an item, a tab — so a bottom sheet can be shot open
+ * (sheets portal to <body>, so leave the heading out and capture the viewport);
+ * `|` chains taps in order (expand a list, then open a row in it).
+ * Requires Google Chrome at the default macOS location and a server already
+ * running (default port 3210).
  */
 
 import puppeteer from "puppeteer-core";
@@ -28,6 +34,19 @@ const page = await browser.newPage();
 await page.setViewport({ width: 375, height: Number(height), deviceScaleFactor: 2 });
 await page.goto(`http://localhost:${port}${path}`, { waitUntil: "domcontentloaded" });
 await new Promise((r) => setTimeout(r, 1200));
+for (const tap of (process.env.TAP ?? "").split("|").filter(Boolean)) {
+  await page.waitForFunction(
+    (t) => [...document.querySelectorAll("button")].some((b) => b.textContent?.includes(t)),
+    { timeout: 10000 },
+    tap,
+  );
+  await page.evaluate((t) => {
+    const button = [...document.querySelectorAll("button")].find((b) => b.textContent?.includes(t));
+    button?.scrollIntoView({ block: "center" });
+    button?.click();
+  }, tap);
+  await new Promise((r) => setTimeout(r, 700));
+}
 if (h2text) {
   await page.waitForFunction(
     (t) => [...document.querySelectorAll("h2")].some((h) => h.textContent?.includes(t)),

@@ -16,6 +16,7 @@
 import { readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { UNMODELED_SHOWDOWN_FORMS } from "./species-aliases.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const read = (p) => JSON.parse(readFileSync(resolve(ROOT, p), "utf8"));
@@ -26,6 +27,8 @@ const comp = read("src/data/generated/competitive.json");
 const mons = dex.pokemon;
 const moveIndex = dex.moves ?? {};
 const itemIndex = comp.itemIndex ?? {};
+// Champions' held-item pool from Showdown's champions mod (stripped ids).
+const itemPool = new Set((dex.itemPool ?? []).map((n) => String(n).toLowerCase().replace(/[^a-z0-9]/g, "")));
 
 const NATURES = new Set([
   "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold", "Docile", "Relaxed",
@@ -87,12 +90,15 @@ for (const [bracket, profiles] of Object.entries(comp.brackets)) {
     if (Object.keys(pr.abilityUsage ?? {}).length && Math.abs(abilitySum - 100) > 3)
       add("low", tag, `ability % sum is ${abilitySum} (expected ~100)`);
 
-    // Move % must reference a move in the mon's Champions movepool.
+    // Move % must reference a move in the mon's Champions movepool. Movepools
+    // are Showdown's champions learnsets and the ladder is validated by them, so
+    // a miss is a wrong Smogon match — or a pinned SHOWDOWN_SHA older than a
+    // learnset fix the ladder already runs (bump it).
     for (const [slug, pct] of Object.entries(pr.moveUsage ?? {})) {
       if (pct < 0 || pct > 100) add("medium", tag, `move ${slug} pct ${pct} out of range`);
       if (!moveIndex[slug]) add("high", tag, `move "${slug}" not in the move index`);
       else if (!legalMoves.has(slug))
-        add("high", tag, `move "${slug}" is NOT in this mon's movepool — wrong Smogon match or stale movepool`);
+        add("high", tag, `move "${slug}" is NOT in this mon's movepool — wrong Smogon match, or the pinned Showdown learnsets lag the ladder`);
     }
 
     // Spread: valid nature, EV bounds, total ≤ 508 (+2 slack for rounding).
@@ -107,13 +113,16 @@ for (const [bracket, profiles] of Object.entries(comp.brackets)) {
       if (evTotal > 510) add("high", tag, `EV total ${evTotal} exceeds 508`);
     }
 
-    // Items: valid %, sorted desc, slug resolves + described.
+    // Items: valid %, sorted desc, slug resolves + described, and a real
+    // Champions item (Showdown's champions item pool, baked as dex.itemPool).
     let lastPct = Infinity;
     for (const it of pr.items ?? []) {
       if (it.usagePct < 0 || it.usagePct > 100) add("medium", tag, `item ${it.displayName} pct ${it.usagePct} out of range`);
       if (it.usagePct > lastPct) add("low", tag, `items not sorted by usage (${it.displayName})`);
       lastPct = it.usagePct;
       if (it.slug && !itemIndex[it.slug]) add("high", tag, `item slug "${it.slug}" missing from itemIndex`);
+      if (itemPool.size && !itemPool.has(stripId(it.displayName)))
+        add("medium", tag, `item "${it.displayName}" is not in Showdown's Champions item pool — a name-mapping slip, or the pool lags the game`);
     }
 
     // Teammates: valid %, slug (when set) resolves to a roster mon.
@@ -259,6 +268,15 @@ try {
     const tag = `team ${t.slug}`;
     if ((t.members?.length ?? 0) !== 6) add("high", tag, `${t.members?.length ?? 0}/6 members`);
     for (const m of t.members ?? []) {
+      if (!m.sprite) add("medium", tag, `${m.formLabel} has no sprite`);
+      if ((m.moves?.length ?? 0) < 1 || (m.moves?.length ?? 0) > 4)
+        add("medium", tag, `${m.formLabel} has ${m.moves?.length ?? 0} moves (expected 1–4)`);
+      // An unmodeled form (e.g. Lycanroc-Dusk) has NO scouting link (slug null) —
+      // the generator used to link it to the BASE species, whose page describes a
+      // different mon (this audit then skipped it as "can't be judged", which is
+      // how Dusk's Tough Claws shipped linked to Midday's page). Only a form listed
+      // in UNMODELED_SHOWDOWN_FORMS may be unlinked; there is nothing to judge.
+      if (!m.slug && Object.hasOwn(UNMODELED_SHOWDOWN_FORMS, stripId(m.formLabel ?? ""))) continue;
       const owner = m.formKey ? formOf.get(m.formKey) : formOf.get(m.slug);
       if (!m.slug || !owner) {
         add("high", tag, `${m.name} → no roster mon (slug ${m.slug}, form ${m.formKey})`);
@@ -266,20 +284,23 @@ try {
       }
       if (m.formKey && !(formOf.get(m.slug)?.p.forms ?? []).some((f) => f.key === m.formKey))
         add("high", tag, `${m.formLabel} formKey ${m.formKey} isn't a form of ${m.slug}`);
-      if (!m.sprite) add("medium", tag, `${m.formLabel} has no sprite`);
-      if ((m.moves?.length ?? 0) < 1 || (m.moves?.length ?? 0) > 4)
-        add("medium", tag, `${m.formLabel} has ${m.moves?.length ?? 0} moves (expected 1–4)`);
-      // An unmodeled form (e.g. Lycanroc-Dusk) resolves to the BASE species, whose
-      // abilities/movepool describe the base, not the form — so ability/move
-      // legality can't be judged and the checks below would false-positive. Skip.
-      const unmodeled = !m.formKey && m.formLabel !== formOf.get(m.slug)?.p.displayName;
-      // Legal ability for the resolved form (curated Mega abilities included).
-      if (!unmodeled && m.ability && !new Set(owner.abilities.map(stripId)).has(stripId(m.ability)))
-        add("medium", tag, `${m.formLabel} ability "${m.ability}" not in its known abilities`);
-      // In-movepool moves (a miss usually flags a real PokeAPI/Showdown learnset hole).
+      // A linked member must BE its destination: the label the card shows is the
+      // page/form's own, and its ability is one that form has (Megas carry the
+      // Mega's own ability — the generator overrides the paste's pre-Mega one).
+      const destLabel = m.formKey
+        ? (formOf.get(m.slug)?.p.forms ?? []).find((f) => f.key === m.formKey)?.label
+        : owner.p.displayName;
+      if (destLabel && m.formLabel !== destLabel)
+        add("high", tag, `"${m.formLabel}" links to ${destLabel} (${m.slug}${m.formKey ? `?form=${m.formKey}` : ""}) — a different form`);
+      if (m.ability && !new Set(owner.abilities.map(stripId)).has(stripId(m.ability)))
+        add("high", tag, `${m.formLabel} ability "${m.ability}" isn't an ability of the page/form it links to`);
+      // In-movepool moves. These are real in-game tournament teams — NOT Showdown-
+      // validated — so a miss is independent evidence the pinned champions
+      // learnset lacks a move: verify it, then bump SHOWDOWN_SHA or add a
+      // documented MOVEPOOL_OVERRIDES entry (generate-dataset.mjs).
       for (const mv of m.moves ?? []) {
         const slug = displayToSlug.get(stripId(mv));
-        if (!unmodeled && slug && !owner.moveSlugs.includes(slug))
+        if (slug && !owner.moveSlugs.includes(slug))
           add("low", tag, `${m.formLabel} runs ${mv} — outside the baked movepool (learnset hole?)`);
       }
     }

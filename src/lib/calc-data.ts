@@ -10,6 +10,8 @@
  * form's ladder-common set as a one-tap **meta preset** (Stat-Point space).
  */
 
+import dataset from "@/data/generated/pokemon.json";
+import { isMegaStone, moveToCalcMove } from "./damage";
 import {
   getAllPokemon,
   getCompetitiveByForm,
@@ -53,10 +55,35 @@ export interface CalcForm {
   stats: PokemonStats;
   abilities: { name: string; displayName: string }[];
   sprite: string | null;
-  /** Species weight (kg) — for weight-based moves (Grass Knot, Heavy Slam, …). */
+  /** This form's weight (kg) — for weight-based moves (Grass Knot, Heavy Slam, …). */
   weightKg: number;
-  /** Smogon/display name — for the verdict caption + calc parity. */
+  /**
+   * The LADDER name the preset's data is shown for ("data shown for"
+   * attribution only) — it can be ANOTHER form's: Kantonian Tauros borrows
+   * Tauros-Paldea-Aqua's Master+ set, Gourgeist borrows Gourgeist-Super's.
+   * Never the engine identity — that is {@link battleName}.
+   */
   smogonName: string;
+  /**
+   * BATTLE IDENTITY: this form's own canonical Showdown species name — what the
+   * engine gets as `CalcPokemon.name` (its exact-name rules: Forecast, Raging
+   * Bull, Light Ball). Resolved by {@link battleNameOf}, independent of ladder
+   * attribution; calc-data.test holds every one to @smogon/calc's species table
+   * (same types + base stats as the form).
+   */
+  battleName: string;
+  /**
+   * The item this form NEEDS to exist — a Mega's own stone (null otherwise).
+   * The calc defaults to it when the form has no preset item and always offers
+   * it (Mega Absol has no Master+ set; it opened holding nothing, and with no
+   * "Absolite" option Poltergeist read "fails").
+   */
+  requiredItem: string | null;
+  /**
+   * Stance Change (Aegislash): the forme it ATTACKS in (Blade) — passed to the
+   * engine as `CalcPokemon.attackForm`. Null for every other form.
+   */
+  attacksAs: { name: string; types: PokemonType[]; baseStats: PokemonStats; weightKg: number } | null;
   preset: CalcPreset | null;
 }
 
@@ -82,6 +109,74 @@ export interface CalcIndex {
 }
 
 const stripId = (s: string): string => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+/**
+ * Pages/forms whose Showdown species name is NOT their slug title-cased — the
+ * renames in `scripts/species-aliases.mjs` (`SHOWDOWN_TO_ROSTER`) plus Floette,
+ * whose Champions form is Floette-Eternal (`ROSTER_TO_SHOWDOWN_SPECIES`).
+ * calc-data.test.ts holds this table to that file, so the two can't drift.
+ */
+const SHOWDOWN_SPECIES_NAME: Record<string, string> = {
+  floette: "Floette-Eternal",
+  "indeedee-male": "Indeedee",
+  "indeedee-female": "Indeedee-F",
+  "toxtricity-amped": "Toxtricity",
+  "squawkabilly-green-plumage": "Squawkabilly",
+  "squawkabilly-blue-plumage": "Squawkabilly-Blue",
+  "squawkabilly-yellow-plumage": "Squawkabilly-Yellow",
+  "squawkabilly-white-plumage": "Squawkabilly-White",
+  "meowstic-male-mega": "Meowstic-M-Mega",
+  "basculegion-female": "Basculegion-F",
+};
+
+/**
+ * A page/form's battle identity (`CalcForm.battleName`), in this order:
+ *  1. the rename table above;
+ *  2. the form's OWN ladder entry (not `asForm`-borrowed) — Showdown's exact
+ *     spelling ("Tauros-Paldea-Aqua", "Charizard-Mega-Y", "Farfetch'd");
+ *  3. the slug / form key title-cased ("castform" → "Castform", "tauros" →
+ *     "Tauros", "absol-mega-z" → "Absol-Mega-Z").
+ * A borrowed ladder name (Kantonian Tauros → "Tauros-Paldea-Aqua", Gourgeist →
+ * "Gourgeist-Super") is NEVER used: that made the borrowed form fight.
+ */
+export function battleNameOf(key: string, comp: { smogonName?: string; asForm?: string | null } | undefined): string {
+  if (Object.hasOwn(SHOWDOWN_SPECIES_NAME, key)) return SHOWDOWN_SPECIES_NAME[key];
+  if (comp?.smogonName && !comp.asForm) return comp.smogonName;
+  return key.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join("-");
+}
+
+const ITEM_POOL = (dataset as unknown as { itemPool: string[] }).itemPool ?? [];
+const ITEM_TEXT = (dataset as unknown as { itemText: Record<string, string> }).itemText ?? {};
+const MEGA_STONES = ITEM_POOL.filter((it) => isMegaStone(it));
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/**
+ * The Mega Stone a Mega form needs (`CalcForm.requiredItem`), in this order:
+ *  1. the stone whose Showdown text names this exact form ("…Mega Evolve into
+ *     Mega Absol Z in battle." — "into Mega Absol" alone must not match it);
+ *  2. the stone the form's own ladder sets hold;
+ *  3. the one stone naming the species ("If held by an Eternal Flower Floette…")
+ *     when the species has a single Mega.
+ * calc-data.test asserts every Mega form gets a distinct pool stone.
+ */
+function requiredItemOf(
+  form: { key: string; label: string },
+  comp: { asForm?: string | null; items?: { displayName: string }[] } | undefined,
+  speciesName: string,
+  megaCount: number,
+): string | null {
+  const exact = new RegExp(`into ${escapeRe(form.label)}( in battle)?\\.`);
+  const byText = MEGA_STONES.filter((st) => exact.test(ITEM_TEXT[st] ?? ""));
+  if (byText.length === 1) return byText[0];
+  const held = comp && !comp.asForm ? comp.items?.find((it) => isMegaStone(it.displayName)) : undefined;
+  if (held) return MEGA_STONES.find((st) => stripId(st) === stripId(held.displayName)) ?? held.displayName;
+  if (megaCount === 1) {
+    const bySpecies = MEGA_STONES.filter((st) =>
+      new RegExp(`held by an? (.+ )?${escapeRe(speciesName)},`).test(ITEM_TEXT[st] ?? ""));
+    if (bySpecies.length === 1) return bySpecies[0];
+  }
+  return null;
+}
 
 function liteMove(slug: string): CalcMoveLite | null {
   const m = getMoveBySlug(slug);
@@ -143,29 +238,45 @@ export function buildCalcIndex(bracket: DataBracket = "master"): CalcIndex {
       moveSlugs.push(m.name);
     }
 
+    const megaCount = p.forms.filter((f) => f.kind === "mega" || f.kind === "primal").length;
     const baseForm: CalcForm = buildForm(
       { key: null, label: p.displayName, isMega: false, types: p.types, stats: p.stats, abilities: p.abilities, sprite: p.home ?? p.sprite, weightKg: p.weightKg },
       compByForm[p.name],
       p.name,
+      null,
     );
-    const altForms: CalcForm[] = p.forms.map((f) =>
-      buildForm(
+    const altForms: CalcForm[] = p.forms.map((f) => {
+      const isMega = f.kind === "mega" || f.kind === "primal";
+      return buildForm(
         {
           key: f.key,
           label: f.label,
-          isMega: f.kind === "mega" || f.kind === "primal",
+          isMega,
           types: f.types,
           stats: f.stats,
           abilities: f.abilities,
           sprite: f.artwork ?? f.sprite ?? p.home ?? p.sprite,
-          weightKg: p.weightKg,
+          // The form's own weight — until 2026-11-18 every form took the base's
+          // (Low Kick into Mega Sableye read 40 BP at 11 kg; it is 161 kg → 100).
+          weightKg: f.weightKg,
         },
         compByForm[f.key],
         f.key,
-      ),
-    );
+        isMega ? requiredItemOf(f, compByForm[f.key], p.displayName, megaCount) : null,
+      );
+    });
+    const forms = [baseForm, ...altForms];
+    // Stance Change: every Aegislash forme attacks as the Blade one.
+    const blade = forms.find((f) => f.key?.endsWith("-blade"));
+    if (blade) {
+      for (const f of forms) {
+        if (f.abilities.some((a) => stripId(a.name) === "stancechange")) {
+          f.attacksAs = { name: blade.battleName, types: blade.types, baseStats: blade.stats, weightKg: blade.weightKg };
+        }
+      }
+    }
 
-    entries.push({ slug: p.name, name: p.displayName, forms: [baseForm, ...altForms], moveSlugs });
+    entries.push({ slug: p.name, name: p.displayName, forms, moveSlugs });
   }
 
   entries.sort((a, b) => a.name.localeCompare(b.name));
@@ -196,6 +307,7 @@ function buildForm(
   },
   comp: ReturnType<typeof getCompetitiveByForm>[string] | undefined,
   smogonKey: string,
+  requiredItem: string | null,
 ): CalcForm {
   const abilities = toAbilityPairs(raw.abilities);
   let preset: CalcPreset | null = null;
@@ -205,19 +317,22 @@ function buildForm(
     for (const [id, pct] of Object.entries(comp.abilityUsage ?? {})) {
       if (pct > bestPct) { topAbilityId = id; bestPct = pct; }
     }
+    // Every move the CALC can compute — the engine's own gate (moveToCalcMove),
+    // not "has a nominal power": Final Gambit (Staraptor, 98%), Night Shade
+    // (Mega Sableye, 70%), Low Kick… carry power null and were dropped.
     const topMoves = Object.entries(comp.moveUsage ?? {})
       .sort((a, b) => b[1] - a[1])
       .map(([slug]) => slug)
       .filter((slug) => {
         const m = getMoveBySlug(slug);
-        return m && m.damageClass !== "status" && m.power != null;
+        return !!m && moveToCalcMove(m) != null;
       })
       .slice(0, 4);
     preset = {
       nature: comp.spread.nature,
       sp: spreadToStatPoints(comp.spread),
       ability: topAbilityId ? abilityName(topAbilityId, abilities) : abilities[0]?.displayName ?? null,
-      item: comp.items?.[0]?.displayName ?? null,
+      item: comp.items?.[0]?.displayName ?? requiredItem,
       topMoves,
     };
   }
@@ -231,6 +346,9 @@ function buildForm(
     sprite: raw.sprite,
     weightKg: raw.weightKg,
     smogonName: comp?.smogonName ?? smogonKey,
+    battleName: battleNameOf(smogonKey, comp),
+    requiredItem,
+    attacksAs: null,
     preset,
   };
 }

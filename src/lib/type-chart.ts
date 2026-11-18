@@ -49,10 +49,22 @@ export function defensiveMultiplier(
   attacking: PokemonType,
   defenderTypes: readonly PokemonType[],
 ): number {
-  return defenderTypes.reduce(
-    (mult, def) => mult * (TYPE_CHART[attacking][def] ?? 1),
-    1,
-  );
+  return defenderTypes.reduce((mult, def) => mult * typeFactor(attacking, def), 1);
+}
+
+/**
+ * One attacking type vs one defending type. Own keys only: the chart is an
+ * object literal, so a type string that isn't a type ("constructor") used to
+ * read Object.prototype — a NaN multiplier, or a TypeError on the row.
+ */
+function typeFactor(attacking: string, defending: string): number {
+  const row = Object.hasOwn(TYPE_CHART, attacking) ? TYPE_CHART[attacking as PokemonType] : null;
+  return row && Object.hasOwn(row, defending) ? row[defending as PokemonType]! : 1;
+}
+
+/** `table[key]` for an own key only — never an Object.prototype member. */
+function own<T>(table: Record<string, T>, key: string): T | undefined {
+  return Object.hasOwn(table, key) ? table[key] : undefined;
 }
 
 /** A defender's matchup against every attacking type, one entry per type. */
@@ -125,6 +137,7 @@ export function allMatchups(
  */
 const DEFENSIVE_ABILITY_NOTES: Record<string, string> = {
   levitate: "Levitate — immune to Ground (ignore any Ground weakness)",
+  eelevate: "Eelevate — immune to Ground (ignore any Ground weakness)",
   flashfire: "Flash Fire — immune to Fire (and it powers up)",
   waterabsorb: "Water Absorb — heals from Water instead of taking it",
   stormdrain: "Storm Drain — draws in and absorbs Water",
@@ -148,11 +161,12 @@ const stripAbilityId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 /**
  * Human-readable caveats for any of the defender's abilities that change its
  * real type matchups. One entry per distinct ability; empty when none apply.
+ * (Own keys only — `["constructor"]` once returned Object itself as a "note".)
  */
 export function abilityMatchupNotes(abilityNames: readonly string[]): string[] {
   const notes: string[] = [];
   for (const name of abilityNames) {
-    const note = DEFENSIVE_ABILITY_NOTES[stripAbilityId(name)];
+    const note = own(DEFENSIVE_ABILITY_NOTES, stripAbilityId(name));
     if (note && !notes.includes(note)) notes.push(note);
   }
   return notes;
@@ -167,6 +181,9 @@ export function abilityMatchupNotes(abilityNames: readonly string[]): string[] {
  */
 const DEFENSIVE_ABILITY_FACTORS: Record<string, Partial<Record<PokemonType, number>>> = {
   levitate: { ground: 0 },
+  // Champions-original (Mega Eelektross's only ability): Showdown's champions
+  // mod codes it as Levitate's Ground immunity (damage.ts grounds it the same).
+  eelevate: { ground: 0 },
   flashfire: { fire: 0 },
   wellbakedbody: { fire: 0 },
   waterabsorb: { water: 0 },
@@ -197,7 +214,8 @@ export function effectiveDefensiveMultiplier(
 ): number {
   let factor = 1;
   for (const name of abilityNames) {
-    const f = DEFENSIVE_ABILITY_FACTORS[stripAbilityId(name)]?.[attacking];
+    const factors = own(DEFENSIVE_ABILITY_FACTORS, stripAbilityId(name));
+    const f = factors && Object.hasOwn(factors, attacking) ? factors[attacking] : undefined;
     if (f != null) factor = Math.min(factor, f);
   }
   return defensiveMultiplier(attacking, defenderTypes) * factor;

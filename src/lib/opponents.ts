@@ -32,6 +32,14 @@ export interface PinnedOpponent {
   archetype: { label: string; tone: string }[];
   /** the top threat headline, for the briefing row */
   headline: string | null;
+  /**
+   * The pinned form's COMPLETE list of possible ability ids ("levitate"), so the
+   * briefing can drop a type the form is guaranteed immune to (Levitate-only
+   * Rotom vs Ground) and flag one it may be. Optional: pins saved before it
+   * existed (and any pin site that doesn't set it) read as unknown → raw type
+   * math, exactly the old behaviour.
+   */
+  abilities?: string[];
 }
 
 function read(): PinnedOpponent[] {
@@ -43,16 +51,25 @@ function read(): PinnedOpponent[] {
     // (from an old schema or hand-editing) must not brick every screen that
     // reads the tray. The tray reads displayName.slice() and types[0] directly,
     // so both must be present and well-formed or the record is dropped.
-    return parsed.filter(
-      (o): o is PinnedOpponent =>
-        !!o &&
-        typeof o === "object" &&
-        typeof o.slug === "string" &&
-        typeof o.displayName === "string" &&
-        Array.isArray(o.types) &&
-        o.types.length > 0 &&
-        o.types.every((t: unknown) => POKEMON_TYPES.includes(t as PokemonType)),
-    );
+    return parsed
+      .filter(
+        (o): o is PinnedOpponent =>
+          !!o &&
+          typeof o === "object" &&
+          typeof o.slug === "string" &&
+          typeof o.displayName === "string" &&
+          Array.isArray(o.types) &&
+          o.types.length > 0 &&
+          o.types.every((t: unknown) => POKEMON_TYPES.includes(t as PokemonType)),
+      )
+      .map((o) =>
+        // A malformed ability list only costs the ability-aware scoring (→ raw
+        // type math), never the whole record.
+        o.abilities === undefined ||
+        (Array.isArray(o.abilities) && o.abilities.every((a: unknown) => typeof a === "string"))
+          ? o
+          : { ...o, abilities: undefined },
+      );
   } catch {
     return [];
   }

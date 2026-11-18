@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { PokemonCard } from "./PokemonCard";
 import { BracketToggle } from "./BracketToggle";
 import { useBracket } from "@/lib/bracket";
+import { searchKey } from "@/lib/format";
 import { TYPE_COLORS, typeTextColor } from "@/lib/type-meta";
 import { POKEMON_TYPES, type PokemonType } from "@/lib/types";
 import type { RosterEntry } from "@/lib/pokedex";
@@ -162,16 +163,19 @@ export function RosterSearch({ entries }: { entries: RosterEntry[] }) {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
+    // Names match punctuation-blind ("mr rime" → Mr. Rime, "kommo o" → Kommo-o,
+    // "farfetchd" → Farfetch’d); the type query below stays the plain word.
+    const k = searchKey(q);
     // Mid-battle, every keystroke counts: rank prefix matches first (what
     // autocomplete muscle-memory expects), then substring matches ("gambit" →
     // Kingambit, "chomp" → Garchomp). A type name as the query filters by
     // type ("ghost" → every Ghost), since that's how trainers think too.
     const score = (e: RosterEntry): number => {
       if (!q) return 1;
-      const name = e.displayName.toLowerCase();
-      if (name.startsWith(q) || e.species.startsWith(q)) return 3;
+      const name = searchKey(e.displayName);
+      if (k && (name.startsWith(k) || searchKey(e.species).startsWith(k))) return 3;
       if (e.types.some((t) => t === q || (q.length >= 3 && t.startsWith(q)))) return 2;
-      if (name.includes(q)) return 1;
+      if (k && name.includes(k)) return 1;
       return 0;
     };
     const passesFilters = (e: RosterEntry) => {

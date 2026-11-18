@@ -193,3 +193,83 @@ describe("empty-card fallback", () => {
     expect(p.vectors[0].headline).toMatch(/Most-used move/);
   });
 });
+
+// --- The KO line under "Likely set" (Fable #7) ---------------------------------
+import { headlineBenchmark, likelySet, LIKELY_SET_SIZE } from "./threat";
+import { getAllPokemon, getCompetitiveByForm, getUnionMoves } from "./pokedex";
+import type { MoveBenchmark } from "./types";
+
+const bench = (move: string, ohkoCount: number, twoCount: number): MoveBenchmark => ({
+  move,
+  ohkoCount,
+  twoCount,
+  ohko: [],
+  two: [],
+});
+
+describe("headlineBenchmark — the KO line names a move the set shows", () => {
+  it("picks the most lethal verdict among the SHOWN moves, not overall", () => {
+    const rows = [bench("heat-wave", 1, 3), bench("solar-beam", 1, 4), bench("hurricane", 2, 9)];
+    expect(headlineBenchmark(rows, ["heat-wave", "solar-beam", "protect"])?.move).toBe("solar-beam");
+  });
+  it("falls back to the best of all only when no shown move has a verdict", () => {
+    const rows = [bench("hurricane", 2, 9), bench("dragon-pulse", 0, 1)];
+    expect(headlineBenchmark(rows, ["protect", "tailwind"])?.move).toBe("hurricane");
+  });
+  it("ties go to the earlier baked row (the more-used move)", () => {
+    const rows = [bench("a", 1, 0), bench("b", 0, 2), bench("c", 1, 0)];
+    expect(headlineBenchmark(rows, ["a", "b", "c"])?.move).toBe("a");
+    expect(headlineBenchmark(rows, ["c", "b"])?.move).toBe("b");
+  });
+  it("no benchmarks → no line", () => {
+    expect(headlineBenchmark(undefined, ["a"])).toBeUndefined();
+    expect(headlineBenchmark([], ["a"])).toBeUndefined();
+  });
+});
+
+describe("likelySet", () => {
+  const mv = (name: string) => ({ name });
+  it("orders by usage, keeps movepool order on ties, caps at six", () => {
+    const moves = ["a", "b", "c", "d", "e", "f", "g", "h"].map(mv);
+    const usage = { h: 90, a: 50, b: 50, c: 40, d: 30, e: 20, f: 10, g: 5 };
+    expect(likelySet(moves, usage).map((m) => m.name)).toEqual(["h", "a", "b", "c", "d", "e"]);
+    expect(LIKELY_SET_SIZE).toBe(6);
+  });
+  it("skips moves the ladder doesn't record (and inherited keys)", () => {
+    expect(likelySet([mv("a"), mv("constructor")], { a: 1 }).map((m) => m.name)).toEqual(["a"]);
+    expect(likelySet([mv("a")], undefined)).toEqual([]);
+    expect(likelySet([mv("a")], {})).toEqual([]);
+  });
+});
+
+describe("headline KO line on the real baked data", () => {
+  // Every Master+ profile with baked verdicts, exactly as the detail page feeds
+  // the card: union movepool + the form's own moveUsage + benchmarks.
+  const profiles = getAllPokemon().flatMap((p) => {
+    const moves = getUnionMoves(p);
+    return Object.entries(getCompetitiveByForm(p, "master"))
+      .filter(([, c]) => c.benchmarks?.length)
+      .map(([key, c]) => ({ key, c, shown: likelySet(moves, c.moveUsage).map((m) => m.name) }));
+  });
+
+  it("covers the baked profiles", () => {
+    expect(profiles.length).toBeGreaterThan(200);
+  });
+
+  it("Mega Charizard Y headlines a shown move, not its 8% Hurricane", () => {
+    const zard = profiles.find((x) => x.key === "charizard-mega-y");
+    expect(zard).toBeDefined();
+    expect(zard!.shown).not.toContain("hurricane");
+    const pick = headlineBenchmark(zard!.c.benchmarks, zard!.shown);
+    expect(pick?.move).not.toBe("hurricane");
+    expect(zard!.shown).toContain(pick?.move);
+  });
+
+  it("headlines an unshown move ONLY when no shown move has a verdict", () => {
+    const offenders = profiles.filter(({ c, shown }) => {
+      const pick = headlineBenchmark(c.benchmarks, shown)!;
+      return !shown.includes(pick.move) && c.benchmarks!.some((b) => shown.includes(b.move));
+    });
+    expect(offenders.map((x) => x.key)).toEqual([]);
+  });
+});

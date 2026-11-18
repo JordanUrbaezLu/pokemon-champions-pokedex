@@ -56,3 +56,67 @@ export const ROSTER_TO_SHOWDOWN = Object.entries(SHOWDOWN_TO_ROSTER).reduce((acc
   (acc[ours] ??= []).push(showdown);
   return acc;
 }, {});
+
+/**
+ * Roster slug → the Showdown species id whose CHAMPIONS data (learnset,
+ * legality) describes it, where neither the slug nor a rename above gets there.
+ * Used by generate-dataset's movepool lookup; ladder naming is unaffected.
+ *
+ * Champions' Floette is the Eternal Flower form — the one with a Mega (Floette-
+ * Mega changes from Floette-Eternal) and Light of Ruin; the ladder calls it
+ * "Floette-Eternal". PokeAPI's `floette` is the mainline Red-Flower form, whose
+ * Showdown entry is NOT Champions-legal, so without this line the bake has no
+ * Champions learnset for the page and refuses to run.
+ */
+export const ROSTER_TO_SHOWDOWN_SPECIES = {
+  floette: "floetteeternal",
+};
+
+/**
+ * Roster slug → the PokeAPI `/pokemon` variety that IS the Champions form, where
+ * it isn't the slug's default variety. Stats, types, abilities and sprites come
+ * from it; the route/name/dex number stay the roster slug's. Same Floette fact as
+ * above, on the PokeAPI side: `floette` is Red-Flower (54/45/47/75/98/52), the
+ * game's is `floette-eternal` (74/65/67/125/128/92 — PokeAPI files its own
+ * `champions` learnset there, not on `floette`). The bake's stat cross-check
+ * (generate-dataset `rosterCheck`) fails status if a page disagrees with Showdown.
+ */
+export const ROSTER_TO_POKEAPI_POKEMON = {
+  floette: "floette-eternal",
+  // PokeAPI's default variety is Family of Four (2.8 kg). Showdown's `Maushold`, the
+  // ladder's stats and @smogon/calc are Family of Three (2.3 kg) — the owner chose to
+  // follow the game data (2026-11-18), which also swaps the page's sprite. Battle-
+  // identical except weight: Appletun's Heavy Slam into it is 120 BP (13 ÷ 2.3), not 100.
+  maushold: "maushold-family-of-three",
+};
+
+/**
+ * Pages/forms whose PokeAPI weight may differ from the Showdown species they
+ * resolve to — the ONLY exceptions to the bake's weight cross-check
+ * (generate-dataset `rosterCheck.weightMismatches`; `npm run status` fails on
+ * any other). Weight drives Low Kick / Grass Knot / Heavy Slam / Heat Crash, so
+ * each entry pins BOTH values: if either source moves, the check fails again.
+ *
+ * (Maushold used to be the one exception — PokeAPI's Family of Four vs Showdown's Family
+ * of Three; it now resolves to `maushold-family-of-three` via ROSTER_TO_POKEAPI_POKEMON.)
+ */
+export const WEIGHT_CHECK_EXCEPTIONS = {};
+
+/**
+ * Champions-legal forms (per Showdown's champions formats-data) that the roster
+ * deliberately does NOT give a page or form tab — the bake's roster check skips
+ * these; any OTHER legal species/forme without a roster entry fails
+ * `npm run status`. Showdown id → why it is unmodeled.
+ */
+export const UNMODELED_SHOWDOWN_FORMS = {
+  lycanrocmidnight: "roster models base (Midday) Lycanroc only — Midnight is its own stat line/movepool",
+  lycanrocdusk: "roster models base (Midday) Lycanroc only — Dusk is ~1% of Reg M-C (the known unmodeled form)",
+  taurospaldeacombat: "roster models Paldean Tauros as the Aqua Breed only",
+  taurospaldeablaze: "roster models Paldean Tauros as the Aqua Breed only",
+  gourgeistsmall: "roster models Average Gourgeist only (sizes differ in HP/Speed)",
+  gourgeistlarge: "roster models Average Gourgeist only (sizes differ in HP/Speed)",
+  gourgeistsuper: "roster models Average Gourgeist only (sizes differ in HP/Speed)",
+  castformsunny: "weather form — changes in battle, no toggle",
+  castformrainy: "weather form — changes in battle, no toggle",
+  castformsnowy: "weather form — changes in battle, no toggle",
+};

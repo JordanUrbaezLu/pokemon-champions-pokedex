@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { TypeBadge } from "./TypeBadge";
 import { CategoryPill, MoveModal } from "./MoveModal";
 import { spreadTag } from "@/lib/battle";
+import { searchKey } from "@/lib/format";
 import type { DamageClass, MoveBenchmark, MoveSummary } from "@/lib/types";
 
 type Filter = "all" | "used" | DamageClass | "priority";
@@ -121,7 +122,8 @@ export function MovesSection({
   ];
 
   const visible = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    // Punctuation-blind: "u turn", "u-turn" and "uturn" all find U-turn.
+    const q = searchKey(query);
     const matchesFilter = (m: MoveSummary) => {
       if (filter === "all") return true;
       if (filter === "used") return usage?.[m.name] != null;
@@ -131,7 +133,7 @@ export function MovesSection({
     return [...moves]
       .filter(matchesFilter)
       // Prefix match: typing "a" shows only moves starting with "a".
-      .filter((m) => !q || m.displayName.toLowerCase().startsWith(q))
+      .filter((m) => !q || searchKey(m.displayName).startsWith(q))
       .sort((a, b) => {
         if (filter === "used") {
           return (usage?.[b.name] ?? 0) - (usage?.[a.name] ?? 0);

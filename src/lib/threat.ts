@@ -1,6 +1,7 @@
 import { lv50Stats, getTrapWarnings } from "./battle";
 import type {
   CompetitiveProfile,
+  MoveBenchmark,
   MoveSummary,
   PokemonAbility,
   PokemonStats,
@@ -27,6 +28,55 @@ import type {
  * card scans top-to-bottom in a second. Everything is computed at build time
  * on the server; the page ships only the finished vectors.
  */
+
+/** How many moves the Threat Profile card's "Likely set" shows. */
+export const LIKELY_SET_SIZE = 6;
+
+/**
+ * The card's "Likely set": the form's moves the ladder records, by usage desc
+ * (ties keep the movepool order — a stable sort), the first LIKELY_SET_SIZE.
+ * Empty without usage data.
+ */
+export function likelySet<T extends { name: string }>(
+  moves: readonly T[],
+  usage: Record<string, number> | undefined,
+  size = LIKELY_SET_SIZE,
+): T[] {
+  if (!usage || !Object.keys(usage).length) return [];
+  const pct = (m: T) => (Object.hasOwn(usage, m.name) ? usage[m.name] : undefined);
+  return moves
+    .filter((m) => pct(m) != null)
+    .sort((a, b) => (pct(b) ?? 0) - (pct(a) ?? 0))
+    .slice(0, size);
+}
+
+/** A baked KO verdict's lethality: an OHKO counts double a 2HKO. */
+const benchmarkScore = (b: MoveBenchmark) => b.ohkoCount * 2 + b.twoCount;
+
+/**
+ * The KO line under "Likely set" ("Solar Beam OHKOs Basculegion · 2HKOs 4 of
+ * the top meta"): the most lethal baked verdict AMONG THE MOVES THE SET SHOWS.
+ * Benchmarks are baked for the top six DAMAGING moves, which can reach past the
+ * six shown (status moves take slots), so "most lethal of all" put Mega
+ * Charizard Y's 8%-usage Hurricane — not one of its six — on the line, as the
+ * set's headline (36 of 277 Master+ profiles headlined an unshown move; 4
+ * still fall back — Mega Audino, Slurpuff, Klefki, Alcremie: data 2026-11-18).
+ * Only when NO shown move has a verdict does it fall back to the best of all.
+ * Ties go to the earlier baked row (= the more-used move).
+ */
+export function headlineBenchmark(
+  benchmarks: readonly MoveBenchmark[] | undefined,
+  shownMoves: readonly string[],
+): MoveBenchmark | undefined {
+  const all = benchmarks ?? [];
+  const shown = new Set(shownMoves);
+  const inSet = all.filter((b) => shown.has(b.move));
+  let best: MoveBenchmark | undefined;
+  for (const b of inSet.length ? inSet : all) {
+    if (!best || benchmarkScore(b) > benchmarkScore(best)) best = b;
+  }
+  return best;
+}
 
 export type ThreatKind =
   | "setup"

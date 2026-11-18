@@ -5,9 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Sheet } from "./Sheet";
 import { TypeBadge } from "./TypeBadge";
-import { defensiveMultiplier } from "@/lib/type-chart";
-import { TYPE_COLORS } from "@/lib/type-meta";
-import { POKEMON_TYPES, type PokemonType } from "@/lib/types";
+import { briefingBestTypes } from "@/lib/battle";
+import { toDisplayName } from "@/lib/format";
+import { TYPE_COLORS, typeTextColor } from "@/lib/type-meta";
 import type { PinnedOpponent } from "@/lib/opponents";
 
 /**
@@ -29,14 +29,9 @@ export function BriefingSheet({
   const titleId = useId();
 
   // Which attacking types hit the most of their team for 2×+; quads weighted.
-  const bestTypes = POKEMON_TYPES.map((atk) => {
-    const hit = opponents.filter((m) => defensiveMultiplier(atk, m.types) >= 2).length;
-    const quads = opponents.filter((m) => defensiveMultiplier(atk, m.types) >= 4).length;
-    return { atk, hit, score: hit + quads };
-  })
-    .filter((x) => x.hit >= 2)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+  // Ability-aware (battle.ts has the rule): a form whose every possible ability
+  // blocks the type isn't counted; one that only MAY be immune is flagged.
+  const bestTypes = briefingBestTypes(opponents);
 
   const bySpeed = [...opponents]
     .filter((m) => m.speed != null)
@@ -75,7 +70,7 @@ export function BriefingSheet({
             className="flex items-center gap-2 rounded-xl bg-surface-2/60 py-1.5 pl-1.5 pr-2"
           >
             <Link
-              href={`/pokemon/${m.slug}${m.formKey ? `?form=${m.formKey}` : ""}`}
+              href={`/pokemon/${m.slug}?form=${m.formKey ?? m.slug}`}
               onClick={onClose}
               className="flex min-w-0 flex-1 items-center gap-2 active:opacity-70"
             >
@@ -98,13 +93,16 @@ export function BriefingSheet({
                 )}
               </span>
               <span className="min-w-0 flex-1">
+                {/* The name wins the width (the labelled 4× tag costs some):
+                    "Mega Charizard Y" must never lose its Y to the archetype
+                    chip — the chip truncates first. */}
                 <span className="flex items-center gap-1.5">
-                  <span className="truncate text-[13px] font-bold">
+                  <span className="max-w-full shrink-0 truncate text-[13px] font-bold">
                     {m.displayName}
                   </span>
                   {m.archetype[0] && (
                     <span
-                      className="shrink-0 rounded-full px-1.5 py-px text-[10px] font-bold"
+                      className="min-w-0 truncate rounded-full px-1.5 py-px text-[10px] font-bold"
                       style={{
                         backgroundColor: `${m.archetype[0].tone}22`,
                         color: m.archetype[0].tone,
@@ -121,12 +119,15 @@ export function BriefingSheet({
                 )}
               </span>
               {m.quad && (
+                // Names the type, not just its colour (colour-blind / low-
+                // contrast reads): "4× Ground", text in the badge's own
+                // legible ink (white on Electric yellow was unreadable).
                 <span
-                  className="shrink-0 rounded px-1 font-mono text-[10px] font-black leading-4 text-white"
-                  style={{ backgroundColor: TYPE_COLORS[m.quad] }}
-                  title={`4× weak to ${m.quad}`}
+                  className="shrink-0 rounded px-1 text-[10px] font-black leading-4"
+                  style={{ backgroundColor: TYPE_COLORS[m.quad], color: typeTextColor(m.quad) }}
+                  title={`4× weak to ${toDisplayName(m.quad)}`}
                 >
-                  4×
+                  <span className="font-mono">4×</span> {toDisplayName(m.quad)}
                 </span>
               )}
             </Link>
@@ -173,12 +174,20 @@ export function BriefingSheet({
             Best types into their team
           </p>
           <div className="flex flex-wrap gap-2">
-            {bestTypes.map(({ atk, hit }) => (
-              <span key={atk} className="flex items-center gap-1.5">
-                <TypeBadge type={atk as PokemonType} size="md" />
+            {bestTypes.map(({ atk, hit, mayBeImmune }) => (
+              <span key={atk} className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                <TypeBadge type={atk} size="md" />
                 <span className="text-xs font-semibold text-muted">
                   hits {hit} of {opponents.length}
                 </span>
+                {/* Counted, but an ability it may run blocks the type — the
+                    same amber ⚠ caveat the Type Matchups panel uses. */}
+                {mayBeImmune.length > 0 && (
+                  <span className="text-[11px] font-semibold text-amber-300/90">
+                    <span aria-hidden>⚠ </span>
+                    {mayBeImmune.join(", ")} may be immune
+                  </span>
+                )}
               </span>
             ))}
           </div>
