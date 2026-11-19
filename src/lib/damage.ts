@@ -21,13 +21,16 @@
  * user's later hits (its oracle: the library's own per-hit rolls, burned from
  * hit 2).
  *
- * Deliberately NOT modelled — state the calc has no input for, exactly where the
- * library also needs a flag it defaults off (`abilityOn`, `alliesFainted`, gender):
- * Supreme Overlord (fainted allies), Rivalry (genders), Flash Fire's boost (needs
- * a Fire hit first), Stakeout (target just switched in), Plus/Minus (an ally's
- * ability), Unburden / Slow Start, Intimidate & Defiant/Competitive (use the
- * boost controls), Lash Out (stats lowered THIS turn — the library never doubles
- * it either), the Metronome item (consecutive uses), Protect (so Unseen Fist /
+ * Battle HISTORY is an input, exactly where the library takes a flag: fainted
+ * allies (`alliesFainted` → Supreme Overlord, Last Respects), times hit
+ * (`timesHit` → Rage Fist), a triggered ability (`abilityOn` → Flash Fire,
+ * Unburden, Stakeout, Plus/Minus), the hits that land (`CalcMove.hits`) and a
+ * forced crit (`CalcField.isCritical`).
+ *
+ * Deliberately NOT modelled — state the calc has no input for: Rivalry
+ * (genders), Slow Start, Intimidate & Defiant/Competitive (use the boost
+ * controls), Lash Out (stats lowered THIS turn — the library never doubles it
+ * either), the Metronome item (consecutive uses), Protect (so Unseen Fist /
  * Piercing Drill's ¼-through-Protect never applies) and crit-stage items/abilities
  * (Scope Lens, Leek, Super Luck raise a CHANCE; only guaranteed crits are rolled).
  *
@@ -115,6 +118,27 @@ export interface CalcPokemon {
    * ability is Stance Change. (`CalcForm.attacksAs`.)
    */
   attackForm?: { name: string; types: PokemonType[]; baseStats: PokemonStats; weightKg?: number };
+  /**
+   * Allies of this mon that have FAINTED so far this battle (0–5; a VGC team
+   * brings 4, so 0–3 in practice). Supreme Overlord: +10% power per ally, the
+   * library's table (4096 → 4506 → 4915 → 5325 → 5734 → 6144). Last Respects:
+   * 50 BP + 50 per ally (Showdown's `basePowerCallback`). Default 0.
+   */
+  alliesFainted?: number;
+  /**
+   * How many times this mon has been HIT by a move so far (Showdown's
+   * `timesAttacked`): Rage Fist is 50 BP + 50 per hit, capped at 350. Default 0.
+   */
+  timesHit?: number;
+  /**
+   * The ability's battle trigger has happened — the library's `abilityOn`, read
+   * only for: **Flash Fire** (it absorbed a Fire move → its Fire moves ×1.5),
+   * **Unburden** (its item is gone → ×2 Speed, and no Choice Scarf / Iron Ball;
+   * spending a terrain Seed switches it on by itself, see `withSeedBoost`),
+   * **Stakeout** (its target switched in this turn → ×2) and **Plus / Minus**
+   * (an ally has Plus or Minus → special moves ×1.5).
+   */
+  abilityOn?: boolean;
 }
 
 /** A damaging move, reduced to what the formula needs. */
@@ -132,6 +156,15 @@ export interface CalcMove {
   priority?: number;
   /** Variable-power / fixed-damage move id (Grass Knot, Seismic Toss, …); resolved at compute time. */
   variablePower?: string;
+  /**
+   * How many hits land, for a move whose count varies in battle ({@link hitRange}):
+   * a 2–5 hitter (Bullet Seed, Scale Shot, …) or a move that rolls accuracy
+   * per hit (Triple Axel 1–3, Population Bomb 1–10). Clamped to that range;
+   * ignored by every other move. Unset: Skill Link's maximum, else the
+   * library's expectation (3 for a 2–5 hitter, every hit for the rest). As
+   * with the library's `new Move({ hits })`, a set count wins over Skill Link.
+   */
+  hits?: number;
 }
 
 export interface CalcField {
@@ -420,6 +453,13 @@ export function selfAttackDrop(moveName: string): number {
 /** Hit counts PokeAPI doesn't carry (it serves both as single-hit). */
 const FIXED_HITS: Record<string, number> = { populationbomb: 10, twinbeam: 2 };
 
+/**
+ * Moves that roll accuracy for EVERY hit (Showdown's `multiaccuracy`) → their
+ * most hits: fewer can land in battle, so their count is a choice
+ * ({@link hitRange}), as the library's `new Move({ hits })` allows.
+ */
+const MULTI_ACCURACY_HITS: Record<string, number> = { tripleaxel: 3, triplekick: 3, populationbomb: 10 };
+
 /** Variable-power moves whose base power the engine computes at calc time. */
 export const VARIABLE_MOVES = new Set([
   "grassknot", "lowkick", "heavyslam", "heatcrash", "gyroball", "electroball",
@@ -597,14 +637,17 @@ function isGrounded(mon: CalcPokemon): boolean {
  * weather/terrain speed abilities (×2) / Quick Feet, Choice Scarf (×1.5) / Iron
  * Ball (×0.5), then paralysis (×0.5, floored after the chain). It feeds Gyro
  * Ball / Electro Ball's power, the "who moves last" reads of Payback and
- * Analytic, and {@link effectiveSpeeds} (the calc's turn-order line).
- * (Unburden is battle state the calc doesn't take.)
+ * Analytic, and {@link effectiveSpeeds} (the calc's turn-order line). An
+ * ACTIVE Unburden (`abilityOn`: the item is gone) sits on the ×2 rung and, its
+ * item spent, takes no Choice Scarf / Iron Ball — as the library chains it.
  */
 function finalSpeed(mon: CalcPokemon, spe: number, weather: Weather, terrain: Terrain, tailwind = false): number {
   let speed = modifiedStat(spe, boostOf(mon, "spe"));
   const mods: number[] = [];
+  const unburden = has(mon.ability, "Unburden") && !!mon.abilityOn;
   if (tailwind) mods.push(8192);
-  if ((has(mon.ability, "Chlorophyll") && weather === "Sun") ||
+  if (unburden ||
+      (has(mon.ability, "Chlorophyll") && weather === "Sun") ||
       (has(mon.ability, "Sand Rush") && weather === "Sand") ||
       (has(mon.ability, "Swift Swim") && weather === "Rain") ||
       (has(mon.ability, "Slush Rush") && weather === "Snow") ||
@@ -613,7 +656,9 @@ function finalSpeed(mon: CalcPokemon, spe: number, weather: Weather, terrain: Te
   } else if (has(mon.ability, "Quick Feet") && mon.status) {
     mods.push(6144);
   }
-  if (has(mon.item, "Choice Scarf")) mods.push(6144);
+  if (unburden) {
+    // The item is gone — nothing of it reaches the chain.
+  } else if (has(mon.item, "Choice Scarf")) mods.push(6144);
   else if (has(mon.item, "Iron Ball")) mods.push(2048);
   // 131172 (sic) — the library's own upper clamp for this one chain.
   speed = pokeRound((speed * chainMods(mods, 410, 131172)) / 4096);
@@ -655,7 +700,12 @@ function withSeedBoost(mon: CalcPokemon, terrain: Terrain | undefined): CalcPoke
   const stat: BoostStat = terrain === "Electric" || terrain === "Grassy" ? "def" : "spd";
   const cur = boostOf(mon, stat);
   const next = has(mon.ability, "Contrary") ? Math.max(-6, cur - 1) : Math.min(6, cur + 1);
-  return { ...mon, item: null, boosts: { ...mon.boosts, [stat]: next } };
+  // The Seed is spent the moment the terrain is up — and losing its item is
+  // exactly what Unburden waits for (Sneasler's Psychic / Grassy Seed under its
+  // partner's Surge), so it switches on here by itself. The library never does
+  // this (it only reads a hand-set `abilityOn`): a documented divergence.
+  const abilityOn = mon.abilityOn || has(mon.ability, "Unburden");
+  return { ...mon, item: null, boosts: { ...mon.boosts, [stat]: next }, ...(abilityOn ? { abilityOn } : {}) };
 }
 
 /** Castform's Forecast: its type follows the weather (Sand leaves it Normal). */
@@ -670,10 +720,13 @@ function withForecast(mon: CalcPokemon, weather: Weather): CalcPokemon {
  * the library's expectation of 3; Population Bomb (10) and Twin Beam (2) are
  * fixed counts PokeAPI serves as single hits. **Dragon Darts** fires one dart
  * at EACH foe when two are out (`targets` ≥ 2 → 1 hit into the selected one)
- * and both darts into a lone foe (→ 2) — @smogon/calc always rolls 2.
+ * and both darts into a lone foe (→ 2) — @smogon/calc always rolls 2. A move
+ * whose count varies in battle takes `move.hits` when set ({@link hitRange}).
  */
 function hitCount(move: CalcMove, attacker: CalcPokemon, targets = 1): number {
   if (stripId(move.name) === "dragondarts") return targets >= 2 ? 1 : 2;
+  const range = hitRange(move);
+  if (range && move.hits != null) return Math.max(range[0], Math.min(range[1], Math.floor(move.hits)));
   const fixed = FIXED_HITS[stripId(move.name)];
   if (fixed) return fixed;
   const min = move.minHits ?? 1;
@@ -681,6 +734,20 @@ function hitCount(move: CalcMove, attacker: CalcPokemon, targets = 1): number {
   if (max <= 1) return 1;
   if (min === max) return min;
   return has(attacker.ability, "Skill Link") ? max : min + 1;
+}
+
+/**
+ * The hit counts a move can really land in battle — `[fewest, most]` — or null
+ * when it always lands the same number: a 2–5 hitter's own range, and 1…N for
+ * a move that rolls accuracy per hit (Triple Axel, Triple Kick, Population
+ * Bomb). The calc offers a hit-count control exactly when this is non-null.
+ */
+export function hitRange(move: Pick<CalcMove, "name" | "minHits" | "maxHits">): [number, number] | null {
+  const multi = MULTI_ACCURACY_HITS[stripId(move.name)];
+  if (multi) return [1, multi];
+  const min = move.minHits ?? 1;
+  const max = move.maxHits ?? 1;
+  return max > min ? [min, max] : null;
 }
 
 /** A move that is multi-hit by itself (so Parental Bond leaves it alone) — Dragon Darts included even at 1 dart. */
@@ -829,10 +896,31 @@ function basePowerOf(c: Ctx, hit: number, pbChild: boolean, movesLast: boolean):
       return hit * 20;
     case "triplekick":
       return hit * 10;
+    // Battle-history moves — the library has neither, so these are Showdown's
+    // own `basePowerCallback`s (data/moves.ts), pinned in damage.test.ts:
+    case "lastrespects":
+      // 50 + 50 × the user's side's fainted Pokémon.
+      return 50 + 50 * faintedAllies(a);
+    case "ragefist":
+      // 50 + 50 × times the user was hit, capped at 350.
+      return Math.min(350, 50 + 50 * timesHit(a));
     default:
       return move.basePower;
   }
 }
+
+/** `alliesFainted` as the rules read it: a whole number, 0–5. */
+function faintedAllies(mon: CalcPokemon): number {
+  return Math.max(0, Math.min(5, Math.floor(mon.alliesFainted ?? 0)));
+}
+
+/** `timesHit` as Rage Fist reads it: a whole number ≥ 0. */
+function timesHit(mon: CalcPokemon): number {
+  return Math.max(0, Math.floor(mon.timesHit ?? 0));
+}
+
+/** Supreme Overlord's power per fainted ally (0–5) — the library's table. */
+const SUPREME_OVERLORD_MODS = [4096, 4506, 4915, 5325, 5734, 6144];
 
 /** The bp modifier chain, in @smogon/calc's order (the chain rounds every step, so order is spec). */
 function bpModsOf(c: Ctx, basePower: number, hit: number, movesLast: boolean): number[] {
@@ -904,6 +992,10 @@ function bpModsOf(c: Ctx, basePower: number, hit: number, movesLast: boolean): n
   // Dry Skin's Fire weakness is a BP modifier (Heatproof moved to the attack chain in gen 9).
   if (has(d.ability, "Dry Skin") && type === "fire") mods.push(5120);
 
+  // Supreme Overlord (Kingambit): +10% per fainted ally — right after Dry Skin,
+  // as the library chains it.
+  if (has(a.ability, "Supreme Overlord") && faintedAllies(a) > 0) mods.push(SUPREME_OVERLORD_MODS[faintedAllies(a)]);
+
   // Items — LAST, where @smogon/calc chains them: the chain rounds at every
   // step, so order is part of the spec (Gem → HH → Technician lands one unit
   // off). A Gem is 5325, NOT the 5324 Life Orb uses; the parity test catches
@@ -947,7 +1039,12 @@ function attackOf(c: Ctx): number {
     mods.push(6144);
   } else if ((has(a.ability, "Guts") && a.status && physical) ||
       (lowHp && ((has(a.ability, "Overgrow") && type === "grass") || (has(a.ability, "Blaze") && type === "fire") ||
-        (has(a.ability, "Torrent") && type === "water") || (has(a.ability, "Swarm") && type === "bug")))) {
+        (has(a.ability, "Torrent") && type === "water") || (has(a.ability, "Swarm") && type === "bug"))) ||
+      // Plus / Minus: an ally with Plus or Minus is out (`abilityOn`) — special moves only.
+      (!physical && a.abilityOn && has(a.ability, "Plus", "Minus"))) {
+    mods.push(6144);
+  } else if (has(a.ability, "Flash Fire") && a.abilityOn && type === "fire") {
+    // Flash Fire, ACTIVATED (it absorbed a Fire move): its own Fire moves ×1.5.
     mods.push(6144);
   } else if ((has(a.ability, "Steelworker") && type === "steel") ||
       (has(a.ability, "Dragon's Maw") && type === "dragon") ||
@@ -958,6 +1055,9 @@ function attackOf(c: Ctx): number {
     mods.push(6144);
   } else if (has(a.ability, "Transistor") && type === "electric") {
     mods.push(5325);
+  } else if (has(a.ability, "Stakeout") && a.abilityOn) {
+    // Stakeout: the target switched in this turn → ×2.
+    mods.push(8192);
   } else if ((has(a.ability, "Water Bubble") && type === "water") ||
       (has(a.ability, "Huge Power", "Pure Power") && physical)) {
     mods.push(8192);
@@ -1656,14 +1756,18 @@ export function computeDamage(
 /**
  * Both combatants' EFFECTIVE Speed — what turn order compares: the same chain
  * the damage rolls use (`finalSpeed`: stages, Tailwind, weather/terrain speed
- * abilities, Quick Feet, Choice Scarf / Iron Ball, paralysis), with Cloud Nine /
- * Air Lock clearing the weather for both. `a` sits on the attacker's side
- * (`field.attackerTailwind`), `b` on the defender's.
+ * abilities, Quick Feet, Choice Scarf / Iron Ball, an active Unburden,
+ * paralysis), with Cloud Nine / Air Lock clearing the weather for both. A Seed
+ * the terrain spends is spent here too, so it switches Unburden on
+ * (`withSeedBoost`). `a` sits on the attacker's side (`field.attackerTailwind`),
+ * `b` on the defender's.
  */
 export function effectiveSpeeds(a: CalcPokemon, b: CalcPokemon, field: CalcField = {}): { a: number; b: number } {
   const noWeather = has(a.ability, "Air Lock", "Cloud Nine") || has(b.ability, "Air Lock", "Cloud Nine");
   const weather = noWeather ? null : field.weather ?? null;
   const terrain = field.terrain ?? null;
+  a = withSeedBoost(a, terrain);
+  b = withSeedBoost(b, terrain);
   return {
     a: finalSpeed(a, rawStats(a).spe, weather, terrain, !!field.attackerTailwind),
     b: finalSpeed(b, rawStats(b).spe, weather, terrain, !!field.defenderTailwind),
