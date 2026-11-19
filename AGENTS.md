@@ -15,6 +15,18 @@ tool modes: they may cost more taps than the seconds-to-answer scouting screens,
 (Historical note: the brief once said "team builders are out of scope" — that was reversed on
 purpose when Teams + Calc shipped.)
 
+**Parallel agents are normal (up to ~3 at once: T3 Code threads, Claude/Codex/Kimi sessions)**
+- One task = one worktree + branch: `git worktree add -b agent/<task> ../pcp-wt-<task> origin/main`, then
+  `ln -s ../pokemon-champions-pokedex/node_modules node_modules` (or `npm ci`). With a symlinked
+  `node_modules`, Turbopack refuses to run — use `npx next build --webpack` / `next dev --webpack`.
+- Never develop in the main checkout `~/Repositories/pokemon-champions-pokedex`: the iOS app
+  (JordanUrbaezLu/champions-vgc-dex) exports its bundled data and golden fixtures FROM it (`$CDX_WEB`), and
+  its release gate refuses a dirty or stale checkout. Keep it clean and on `origin/main` (`git pull --ff-only`).
+- Commit only your own paths (`git add <paths>`, never `-A` blindly); land work through a PR (CI + preview).
+- The data generators (`npm run data`, `data:comp`, `data:teams`) hit the network and rewrite
+  `src/data/generated` — one at a time, in your own worktree. Dev servers: pick a free port (`-p`).
+- Full protocol (iOS side, with simulator locks): champions-vgc-dex `docs/parallel-agents.md`.
+
 **Hard constraints**
 - Mobile-only (375px first), dark theme, fully static: every page prerendered, **zero runtime
   API calls** (only the sprite CDN, which the service worker caches). Client JS stays small.
