@@ -193,9 +193,14 @@ export interface CalcField {
 }
 
 export interface KoVerdict {
-  /** e.g. "OHKO", "2HKO", "3HKO", "4+ HKO", or a range like "OHKO–2HKO". */
+  /**
+   * e.g. "OHKO", "2HKO", "3HKO", "4+ HKO", or a range like "OHKO–2HKO". A move
+   * that makes its user faint ({@link MoveFacts.userFaints}) has ONE use, so its
+   * label is "OHKO" (every roll, or — not guaranteed — some rolls: the chance
+   * says how many) or "No KO"; never a 2HKO the user can't live to make.
+   */
   label: string;
-  /** The label holds for every roll (no "–" range). */
+  /** The label holds for every roll (no "–" range; a user-fainting "OHKO" can still be partial). */
   guaranteed: boolean;
   /**
    * Chance (%) ONE use KOs — exact over INDEPENDENT rolls: every hit of a
@@ -204,7 +209,7 @@ export interface KoVerdict {
    * Focus Sash / Sturdy / Disguise / Ice Face applied hit by hit.
    */
   ohkoChance: number;
-  /** Chance (%) the defender is KO'd within 1, 2 and 3 uses — `[ohko, 2hko, 3hko]` (see {@link DamageResult.uses}). */
+  /** Chance (%) the defender is KO'd within 1, 2 and 3 uses — `[ohko, 2hko, 3hko]` (see {@link DamageResult.uses}); all three equal for a user-fainting move. */
   koChances: number[];
 }
 
@@ -226,6 +231,13 @@ export interface MoveFacts {
   priority: number;
   /** Hits per use (Parental Bond 2, Population Bomb 10, Dragon Darts 1 into one of two foes). */
   hits: number;
+  /**
+   * The user faints using it — Explosion, Self-Destruct, Misty Explosion, Final
+   * Gambit (Memento / Healing Wish are status moves) — so the verdict counts
+   * this ONE use: it showed Final Gambit's 93% as a "2HKO" and Explosion into
+   * Kingambit as "3HKO–4+ HKO".
+   */
+  userFaints: boolean;
 }
 
 /** What kept the defender standing on the FIRST use (only at full HP; see {@link computeDamage}). */
@@ -273,7 +285,8 @@ export interface DamageResult {
    * use 1 is `minDamage`–`maxDamage`; later uses carry the per-use changes:
    * the user's own stat drops (Draco Meteor −2 SpA…), spent one-time items
    * (resist berry, Gem, a knocked-off item, a popped Air Balloon), Multiscale /
-   * Shadow Shield gone, Meteor Beam's next charge. All-zero for a blank result.
+   * Shadow Shield gone, Meteor Beam's next charge. All-zero for a blank result;
+   * uses 2 and 3 are all-zero for a user-fainting move (there is no next use).
    */
   uses: { min: number; max: number }[];
 }
@@ -1175,7 +1188,10 @@ function betweenHits(c: Ctx, used: { a: boolean; d: boolean }): void {
 
 const PB_CHILD = "Parental Bond (Child)";
 
-/** Uses the KO look-ahead walks: "OHKO", "2HKO", "3HKO" — anything later is "4+ HKO". */
+/**
+ * Uses the KO look-ahead walks: "OHKO", "2HKO", "3HKO" — anything later is
+ * "4+ HKO". A move that makes its user faint walks ONE ({@link MoveFacts.userFaints}).
+ */
 const LOOKAHEAD_USES = 3;
 
 /**
@@ -1494,9 +1510,12 @@ export function computeDamage(
     stabMod: stabOf(attacker, type), isBurned: burnHalves(attacker, physical, id),
   };
   const fixedDamage = id === "seismictoss" || id === "nightshade" || id === "finalgambit";
+  // The user faints: this use is the only one the verdict may count.
+  const userFaints = id === "explosion" || id === "selfdestruct" || id === "mistyexplosion" || id === "finalgambit";
   const facts: MoveFacts = {
     type, category, spread, targets, priority, hits,
     basePower: fixedDamage ? null : basePowerOf(c, 1, false, movesLastOf(c)),
+    userFaints,
   };
 
   const blank = (why: string | null, immune: boolean): DamageResult => ({
@@ -1565,6 +1584,11 @@ export function computeDamage(
   };
   const useHits: number[][][] = [rollUse()];
   for (let u = 2; u <= LOOKAHEAD_USES; u++) {
+    // The user fainted: no later use — an empty one leaves the KO walk where it was.
+    if (userFaints) {
+      useHits.push([]);
+      continue;
+    }
     nextUse(c, used, parentAbility);
     useHits.push(rollUse());
   }
@@ -1593,16 +1617,18 @@ export function computeDamage(
     survival = { kind: sturdy ? "sturdy" : "focus-sash", label: first.length > 1 ? `${name} — hit 1 leaves 1 HP` : `${name} — survives at 1 HP` };
   }
 
-  const label = (n: number) => (n <= 1 ? "OHKO" : n >= 4 ? "4+ HKO" : `${n}HKO`);
+  // A user-fainting move has one use: anything past it is "No KO".
+  const label = (n: number) => (n <= 1 ? "OHKO" : userFaints ? "No KO" : n >= 4 ? "4+ HKO" : `${n}HKO`);
   // Fewest uses = every hit at its top roll; guaranteed = every hit at its lowest.
   const best = label(walk.lows.indexOf(0) + 1 || 4);
   const worst = label(walk.highs.indexOf(0) + 1 || 4);
   // Both ends can collapse to one label — "5HKO–7HKO" is just "4+ HKO" — and
   // a range of two identical labels ("4+ HKO–4+ HKO", 1962 of the 4848 golden
   // fixture cases until 2026-11-18) is noise, so the label alone is emitted.
+  // A user-fainting move's "OHKO–No KO" is just a partial "OHKO" (its chance says the rest).
   const verdict: KoVerdict = best === worst
     ? { label: best, guaranteed: true, ohkoChance: walk.koChances[0], koChances: walk.koChances }
-    : { label: `${best}–${worst}`, guaranteed: false, ohkoChance: walk.koChances[0], koChances: walk.koChances };
+    : { label: userFaints ? best : `${best}–${worst}`, guaranteed: false, ohkoChance: walk.koChances[0], koChances: walk.koChances };
 
   return {
     damage,

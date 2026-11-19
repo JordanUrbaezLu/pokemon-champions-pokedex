@@ -9,7 +9,7 @@ import {
   computeDamage, effectiveSpeeds, moveToCalcMove, turnOrder,
   type CalcField, type CalcPokemon, type DamageResult, type Terrain, type Weather,
 } from "@/lib/damage";
-import { NATURES, formPillLabel, natureEffect } from "@/lib/format";
+import { NATURES, formPillLabel, formatKoChance, natureEffect } from "@/lib/format";
 import {
   SP_BUDGET, SP_CAP, SP_STATS, statPointsToSpread, totalStatPoints, type StatPointMap,
 } from "@/lib/stat-points";
@@ -480,6 +480,9 @@ function moveFactsLine(r: DamageResult, slug: string | undefined): string {
   // Dragon Darts: one dart per foe — say which case the Targets control chose.
   if (slug === "dragon-darts") parts.push(m.hits === 1 ? "1 dart (2 foes)" : "2 darts (1 foe)");
   else if (m.hits > 1) parts.push(`${m.hits} hits`);
+  // Explosion & co.: why the verdict stops at one use ("No KO", never a 2HKO) — before the
+  // long spread note, so a narrow row keeps it.
+  if (m.userFaints && !r.immune && !r.fails) parts.push("user faints");
   if (m.spread) parts.push(`spread ×0.75 (${m.targets} targets)`);
   if (m.priority !== 0) parts.push(`priority ${fmtPriority(m.priority)}`);
   return parts.join(" · ");
@@ -564,7 +567,9 @@ function VerdictRow({
             </div>
             <span className={`rounded-md border px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide ${pill}`}>
               {label}
-              {partialOhko ? ` · ${Math.round(result.verdict.ohkoChance)}% OHKO` : ""}
+              {/* A range names what its chance is of ("OHKO–2HKO · 30% OHKO"); a user-fainting
+                  move's lone partial "OHKO" just adds it ("OHKO · 63%"). */}
+              {partialOhko ? ` · ${formatKoChance(result.verdict.ohkoChance)}${label === "OHKO" ? "" : " OHKO"}` : ""}
             </span>
           </>
         )}

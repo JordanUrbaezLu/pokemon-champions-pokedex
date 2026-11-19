@@ -11,6 +11,7 @@ import {
   natureEffect,
   prettySmogonName,
   formatPickRate,
+  formatKoChance,
   formatSpread,
   formatSpreadSp,
 } from "./format";
@@ -147,6 +148,20 @@ describe("formatPickRate", () => {
     expect(formatPickRate(26.6)).toBe("27%");
     expect(formatPickRate(0.4)).toBe("<1%");
     expect(formatPickRate(0)).toBe("0%");
+  });
+});
+
+describe("formatKoChance", () => {
+  it("rounds to a whole %, but a real chance never prints as 0% or 100%", () => {
+    expect(formatKoChance(30.46875)).toBe("30%"); // Twin Beam into Heracross
+    expect(formatKoChance(0.3)).toBe("<1%"); // Population Bomb into Appletun printed "0% OHKO"
+    expect(formatKoChance(Number.MIN_VALUE)).toBe("<1%");
+    expect(formatKoChance(0.5)).toBe("1%");
+    expect(formatKoChance(99.49)).toBe("99%");
+    expect(formatKoChance(99.5)).toBe(">99%");
+    expect(formatKoChance(99.999)).toBe(">99%");
+    expect(formatKoChance(0)).toBe("0%");
+    expect(formatKoChance(100)).toBe("100%");
   });
 });
 

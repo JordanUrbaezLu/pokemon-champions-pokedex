@@ -1440,7 +1440,8 @@ describe("KO verdict labels", () => {
   });
 
   it("collapses a 5HKO–7HKO-style spread into one guaranteed '4+ HKO'", () => {
-    const wide = results.filter((r) => r.maxDamage > 0 && Math.ceil(r.hp / r.maxDamage) >= 4 &&
+    // (A user-fainting move has one use — "No KO", never "4+ HKO".)
+    const wide = results.filter((r) => r.maxDamage > 0 && !r.move.userFaints && Math.ceil(r.hp / r.maxDamage) >= 4 &&
       Math.ceil(r.hp / r.minDamage) > Math.ceil(r.hp / r.maxDamage));
     expect(wide.length).toBeGreaterThan(0);
     for (const r of wide) expect(r.verdict).toMatchObject({ label: "4+ HKO", guaranteed: true });

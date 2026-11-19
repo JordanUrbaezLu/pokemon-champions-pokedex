@@ -746,6 +746,17 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   briefing, partner chips, team cards) — the detail page opens on the ladder default otherwise, i.e. the
   Mega for Meganium; "no live calls" copy → "no live data calls" (images do load from GitHub).
 - ✅ 2026-11-18 Maushold follows the game data (see the Maushold entry above).
+- ✅ **iOS final review (web side, 2026-11-18): one use for a move that faints its user; honest KO odds.**
+  The 3-use look-ahead also walked Explosion, Self-Destruct, Misty Explosion and Final Gambit (the only
+  damaging user-fainting moves in the index — Memento / Healing Wish are status), so Final Gambit
+  (Staraptor into Rillaboom, 192 into 207) read "93–93% · 2HKO" and Explosion (Metagross into Kingambit,
+  66–79 into 207) "3HKO–4+ HKO" — uses the user never lives to make. `damage.ts` walks ONE use for them
+  (`MoveFacts.userFaints`; `uses[1..2]` zero, `koChances` all equal): "OHKO", a partial "OHKO · 31%"
+  (Explosion into Garchomp), or "No KO"; the facts line adds "user faints". KO chances print through
+  `formatKoChance` (format.ts): a real chance is never "0%" / "100%" — "<1%" (Population Bomb into
+  Appletun, 0.0004%, read "0% OHKO") / ">99%". Tests: `calc-data.test.ts` (the reviewers' cases),
+  `format.test.ts`; 504 tests, tsc, lint green. Not done, noted: the BAKED benchmarks (@smogon/calc)
+  still count Explosion "2HKOs" (Metagross, Mega Glalie) on the Threat card / move sheet — a bake-side fix.
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as
   repo bloat vs the ~80ms prod nav already in place)

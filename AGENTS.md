@@ -340,6 +340,7 @@ That's the entire contract. The twice-weekly Action runs `refresh` and opens/aut
   Grassy Glide is +1 for a grounded user in Grassy Terrain, so Armor Tail / Queenly
   Majesty / Dazzling block it (the library let Rillaboom's 99%-usage Grassy Glide "hit" Farigiraf in its
   own Grassy Surge); Assurance's Parental Bond child doubles (the library reads the DEFENDER's ability).
+- **A move that faints its user has ONE use** (Explosion, Self-Destruct, Misty Explosion, Final Gambit — `MoveFacts.userFaints`): verdict "OHKO" / partial "OHKO · N%" / "No KO", never a later use (Final Gambit read "2HKO"); every KO chance prints via `formatKoChance` ("<1%" / ">99%", never a rounded 0 / 100).
 - The Calc's boost controls are MIRRORED (offense = Atk & SpA, defense = Def & SpD), so stage-counting
   moves (Stored Power, Power Trip) get one stat per control in `Calc.tsx` `calcOf` — fed raw, Corviknight's
   Bulk Up +1 read Power Trip at 100 BP instead of 60.

@@ -150,6 +150,19 @@ export function formatPickRate(pct: number): string {
   return pct > 0 ? "<1%" : "0%";
 }
 
+/**
+ * A KO chance as the calc prints it (every verdict pill / detail sheet goes
+ * through this): a whole %, except that a real chance never reads as a
+ * certainty — under 0.5% is "<1%" (Population Bomb into Appletun printed
+ * "0% OHKO"), 99.5% up to (not incl.) 100% is ">99%". 0 / 100 stay "0%" / "100%".
+ */
+export function formatKoChance(pct: number): string {
+  const n = Math.round(pct);
+  if (pct > 0 && n < 1) return "<1%";
+  if (pct < 100 && n > 99) return ">99%";
+  return `${n}%`;
+}
+
 /** "252 Atk / 252 Spe / 4 SpD" from a competitive EV spread. */
 export function formatSpread(spread: CompetitiveSpread): string {
   return EV_ORDER.filter((k) => spread.evs[k])

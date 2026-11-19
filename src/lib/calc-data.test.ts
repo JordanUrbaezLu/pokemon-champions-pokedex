@@ -480,6 +480,40 @@ describe("nHKO walks each use with its own changes", () => {
   });
 });
 
+describe("a move that makes its user faint has ONE use", () => {
+  it("Final Gambit (Staraptor into Rillaboom): 192 into 207 is No KO — it read '93–93% · 2HKO'", () => {
+    const r = computeDamage(webMon("staraptor"), webMon("rillaboom"), mv("final-gambit"), DOUBLES);
+    expect([r.minDamage, r.maxDamage, r.hp]).toEqual([192, 192, 207]);
+    expect(r.move.userFaints).toBe(true);
+    expect(r.verdict).toEqual({ label: "No KO", guaranteed: true, ohkoChance: 0, koChances: [0, 0, 0] });
+    expect(r.uses.slice(1)).toEqual([{ min: 0, max: 0 }, { min: 0, max: 0 }]);
+    expect(r.hpAfter).toEqual({ min: 15, max: 15 });
+  });
+
+  it("Explosion (Metagross into Kingambit): 66–79 into 207 is No KO — it read '3HKO–4+ HKO'", () => {
+    const r = computeDamage(webMon("metagross"), webMon("kingambit"), mv("explosion"), DOUBLES);
+    expect([r.minDamage, r.maxDamage, r.hp]).toEqual([66, 79, 207]);
+    expect(r.verdict).toEqual({ label: "No KO", guaranteed: true, ohkoChance: 0, koChances: [0, 0, 0] });
+  });
+
+  it("only use 1 decides: a sure kill is 'OHKO', a roll-dependent one a partial 'OHKO' whose chance never grows", () => {
+    const sure = computeDamage(webMon("metagross"), webMon("sneasler"), mv("explosion"), DOUBLES);
+    expect(sure.verdict).toEqual({ label: "OHKO", guaranteed: true, ohkoChance: 100, koChances: [100, 100, 100] });
+    const maybe = computeDamage(webMon("metagross"), webMon("garchomp"), mv("explosion"), DOUBLES);
+    expect([maybe.minDamage, maybe.maxDamage, maybe.hp]).toEqual([162, 192, 184]);
+    expect(maybe.verdict).toEqual({ label: "OHKO", guaranteed: false, ohkoChance: 31.25, koChances: [31.25, 31.25, 31.25] });
+    const sd = computeDamage(webMon("snorlax"), webMon("sneasler"), mv("self-destruct"), DOUBLES);
+    expect(sd.verdict).toMatchObject({ label: "OHKO", guaranteed: false, ohkoChance: 37.5 });
+    const misty = computeDamage(webMon("slurpuff"), webMon("garchomp"), mv("misty-explosion"), DOUBLES);
+    expect(misty.move.userFaints).toBe(true);
+    expect(misty.verdict.koChances.every((p) => p === misty.verdict.ohkoChance)).toBe(true);
+    // An ordinary move keeps its look-ahead.
+    const eq = computeDamage(webMon("garchomp"), webMon("kingambit"), mv("earthquake"), DOUBLES);
+    expect(eq.move.userFaints).toBe(false);
+    expect(eq.uses[1].max).toBeGreaterThan(0);
+  });
+});
+
 describe("Dragon Darts follows the Targets control", () => {
   it("two foes: ONE dart into the selected one; one foe: both darts (Dragapult into Garchomp)", () => {
     const two = computeDamage(webMon("dragapult"), webMon("garchomp"), mv("dragon-darts"), DOUBLES);
