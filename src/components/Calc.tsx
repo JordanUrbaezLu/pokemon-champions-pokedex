@@ -6,9 +6,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { HomeIcon } from "./HomeIcon";
 import { TypeBadge } from "./TypeBadge";
 import {
-  computeDamage, effectiveSpeeds, moveToCalcMove, turnOrder,
+  computeDamage, effectiveSpeeds, hitRange, moveToCalcMove, turnOrder,
   type CalcField, type CalcPokemon, type DamageResult, type Terrain, type Weather,
 } from "@/lib/damage";
+import { lv50Stats } from "@/lib/battle";
 import { NATURES, formPillLabel, formatKoChance, natureEffect } from "@/lib/format";
 import {
   SP_BUDGET, SP_CAP, SP_STATS, statPointsToSpread, totalStatPoints, type StatPointMap,
@@ -17,7 +18,7 @@ import { isSpreadMove } from "@/lib/spread";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { useCalcSets, type SavedSet } from "@/lib/calc-sets";
 import type { CalcEntry, CalcForm, CalcIndex, CalcMoveLite } from "@/lib/calc-data";
-import type { EvStat } from "@/lib/types";
+import type { EvStat, PokemonStats } from "@/lib/types";
 
 // Items that change the damage math (others are cosmetic on this screen).
 /**
@@ -68,6 +69,9 @@ const ITEMS = [
   // Remaining v1.2.0 additions.
   "Terrain Extender", "Electric Seed", "Grassy Seed", "Psychic Seed", "Misty Seed",
   "Leek", "Red Card", "Binding Band", "Eject Button",
+  // The rest of the pool: no roll here reads them, but every real set can be entered.
+  "Bright Powder", "Chesto Berry", "Damp Rock", "King's Rock", "Leppa Berry", "Lum Berry",
+  "Quick Claw", "Zoom Lens",
 ] as const;
 
 /**
@@ -117,9 +121,61 @@ interface MonState {
   helpingHand: boolean;
   friendGuard: boolean;
   hpPct: number;
+  // Battle history — what already happened this battle (never saved with a set):
+  /** Allies of this mon that have fainted (0–3 in a bring-4 battle): Supreme Overlord, Last Respects. */
+  fainted: number;
+  /** Times this mon has been hit: Rage Fist. */
+  timesHit: number;
+  /** Its ability has triggered: Flash Fire (absorbed Fire), Unburden (item used), Stakeout, Plus / Minus. */
+  abilityOn: boolean;
+  /** Hits its move lands, for a move whose count varies ({@link historyControls}); null = the move's default. */
+  hits: number | null;
+  /** ITS attacks land as critical hits. */
+  crit: boolean;
 }
 
 const formOf = (entry: CalcEntry, i: number): CalcForm => entry.forms[i] ?? entry.forms[0];
+
+/**
+ * The field an ability sets the moment its holder enters — or Mega Evolves
+ * (Mega Charizard Y's Drought): the four weather setters and the four Surges.
+ * Picking such a mon (or giving it that ability) sets that field, so a
+ * Drought Heat Wave is never read without its own Sun. {} = leave the field.
+ */
+function autoField(ability: string | null): Partial<Pick<CalcField, "weather" | "terrain">> {
+  switch (itemId(ability ?? "")) {
+    case "drought": return { weather: "Sun" };
+    case "drizzle": return { weather: "Rain" };
+    case "sandstream": return { weather: "Sand" };
+    case "snowwarning": return { weather: "Snow" };
+    case "electricsurge": return { terrain: "Electric" };
+    case "grassysurge": return { terrain: "Grassy" };
+    case "psychicsurge": return { terrain: "Psychic" };
+    case "mistysurge": return { terrain: "Misty" };
+    default: return {};
+  }
+}
+
+/** Abilities whose battle trigger is a switch (`MonState.abilityOn` → the engine's `abilityOn`). */
+const TRIGGERED_ABILITIES = ["flashfire", "unburden", "stakeout", "plus", "minus"];
+
+/**
+ * The battle-history controls a side's set makes meaningful — FieldControls
+ * shows each row only while one side needs it: fainted allies (Supreme
+ * Overlord, or Last Respects picked), times hit (Rage Fist), the ability's
+ * trigger (by name), and the hit counts the move can land (none under Skill
+ * Link, which always lands them all).
+ */
+function historyControls(state: MonState, move: CalcMoveLite | undefined) {
+  const ab = itemId(state.ability ?? "");
+  const range = move ? hitRange({ name: move.displayName, minHits: move.minHits, maxHits: move.maxHits }) : null;
+  return {
+    fainted: ab === "supremeoverlord" || move?.slug === "last-respects",
+    timesHit: move?.slug === "rage-fist",
+    abilityOn: TRIGGERED_ABILITIES.includes(ab) ? state.ability : null,
+    hits: range && ab !== "skilllink" ? range : null,
+  };
+}
 
 function defaultMon(entry: CalcEntry, formIdx = 0): MonState {
   const form = formOf(entry, formIdx);
@@ -145,6 +201,11 @@ function defaultMon(entry: CalcEntry, formIdx = 0): MonState {
     helpingHand: false,
     friendGuard: false,
     hpPct: 100,
+    fainted: 0,
+    timesHit: 0,
+    abilityOn: false,
+    hits: null,
+    crit: false,
   };
 }
 
@@ -167,6 +228,9 @@ function toCalcPokemon(state: MonState, entry: CalcEntry): CalcPokemon {
     weightKg: form.weightKg,
     // Stance Change: Aegislash swings in Blade Forme whichever forme is selected.
     attackForm: form.attacksAs ?? undefined,
+    alliesFainted: state.fainted,
+    timesHit: state.timesHit,
+    abilityOn: state.abilityOn,
   };
 }
 
@@ -175,7 +239,7 @@ function toCalcPokemon(state: MonState, entry: CalcEntry): CalcPokemon {
  * the attacker side's Helping Hand / Tailwind / occupancy and the defender
  * side's screens / Friend Guard / Tailwind / occupancy. Spread ×0.75 and Dragon
  * Darts read the TARGET side's occupancy, so the two directions differ when
- * one side is down to a single mon.
+ * one side is down to a single mon. A crit is the attacker's: its own switch.
  */
 function fieldFor(atk: MonState, def: MonState, weather: Weather, terrain: Terrain, trickRoom: boolean): CalcField {
   return {
@@ -183,6 +247,7 @@ function fieldFor(atk: MonState, def: MonState, weather: Weather, terrain: Terra
     attackerSide: atk.sideCount, defenderSide: def.sideCount,
     attackerTailwind: atk.tailwind, defenderTailwind: def.tailwind,
     helpingHand: atk.helpingHand, auroraVeil: def.screens, friendGuard: def.friendGuard,
+    isCritical: atk.crit,
   };
 }
 
@@ -246,10 +311,25 @@ export function Calc({ index }: { index: CalcIndex }) {
   const [trickRoom, setTrickRoom] = useState(false);
   const { sets, saveSet, removeSet } = useCalcSets();
 
+  // A mon whose ability sets the field (Drought, Drizzle, the Surges…) sets it
+  // when it is picked or given that ability (`autoField`); boosts, HP and every
+  // other change leave the field alone. The weather / terrain chips still win.
+  const applyField = (ability: string | null) => {
+    const f = autoField(ability);
+    if (f.weather) setWeather(f.weather);
+    if (f.terrain) setTerrain(f.terrain);
+  };
+  const withField = (prev: MonState, set: (s: MonState) => void) => (next: MonState) => {
+    set(next);
+    if (next.slug !== prev.slug || next.formIdx !== prev.formIdx || next.ability !== prev.ability) applyField(next.ability);
+  };
+  const pickAttacker = withField(attacker, setAttacker);
+  const pickDefender = withField(defender, setDefender);
+
   const loadInto = (side: "attacker" | "defender", set: SavedSet) => {
     const state = monStateFromSet(set, bySlug);
     if (!state) return;
-    (side === "attacker" ? setAttacker : setDefender)(state);
+    (side === "attacker" ? pickAttacker : pickDefender)(state);
   };
 
   // Seed context from the URL (?a=slug&af=formKey&d=slug&df=formKey) so other
@@ -263,8 +343,16 @@ export function Calc({ index }: { index: CalcIndex }) {
     const a = q.get("a");
     const d = q.get("d");
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (a && bySlug.has(a)) setAttacker(defaultMon(bySlug.get(a)!, formIdxOf(bySlug.get(a)!, q.get("af"))));
-    if (d && bySlug.has(d)) setDefender(defaultMon(bySlug.get(d)!, formIdxOf(bySlug.get(d)!, q.get("df"))));
+    const aState = a && bySlug.has(a) ? defaultMon(bySlug.get(a)!, formIdxOf(bySlug.get(a)!, q.get("af"))) : null;
+    const dState = d && bySlug.has(d) ? defaultMon(bySlug.get(d)!, formIdxOf(bySlug.get(d)!, q.get("df"))) : null;
+    if (aState) setAttacker(aState);
+    if (dState) setDefender(dState);
+    // Both setters' fields, the attacker's last: on a clash (Drought vs Drizzle) it wins.
+    for (const s of [dState, aState]) {
+      const f = autoField(s?.ability ?? null);
+      if (f.weather) setWeather(f.weather);
+      if (f.terrain) setTerrain(f.terrain);
+    }
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [bySlug]);
 
@@ -285,8 +373,8 @@ export function Calc({ index }: { index: CalcIndex }) {
   const fwdField = fieldFor(attacker, defender, weather, terrain, trickRoom);
   const backField = fieldFor(defender, attacker, weather, terrain, trickRoom);
 
-  const forward = calcOf(aMon, dMon, aMove, fwdField);
-  const back = calcOf(dMon, aMon, dMove, backField);
+  const forward = calcOf(aMon, dMon, aMove, fwdField, attacker.hits);
+  const back = calcOf(dMon, aMon, dMove, backField, defender.hits);
 
   // Turn order from EFFECTIVE Speed (stages, Scarf, Tailwind, paralysis,
   // weather abilities…) and the selected moves' effective priority — the raw
@@ -358,7 +446,7 @@ export function Calc({ index }: { index: CalcIndex }) {
         <MonCard
           role="attacker"
           state={attacker}
-          setState={setAttacker}
+          setState={pickAttacker}
           entries={index.entries}
           bySlug={bySlug}
           moves={index.moves}
@@ -367,7 +455,7 @@ export function Calc({ index }: { index: CalcIndex }) {
         <MonCard
           role="defender"
           state={defender}
-          setState={setDefender}
+          setState={pickDefender}
           entries={index.entries}
           bySlug={bySlug}
           moves={index.moves}
@@ -391,6 +479,10 @@ export function Calc({ index }: { index: CalcIndex }) {
           setTrickRoom={setTrickRoom}
           aName={aEntry.name}
           dName={dEntry.name}
+          aMove={aMove}
+          dMove={dMove}
+          aHits={forward?.move.hits ?? null}
+          dHits={back?.move.hits ?? null}
         />
       </div>
 
@@ -441,16 +533,18 @@ export function Calc({ index }: { index: CalcIndex }) {
   );
 }
 
-/** Compute a direction's damage, or null if the move can't be modeled. */
+/** Compute a direction's damage, or null if the move can't be modeled. `hits`: the side's hit-count choice. */
 function calcOf(
   attacker: CalcPokemon,
   defender: CalcPokemon,
   move: CalcMoveLite | undefined,
   field: CalcField,
+  hits: number | null = null,
 ): DamageResult | null {
   if (!move) return null;
-  const calcMove = moveToCalcMove(move);
-  if (!calcMove) return null;
+  const base = moveToCalcMove(move);
+  if (!base) return null;
+  const calcMove = hits != null ? { ...base, hits } : base;
   // The boost controls are mirrored (Atk & SpA move together, as do Def & SpD),
   // so a stage-COUNTING move would count each control twice: Corviknight's Bulk
   // Up +1 (offense +1, defense +1) read Power Trip at 100 BP, not 60. Keep one
@@ -735,7 +829,7 @@ function MonCard({
           </Select>
         </Field>
         <Field label="Move">
-          <Select value={state.moveSlug} onChange={(v) => patch({ moveSlug: v })}>
+          <Select value={state.moveSlug} onChange={(v) => patch({ moveSlug: v, hits: null })}>
             {moveOptions.map((m) => (
               <option key={m.slug} value={m.slug}>
                 {m.displayName}{m.power ? ` · ${m.power}` : " · —"}
@@ -753,7 +847,7 @@ function MonCard({
             {spent}/{SP_BUDGET}
           </span>
         </div>
-        <StatSliders sp={state.sp} nature={state.nature} onChange={(sp) => patch({ sp })} />
+        <StatSliders sp={state.sp} nature={state.nature} stats={form.stats} onChange={(sp) => patch({ sp })} />
       </div>
     </div>
   );
@@ -766,17 +860,27 @@ function shortFormLabel(f: CalcForm): string {
 
 // --- stat sliders ---------------------------------------------------------------
 
+/** A stat's key in the Lv50 stat block. */
+const STAT_KEY: Record<EvStat, keyof PokemonStats> = {
+  hp: "hp", atk: "attack", def: "defense", spa: "specialAttack", spd: "specialDefense", spe: "speed",
+};
+
 function StatSliders({
   sp,
   nature,
+  stats,
   onChange,
 }: {
   sp: StatPointMap;
   nature: string;
+  /** The form's base stats — each row shows the real Lv50 stat its points add up to. */
+  stats: PokemonStats;
   onChange: (sp: StatPointMap) => void;
 }) {
   const nat = natureEffect(nature);
   const spent = totalStatPoints(sp);
+  // The number a trainer reads in game: base + 31 IVs + these points + nature, at Lv 50.
+  const totals = lv50Stats(stats, statPointsToSpread(nature, sp));
   const set = (k: EvStat, raw: number) => {
     const others = spent - (sp[k] ?? 0);
     const max = Math.min(SP_CAP, SP_BUDGET - others);
@@ -810,7 +914,14 @@ function StatSliders({
               className="sp-slider h-7 min-w-0 flex-1 cursor-pointer"
               aria-label={`${SP_LABEL[k]} stat points`}
             />
-            <span className="w-5 shrink-0 text-right font-mono text-[10px] tabular-nums text-foreground/80">{v}</span>
+            {/* The points spent, then what they add up to — the stat as the game shows it. */}
+            <span className="w-5 shrink-0 text-right font-mono text-[9px] tabular-nums text-muted">{v}</span>
+            <span
+              className="w-7 shrink-0 text-right font-mono text-[11px] font-semibold tabular-nums text-foreground"
+              aria-label={`${SP_LABEL[k]} ${totals[STAT_KEY[k]]}`}
+            >
+              {totals[STAT_KEY[k]]}
+            </span>
           </div>
         );
       })}
@@ -908,6 +1019,10 @@ function FieldControls({
   setTrickRoom,
   aName,
   dName,
+  aMove,
+  dMove,
+  aHits,
+  dHits,
 }: {
   attacker: MonState;
   setAttacker: (s: MonState) => void;
@@ -922,9 +1037,17 @@ function FieldControls({
   setTrickRoom: (v: boolean) => void;
   aName: string;
   dName: string;
+  aMove: CalcMoveLite | undefined;
+  dMove: CalcMoveLite | undefined;
+  /** The hits each side's move lands, as the engine resolved them (the Hits row's value). */
+  aHits: number | null;
+  dHits: number | null;
 }) {
   const pa = (p: Partial<MonState>) => setAttacker({ ...attacker, ...p });
   const pd = (p: Partial<MonState>) => setDefender({ ...defender, ...p });
+  const ah = historyControls(attacker, aMove);
+  const dh = historyControls(defender, dMove);
+  const triggered = [...new Set([ah.abilityOn, dh.abilityOn].filter((n): n is string => !!n))].join(" / ");
 
   return (
     <div className="rounded-xl glass-quiet p-3">
@@ -996,7 +1119,98 @@ function FieldControls({
         <RowLabel>HP</RowLabel>
         <HpCell label={aName} value={attacker.hpPct} onChange={(v) => pa({ hpPct: v })} />
         <HpCell label={dName} value={defender.hpPct} onChange={(v) => pd({ hpPct: v })} />
+
+        {/* What already happened this battle. Crit is always there; the rest
+            appear only while a side's set reads them (`historyControls`). */}
+        <RowLabel>Crit</RowLabel>
+        <ToggleCell label={`Critical hit — ${aName}'s move`} on={attacker.crit} onClick={() => pa({ crit: !attacker.crit })} />
+        <ToggleCell label={`Critical hit — ${dName}'s move`} on={defender.crit} onClick={() => pd({ crit: !defender.crit })} />
+
+        {(ah.hits || dh.hits) && (
+          <>
+            <RowLabel>Hits</RowLabel>
+            {ah.hits ? (
+              <CountCell label={`Hits — ${aName}'s move`} value={aHits ?? ah.hits[1]} min={ah.hits[0]} max={ah.hits[1]} onChange={(v) => pa({ hits: v })} />
+            ) : <span />}
+            {dh.hits ? (
+              <CountCell label={`Hits — ${dName}'s move`} value={dHits ?? dh.hits[1]} min={dh.hits[0]} max={dh.hits[1]} onChange={(v) => pd({ hits: v })} />
+            ) : <span />}
+          </>
+        )}
+
+        {(ah.fainted || dh.fainted) && (
+          <>
+            <RowLabel>Fainted allies</RowLabel>
+            {ah.fainted ? (
+              <CountCell label={`Fainted allies — ${aName}`} value={attacker.fainted} min={0} max={3} onChange={(v) => pa({ fainted: v })} />
+            ) : <span />}
+            {dh.fainted ? (
+              <CountCell label={`Fainted allies — ${dName}`} value={defender.fainted} min={0} max={3} onChange={(v) => pd({ fainted: v })} />
+            ) : <span />}
+          </>
+        )}
+
+        {(ah.timesHit || dh.timesHit) && (
+          <>
+            <RowLabel>Times hit</RowLabel>
+            {ah.timesHit ? (
+              <CountCell label={`Times hit — ${aName}`} value={attacker.timesHit} min={0} max={6} onChange={(v) => pa({ timesHit: v })} />
+            ) : <span />}
+            {dh.timesHit ? (
+              <CountCell label={`Times hit — ${dName}`} value={defender.timesHit} min={0} max={6} onChange={(v) => pd({ timesHit: v })} />
+            ) : <span />}
+          </>
+        )}
+
+        {triggered && (
+          <>
+            <RowLabel>{triggered}</RowLabel>
+            {ah.abilityOn ? (
+              <ToggleCell label={`${ah.abilityOn} active — ${aName}`} on={attacker.abilityOn} onClick={() => pa({ abilityOn: !attacker.abilityOn })} />
+            ) : <span />}
+            {dh.abilityOn ? (
+              <ToggleCell label={`${dh.abilityOn} active — ${dName}`} on={defender.abilityOn} onClick={() => pd({ abilityOn: !defender.abilityOn })} />
+            ) : <span />}
+          </>
+        )}
       </div>
+    </div>
+  );
+}
+
+/** A small whole-number stepper (hits, fainted allies, times hit), clamped to min…max. */
+function CountCell({
+  label,
+  value,
+  min,
+  max,
+  onChange,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  onChange: (v: number) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between rounded-md bg-surface-2 px-1 py-0.5 ring-1 ring-inset ring-white/5">
+      <button
+        aria-label={`Fewer: ${label}`}
+        disabled={value <= min}
+        onClick={() => onChange(Math.max(min, value - 1))}
+        className="tap-target grid size-5 place-items-center rounded text-muted active:text-foreground disabled:opacity-30"
+      >
+        −
+      </button>
+      <span className="font-mono text-[11px] tabular-nums text-foreground/80" aria-label={`${label}: ${value}`}>{value}</span>
+      <button
+        aria-label={`More: ${label}`}
+        disabled={value >= max}
+        onClick={() => onChange(Math.min(max, value + 1))}
+        className="tap-target grid size-5 place-items-center rounded text-muted active:text-foreground disabled:opacity-30"
+      >
+        +
+      </button>
     </div>
   );
 }

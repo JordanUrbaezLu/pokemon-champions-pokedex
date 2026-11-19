@@ -23,9 +23,10 @@ import { describe, it, expect } from "vitest";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
 import competitive from "../data/generated/competitive.json";
 import dataset from "../data/generated/pokemon.json";
+import { getFinalSpeed } from "@smogon/calc/dist/mechanics/util";
 import {
-  alwaysCrits, computeDamage, hasSecondaryEffect, ignoresDefenseStages, isMegaStone, isRecklessMove,
-  moveToCalcMove, selfAttackDrop, type CalcField, type CalcPokemon, type Terrain, type Weather,
+  alwaysCrits, computeDamage, effectiveSpeeds, hasSecondaryEffect, hitRange, ignoresDefenseStages, isMegaStone,
+  isRecklessMove, moveToCalcMove, selfAttackDrop, type CalcField, type CalcPokemon, type Terrain, type Weather,
 } from "./damage";
 import { isSpreadMove } from "./spread";
 import { TYPE_CHART } from "./type-chart";
@@ -67,6 +68,8 @@ interface BuildOpts {
   abilityOn?: boolean;
   /** Current HP %, for both engines (Blaze & co., Eruption, Flail, Hard Press, Multiscale). */
   hpPct?: number;
+  /** Fainted allies, for the library (Supreme Overlord); ours rides in `extra`. */
+  alliesFainted?: number;
 }
 
 /** Build a matched @smogon/calc Pokemon + our CalcPokemon from the same inputs. */
@@ -90,6 +93,7 @@ function build(
       item: libItemName(item) as any,
       boosts: boosts as any,
       abilityOn: opts.abilityOn,
+      alliesFainted: opts.alliesFainted,
       // Genderless, so Rivalry stays neutral: the calc takes no genders, and
       // the library would otherwise read both sides as male (a silent +25%).
       gender: "N",
@@ -140,7 +144,10 @@ function championsMoveOverrides(meta: MoveSummary) {
   } as any;
 }
 
-function makeCalcMove(meta: MoveSummary, options: { isCrit?: boolean; ability?: string; overrides?: Record<string, unknown> } = {}): Move {
+function makeCalcMove(
+  meta: MoveSummary,
+  options: { isCrit?: boolean; ability?: string; hits?: number; overrides?: Record<string, unknown> } = {},
+): Move {
   // No `spreadHit` flag here: @smogon/calc has no such property — it derives the
   // ×0.75 from its OWN move target plus the field's gameType. Setting one was a
   // silent no-op (verified: identical 16-roll arrays with and without it).
@@ -321,7 +328,19 @@ interface SideSpec {
   hpPct?: number;
   /** Hand-picked library stand-in (overrides `championsProxy`). */
   libAbility?: string;
+  /** Battle history, for both engines: a triggered ability, fainted allies, times hit (ours only). */
+  abilityOn?: boolean;
+  alliesFainted?: number;
+  timesHit?: number;
 }
+
+/** A side's battle history as our CalcPokemon carries it (only the fields that are set). */
+const historyOf = (s: SideSpec): Partial<CalcPokemon> => ({
+  ...(s.status ? { status: s.status } : {}),
+  ...(s.abilityOn ? { abilityOn: true } : {}),
+  ...(s.alliesFainted != null ? { alliesFainted: s.alliesFainted } : {}),
+  ...(s.timesHit != null ? { timesHit: s.timesHit } : {}),
+});
 
 interface Pair {
   expected: number[] | null;
@@ -332,21 +351,28 @@ interface Pair {
 }
 
 /** Run one matchup through BOTH engines from the same inputs. */
-function runBoth(a: SideSpec, d: SideSpec, meta: MoveSummary, field: Field = DOUBLES, opts: { crit?: boolean; libMove?: Record<string, unknown> } = {}): Pair | null {
-  const mine = moveToCalcMove(meta);
-  if (!mine) return null;
+function runBoth(
+  a: SideSpec, d: SideSpec, meta: MoveSummary, field: Field = DOUBLES,
+  opts: { crit?: boolean; libMove?: Record<string, unknown>; hits?: number } = {},
+): Pair | null {
+  const base = moveToCalcMove(meta);
+  if (!base) return null;
+  const mine = opts.hits != null ? { ...base, hits: opts.hits } : base;
   const aProxy = a.libAbility ? { ability: a.libAbility } : championsProxy(a.ability, "attacker", meta);
   const dProxy = d.libAbility ? { ability: d.libAbility } : championsProxy(d.ability, "defender", meta);
-  const attacker = build(a.profile, a.ability, a.item, a.status ? { status: a.status } : {}, a.boosts, {
-    libAbility: aProxy?.ability, abilityOn: (aProxy as Proxy | null)?.abilityOn, hpPct: a.hpPct,
+  const attacker = build(a.profile, a.ability, a.item, historyOf(a), a.boosts, {
+    libAbility: aProxy?.ability, abilityOn: (aProxy as Proxy | null)?.abilityOn ?? a.abilityOn, hpPct: a.hpPct,
+    alliesFainted: a.alliesFainted,
   });
-  const defender = build(d.profile, d.ability, d.item, d.status ? { status: d.status } : {}, d.boosts, {
-    libAbility: dProxy?.ability, hpPct: d.hpPct,
+  const defender = build(d.profile, d.ability, d.item, historyOf(d), d.boosts, {
+    libAbility: dProxy?.ability, abilityOn: d.abilityOn, hpPct: d.hpPct, alliesFainted: d.alliesFainted,
   });
   if (a.status) attacker.calc.status = a.status as any;
   if (d.status) defender.calc.status = d.status as any;
   const overrides = { ...(aProxy as Proxy | null)?.move, ...opts.libMove };
-  const calcMove = makeCalcMove(meta, { isCrit: opts.crit, ability: attacker.calc.ability, overrides });
+  const calcMove = makeCalcMove(meta, {
+    isCrit: opts.crit, ability: attacker.calc.ability, overrides, ...(opts.hits != null ? { hits: opts.hits } : {}),
+  });
   const wantBp = (overrides.basePower as number | undefined) ?? meta.power ?? 0;
   let libField = field;
   if ((aProxy as Proxy | null)?.weather) {
@@ -1035,6 +1061,154 @@ describe("damage engine — modeled abilities & field modifiers parity", () => {
       expect(pair!.got, c.name).toEqual(pair!.expected);
     });
   }
+});
+
+// Battle HISTORY (v1.1, 2026-11-19): what already happened this battle is an
+// input — fainted allies, times hit, a triggered ability, the hits that land.
+// Each has a library twin except Last Respects / Rage Fist, whose power the
+// library never resolves: there the library gets Showdown's own
+// `basePowerCallback` result as the move's power (`libBp`), so the pin holds
+// our power rule AND the whole formula around it. Until this, Basculegion's
+// Last Respects (on ~100% of the #3 Pokémon's sets) always rolled at 50 BP.
+describe("battle history — fainted allies, times hit, triggered abilities, hit counts", () => {
+  interface Case {
+    name: string;
+    atk: string;
+    def: string;
+    move: string;
+    ability: string;
+    item?: string;
+    dAbility?: string;
+    field?: Field;
+    abilityOn?: boolean;
+    alliesFainted?: number;
+    timesHit?: number;
+    hits?: number;
+    /** Showdown's `basePowerCallback` result, for the moves the library can't resolve. */
+    libBp?: number;
+  }
+  const cases: Case[] = [
+    { name: "Supreme Overlord, 1 fainted ally: ×1.1", atk: "Kingambit", def: "Garchomp", move: "kowtow-cleave", ability: "Supreme Overlord", alliesFainted: 1 },
+    { name: "Supreme Overlord, 3 fainted allies (a VGC team's most): ×1.3", atk: "Kingambit", def: "Garchomp", move: "kowtow-cleave", ability: "Supreme Overlord", alliesFainted: 3 },
+    { name: "Supreme Overlord, 5 fainted allies: ×1.5", atk: "Kingambit", def: "Incineroar", move: "iron-head", ability: "Supreme Overlord", alliesFainted: 5 },
+    { name: "Supreme Overlord with no fainted ally does nothing", atk: "Kingambit", def: "Garchomp", move: "kowtow-cleave", ability: "Supreme Overlord", alliesFainted: 0 },
+    { name: "fainted allies mean nothing to another ability (Defiant)", atk: "Kingambit", def: "Garchomp", move: "kowtow-cleave", ability: "Defiant", alliesFainted: 3 },
+    { name: "Supreme Overlord stacks with Helping Hand in the library's order", atk: "Kingambit", def: "Garchomp", move: "kowtow-cleave", ability: "Supreme Overlord", alliesFainted: 2, item: "Black Glasses", field: new Field({ gameType: "Doubles", attackerSide: { isHelpingHand: true } }) },
+    { name: "Last Respects, no fainted ally: 50 BP", atk: "Basculegion", def: "Incineroar", move: "last-respects", ability: "Adaptability", alliesFainted: 0, libBp: 50 },
+    { name: "Last Respects, 2 fainted allies: 150 BP", atk: "Basculegion", def: "Incineroar", move: "last-respects", ability: "Adaptability", alliesFainted: 2, libBp: 150 },
+    { name: "Last Respects, 3 fainted allies: 200 BP", atk: "Basculegion", def: "Garchomp", move: "last-respects", ability: "Adaptability", alliesFainted: 3, libBp: 200 },
+    { name: "Rage Fist, hit twice: 150 BP", atk: "Annihilape", def: "Incineroar", move: "rage-fist", ability: "Defiant", timesHit: 2, libBp: 150 },
+    { name: "Rage Fist caps at 350 BP", atk: "Annihilape", def: "Garchomp", move: "rage-fist", ability: "Defiant", timesHit: 9, libBp: 350 },
+    { name: "Flash Fire, activated: its Fire moves ×1.5", atk: "Armarouge", def: "Garchomp", move: "armor-cannon", ability: "Flash Fire", abilityOn: true },
+    { name: "Flash Fire, activated, leaves its other moves alone", atk: "Armarouge", def: "Garchomp", move: "psychic", ability: "Flash Fire", abilityOn: true },
+    { name: "Flash Fire, not activated: no boost", atk: "Armarouge", def: "Garchomp", move: "armor-cannon", ability: "Flash Fire", abilityOn: false },
+    { name: "Stakeout, the target just switched in: ×2", atk: "Mabosstiff", def: "Garchomp", move: "crunch", ability: "Stakeout", abilityOn: true },
+    // (Into Incineroar: Garchomp is immune to Thunderbolt, which made this pin vacuous — a mutation run caught it.)
+    { name: "Plus beside a Plus/Minus ally: special moves ×1.5", atk: "Ampharos", def: "Incineroar", move: "thunderbolt", ability: "Plus", abilityOn: true },
+    { name: "Minus beside a Plus/Minus ally: special moves ×1.5", atk: "Manectric", def: "Incineroar", move: "thunderbolt", ability: "Minus", abilityOn: true },
+    { name: "Minus beside a Plus/Minus ally: physical moves untouched", atk: "Toxtricity-Low-Key", def: "Garchomp", move: "crunch", ability: "Minus", abilityOn: true },
+    { name: "Rock Blast, all 5 hits land", atk: "Garchomp", def: "Incineroar", move: "rock-blast", ability: "Rough Skin", hits: 5 },
+    { name: "Rock Blast, only 2 hits land", atk: "Garchomp", def: "Incineroar", move: "rock-blast", ability: "Rough Skin", hits: 2 },
+    { name: "Skill Link: a set count still wins (as `new Move({ hits })`)", atk: "Heracross-Mega", def: "Incineroar", move: "rock-blast", ability: "Skill Link", hits: 2 },
+    { name: "Population Bomb, 4 of its 10 hits land", atk: "Maushold", def: "Garchomp", move: "population-bomb", ability: "Technician", hits: 4 },
+    { name: "Triple Axel, 2 of its 3 hits land (20 + 40)", atk: "Lopunny-Mega", def: "Garchomp", move: "triple-axel", ability: "Scrappy", hits: 2 },
+  ];
+
+  for (const c of cases) {
+    it(c.name, () => {
+      expect.hasAssertions();
+      const meta = MOVES[c.move];
+      expect(meta, `move ${c.move} is not in the baked index`).toBeDefined();
+      const pair = runBoth(
+        { profile: find(c.atk), ability: c.ability, item: c.item, abilityOn: c.abilityOn, alliesFainted: c.alliesFainted, timesHit: c.timesHit },
+        { profile: find(c.def), ability: c.dAbility ?? "Illuminate" },
+        meta,
+        c.field ?? DOUBLES,
+        { hits: c.hits, ...(c.libBp != null ? { libMove: { basePower: c.libBp } } : {}) },
+      );
+      expect(pair, "moveToCalcMove must model this move").not.toBeNull();
+      expect(pair!.bpOk, "library move data differs from the baked move").toBe(true);
+      expect(pair!.libraryKnows, "the library doesn't know one of the abilities").toBe(true);
+      expect(pair!.expected, "the library returned no damage array").not.toBeNull();
+      expect(pair!.got, c.name).toEqual(pair!.expected);
+    });
+  }
+
+  // Each history input must MOVE the number it claims to (a pin whose input
+  // did nothing would pass vacuously): against the same matchup without it.
+  it("every history input changes the roll it claims to", () => {
+    const moves = (slug: string) => moveToCalcMove(MOVES[slug])!;
+    const mon = (name: string, ability: string, extra: Partial<CalcPokemon> = {}) =>
+      build(find(name), ability, undefined, extra).mine;
+    const roll = (a: CalcPokemon, d: CalcPokemon, m: ReturnType<typeof moves>) => computeDamage(a, d, m, { gameType: "Doubles" }).damage[15];
+    const chomp = mon("Garchomp", "Rough Skin");
+    expect(roll(mon("Kingambit", "Supreme Overlord", { alliesFainted: 2 }), chomp, moves("kowtow-cleave")))
+      .toBeGreaterThan(roll(mon("Kingambit", "Supreme Overlord"), chomp, moves("kowtow-cleave")));
+    expect(roll(mon("Basculegion", "Adaptability", { alliesFainted: 1 }), chomp, moves("last-respects")))
+      .toBeGreaterThan(roll(mon("Basculegion", "Adaptability"), chomp, moves("last-respects")));
+    expect(roll(mon("Annihilape", "Defiant", { timesHit: 1 }), chomp, moves("rage-fist")))
+      .toBeGreaterThan(roll(mon("Annihilape", "Defiant"), chomp, moves("rage-fist")));
+    expect(roll(mon("Armarouge", "Flash Fire", { abilityOn: true }), chomp, moves("armor-cannon")))
+      .toBeGreaterThan(roll(mon("Armarouge", "Flash Fire"), chomp, moves("armor-cannon")));
+    const inc = mon("Incineroar", "Intimidate");
+    for (const ability of ["Plus", "Minus"]) {
+      expect(roll(mon("Ampharos", ability, { abilityOn: true }), inc, moves("thunderbolt")), ability)
+        .toBeGreaterThan(roll(mon("Ampharos", ability), inc, moves("thunderbolt")));
+    }
+    expect(roll(mon("Mabosstiff", "Stakeout", { abilityOn: true }), chomp, moves("crunch")))
+      .toBeGreaterThan(roll(mon("Mabosstiff", "Stakeout"), chomp, moves("crunch")));
+    expect(roll(mon("Garchomp", "Rough Skin"), chomp, { ...moves("rock-blast"), hits: 5 }))
+      .toBeGreaterThan(roll(mon("Garchomp", "Rough Skin"), chomp, moves("rock-blast")));
+    // A count outside the move's range is clamped to it (the library would roll
+    // 9 Rock Blasts; the game never does), and a single-count move ignores it.
+    expect(roll(chomp, chomp, { ...moves("rock-blast"), hits: 9 })).toBe(roll(chomp, chomp, { ...moves("rock-blast"), hits: 5 }));
+    expect(roll(chomp, chomp, { ...moves("rock-blast"), hits: 0 })).toBe(roll(chomp, chomp, { ...moves("rock-blast"), hits: 2 }));
+    expect(roll(chomp, chomp, { ...moves("dual-wingbeat"), hits: 5 })).toBe(roll(chomp, chomp, moves("dual-wingbeat")));
+  });
+
+  it("offers a hit-count choice exactly for the moves whose count varies", () => {
+    const range = (slug: string) => hitRange(moveToCalcMove(MOVES[slug])!);
+    expect(range("rock-blast")).toEqual([2, 5]);
+    expect(range("bullet-seed")).toEqual([2, 5]);
+    expect(range("population-bomb")).toEqual([1, 10]);
+    expect(range("triple-axel")).toEqual([1, 3]);
+    expect(range("dual-wingbeat")).toBeNull();
+    expect(range("dragon-darts")).toBeNull();
+    expect(range("flamethrower")).toBeNull();
+  });
+
+  // Speed: the library's own `getFinalSpeed` is the oracle for Unburden.
+  describe("Unburden — ×2 Speed once its item is gone", () => {
+    const speedOf = (name: string, ability: string, item: string | undefined, abilityOn: boolean, terrain?: Terrain) => {
+      const b = build(find(name), ability, item, abilityOn ? { abilityOn: true } : {}, undefined, { abilityOn });
+      const field = new Field({ gameType: "Doubles", terrain: terrain ?? undefined });
+      return {
+        lib: getFinalSpeed(GEN, b.calc, field, field.attackerSide),
+        ours: effectiveSpeeds(b.mine, b.mine, { gameType: "Doubles", terrain: terrain ?? null }).a,
+      };
+    };
+    it("active: ×2, and no Choice Scarf (the item is spent)", () => {
+      const on = speedOf("Sneasler", "Unburden", "Choice Scarf", true);
+      expect(on.ours).toBe(on.lib);
+      const off = speedOf("Sneasler", "Unburden", "Choice Scarf", false);
+      expect(off.ours).toBe(off.lib);
+      expect(on.ours).not.toBe(off.ours);
+    });
+    it("inactive: plain Speed", () => {
+      const s = speedOf("Sneasler", "Unburden", undefined, false);
+      expect(s.ours).toBe(s.lib);
+    });
+    // DIVERGENCE (documented in withSeedBoost): a terrain Seed is spent on entry,
+    // which IS Unburden's trigger — the library only reads a hand-set abilityOn.
+    // The expected value is the library's with abilityOn set by hand.
+    it("a Seed the terrain spends switches it on by itself (Sneasler + Psychic Seed)", () => {
+      const auto = speedOf("Sneasler", "Unburden", "Psychic Seed", false, "Psychic");
+      const byHand = speedOf("Sneasler", "Unburden", undefined, true, "Psychic");
+      expect(auto.ours).toBe(byHand.lib);
+      const noTerrain = speedOf("Sneasler", "Unburden", "Psychic Seed", false);
+      expect(noTerrain.ours).toBe(noTerrain.lib);
+    });
+  });
 });
 
 // Each Spicy Spray pin above must exercise what its name claims: the spliced
