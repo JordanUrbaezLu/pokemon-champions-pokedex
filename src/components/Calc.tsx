@@ -43,10 +43,15 @@ import type { EvStat, PokemonStats } from "@/lib/types";
  * 18 type boosters (1.2× on their type — Sylveon's Fairy Feather, Rillaboom's
  * Miracle Seed), the 18 resist berries (halve one super-effective hit —
  * Kingambit's Chople, Sinistcha's Colbur), Light Ball (Pikachu only) and Iron
- * Ball (grounds the holder, halves its Speed). Metronome stays out: its boost
- * needs consecutive uses, which the calc has no input for. The four terrain
- * Seeds boost a stat only while their terrain is up — pick the Terrain and the
- * engine fires (and spends) the Seed, exactly as @smogon/calc does.
+ * Ball (grounds the holder, halves its Speed). The four terrain Seeds boost a
+ * stat only while their terrain is up — pick the Terrain and the engine fires
+ * (and spends) the Seed, exactly as @smogon/calc does.
+ *
+ * Since v1.1 the list is the WHOLE non-Mega pool (166 items with the stones):
+ * the last group holds the ones no roll here reads, so any real set can be
+ * entered. Metronome is among them at its first use (×1.0) — its boost needs
+ * consecutive uses, which the calc has no input for; Focus Band's 10% hold is
+ * a chance, like Scope Lens.
  */
 const ITEMS = [
   "None",
@@ -70,8 +75,10 @@ const ITEMS = [
   "Terrain Extender", "Electric Seed", "Grassy Seed", "Psychic Seed", "Misty Seed",
   "Leek", "Red Card", "Binding Band", "Eject Button",
   // The rest of the pool: no roll here reads them, but every real set can be entered.
-  "Bright Powder", "Chesto Berry", "Damp Rock", "King's Rock", "Leppa Berry", "Lum Berry",
-  "Quick Claw", "Zoom Lens",
+  "Aspear Berry", "Big Root", "Bright Powder", "Cheri Berry", "Chesto Berry", "Damp Rock", "Focus Band",
+  "Heat Rock", "Icy Rock", "King's Rock", "Leppa Berry", "Lum Berry", "Metronome", "Oran Berry",
+  "Pecha Berry", "Persim Berry", "Quick Claw", "Rawst Berry", "Shed Shell", "Shell Bell", "Smooth Rock",
+  "Zoom Lens",
 ] as const;
 
 /**
