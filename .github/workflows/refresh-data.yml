@@ -133,8 +133,10 @@ jobs:
           body: |
             Automated twice-weekly refresh of `src/data/generated/*.json` (plus
             the service worker's cache-version stamp) — re-fetched from Smogon
-            (latest published month, both brackets), Serebii, PokeAPI and
-            Showdown, with KO benchmarks rebaked.
+            (latest published month, both brackets) and PokeAPI, with the
+            Champions game data (movepools, move patches, roster check) from
+            Pokémon Showdown's MIT champions mod at the pinned commit, and KO
+            benchmarks rebaked.
 
             Verified in CI before this PR opened: all `npm run status` integrity
             checks, the offline data audit, the unit suite (incl. the

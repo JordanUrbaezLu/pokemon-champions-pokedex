@@ -8,6 +8,7 @@ import {
   type ThreatProfile,
 } from "./threat";
 import { speedAnchors } from "./battle";
+import { alwaysCrits } from "./damage";
 import { effectiveDefensiveProfile } from "./type-chart";
 import type { PinnedOpponent } from "./opponents";
 import type {
@@ -45,7 +46,16 @@ export function getAllPokemon(): ChampionPokemon[] {
   return ALL;
 }
 
-const MOVES = DATA.moves;
+/**
+ * The shared move index, with the one move fact the damage ENGINE owns stamped
+ * on: `alwaysCrits`, from damage.ts's own list, so the move sheet and the calc
+ * can never disagree about a guaranteed crit. Stamped here — server-side, at
+ * build — because the sheet is client code: importing damage.ts there shipped
+ * the whole engine (+19.9 KB of JS on every Pokémon page) for a two-word label.
+ */
+const MOVES: Record<string, MoveSummary> = Object.fromEntries(
+  Object.entries(DATA.moves).map(([slug, m]) => [slug, alwaysCrits(m.name) ? { ...m, alwaysCrits: true } : m]),
+);
 
 /** Look up a single Pokémon by its PokeAPI slug (the route param). */
 export function getPokemonByName(name: string): ChampionPokemon | undefined {
@@ -134,9 +144,12 @@ export function getDataUpdatedAt(): string | null {
 
 /**
  * A Pokémon's movepool UNIONED with any move the ladder shows it actually
- * running in ANY bracket (a few signature moves are missing from Serebii's
- * tables) — the superset list every consumer uses, so the move list stays
- * stable while the bracket toggle only changes the usage annotations.
+ * running in ANY bracket — the superset list every consumer uses, so the move
+ * list stays stable while the bracket toggle only changes the usage
+ * annotations. (Movepools are Showdown's champions learnsets, which also
+ * validate the ladder, so today this adds nothing; it is the belt-and-braces
+ * for a pinned Showdown commit that lags a learnset fix. The Serebii-era
+ * tables lacked King's Shield and Forest's Curse outright.)
  */
 export function getUnionMoves(pokemon: ChampionPokemon): MoveSummary[] {
   const movepool = getMovesFor(pokemon);
@@ -334,6 +347,8 @@ function buildBestPin(p: ChampionPokemon): PinnedOpponent {
     speed: comp ? speedAnchors(stats, comp.spread).common : null,
     archetype: threat?.archetype ?? [],
     headline: threat?.vectors[0]?.headline ?? null,
+    // The briefing's ability-aware type scoring (battle.ts briefingBestTypes).
+    abilities,
   };
 }
 

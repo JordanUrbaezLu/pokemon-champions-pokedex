@@ -22,12 +22,19 @@
  *
  * If the thread / pastes can't be fetched, the last committed teams.json is kept
  * (salvage), so a transient network blip never hard-fails `npm run refresh`.
+ *
+ * OFFLINE RELINK: `node scripts/generate-teams.mjs --relink` re-resolves ONLY
+ * the link fields (slug / formKey / formLabel) of the COMMITTED teams.json
+ * against the current pokemon.json — no network at all (fetch is stubbed to
+ * throw). It exists because Smogon's forum gate (AGENTS.md hard-won facts)
+ * blocks the full bake, so a resolver fix could otherwise never reach the
+ * baked teams. Every other field (sets, usage, sprites, order) is left as is.
  */
 
 import { readFile, writeFile } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { SHOWDOWN_TO_ROSTER } from "./species-aliases.mjs";
+import { SHOWDOWN_TO_ROSTER, UNMODELED_SHOWDOWN_FORMS } from "./species-aliases.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const POKEMON_PATH = resolve(ROOT, "src/data/generated/pokemon.json");
@@ -42,16 +49,13 @@ const USER_AGENT = "Mozilla/5.0 (compatible; ChampionsPokedexBuild/1.0)";
 // regulation, add one line here (or pin TEAMS_THREAD=<url> for a one-off) — the
 // generator warns loudly and salvages the committed data until then, so a
 // rotation never hard-fails the refresh; it just flags "teams are a reg behind".
-// NOTE (2026-10-02): the ladder rotated to Reg M-C with Smogon's 2026-09 stats,
-// but there is still no M-C sample-teams thread — the VGC forum has only the M-C
-// metagame-discussion, speed-tier and teams-of-the-week threads (the M-B thread
-// appeared ~2 weeks into M-B). Until it does, the generator salvages the
-// committed Reg M-B teams.json (so /teams stays a regulation behind, labelled as
-// such, rather than going blank) and the workflow keeps the "Meta teams are
-// stale" issue open. The moment the thread appears, add ONE line here (or pin
-// it once with TEAMS_THREAD=<url>):
-//   gen9championsvgc2026regmc: "https://www.smogon.com/forums/threads/…",
+// Reg M-C (ladder since Smogon's 2026-09 stats): the thread only appeared on
+// 2026-10-29, ~7 weeks into the regulation — until then the generator salvaged
+// the Reg M-B teams (issue #30). Note its title gained a "Pokémon" prefix, so
+// the slug is NOT the M-A/M-B pattern with the letter swapped; copy the URL.
 const KNOWN_THREADS = {
+  gen9championsvgc2026regmc:
+    "https://www.smogon.com/forums/threads/pok%C3%A9mon-champions-vgc-regulation-m-c-sample-teams.3790579/",
   gen9championsvgc2026regmb:
     "https://www.smogon.com/forums/threads/champions-vgc-regulation-m-b-sample-teams.3785112/",
   gen9championsvgc2026regma:
@@ -86,6 +90,16 @@ async function getText(url, attempt = 1) {
 // protection) — that is what salvaged the 2026-09-21 teams bake. A 403 burst
 // outlasts getText's quick retries, so the thread gets a patient outer loop
 // (worst case ~2.5 min, far inside the workflow's 45-min step timeout).
+// Since ~2026-11 the forum ALSO answers plain (non-browser) fetches with a
+// JavaScript proof-of-work page ("Checking your browser…", sets a `forum_gate`
+// cookie) — HTTP **200**, so neither getText nor the 403 loop below notices,
+// and parsed as a thread it yields zero teams: it used to salvage as "layout
+// changed?". Seen on every plain fetch on 2026-11-17 (the long-working M-B
+// thread too). Retrying can't pass it — only a browser running the page's JS
+// does — so main() names it in the salvage reason when a parse comes up empty.
+// Do NOT script the proof-of-work: it is Smogon's bot gate.
+const FORUM_GATE = /forum_gate=|Checking your browser/;
+
 async function getThreadHtml(url) {
   for (let round = 1; ; round++) {
     try {
@@ -245,19 +259,47 @@ function buildResolver(pokemon) {
         megaAbility: isMega ? f.abilities?.[0]?.displayName ?? null : null,
       };
     }
-    // 3) An unmodeled form (e.g. lycanroc-dusk) — fall back to the base species.
-    const base = baseSpecies(altSlug);
-    if (byName.has(base)) {
-      const p = byName.get(base);
-      const label = altSlug
-        .split("-")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ");
-      return { slug: p.name, formKey: null, name: p.displayName, formLabel: label, types: p.types, sprite: iconOf(p), isMega: /-mega/.test(altSlug) };
+    // 3) No EXACT page or form → NO scouting link (slug null). This used to fall
+    //    back to the base species, so the Reg M-B "Lycanroc Dusk" (Tough Claws,
+    //    its own stats + movepool) opened the Midday-only Lycanroc page — wrong
+    //    abilities, wrong numbers, in the screen a trainer trusts mid-battle.
+    //    Forms the roster deliberately doesn't model are listed with a reason in
+    //    species-aliases.mjs UNMODELED_SHOWDOWN_FORMS (quiet); anything else is a
+    //    naming gap — the same mon spelled differently belongs in
+    //    SHOWDOWN_TO_ROSTER (then step 1/2 links it), so it warns loudly.
+    //    The base species still lends the card its name / types / sprite (best
+    //    available art), but never its page: status fails a linked member whose
+    //    label or ability isn't the destination's.
+    const label = altSlug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
+    if (!Object.hasOwn(UNMODELED_SHOWDOWN_FORMS, altSlug.replace(/[^a-z0-9]/g, ""))) {
+      console.warn(
+        `  ~ team member "${rawSlug}" matches no roster page/form — no scouting link (same mon? add it to SHOWDOWN_TO_ROSTER; deliberately unmodeled? UNMODELED_SHOWDOWN_FORMS)`,
+      );
+    }
+    const base = byName.get(baseSpecies(altSlug));
+    if (base) {
+      return { slug: null, formKey: null, name: base.displayName, formLabel: label, types: base.types, sprite: iconOf(base), isMega: /-mega/.test(altSlug) };
     }
     // 4) Not in the roster at all — keep the name, no sprite (shouldn't happen).
     return { slug: null, formKey: null, name: null, formLabel: null, types: [], sprite: null, isMega: false };
   };
+}
+
+/**
+ * The Showdown form a COMMITTED member was baked from, recovered from its own
+ * fields (teams.json stores no raw species): a modeled form → its key; an exact
+ * page → its name; otherwise the label, which step 3/4 above derived from the
+ * Showdown slug ("Lycanroc Dusk" ← lycanroc-dusk) or copied from the paste.
+ * Re-resolving it is idempotent for every correctly linked member.
+ */
+function bakedSourceOf(member, byName) {
+  if (member.formKey) return member.formKey;
+  const page = member.slug ? byName.get(member.slug) : undefined;
+  if (page && member.formLabel === page.displayName) return page.name;
+  return slugify(member.formLabel ?? member.name ?? "");
 }
 
 // --- Archetype + credit parsing --------------------------------------------------
@@ -355,7 +397,46 @@ async function salvage(reason) {
   }
 }
 
+/**
+ * `--relink`: re-resolve the link fields of the committed teams.json, offline.
+ * Writes only when something changed, and prints each change so the diff can be
+ * checked against "link fields only".
+ */
+async function relink() {
+  globalThis.fetch = () => {
+    throw new Error("generate-teams --relink is offline — it must not fetch");
+  };
+  const [pokemonData, teamsData] = await Promise.all([
+    readFile(POKEMON_PATH, "utf8").then(JSON.parse),
+    readFile(OUT_PATH, "utf8").then(JSON.parse),
+  ]);
+  const byName = new Map(pokemonData.pokemon.map((p) => [p.name, p]));
+  const resolveMember = buildResolver(pokemonData.pokemon);
+  const LINK_FIELDS = ["slug", "formKey", "formLabel"];
+  let changed = 0;
+  for (const t of teamsData.teams) {
+    for (const m of t.members) {
+      const r = resolveMember(bakedSourceOf(m, byName));
+      const next = { slug: r.slug, formKey: r.formKey, formLabel: r.formLabel ?? m.formLabel };
+      const diffs = LINK_FIELDS.filter((k) => m[k] !== next[k]);
+      if (!diffs.length) continue;
+      changed++;
+      console.log(
+        `  ↻ ${t.slug} · ${m.formLabel}: ${diffs.map((k) => `${k} ${JSON.stringify(m[k])} → ${JSON.stringify(next[k])}`).join(", ")}`,
+      );
+      for (const k of LINK_FIELDS) m[k] = next[k];
+    }
+  }
+  if (!changed) {
+    console.log("✓ Relink: every team member's link already matches pokemon.json — nothing written");
+    return;
+  }
+  await writeFile(OUT_PATH, JSON.stringify(teamsData, null, 2) + "\n", "utf8");
+  console.log(`✓ Relinked ${changed} member(s) in teams.json (link fields only — sets, usage and order untouched)`);
+}
+
 async function main() {
+  if (process.argv.includes("--relink")) return relink();
   const [pokemonData, competitive] = await Promise.all([
     readFile(POKEMON_PATH, "utf8").then(JSON.parse),
     readFile(COMPETITIVE_PATH, "utf8").then(JSON.parse),
@@ -374,15 +455,22 @@ async function main() {
   console.log(`Fetching Champions Meta Teams (${format} = ${label})…`);
   console.log(`  Source: ${threadUrl}`);
 
-  let descriptors, pasteIds;
+  let html, descriptors, pasteIds;
   try {
-    ({ descriptors, pasteIds } = parseThread(await getThreadHtml(threadUrl)));
+    html = await getThreadHtml(threadUrl);
+    ({ descriptors, pasteIds } = parseThread(html));
   } catch (err) {
     const ok = await salvage(`could not fetch the sample-teams thread (${err.message})`);
     process.exit(ok ? 0 : 1);
   }
   if (!descriptors.length || !pasteIds.length) {
-    const ok = await salvage("the sample-teams thread had no parseable teams (layout changed?)");
+    // Only consulted once the parse came up empty, so a gate-cookie snippet on a
+    // REAL thread page can never turn a readable thread into a salvage.
+    const ok = await salvage(
+      FORUM_GATE.test(html)
+        ? "Smogon's forum served its JavaScript bot-check page (\"Checking your browser…\", HTTP 200) instead of the thread — a plain fetch can't read it (AGENTS.md hard-won facts)"
+        : "the sample-teams thread had no parseable teams (layout changed?)",
+    );
     process.exit(ok ? 0 : 1);
   }
 

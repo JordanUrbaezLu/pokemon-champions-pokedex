@@ -80,25 +80,33 @@ Run both with `npm run data:all`.
 
 ### Sources
 
-- **PokeAPI v2** — types, stats, abilities, Mega forms, move/item details.
-- **Serebii** (`pokedex-champions`) — the official Champions roster, which Pokémon have Champions
-  Megas, and each Pokémon's Champions movepool.
-- **Smogon** Champions VGC doubles ladder (`gen9championsvgc2026regmb` "chaos" stats — the
-  current Reg M-B; auto-detected, see Updating) — usage,
+- **PokeAPI v2** — types, stats, abilities, Mega forms, sprites, move/item details (mainline
+  values + prose).
+- **[Pokémon Showdown](https://github.com/smogon/pokemon-showdown)'s `champions` mod** (MIT,
+  © 2011-2026 Guangcong Luo and other contributors) — everything about the game itself: which
+  species/forms are legal (the roster is checked against it on every bake), each form's
+  Champions movepool, Champions' move changes (power, accuracy, the 8/12/16/20 PP scale,
+  secondary chances, flags), move flags and spread targets, the held-item pool, and the
+  ability fallback for any Mega PokeAPI serves ability-less. Read at **one pinned commit**
+  (`scripts/showdown-data.mjs`) so a re-bake is reproducible; its data files are parsed, never
+  executed.
+- **Smogon** Champions VGC doubles ladder (`gen9championsvgc2026regmc` "chaos" stats — the
+  current Reg M-C; auto-detected, see Updating) — usage,
   common abilities/items/moves/spreads, set-up threats, and teammates. **Two complete brackets
   are baked** and the app toggles between them client-side (Master+ is the default):
   - **Master+** — the top skill cutoff (1760), backfilled per-mon from 1630 only. Mons too
     rare for top-bracket data say so and point at the All toggle.
   - **All ranks** — the whole-ladder file.
-- **Pokémon Showdown data files** — move flags, per-form learnsets (incl. pre-evolution chains,
-  so egg moves survive the form-correctness filter), and a fallback for moves PokeAPI lacks.
 
 ### Updating
 
 - **Roster:** edit `src/data/roster.json` (one PokeAPI slug per line) and run `npm run data`.
+  `npm run status` fails if the roster and Showdown's Champions-legal set disagree.
+- **Showdown commit:** bump `PINNED_SHOWDOWN_SHA` in `scripts/showdown-data.mjs` (try one first
+  with `SHOWDOWN_SHA=<sha> npm run data`) to pick up a game patch.
 - **Competitive snapshot:** `npm run data:comp` **auto-detects both the current ladder
   regulation and the newest published Smogon month** (it takes the highest-lettered
-  `gen9championsvgc2026regm*` that has published — `…regmb` today, a future `…regmc`
+  `gen9championsvgc2026regm*` that has published — `…regmc` today, a future `…regmd`
   automatically), so a plain re-run tracks the game's regulation with no code edit. Pin a
   specific snapshot with `STATS_FORMAT=… STATS_MONTH=YYYY-MM npm run data:comp` if needed.
 - The home header shows the date the data was last generated.
@@ -108,15 +116,15 @@ Run both with `npm run data:all`.
 - Competitive data is **ladder-derived** (Smogon's Champions doubles ladder) and updates monthly —
   a guide, not gospel.
 - **Champions has no Terastallization**, so no Tera is shown.
-- A few **signature moves** (e.g. Aegislash's King's Shield) aren't listed in Serebii's Champions
-  movepool tables, so they may be absent from a movepool even though they see ladder play.
-- The roster in `src/data/roster.json` was scraped from Serebii; re-run `npm run data` to refresh.
+- Movepools and move changes are only as current as the **pinned Showdown commit** — a game patch
+  lands when someone bumps it (`npm run status` flags a ladder move the pinned learnsets lack).
 
 ## Project layout
 
 ```
 scripts/
-  generate-dataset.mjs       # roster + movepool (PokeAPI + Serebii)
+  generate-dataset.mjs       # roster + movepool (PokeAPI + Showdown champions mod)
+  showdown-data.mjs          # pinned Showdown commit + safe data-file parser
   generate-competitive.mjs   # ladder usage/sets (Smogon)
 src/
   app/                       # routes (home + /pokemon/[name])

@@ -143,3 +143,28 @@ describe("abilityMatchupNotes — ability-blindness caveats", () => {
     expect(abilityMatchupNotes([])).toEqual([]);
   });
 });
+
+// The tables are object literals: a bare `table[key]` reads Object.prototype for
+// "constructor" (the one prototype member that survives the lowercase/strip of
+// an ability id), and returned Object itself as a "note".
+describe("prototype-safe lookups", () => {
+  const PROTO = ["constructor", "toString", "hasOwnProperty", "__proto__", "valueOf"];
+
+  it("abilityMatchupNotes never returns an inherited member as a note", () => {
+    expect(abilityMatchupNotes(PROTO)).toEqual([]);
+    expect(abilityMatchupNotes(["Constructor", "Levitate"])).toHaveLength(1);
+  });
+
+  it("effectiveDefensiveMultiplier ignores an inherited 'ability'", () => {
+    for (const name of PROTO) {
+      expect(effectiveDefensiveMultiplier("ground", ["electric"], [name]), name).toBe(2);
+    }
+  });
+
+  it("defensiveMultiplier reads a non-type as neutral, never NaN or a throw", () => {
+    for (const key of PROTO) {
+      expect(defensiveMultiplier(key as never, ["water"]), `attacking ${key}`).toBe(1);
+      expect(defensiveMultiplier("fire", [key as never]), `defending ${key}`).toBe(1);
+    }
+  });
+});

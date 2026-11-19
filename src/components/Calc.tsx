@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HomeIcon } from "./HomeIcon";
 import { TypeBadge } from "./TypeBadge";
-import { computeDamage, moveToCalcMove, type CalcField, type CalcPokemon, type DamageResult, type Terrain, type Weather } from "@/lib/damage";
-import { lv50Stats } from "@/lib/battle";
-import { NATURES, natureEffect } from "@/lib/format";
+import {
+  computeDamage, effectiveSpeeds, moveToCalcMove, turnOrder,
+  type CalcField, type CalcPokemon, type DamageResult, type Terrain, type Weather,
+} from "@/lib/damage";
+import { NATURES, formPillLabel, formatKoChance, natureEffect } from "@/lib/format";
 import {
   SP_BUDGET, SP_CAP, SP_STATS, statPointsToSpread, totalStatPoints, type StatPointMap,
 } from "@/lib/stat-points";
@@ -23,25 +25,42 @@ import type { EvStat } from "@/lib/types";
  *
  * This list used to offer Choice Band, Choice Specs, Assault Vest, Eviolite,
  * Safety Goggles, Covert Cloak and Booster Energy — none of which exist in
- * Champions. Serebii's Champions item list omits all seven, and across a full
- * ladder month (132 distinct items) not one Pokémon is recorded holding any of
- * them, while Choice SCARF shows up on 133. They were mainline assumptions, and
- * they let a trainer build a calc on an item they can never actually bring.
+ * Champions. Pokémon Showdown's champions mod tags all seven nonstandard, and
+ * across a full ladder month (132 distinct items) not one Pokémon is recorded
+ * holding any of them, while Choice SCARF shows up on 133. They were mainline
+ * assumptions, and they let a trainer build a calc on an item they can never
+ * actually bring. `npm run status` now holds every entry below to Showdown's
+ * Champions item pool (baked as `pokemon.json` → `itemPool`).
  * (`damage.ts` still MODELS those items — it's a faithful port of the gen9
  * formula and the format simply never presents them. Don't "clean that up":
  * the parity test exercises those branches against @smogon/calc.)
  *
  * Ordered by what a mid-battle trainer reaches for: damage-affecting first,
- * then bulk/utility, then the rest of the v1.2.0 additions. Of the twelve items
- * v1.2.0 added, only Normal Gem and Air Balloon change a damage roll — the
- * others are selectable and correctly leave the number alone. The four terrain
+ * then bulk/utility, then the rest of the v1.2.0 additions. EVERY pool item
+ * that changes a damage roll is here (damage.test.ts holds the list to the
+ * pool and to the engine, one parity pin per item): the general boosters, the
+ * 18 type boosters (1.2× on their type — Sylveon's Fairy Feather, Rillaboom's
+ * Miracle Seed), the 18 resist berries (halve one super-effective hit —
+ * Kingambit's Chople, Sinistcha's Colbur), Light Ball (Pikachu only) and Iron
+ * Ball (grounds the holder, halves its Speed). Metronome stays out: its boost
+ * needs consecutive uses, which the calc has no input for. The four terrain
  * Seeds boost a stat only while their terrain is up — pick the Terrain and the
  * engine fires (and spends) the Seed, exactly as @smogon/calc does.
  */
 const ITEMS = [
   "None",
   // Change the damage number.
-  "Life Orb", "Choice Scarf", "Expert Belt", "Normal Gem",
+  "Life Orb", "Choice Scarf", "Expert Belt", "Normal Gem", "Muscle Band", "Wise Glasses",
+  // Type boosters: 1.2× on one type's moves.
+  "Black Belt", "Black Glasses", "Charcoal", "Dragon Fang", "Fairy Feather", "Hard Stone",
+  "Magnet", "Metal Coat", "Miracle Seed", "Mystic Water", "Never-Melt Ice", "Poison Barb",
+  "Sharp Beak", "Silk Scarf", "Silver Powder", "Soft Sand", "Spell Tag", "Twisted Spoon",
+  // Resist berries: halve one super-effective hit of their type (Chilan: any Normal hit).
+  "Babiri Berry", "Charti Berry", "Chilan Berry", "Chople Berry", "Coba Berry", "Colbur Berry",
+  "Haban Berry", "Kasib Berry", "Kebia Berry", "Occa Berry", "Passho Berry", "Payapa Berry",
+  "Rindo Berry", "Roseli Berry", "Shuca Berry", "Tanga Berry", "Wacan Berry", "Yache Berry",
+  // One-species / field-changing.
+  "Light Ball", "Iron Ball",
   // Bulk / survival.
   "Focus Sash", "Sitrus Berry", "Leftovers", "Rocky Helmet", "Air Balloon",
   // Utility with real ladder usage.
@@ -50,6 +69,17 @@ const ITEMS = [
   "Terrain Extender", "Electric Seed", "Grassy Seed", "Psychic Seed", "Misty Seed",
   "Leek", "Red Card", "Binding Band", "Eject Button",
 ] as const;
+
+/**
+ * The list's own spelling of a held item. Smogon's ladder data writes some
+ * names differently ("Never Melt Ice"), and a preset carrying that spelling
+ * would sit beside "Never-Melt Ice" as a second, duplicate-looking option.
+ */
+const itemId = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+function canonicalItem(item: string | null | undefined): string {
+  if (!item) return "None";
+  return ITEMS.find((it) => itemId(it) === itemId(item)) ?? item;
+}
 
 const WEATHERS: { label: string; value: Weather }[] = [
   { label: "—", value: null }, { label: "☀ Sun", value: "Sun" }, { label: "🌧 Rain", value: "Rain" },
@@ -77,7 +107,12 @@ interface MonState {
   moveSlug: string;
   offBoost: number; // −6…+6, applied to Atk & SpA when it attacks
   defBoost: number; // −6…+6, applied to Def & SpD when it's hit
+  speBoost: number; // −6…+6 Speed stages (turn order, Gyro Ball, Electro Ball)
   burn: boolean;
+  para: boolean; // paralysis (exclusive with burn): ½ Speed, Facade 2×
+  tailwind: boolean; // Tailwind on THIS mon's side: ×2 Speed
+  /** Pokémon on this mon's side (2, or 1 when its partner is gone) — the spread ×0.75 and Dragon Darts read the TARGET side's. */
+  sideCount: 1 | 2;
   screens: boolean; // behind screens (halves incoming, both categories)
   helpingHand: boolean;
   friendGuard: boolean;
@@ -95,11 +130,17 @@ function defaultMon(entry: CalcEntry, formIdx = 0): MonState {
     nature: preset?.nature ?? "Hardy",
     sp: preset ? { ...preset.sp } : {},
     ability: preset?.ability ?? form.abilities[0]?.displayName ?? null,
-    item: preset?.item ?? "None",
+    // No preset item → the item the form needs to exist (a Mega's stone):
+    // Mega Absol has no Master+ set and opened holding nothing.
+    item: canonicalItem(preset?.item ?? form.requiredItem),
     moveSlug: preset?.topMoves[0] ?? entry.moveSlugs[0] ?? "",
     offBoost: 0,
     defBoost: 0,
+    speBoost: 0,
     burn: false,
+    para: false,
+    tailwind: false,
+    sideCount: 2,
     screens: false,
     helpingHand: false,
     friendGuard: false,
@@ -111,23 +152,38 @@ function toCalcPokemon(state: MonState, entry: CalcEntry): CalcPokemon {
   const form = formOf(entry, state.formIdx);
   const spread = statPointsToSpread(state.nature, state.sp);
   return {
-    name: form.smogonName,
+    // The form's OWN battle identity — never the ladder name its preset is
+    // borrowed from (Kantonian Tauros fought as Tauros-Paldea-Aqua).
+    name: form.battleName,
     types: form.types,
     baseStats: form.stats,
     ability: state.ability,
     item: state.item !== "None" ? state.item : null,
     nature: state.nature,
     evs: spread.evs,
-    boosts: { atk: state.offBoost, spa: state.offBoost, def: state.defBoost, spd: state.defBoost },
-    status: state.burn ? "brn" : null,
+    boosts: { atk: state.offBoost, spa: state.offBoost, def: state.defBoost, spd: state.defBoost, spe: state.speBoost },
+    status: state.burn ? "brn" : state.para ? "par" : null,
     curHpPct: state.hpPct,
     weightKg: form.weightKg,
+    // Stance Change: Aegislash swings in Blade Forme whichever forme is selected.
+    attackForm: form.attacksAs ?? undefined,
   };
 }
 
-function speedOf(state: MonState, entry: CalcEntry): number {
-  const form = formOf(entry, state.formIdx);
-  return lv50Stats(form.stats, statPointsToSpread(state.nature, state.sp)).speed;
+/**
+ * One direction's field: shared weather/terrain, plus each SIDE's own state —
+ * the attacker side's Helping Hand / Tailwind / occupancy and the defender
+ * side's screens / Friend Guard / Tailwind / occupancy. Spread ×0.75 and Dragon
+ * Darts read the TARGET side's occupancy, so the two directions differ when
+ * one side is down to a single mon.
+ */
+function fieldFor(atk: MonState, def: MonState, weather: Weather, terrain: Terrain, trickRoom: boolean): CalcField {
+  return {
+    gameType: "Doubles", weather, terrain, trickRoom,
+    attackerSide: atk.sideCount, defenderSide: def.sideCount,
+    attackerTailwind: atk.tailwind, defenderTailwind: def.tailwind,
+    helpingHand: atk.helpingHand, auroraVeil: def.screens, friendGuard: def.friendGuard,
+  };
 }
 
 /** Snapshot a mon's set (not its transient battle state) for saving. */
@@ -155,9 +211,16 @@ function monStateFromSet(set: SavedSet, bySlug: Map<string, CalcEntry>): MonStat
     nature: set.nature,
     sp: { ...set.sp },
     ability: set.ability,
-    item: set.item,
+    item: canonicalItem(set.item),
     moveSlug: set.moveSlug,
   };
+}
+
+/** Index of the form with this key (?af= / ?df=, by KEY — never by index), else the base. */
+function formIdxOf(entry: CalcEntry, key: string | null): number {
+  if (!key) return 0;
+  const i = entry.forms.findIndex((f) => (f.key ?? entry.slug) === key);
+  return i >= 0 ? i : 0;
 }
 
 export function Calc({ index }: { index: CalcIndex }) {
@@ -180,9 +243,7 @@ export function Calc({ index }: { index: CalcIndex }) {
   const [defender, setDefender] = useState<MonState>(() => defaultMon(second));
   const [weather, setWeather] = useState<Weather>(null);
   const [terrain, setTerrain] = useState<Terrain>(null);
-  // Spread moves lose the ×0.75 once only one target is left standing — the
-  // single biggest swing the calc couldn't express before.
-  const [singleTarget, setSingleTarget] = useState(false);
+  const [trickRoom, setTrickRoom] = useState(false);
   const { sets, saveSet, removeSet } = useCalcSets();
 
   const loadInto = (side: "attacker" | "defender", set: SavedSet) => {
@@ -191,17 +252,19 @@ export function Calc({ index }: { index: CalcIndex }) {
     (side === "attacker" ? setAttacker : setDefender)(state);
   };
 
-  // Seed context from the URL (?a=slug&d=slug) so other screens can deep-link a
-  // matchup into the calc. Deliberately in an effect, not a lazy initializer:
-  // the page is statically prerendered with defaults, so reading the query
-  // during render would cause a hydration mismatch. Runs once on mount.
+  // Seed context from the URL (?a=slug&af=formKey&d=slug&df=formKey) so other
+  // screens can deep-link a matchup into the calc — the FORM by key: a pinned
+  // Mega Charizard Y opened as base Charizard when only the slug was passed.
+  // Deliberately in an effect, not a lazy initializer: the page is statically
+  // prerendered with defaults, so reading the query during render would cause
+  // a hydration mismatch. Runs once on mount.
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     const a = q.get("a");
     const d = q.get("d");
     /* eslint-disable react-hooks/set-state-in-effect */
-    if (a && bySlug.has(a)) setAttacker(defaultMon(bySlug.get(a)!));
-    if (d && bySlug.has(d)) setDefender(defaultMon(bySlug.get(d)!));
+    if (a && bySlug.has(a)) setAttacker(defaultMon(bySlug.get(a)!, formIdxOf(bySlug.get(a)!, q.get("af"))));
+    if (d && bySlug.has(d)) setDefender(defaultMon(bySlug.get(d)!, formIdxOf(bySlug.get(d)!, q.get("df"))));
     /* eslint-enable react-hooks/set-state-in-effect */
   }, [bySlug]);
 
@@ -213,27 +276,25 @@ export function Calc({ index }: { index: CalcIndex }) {
   const aMove = index.moves[attacker.moveSlug];
   const dMove = index.moves[defender.moveSlug];
 
-  // Only surface the target-count control when a spread move is actually
-  // selected — for single-target moves it changes nothing and is pure noise.
-  // Expanding Force turns spread in Psychic Terrain, so it counts then too.
-  const spreads = (m: CalcMoveLite | undefined) =>
-    isSpreadMove(m?.target) || (terrain === "Psychic" && m?.slug === "expanding-force");
-  const spreadInPlay = spreads(aMove) || spreads(dMove);
+  // Only surface the side-occupancy control when a move that READS it is
+  // selected — spread moves, Expanding Force in Psychic Terrain, Dragon Darts.
+  const readsTargets = (m: CalcMoveLite | undefined) =>
+    isSpreadMove(m?.target) || m?.slug === "dragon-darts" || (terrain === "Psychic" && m?.slug === "expanding-force");
+  const spreadInPlay = readsTargets(aMove) || readsTargets(dMove);
 
-  const fwdField: CalcField = {
-    gameType: "Doubles", weather, terrain, singleTarget,
-    helpingHand: attacker.helpingHand, auroraVeil: defender.screens, friendGuard: defender.friendGuard,
-  };
-  const backField: CalcField = {
-    gameType: "Doubles", weather, terrain, singleTarget,
-    helpingHand: defender.helpingHand, auroraVeil: attacker.screens, friendGuard: attacker.friendGuard,
-  };
+  const fwdField = fieldFor(attacker, defender, weather, terrain, trickRoom);
+  const backField = fieldFor(defender, attacker, weather, terrain, trickRoom);
 
   const forward = calcOf(aMon, dMon, aMove, fwdField);
   const back = calcOf(dMon, aMon, dMove, backField);
 
-  const aSpeed = speedOf(attacker, aEntry);
-  const dSpeed = speedOf(defender, dEntry);
+  // Turn order from EFFECTIVE Speed (stages, Scarf, Tailwind, paralysis,
+  // weather abilities…) and the selected moves' effective priority — the raw
+  // Lv50 stat said Dragapult outsped a Choice Scarf Garchomp.
+  const speeds = effectiveSpeeds(aMon, dMon, fwdField);
+  const aPriority = forward?.move.priority ?? aMove?.priority ?? 0;
+  const dPriority = back?.move.priority ?? dMove?.priority ?? 0;
+  const order = turnOrder({ speed: speeds.a, priority: aPriority }, { speed: speeds.b, priority: dPriority }, trickRoom);
 
   const swap = () => {
     setAttacker(defender);
@@ -278,12 +339,16 @@ export function Calc({ index }: { index: CalcIndex }) {
           <VerdictRow tone="take" from={dEntry.name} to={aEntry.name} move={dMove} result={back} />
           <p className="mt-2.5 flex items-center gap-1 text-[10px] uppercase tracking-wide text-muted">
             <span aria-hidden>⚡</span>
-            {aSpeed === dSpeed
-              ? `Speed tie · ${aSpeed}`
-              : aSpeed > dSpeed
-                ? `${aEntry.name} moves first · ${aSpeed} vs ${dSpeed}`
-                : `${dEntry.name} moves first · ${dSpeed} vs ${aSpeed}`}
-            <span className="text-muted/60">(Lv50 base speed)</span>
+            {order === "tie"
+              ? `Speed tie · ${speeds.a}`
+              : order === "a"
+                ? `${aEntry.name} moves first · ${speeds.a} vs ${speeds.b}`
+                : `${dEntry.name} moves first · ${speeds.b} vs ${speeds.a}`}
+            <span className="text-muted/60">
+              {aPriority !== dPriority
+                ? `(priority ${fmtPriority(order === "b" ? dPriority : aPriority)})`
+                : trickRoom ? "(Trick Room · effective Speed)" : "(effective Speed)"}
+            </span>
           </p>
         </div>
       </div>
@@ -322,8 +387,8 @@ export function Calc({ index }: { index: CalcIndex }) {
           terrain={terrain}
           setTerrain={setTerrain}
           spreadInPlay={spreadInPlay}
-          singleTarget={singleTarget}
-          setSingleTarget={setSingleTarget}
+          trickRoom={trickRoom}
+          setTrickRoom={setTrickRoom}
           aName={aEntry.name}
           dName={dEntry.name}
         />
@@ -370,7 +435,7 @@ export function Calc({ index }: { index: CalcIndex }) {
         Stat Points map to the standard Lv50 stat formula (31 IVs) — the calc&apos;s numbers match
         the app&apos;s baked KO benchmarks, verified against the Smogon damage engine. Weight/speed
         moves (Grass Knot, Heavy Slam, Gyro Ball…) are calculated; a few situational ones (Counter,
-        Fissure, Fling…) show “not calculated”. No Terastallization; no live calls.
+        Fissure, Fling…) show “not calculated”. No Terastallization; no live data calls.
       </footer>
     </main>
   );
@@ -386,10 +451,50 @@ function calcOf(
   if (!move) return null;
   const calcMove = moveToCalcMove(move);
   if (!calcMove) return null;
-  return computeDamage(attacker, defender, calcMove, field);
+  // The boost controls are mirrored (Atk & SpA move together, as do Def & SpD),
+  // so a stage-COUNTING move would count each control twice: Corviknight's Bulk
+  // Up +1 (offense +1, defense +1) read Power Trip at 100 BP, not 60. Keep one
+  // stat per control — the attacking stat the move uses, and Def.
+  let user = attacker;
+  if (move.slug === "stored-power" || move.slug === "power-trip") {
+    const b = attacker.boosts ?? {};
+    const hit = calcMove.category === "special" ? "spa" : "atk";
+    user = { ...attacker, boosts: { [hit]: b[hit], def: b.def, spe: b.spe } };
+  }
+  return computeDamage(user, defender, calcMove, field);
 }
 
 // --- verdict --------------------------------------------------------------------
+
+const fmtPriority = (p: number) => (p > 0 ? `+${p}` : `${p}`);
+const TYPE_LABEL = (t: string) => t.charAt(0).toUpperCase() + t.slice(1);
+
+/**
+ * The move as the ENGINE resolved it (DamageResult.move): Weather Ball in Sun
+ * reads "Fire · 100 BP", the ×0.75 shows only when it really applied (not for
+ * an airborne Expanding Force), Dragon Darts says how many darts land.
+ */
+function moveFactsLine(r: DamageResult, slug: string | undefined): string {
+  const m = r.move;
+  const parts = [TYPE_LABEL(m.type), m.basePower != null ? `${m.basePower} BP` : "fixed damage"];
+  // Dragon Darts: one dart per foe — say which case the Targets control chose.
+  if (slug === "dragon-darts") parts.push(m.hits === 1 ? "1 dart (2 foes)" : "2 darts (1 foe)");
+  else if (m.hits > 1) parts.push(`${m.hits} hits`);
+  // Explosion & co.: why the verdict stops at one use ("No KO", never a 2HKO) — before the
+  // long spread note, so a narrow row keeps it.
+  if (m.userFaints && !r.immune && !r.fails) parts.push("user faints");
+  if (m.spread) parts.push(`spread ×0.75 (${m.targets} targets)`);
+  if (m.priority !== 0) parts.push(`priority ${fmtPriority(m.priority)}`);
+  return parts.join(" · ");
+}
+
+/** Defender HP left after one use — from the engine's survival-aware walk, never hp − damage. */
+function hpLeftText(r: DamageResult): string {
+  const { min, max } = r.hpAfter;
+  const pct = (n: number) => Math.round((n / r.maxHp) * 100);
+  if (max === 0) return "0 HP";
+  return min === max ? `${min} HP (${pct(min)}%)` : `${min}–${max} HP (${pct(min)}–${pct(max)}%)`;
+}
 
 function VerdictRow({
   tone,
@@ -434,6 +539,13 @@ function VerdictRow({
           <span className="truncate text-muted">{to}</span>
         </div>
         <div className="truncate text-[13px] font-medium">{move ? move.displayName : "—"}</div>
+        {result && <div className="truncate text-[10px] text-muted">{moveFactsLine(result, move?.slug)}</div>}
+        {result && !blank && (
+          <div className="truncate text-[10px] text-muted">
+            {result.survival ? `${result.survival.label} · ` : ""}
+            leaves {hpLeftText(result)}
+          </div>
+        )}
       </div>
       <div className="flex shrink-0 flex-col items-end gap-1">
         {!result ? (
@@ -455,7 +567,9 @@ function VerdictRow({
             </div>
             <span className={`rounded-md border px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide ${pill}`}>
               {label}
-              {partialOhko ? ` · ${Math.round(result.verdict.ohkoChance)}% OHKO` : ""}
+              {/* A range names what its chance is of ("OHKO–2HKO · 30% OHKO"); a user-fainting
+                  move's lone partial "OHKO" just adds it ("OHKO · 63%"). */}
+              {partialOhko ? ` · ${formatKoChance(result.verdict.ohkoChance)}${label === "OHKO" ? "" : " OHKO"}` : ""}
             </span>
           </>
         )}
@@ -498,12 +612,14 @@ function MonCard({
   // one. So Mega Metagross silently read "None" while really holding
   // Metagrossite: the field lied, and one tap on it threw the stone away.
   // Any held item the list doesn't already carry gets appended.
+  // The form's required item (a Mega's own stone) is ALWAYS offered — Mega
+  // Absol, with no preset, had no way to pick Absolite.
   const itemOptions = useMemo(() => {
-    const extra = [state.item, form.preset?.item].filter(
+    const extra = [state.item, canonicalItem(form.preset?.item), form.requiredItem ? canonicalItem(form.requiredItem) : null].filter(
       (it): it is string => !!it && !(ITEMS as readonly string[]).includes(it),
     );
     return extra.length ? [...ITEMS, ...new Set(extra)] : (ITEMS as readonly string[]);
-  }, [state.item, form.preset?.item]);
+  }, [state.item, form.preset?.item, form.requiredItem]);
 
   // Saving appends to a section that may be off-screen (or not exist yet) —
   // without an on-the-spot confirmation, three hopeful taps mint three
@@ -643,15 +759,9 @@ function MonCard({
   );
 }
 
-/** Short pill label for a form toggle in a narrow column. */
+/** Short pill label for a form toggle in a narrow column ("Base", "Mega X", "Mega Z", "Primal"). */
 function shortFormLabel(f: CalcForm): string {
-  if (!f.key) return "Base";
-  if (f.isMega) {
-    if (/\bX$/.test(f.label)) return "Mega X";
-    if (/\bY$/.test(f.label)) return "Mega Y";
-    return f.label.includes("Primal") ? "Primal" : "Mega";
-  }
-  return f.label;
+  return formPillLabel(f);
 }
 
 // --- stat sliders ---------------------------------------------------------------
@@ -794,8 +904,8 @@ function FieldControls({
   terrain,
   setTerrain,
   spreadInPlay,
-  singleTarget,
-  setSingleTarget,
+  trickRoom,
+  setTrickRoom,
   aName,
   dName,
 }: {
@@ -808,8 +918,8 @@ function FieldControls({
   terrain: Terrain;
   setTerrain: (t: Terrain) => void;
   spreadInPlay: boolean;
-  singleTarget: boolean;
-  setSingleTarget: (v: boolean) => void;
+  trickRoom: boolean;
+  setTrickRoom: (v: boolean) => void;
   aName: string;
   dName: string;
 }) {
@@ -823,35 +933,12 @@ function FieldControls({
       <ChoiceRow label="Weather" options={WEATHERS} value={weather} onChange={setWeather} />
       <ChoiceRow label="Terrain" options={TERRAINS} value={terrain} onChange={setTerrain} />
 
-      {/* Shown only with a spread move selected. It gates the ×0.75 on base
-          damage, so the %, the KO label and the OHKO odds all recompute —
-          which is why it lives here as field state, not as a second number
-          bolted onto the verdict row. */}
-      {spreadInPlay && (
-        <div className="mb-3 flex items-center gap-2">
-          <span className="w-16 shrink-0 text-[10px] uppercase tracking-wide text-muted">Targets</span>
-          <div className="flex flex-1 flex-wrap items-center gap-1">
-            {[
-              { label: "2 left", value: false, hint: "spread ×0.75" },
-              { label: "1 left", value: true, hint: "full power" },
-            ].map((o) => (
-              <button
-                key={o.label}
-                onClick={() => setSingleTarget(o.value)}
-                aria-pressed={singleTarget === o.value}
-                className={`tap-target rounded-md px-2 py-1 text-[11px] font-medium ring-1 ring-inset transition-colors ${
-                  singleTarget === o.value
-                    ? "bg-white/10 text-foreground ring-white/30"
-                    : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
-                }`}
-              >
-                {o.label}
-                <span className="ml-1 text-[10px] text-muted">{o.hint}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <ChoiceRow
+        label="Trick Room"
+        options={[{ label: "—", value: "off" }, { label: "On · slower first", value: "on" }]}
+        value={trickRoom ? "on" : "off"}
+        onChange={(v) => setTrickRoom(v === "on")}
+      />
 
       <div className="grid grid-cols-[minmax(0,1fr)_4.75rem_4.75rem] items-center gap-x-2 gap-y-1.5">
         <span />
@@ -866,9 +953,33 @@ function FieldControls({
         <BoostCell label={`Def / SpD boost — ${aName}`} value={attacker.defBoost} onChange={(v) => pa({ defBoost: v })} />
         <BoostCell label={`Def / SpD boost — ${dName}`} value={defender.defBoost} onChange={(v) => pd({ defBoost: v })} />
 
+        <RowLabel>Speed</RowLabel>
+        <BoostCell label={`Speed boost — ${aName}`} value={attacker.speBoost} onChange={(v) => pa({ speBoost: v })} />
+        <BoostCell label={`Speed boost — ${dName}`} value={defender.speBoost} onChange={(v) => pd({ speBoost: v })} />
+
         <RowLabel>Burn</RowLabel>
-        <ToggleCell label={`Burn — ${aName}`} on={attacker.burn} onClick={() => pa({ burn: !attacker.burn })} />
-        <ToggleCell label={`Burn — ${dName}`} on={defender.burn} onClick={() => pd({ burn: !defender.burn })} />
+        <ToggleCell label={`Burn — ${aName}`} on={attacker.burn} onClick={() => pa({ burn: !attacker.burn, para: false })} />
+        <ToggleCell label={`Burn — ${dName}`} on={defender.burn} onClick={() => pd({ burn: !defender.burn, para: false })} />
+
+        <RowLabel>Paralysis</RowLabel>
+        <ToggleCell label={`Paralysis — ${aName}`} on={attacker.para} onClick={() => pa({ para: !attacker.para, burn: false })} />
+        <ToggleCell label={`Paralysis — ${dName}`} on={defender.para} onClick={() => pd({ para: !defender.para, burn: false })} />
+
+        <RowLabel>Tailwind</RowLabel>
+        <ToggleCell label={`Tailwind — ${aName}'s side`} on={attacker.tailwind} onClick={() => pa({ tailwind: !attacker.tailwind })} />
+        <ToggleCell label={`Tailwind — ${dName}'s side`} on={defender.tailwind} onClick={() => pd({ tailwind: !defender.tailwind })} />
+
+        {/* Shown only with a move that reads it (spread moves, Dragon Darts,
+            Expanding Force in Psychic Terrain). Each direction reads its
+            TARGET side: a lone mon takes full-power spread moves and both
+            Dragon Darts, while its partner-backed foe still takes ×0.75 / one dart. */}
+        {spreadInPlay && (
+          <>
+            <RowLabel>Mons on side</RowLabel>
+            <SideCell label={aName} value={attacker.sideCount} onChange={(v) => pa({ sideCount: v })} />
+            <SideCell label={dName} value={defender.sideCount} onChange={(v) => pd({ sideCount: v })} />
+          </>
+        )}
 
         <RowLabel>Screens</RowLabel>
         <ToggleCell label={`Screens — ${aName}`} on={attacker.screens} onClick={() => pa({ screens: !attacker.screens })} />
@@ -887,6 +998,21 @@ function FieldControls({
         <HpCell label={dName} value={defender.hpPct} onChange={(v) => pd({ hpPct: v })} />
       </div>
     </div>
+  );
+}
+
+/** Pokémon on a side: 2 (default) ⇄ 1 (its partner is gone). */
+function SideCell({ label, value, onChange }: { label: string; value: 1 | 2; onChange: (v: 1 | 2) => void }) {
+  return (
+    <button
+      onClick={() => onChange(value === 2 ? 1 : 2)}
+      aria-label={`${value === 2 ? "Two" : "One"} Pokémon on ${label}'s side — tap to switch`}
+      className={`tap-target w-full rounded-md py-1 text-[10px] font-bold uppercase tracking-wide ring-1 ring-inset transition-colors ${
+        value === 1 ? "bg-white/10 text-foreground ring-white/30" : "bg-surface-2 text-muted ring-white/5 active:bg-surface"
+      }`}
+    >
+      {value === 2 ? "2 out" : "Alone"}
+    </button>
   );
 }
 

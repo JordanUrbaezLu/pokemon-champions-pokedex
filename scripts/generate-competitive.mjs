@@ -20,6 +20,7 @@ import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { calculate, Generations, Pokemon, Move, Field } from "@smogon/calc";
 import { ROSTER_TO_SHOWDOWN, SHOWDOWN_TO_ROSTER, STATS_POOLED } from "./species-aliases.mjs";
+import { loadChampionsDex } from "./showdown-data.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ROSTER_PATH = resolve(ROOT, "src/data/roster.json");
@@ -276,23 +277,98 @@ function itemClassesOf(items) {
 const GEN = Generations.get(9);
 const BENCH_FIELD = new Field({ gameType: "Doubles" });
 const TOP_TARGETS = 16; // benchmark against the mons you actually face
-// Items that change damage math meaningfully and that @smogon/calc models.
-const DAMAGE_ITEMS = new Set([
-  "Life Orb", "Choice Band", "Choice Specs", "Expert Belt", "Assault Vest",
-  "Eviolite", "Sitrus Berry",
+// The library compares ability / item names EXACTLY; the baked names were the slug
+// rule's until 2026-11-18 ("Never Melt Ice", "Kings Rock", "Good As Gold" — Showdown's
+// official names since) and passed raw the library silently ignored them. Still
+// resolved to its own spelling, as the guard for a name it spells differently.
+const toId = (s) => String(s ?? "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const libAbilityName = (n) => (n && GEN.abilities.get(toId(n))?.name) || n;
+const libItemName = (n) => (n && GEN.items.get(toId(n))?.name) || n;
+
+/** Moves an -ate ability never retypes (Showdown's / the library's list). */
+const NO_ATE = new Set([
+  "judgment", "multi-attack", "natural-gift", "nature-power", "revelation-dance",
+  "struggle", "techno-blast", "terrain-pulse", "weather-ball",
 ]);
 
-/** A @smogon/calc Pokemon from a profile (common spread, top item/ability). */
-function calcMon(profile, abilityNameOf) {
+/**
+ * @smogon/calc has never heard of Champions' own abilities, so each one is fed
+ * to it as the library ability Showdown's champions mod implements it
+ * IDENTICALLY to — the in-app engine (src/lib/damage.ts) models them natively,
+ * and these stand-ins keep the baked benchmarks equal to it. Kept in step with
+ * `championsProxy` in src/lib/damage.test.ts, which pins every one and asserts
+ * the baked benchmarks against the engine:
+ *  Fire Mane → an ACTIVATED Flash Fire (attacker; nothing defensively) ·
+ *  Eelevate → Levitate · Aura Guard → Fluffy on a contact move (Multiscale for a
+ *  Fire one — Fluffy would also double it) · Mega Sol → Sun for its own moves ·
+ *  Dragonize → the Normal move pre-typed Dragon at ×1.2 BP · Piercing Drill /
+ *  Spicy Spray → no effect on the roll.
+ */
+function championsProxy(ability, role, meta) {
+  switch (toId(ability)) {
+    case "firemane":
+      return role === "attacker" ? { ability: "Flash Fire", abilityOn: true } : { ability: "Illuminate" };
+    case "eelevate":
+      return { ability: "Levitate" };
+    case "auraguard":
+      if (role === "attacker" || !meta.flags?.includes("contact")) return { ability: "Illuminate" };
+      return { ability: meta.type === "fire" ? "Multiscale" : "Fluffy" };
+    case "megasol":
+      return role === "attacker" ? { ability: "Illuminate", weather: "Sun" } : { ability: "Illuminate" };
+    case "dragonize": {
+      if (role === "defender" || meta.type !== "normal" || NO_ATE.has(meta.name) || !meta.power) {
+        return { ability: "Illuminate" };
+      }
+      const bp = (meta.power * 4915) / 4096;
+      return { ability: "Illuminate", move: { type: "Dragon", basePower: bp % 1 > 0.5 ? Math.ceil(bp) : Math.floor(bp) } };
+    }
+    case "piercingdrill":
+    case "spicyspray":
+      return { ability: "Illuminate" };
+    default:
+      return null;
+  }
+}
+
+/**
+ * @smogon/calc ships MAINLINE move data; the baked move index carries
+ * Champions' (generate-dataset layers Showdown's champions-mod patches over
+ * PokeAPI: Grav Apple 90 BP, Meteor Assault 170, Snap Trap is Steel, Double
+ * Shock is a punch, Dragon Claw slices…). Feed ours in, so a benchmark is
+ * computed on the move Champions actually has — and equals what the in-app
+ * calc (damage.ts reads the same baked fields) shows. Kept in step with
+ * `championsMoveOverrides` in src/lib/damage.test.ts.
+ */
+const CALC_FLAG_KEYS = ["contact", "punch", "sound", "bullet", "bite", "slicing", "wind", "pulse"];
+const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+function championsMoveOverrides(meta) {
+  return {
+    ...(meta.power ? { basePower: meta.power } : {}),
+    type: capitalize(meta.type),
+    category: capitalize(meta.damageClass),
+    flags: Object.fromEntries(CALC_FLAG_KEYS.map((k) => [k, meta.flags?.includes(k) ? 1 : 0])),
+  };
+}
+
+/**
+ * A @smogon/calc Pokemon from a profile: common spread, top ability, top item —
+ * the in-app calc's meta preset exactly. The REAL item, whatever it is: Knock
+ * Off's 1.5× and Poltergeist read any held item, Acrobatics doubles without
+ * one, and every pool item that changes a roll (type boosters, resist berries,
+ * Muscle Band…) is modelled by both engines. Genderless, so Rivalry stays
+ * neutral — the calc takes no genders (the library would read both as male).
+ */
+function calcMon(profile, ability, abilityOn) {
   const evs = {};
   for (const [k, v] of Object.entries(profile.spread?.evs ?? {})) evs[k] = v;
-  const item = profile.items[0]?.displayName;
   return new Pokemon(GEN, profile.smogonName, {
     level: 50,
     nature: profile.spread?.nature ?? "Hardy",
     evs,
-    ability: abilityNameOf(profile),
-    item: item && DAMAGE_ITEMS.has(item) ? item : undefined,
+    ability: libAbilityName(ability),
+    abilityOn,
+    item: libItemName(profile.items[0]?.displayName),
+    gender: "N",
   });
 }
 
@@ -332,9 +408,9 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
       .slice(0, 6);
     if (!moves.length) continue;
 
-    let attacker;
+    const ability = abilityNameOf(profile);
     try {
-      attacker = calcMon(profile, abilityNameOf);
+      calcMon(profile, ability);
     } catch {
       skipped++;
       continue; // species name @smogon/calc doesn't know — skip quietly
@@ -342,12 +418,19 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
 
     const benchmarks = [];
     for (const { slug, meta } of moves) {
+      const aProxy = championsProxy(ability, "attacker", meta);
+      const attacker = calcMon(profile, aProxy?.ability ?? ability, aProxy?.abilityOn);
       let move;
       try {
-        move = new Move(GEN, meta.displayName);
+        // `ability` on the Move matters: Skill Link sets the hit count there.
+        move = new Move(GEN, meta.displayName, {
+          ability: attacker.ability,
+          overrides: { ...championsMoveOverrides(meta), ...aProxy?.move },
+        });
       } catch {
         continue;
       }
+      const field = aProxy?.weather ? new Field({ gameType: "Doubles", weather: aProxy.weather }) : BENCH_FIELD;
       // No spread flag is set here on purpose: @smogon/calc has no `spreadHit`
       // property — it applies the doubles ×0.75 from its own move target plus
       // BENCH_FIELD's gameType. So every benchmark below is ALREADY the spread-
@@ -358,7 +441,9 @@ function bakeBenchmarks(profiles, moveIndex, abilityDisplayById) {
       for (const target of targets) {
         if (target.smogonName === profile.smogonName) continue;
         try {
-          const result = calculate(GEN, attacker, calcMon(target, abilityNameOf), move, BENCH_FIELD);
+          const tAbility = abilityNameOf(target);
+          const dProxy = championsProxy(tAbility, "defender", meta);
+          const result = calculate(GEN, attacker, calcMon(target, dProxy?.ability ?? tAbility), move, field);
           const [min, max] = result.range();
           const hp = result.defender.maxHP();
           if (min >= hp) ohko.push(target.smogonName);
@@ -435,6 +520,13 @@ async function main() {
     return { data, backfilled };
   }
 
+  // Official names, from the SAME Showdown commit pokemon.json was baked from:
+  // the slug rule (`toDisplayName`) shipped "Kings Rock" / "Never Melt Ice" as
+  // item names until 2026-11-18. Showdown first ("King's Rock", "Never-Melt
+  // Ice"), then PokeAPI's English `names` entry, the slug rule last (logged).
+  const showdown = await loadChampionsDex({ userAgent: USER_AGENT, sha: pokemonData.sources?.showdown?.commit });
+  const nameFallbacks = new Set();
+
   // Display-name lookups keyed by stripped id (to render Smogon's ids). Abilities
   // are rendered by the UI from each Pokémon's own ability list, so only moves
   // (for slug resolution) and items need a build-time lookup here.
@@ -442,33 +534,45 @@ async function main() {
   for (const [slug, m] of Object.entries(pokemonData.moves)) {
     moveDisplay.set(stripId(slug), { displayName: m.displayName, slug });
   }
-  const itemDisplay = new Map();
   const itemSlugByStripped = new Map();
-  for (const it of itemList.results) {
-    itemDisplay.set(stripId(it.name), toDisplayName(it.name));
-    itemSlugByStripped.set(stripId(it.name), it.name);
-  }
+  for (const it of itemList.results) itemSlugByStripped.set(stripId(it.name), it.name);
 
-  const itemName = (id) => itemDisplay.get(id) ?? toDisplayName(id);
+  /** Showdown's item name by id ("kingsrock" → "King's Rock"), or null. */
+  const showdownItemName = (id) => showdown.items[id]?.name ?? null;
+  const itemName = (id) => {
+    const sd = showdownItemName(id);
+    if (sd) return sd;
+    nameFallbacks.add(`item ${id}`);
+    return toDisplayName(itemSlugByStripped.get(id) ?? id);
+  };
   const itemSlugOf = (id) => itemSlugByStripped.get(id) ?? null;
-  const moveOf = (id) => moveDisplay.get(id) ?? { displayName: toDisplayName(id), slug: null };
+  const moveOf = (id) =>
+    moveDisplay.get(id) ?? { displayName: showdown.moves[id]?.name ?? toDisplayName(id), slug: null };
 
   // EVERY shown item must be tappable with a description. PokeAPI's item DB
   // lacks some Champions items — Mega Stones for mons the mainline never gave one
   // (Greninjite, Clefablite, …) today, and potentially any future Champions-
   // original item. When itemSlugOf returns null we synthesize a slug + a
-  // description floor so the row is never an un-tappable dead end. Mega Stones
-  // (name ends in "ite") get the Mega Stone blurb; anything else gets a generic
-  // floor and is logged so a maintainer can add a curated ITEM_OVERRIDES entry.
+  // description floor so the row is never an un-tappable dead end. The text is
+  // Showdown's for that item at the pinned commit (baked into pokemon.json as
+  // `itemText` by generate-dataset — "If held by an Absol, this item allows it to
+  // Mega Evolve into Mega Absol Z in battle."); only an item Showdown has no text
+  // for falls back to the Mega Stone blurb (name ends in "ite") or a generic floor,
+  // logged so a maintainer can add a curated ITEM_OVERRIDES entry.
   const MEGA_STONE_DESC = "A Mega Stone. Its holder can Mega Evolve during battle.";
-  // "…ite", plus the "…ite X" / "…ite Y" pair (Raichunite X/Y, Charizardite X/Y),
-  // whose trailing X/Y the old `/ite$/` missed — leaving them with a generic
-  // "a held item" blurb instead of the Mega Stone one.
-  const isMegaStone = (name) => /ite(?:\s*[xy])?$/i.test(name.trim());
+  // "…ite", plus the "…ite X" / "…ite Y" pair (Raichunite X/Y, Charizardite X/Y)
+  // and v1.2.0's "…ite Z" (Absolite Z, Garchompite Z, Lucarionite Z), whose
+  // trailing letter `/ite$/` missed — the Z stones read as a generic held item,
+  // with no "Mega Stones" category, until 2026-11-18.
+  const isMegaStone = (name) => /ite(?:\s*[xyz])?$/i.test(name.trim());
   const genericItemDesc = (name) => `${name} — a held item used in Pokémon Champions.`;
+  const showdownItemText = new Map(
+    Object.entries(pokemonData.itemText ?? {}).map(([name, text]) => [stripId(name), text]),
+  );
   const synthDetail = (slug, name) => {
     const desc =
       ITEM_OVERRIDES[slug] ||
+      showdownItemText.get(stripId(name)) ||
       (isMegaStone(name) ? MEGA_STONE_DESC : genericItemDesc(name));
     return {
       slug,
@@ -488,19 +592,33 @@ async function main() {
     const name = itemName(id);
     if (!synthItems[id]) {
       synthItems[id] = synthDetail(id, name);
-      if (!isMegaStone(name)) synthWarn.add(name);
+      if (!isMegaStone(name) && !showdownItemText.has(stripId(name))) synthWarn.add(name);
     }
     return id; // never null — the row stays tappable
   };
 
   const rosterSlugs = new Set(roster.map((s) => s.replace(/\./g, "-")));
-  const teammateSlug = (name) => {
+  /** Battle-form key → its roster page ("charizard-mega-y" → "charizard"). */
+  const formPage = new Map();
+  for (const p of pokemonData.pokemon) for (const f of p.forms ?? []) formPage.set(f.key, p.name);
+  /**
+   * Where a partner chip links: the roster PAGE, plus the FORM to open (`?form=`)
+   * when the teammate is one — the chip reads "Mega Charizard Y", so it must open
+   * Mega Charizard Y, not base Charizard. Tried in order: the exact slug, PokeAPI's
+   * "-breed" naming (Paldean Tauros is `tauros-paldea-aqua-breed` — until
+   * 2026-11-18 its chips fell through to base `tauros`, Kantonian Tauros), and
+   * Showdown's renames (Indeedee-F → indeedee-female, Meowstic-F-Mega → the one
+   * Mega Meowstic, Basculegion-F); the base species is the last resort.
+   */
+  const teammateLink = (name) => {
     const s = slugify(name);
-    if (rosterSlugs.has(s)) return s;
-    // Indeedee-F → indeedee-female: its bare base ("indeedee") is no roster page.
-    if (rosterSlugs.has(SHOWDOWN_TO_ROSTER[s])) return SHOWDOWN_TO_ROSTER[s];
+    for (const c of [s, `${s}-breed`, SHOWDOWN_TO_ROSTER[s]]) {
+      if (!c) continue;
+      if (rosterSlugs.has(c)) return { slug: c, formKey: null };
+      if (formPage.has(c)) return { slug: formPage.get(c), formKey: c };
+    }
     const base = s.split("-")[0];
-    return rosterSlugs.has(base) ? base : null;
+    return { slug: rosterSlugs.has(base) ? base : null, formKey: null };
   };
 
   // Forms that are their own roster entry (regional, Rotom appliance) or a Mega.
@@ -508,6 +626,9 @@ async function main() {
   // naming (e.g. Gourgeist-Average, Lycanroc-Midday) may fall back.
   const EXCLUDE_FALLBACK =
     /-(mega(-[xyz])?|primal|alola|galar|hisui|paldea|wash|heat|frost|mow|fan)$/;
+
+  /** Ladder moves (≥3% of a profile's sets) with no move-index entry — see buildProfile. */
+  const droppedMoves = new Map();
 
   function buildProfile(data, key, asForm) {
     const m = data[key];
@@ -534,6 +655,11 @@ async function main() {
         if (c / setCount < 0.03) continue;
         const md = moveOf(id);
         if (md.slug) moveUsage[md.slug] = pct(c, setCount);
+        // A real ladder move the move index can't resolve would vanish from the
+        // page. That hid King's Shield (89% of Aegislash) and Forest's Curse
+        // (44% of Trevenant) for months — Serebii's tables lacked them, so no
+        // movepool did. Recorded so `npm run status` fails instead.
+        else droppedMoves.set(`${key}|${id}`, { key, move: id, pct: pct(c, setCount) });
       }
     }
 
@@ -559,7 +685,10 @@ async function main() {
       teammates: Object.entries(m.Teammates)
         .sort((a, b) => b[1] - a[1])
         .slice(0, 3)
-        .map(([name, c]) => ({ displayName: name, slug: teammateSlug(name), usagePct: pct(c, setCount) })),
+        .map(([name, c]) => {
+          const { slug, formKey } = teammateLink(name);
+          return { displayName: name, slug, ...(formKey ? { formKey } : {}), usagePct: pct(c, setCount) };
+        }),
       setupThreats: Object.entries(m.Moves)
         .filter(([id, c]) => SETUP_MOVE_IDS.has(id) && c / setCount >= SETUP_THRESHOLD)
         .sort((a, b) => b[1] - a[1])
@@ -774,9 +903,11 @@ async function main() {
           // PokeAPI lacks effect AND flavor text for a few newer items — supply it.
           const short = clean(en?.short_effect) || clean(fl?.text) || ITEM_OVERRIDES[slug] || "";
           const effect = clean(en?.effect) || clean(fl?.text) || ITEM_OVERRIDES[slug] || "";
+          const apiName = d.names?.find((n) => n.language?.name === "en")?.name?.trim() || null;
+          if (!showdownItemName(stripId(slug))) nameFallbacks.add(`itemIndex ${slug} (${apiName ? "PokeAPI" : "slug rule"})`);
           return [slug, {
             slug,
-            displayName: toDisplayName(slug),
+            displayName: showdownItemName(stripId(slug)) ?? apiName ?? toDisplayName(slug),
             shortEffect: short,
             effect,
             category: d.category?.name ? toDisplayName(d.category.name) : null,
@@ -786,7 +917,8 @@ async function main() {
         } catch {
           // Fetch failed for a real slug — reuse the last committed detail rather
           // than dropping it (which would render an un-tappable row).
-          return previousItemIndex[slug] ? [slug, previousItemIndex[slug]] : null;
+          const prev = previousItemIndex[slug];
+          return prev ? [slug, { ...prev, displayName: showdownItemName(stripId(slug)) ?? prev.displayName }] : null;
         }
       }),
     );
@@ -811,6 +943,9 @@ async function main() {
         if (!d || (meaningless(d.effect) && meaningless(d.shortEffect))) {
           itemIndex[it.slug] = synthDetail(it.slug, it.displayName);
           itemFloored++;
+        } else if (!showdownItemName(stripId(it.slug)) && d.displayName) {
+          // Showdown doesn't know it: the sheet's name (PokeAPI's English one) beats the slug rule.
+          it.displayName = d.displayName;
         }
       }
     }
@@ -819,6 +954,9 @@ async function main() {
     console.warn(`  ~ ${synthWarn.size} non-Mega-Stone item(s) had no PokeAPI entry — used a generic description floor; add a curated ITEM_OVERRIDES entry: ${[...synthWarn].join(", ")}`);
   }
   if (itemFloored) console.log(`  + floored ${itemFloored} item detail(s) so every shown item is tappable + described`);
+  if (nameFallbacks.size) {
+    console.warn(`  ~ ${nameFallbacks.size} name(s) not from Showdown (PokeAPI / slug rule stood in): ${[...nameFallbacks].join(", ")}`);
+  }
 
   const battles = chaosByCutoff[BRACKETS.all.cutoffs[0]].info["number of battles"];
   const out = {
@@ -838,6 +976,8 @@ async function main() {
       unmatched: Object.fromEntries(
         Object.entries(brackets).map(([name, b]) => [name, b.unmatched]),
       ),
+      // Ladder moves dropped because the move index can't resolve them (status fails on any).
+      droppedMoves: [...droppedMoves.values()].sort((a, b) => b.pct - a.pct),
     },
     brackets: Object.fromEntries(
       Object.entries(brackets).map(([name, b]) => [name, b.profiles]),
@@ -864,6 +1004,14 @@ async function main() {
     }
   } catch (err) {
     console.warn(`  ~ could not stamp service worker VERSION: ${err.message}`);
+  }
+
+  if (droppedMoves.size) {
+    console.warn(
+      `  ! ${droppedMoves.size} ladder move(s) ≥3% have no move-index entry (dropped from moveUsage): ` +
+        [...droppedMoves.values()].map((d) => `${d.key} ${d.move} ${d.pct}%`).join(", ") +
+        " — the pinned Showdown learnsets probably lag the ladder: bump SHOWDOWN_SHA (scripts/showdown-data.mjs)",
+    );
   }
 
   const champ = brackets.master.profiles;

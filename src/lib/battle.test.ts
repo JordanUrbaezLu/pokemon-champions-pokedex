@@ -129,3 +129,95 @@ describe("getTrapWarnings — ability misclick guards", () => {
     expect(w.map((x) => x.id)).toContain("levitate");
   });
 });
+
+describe("getTrapWarnings — prototype-safe", () => {
+  it("never treats an inherited member as a trap ability (or its usage)", () => {
+    // Before: TRAP_ABILITIES["constructor"] is Object itself → a warning with
+    // undefined text and tone, and abilityUsage["constructor"] (a function) as its %.
+    const names = ["constructor", "Constructor", "toString", "__proto__", "hasOwnProperty"];
+    expect(getTrapWarnings(names.map(ability), { abilityUsage: { defiant: 80 } } as never)).toEqual([]);
+    expect(getTrapWarnings(names.map(ability))).toEqual([]);
+  });
+
+  it("reads usage only from the ladder map's own keys", () => {
+    const inherited = Object.create({ defiant: 80 }) as Record<string, number>;
+    const w = getTrapWarnings([ability("Defiant")], { abilityUsage: inherited } as never);
+    expect(w).toHaveLength(1);
+    expect(w[0].pct).toBeNull();
+  });
+});
+
+// --- Team-preview briefing: ability-aware "Best types" (Astra #15) -------------
+import { briefingBestTypes, type BriefingMon } from "./battle";
+import { getRosterEntries } from "./pokedex";
+
+const mon = (displayName: string, types: BriefingMon["types"], abilities?: string[]): BriefingMon => ({
+  displayName,
+  types,
+  abilities,
+});
+const row = (rows: ReturnType<typeof briefingBestTypes>, atk: string) => rows.find((r) => r.atk === atk);
+
+describe("briefingBestTypes", () => {
+  const heatRotom = mon("Heat Rotom", ["electric", "fire"], ["levitate"]);
+  const megaChimecho = mon("Mega Chimecho", ["psychic", "steel"], ["levitate"]);
+
+  it("a guaranteed immunity never counts: Levitate-only Heat Rotom + Mega Chimecho vs Ground", () => {
+    expect(row(briefingBestTypes([heatRotom, megaChimecho], 18), "ground")).toBeUndefined();
+  });
+
+  it("unknown abilities (an old pin) keep raw type math — the previous behaviour", () => {
+    const rows = briefingBestTypes([{ ...heatRotom, abilities: undefined }, { ...megaChimecho, abilities: [] }], 18);
+    expect(row(rows, "ground")).toMatchObject({ hit: 2, quads: 1, score: 3, mayBeImmune: [] });
+  });
+
+  it("a POSSIBLE immunity keeps the count but is flagged by name", () => {
+    const orthworm = mon("Orthworm", ["steel"], ["eartheater", "sandveil"]);
+    const kingambit = mon("Kingambit", ["dark", "steel"], ["defiant", "supremeoverlord", "pressure"]);
+    expect(row(briefingBestTypes([orthworm, kingambit], 18), "ground")).toMatchObject({
+      hit: 2,
+      mayBeImmune: ["Orthworm"],
+    });
+  });
+
+  it("Eelevate (Mega Eelektross's only ability) is a Ground immunity too", () => {
+    const megaEel = mon("Mega Eelektross", ["electric"], ["eelevate"]);
+    const kingambit = mon("Kingambit", ["dark", "steel"], ["defiant", "supremeoverlord", "pressure"]);
+    const incineroar = mon("Incineroar", ["fire", "dark"], ["blaze", "intimidate"]);
+    expect(row(briefingBestTypes([megaEel, kingambit, incineroar], 18), "ground")).toMatchObject({
+      hit: 2,
+      mayBeImmune: [],
+    });
+  });
+
+  it("a guaranteed resist (lone Thick Fat) isn't a super-effective hit", () => {
+    const megaVenusaur = mon("Mega Venusaur", ["grass", "poison"], ["thickfat"]);
+    const scizor = mon("Scizor", ["bug", "steel"], ["swarm", "technician", "lightmetal"]);
+    const rhydon = mon("Rillaboom", ["grass"], ["overgrow", "grassysurge"]);
+    // Fire: Scizor 4×, Rillaboom 2×, Mega Venusaur 2× raw but 1× through Thick Fat.
+    expect(row(briefingBestTypes([megaVenusaur, scizor, rhydon], 18), "fire")).toMatchObject({
+      hit: 2,
+      quads: 1,
+      mayBeImmune: [],
+    });
+  });
+
+  it("keeps hit ≥ 2, ranks by hit + quads (ties in type order), top 3", () => {
+    const rows = briefingBestTypes([
+      mon("A", ["grass", "flying"]),
+      mon("B", ["grass", "ground"]),
+      mon("C", ["dragon"]),
+    ]);
+    expect(rows.map((r) => r.atk)).toEqual(["ice", "fire", "flying"]);
+    expect(rows[0]).toMatchObject({ hit: 3, quads: 2, score: 5 });
+  });
+
+  it("the home list's pins carry their form's abilities (Heat + Wash Rotom from the real roster)", () => {
+    const pins = getRosterEntries()
+      .filter((e) => e.name === "rotom-heat" || e.name === "rotom-wash")
+      .map((e) => e.pin);
+    expect(pins).toHaveLength(2);
+    for (const p of pins) expect(p.abilities).toEqual(["levitate"]);
+    expect(row(briefingBestTypes(pins, 18), "ground")).toBeUndefined();
+  });
+});

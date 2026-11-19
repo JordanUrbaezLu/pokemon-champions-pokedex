@@ -2,7 +2,7 @@ import { TypeBadge } from "./TypeBadge";
 import { effectiveDefensiveProfile } from "@/lib/type-chart";
 import { TYPE_COLORS } from "@/lib/type-meta";
 import { prettySmogonName } from "@/lib/format";
-import type { ThreatProfile } from "@/lib/threat";
+import { headlineBenchmark, likelySet, type ThreatProfile } from "@/lib/threat";
 import type { MoveBenchmark, MoveSummary, PokemonType } from "@/lib/types";
 
 /**
@@ -42,13 +42,7 @@ export function ThreatProfileCard({
 
   // The moves it's actually clicking (top 6 by usage) — the "what's coming"
   // read, right inside the profile so the whole threat picture lives in one card.
-  const likely =
-    usage && Object.keys(usage).length
-      ? [...moves]
-          .filter((m) => usage[m.name] != null)
-          .sort((a, b) => (usage[b.name] ?? 0) - (usage[a.name] ?? 0))
-          .slice(0, 6)
-      : [];
+  const likely = likelySet(moves, usage);
 
   // The counterplay: a 4× weakness is the fastest way to delete this threat —
   // but only when the mon's ability can't negate it (Levitate vs Ground) or
@@ -56,11 +50,13 @@ export function ThreatProfileCard({
   // into a move that does nothing.
   const quad = effectiveDefensiveProfile(types, abilities).quad;
 
-  // The single most lethal precomputed verdict — a damage calc's answer with
-  // zero inputs ("Play Rough OHKOs Garchomp +1 · 2HKOs 8 of the top meta").
-  const danger = (benchmarks ?? [])
-    .map((b) => ({ b, score: b.ohkoCount * 2 + b.twoCount }))
-    .sort((a, z) => z.score - a.score)[0]?.b;
+  // The single most lethal precomputed verdict among the moves shown above it —
+  // a damage calc's answer with zero inputs ("Play Rough OHKOs Garchomp +1 ·
+  // 2HKOs 8 of the top meta"). threat.ts has the rule (and its fallback).
+  const danger = headlineBenchmark(
+    benchmarks,
+    likely.map((m) => m.name),
+  );
   const dangerMove = danger ? moves.find((m) => m.name === danger.move) : undefined;
 
   return (

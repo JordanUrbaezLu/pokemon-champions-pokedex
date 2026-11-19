@@ -116,7 +116,7 @@ export default function TeamsPage() {
           {meta.sourceLabel}
         </a>
         , collated from TPCi + grassroots events. Ranked by tournament pedigree.
-        Sets are baked at build time — the app makes no live calls.
+        Sets are baked at build time — the app makes no live data calls.
       </footer>
     </main>
   );

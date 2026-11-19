@@ -74,6 +74,12 @@ export interface BattleForm {
   types: PokemonType[];
   stats: PokemonStats;
   abilities: PokemonAbility[];
+  /**
+   * The FORM's own weight in kg (PokeAPI's /pokemon entry for the form, held to
+   * Showdown's species data by the bake). Weight moves read it: Mega Steelix is
+   * 740 kg, not Steelix's 400 — 69 of the 84 forms weigh something else.
+   */
+  weightKg: number;
   sprite: string | null;
   artwork: string | null;
 }
@@ -158,6 +164,13 @@ export interface MoveSummary {
   drain: number;
   flinchChance: number;
   critRate: number;
+  /**
+   * Always lands a critical hit (Frost Breath, Flower Trick, Storm Throw…) —
+   * the damage engine's own list (`damage.ts` alwaysCrits), stamped on by
+   * pokedex.ts at build time, never baked. PokeAPI's critRate can't say it: 6 for
+   * Frost Breath, 0 for Flower Trick.
+   */
+  alwaysCrits?: boolean;
   minHits: number | null;
   maxHits: number | null;
   /**
@@ -183,6 +196,9 @@ export interface CompetitiveTeammate {
   displayName: string;
   /** Roster slug if the teammate is in the Champions roster (for linking). */
   slug: string | null;
+  /** The battle form the chip names ("Charizard-Mega-Y" → "charizard-mega-y"),
+   *  for the `?form=` deep link; absent for a base form. */
+  formKey?: string;
   usagePct: number;
 }
 

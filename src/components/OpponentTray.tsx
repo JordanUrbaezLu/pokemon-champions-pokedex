@@ -58,7 +58,7 @@ export function OpponentTray() {
               return (
                 <Link
                   key={m.slug}
-                  href={`/pokemon/${m.slug}${m.formKey ? `?form=${m.formKey}` : ""}`}
+                  href={`/pokemon/${m.slug}?form=${m.formKey ?? m.slug}`}
                   aria-label={m.displayName}
                   aria-current={here ? "page" : undefined}
                   className="relative shrink-0 rounded-xl p-0.5 transition-opacity active:opacity-70 animate-[chipIn_.26s_ease-out]"
@@ -101,7 +101,8 @@ export function OpponentTray() {
           {/* Run the numbers against your top opponent — seeds it as the
               calc's defender. Neutral chrome: red is reserved for threat. */}
           <Link
-            href={`/calc?d=${opponents[0].slug}`}
+            // The pinned FORM too (by key): a pinned Mega Charizard Y opened as base Charizard.
+            href={`/calc?d=${opponents[0].slug}${opponents[0].formKey ? `&df=${opponents[0].formKey}` : ""}`}
             className="tap-row shrink-0 rounded-full border-2 border-border px-3 py-1.5 text-xs font-black uppercase tracking-wide text-muted active:bg-surface-2"
           >
             Calc

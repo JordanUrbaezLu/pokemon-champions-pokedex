@@ -23,7 +23,7 @@ export function TeamSetCard({
 }) {
   const accent = TYPE_COLORS[member.types[0]] ?? "#5b6675";
   const href = member.slug
-    ? `/pokemon/${member.slug}${member.formKey ? `?form=${member.formKey}` : ""}`
+    ? `/pokemon/${member.slug}?form=${member.formKey ?? member.slug}`
     : null;
 
   const Heading = (

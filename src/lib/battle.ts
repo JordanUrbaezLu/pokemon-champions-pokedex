@@ -1,10 +1,13 @@
 import { natureEffect } from "./format";
+import { defensiveMultiplier, effectiveDefensiveMultiplier } from "./type-chart";
+import { POKEMON_TYPES } from "./types";
 import type {
   CompetitiveProfile,
   CompetitiveSpread,
   EvStat,
   PokemonAbility,
   PokemonStats,
+  PokemonType,
 } from "./types";
 
 const EV_KEY: Record<keyof PokemonStats, EvStat | null> = {
@@ -198,14 +201,92 @@ export function getTrapWarnings(
   comp?: CompetitiveProfile | null,
 ): TrapWarning[] {
   const out: TrapWarning[] = [];
+  // Own keys only, in both tables: they are object literals, so an ability id
+  // of "constructor" read Object itself as a trap (warning/tone undefined) and
+  // the ladder map's inherited function as its usage %.
+  const usage = comp?.abilityUsage;
   for (const a of abilities) {
     const id = stripId(a.name);
-    const trap = TRAP_ABILITIES[id];
+    const trap = Object.hasOwn(TRAP_ABILITIES, id) ? TRAP_ABILITIES[id] : null;
     if (!trap) continue;
-    const pct = comp?.abilityUsage?.[id] ?? null;
+    const pct = usage && Object.hasOwn(usage, id) ? usage[id] : null;
     // Skip abilities the ladder shows are essentially never run.
     if (pct != null && pct < 5) continue;
     out.push({ id, label: a.displayName, warning: trap.warning, tone: trap.tone, pct });
   }
   return out.sort((a, b) => (b.pct ?? -1) - (a.pct ?? -1));
+}
+
+// --- Team-preview briefing ----------------------------------------------------
+
+/** What the briefing's type scoring reads off one pinned opponent. */
+export interface BriefingMon {
+  displayName: string;
+  types: readonly PokemonType[];
+  /**
+   * The pinned form's COMPLETE list of possible abilities (ids or names). Absent
+   * or empty = unknown (a pin saved before the field existed) → raw type math.
+   */
+  abilities?: readonly string[];
+}
+
+/** One "Best types into their team" row. */
+export interface BriefingTypeScore {
+  atk: PokemonType;
+  /** pinned mons this type hits super-effectively under at least one of their possible abilities */
+  hit: number;
+  /** of those, the ones hit 4×+ (they weight the ranking) */
+  quads: number;
+  /** of those, the ones ONE of their possible abilities makes immune — still counted, but flagged */
+  mayBeImmune: string[];
+  /** ranking key: hit + quads */
+  score: number;
+}
+
+/**
+ * The briefing's "Best types into their team": which attacking types hit the
+ * most of their pinned team super-effectively. Ability-aware, because raw type
+ * math told a trainer "Ground hits 2 of 2" into Heat Rotom + Mega Chimecho —
+ * Levitate is each form's ONLY ability, so Ground hits neither.
+ *
+ * Per attacking type T and pinned mon, take T's multiplier under EACH of the
+ * form's possible abilities (`effectiveDefensiveMultiplier` with that one
+ * ability — the kill-shot's own ability table: Levitate/Eelevate/Earth Eater 0×
+ * Ground, Flash Fire/Well-Baked Body 0× Fire, Water Absorb/Storm Drain/Dry Skin
+ * 0× Water, Volt Absorb/Lightning Rod/Motor Drive 0× Electric, Sap Sipper 0×
+ * Grass, Thick Fat/Heatproof/Water Bubble/Purifying Salt ½×):
+ *  - counted as a hit iff the BEST of those is ≥2× — so a guaranteed immunity
+ *    (every possible ability blocks it) or a guaranteed resist (Mega Venusaur's
+ *    lone Thick Fat vs Fire) never counts;
+ *  - a quad iff that best is ≥4×;
+ *  - flagged "may be immune" iff counted AND some possible ability makes it 0×
+ *    (Orthworm's Earth Eater, Azumarill's Sap Sipper) — the count stays, the UI
+ *    marks it. A merely POSSIBLE halving (Sinistcha's 1%-usage Heatproof) is not
+ *    flagged: the hit still lands.
+ * Unknown abilities → the raw type multiplier (the old behaviour).
+ * Kept: hit ≥ 2, sorted by score desc (ties in POKEMON_TYPES order), top 3.
+ */
+export function briefingBestTypes(
+  opponents: readonly BriefingMon[],
+  limit = 3,
+): BriefingTypeScore[] {
+  return POKEMON_TYPES.map((atk) => {
+    let hit = 0;
+    let quads = 0;
+    const mayBeImmune: string[] = [];
+    for (const m of opponents) {
+      const mults = m.abilities?.length
+        ? m.abilities.map((a) => effectiveDefensiveMultiplier(atk, m.types, [a]))
+        : [defensiveMultiplier(atk, m.types)];
+      const best = Math.max(...mults);
+      if (best < 2) continue;
+      hit++;
+      if (best >= 4) quads++;
+      if (mults.some((x) => x === 0)) mayBeImmune.push(m.displayName);
+    }
+    return { atk, hit, quads, mayBeImmune, score: hit + quads };
+  })
+    .filter((x) => x.hit >= 2)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
 }

@@ -2,6 +2,293 @@
 
 A living log of everything requested + built. Legend: ✅ done · 🔄 in progress · ⏳ planned.
 
+### Official names everywhere, fixed at the source — 2026-11-18
+- ✅ **Names come from Showdown, not the slug rule.** Both generators built names with `toDisplayName`
+  (split on "-", capitalise), so the app showed "U Turn", "Will O Wisp", "Kings Shield", "Forests Curse",
+  "Trick Or Treat", "Kings Rock", "Never Melt Ice", "Good As Gold", "Kommo O", "Mr Rime", "Farfetchd".
+  `generate-dataset.mjs` → `officialName` (Showdown's `name` at the pinned commit, then PokeAPI's English
+  `names`, then the slug rule — logged): 14 moves, 2 abilities (Good as Gold, Zero to Hero), 5 pages
+  (Farfetch’d, Mr. Mime, Kommo-o, Sirfetch’d, Mr. Rime; form conventions kept — "Alolan Ninetales",
+  "Toxtricity Low Key"). `generate-competitive.mjs` loads the dex at `sources.showdown.commit` for item
+  names (King's Rock, Never-Melt Ice — profile items and item sheets) and the dropped-move fallback.
+- ✅ **Partner chips reach the right page AND form.** `teammateLink` bakes `formKey` (322 chips:
+  "Mega Charizard Y" opened base Charizard) and resolves PokeAPI's `-breed` naming ("Tauros-Paldea-Aqua"
+  opened Kantonian Tauros — Mega Pinsir's #1 partner). The detail footer names a borrowed set with
+  `prettySmogonName` ("Competitive data shown for Paldean Tauros (Aqua)", not the raw Smogon name).
+- ✅ **Search is punctuation-blind** (`searchKey`, format.ts): the home list and the move filter find
+  "u turn" / "uturn" / "u-turn", "mr rime", "kommo o", "farfetchd". `canonicalItem` stays (saved calc
+  sets may hold "Never Melt Ice").
+- ✅ **Re-bake** (`data:comp` pinned 2026-10 / Reg M-C): pokemon.json 22 leaves (names only);
+  competitive.json 337 (14 item names, 322 teammate `formKey`, 1 Tauros slug) — usage, items, spreads,
+  benchmarks, verdicts byte-identical. `public/sw.js` VERSION restamped `cpx-d939be4a41b2`.
+- ✅ **Verified:** new `names.test.ts` (every move/ability/item/species name = @smogon/calc's table;
+  ≥14/2/2/5 slug-rule-differs non-vacuity; chips → page + form; searchKey) fails 5/6 on the old data;
+  tsc, lint, 458 tests, status ✓ (33), audit --offline 0 HIGH / 1 MEDIUM (teams salvage), build 277 pages.
+- ⏳ Not done, noted: Kantonian Tauros's master page still BORROWS Tauros-Paldea-Aqua's set (asForm —
+  `EXCLUDE_FALLBACK` anchors `-paldea$`); fixing it drops that page's master data (owner call).
+
+### Adversarial review of the engine port + data phases — 2026-11-18
+An independent pass over both phases below: a 300k-case randomized parity fuzz (every modelled move ×
+damage-relevant abilities/items/status/boosts/HP/weather/terrain/screens/crit), the pinned Showdown
+champions mod read for every Champions-original ability, and every baked benchmark row recomputed by
+independent library code (1207/1207 reproduce). Four defects fixed, each pinned and mutation-checked:
+- ✅ **Mega Sol kept the TARGET's Sand SpD / Snow Def boosts.** Showdown's `effectiveWeather()` reads Sun
+  for every Pokémon while a Mega Sol holder moves, and those boosts check it (the library-with-Sun proxy
+  agrees) — Mega Meganium's Grass hits into Mega Tyranitar in its own Sand read ⅔ of their damage.
+- ✅ **Spicy Spray was a no-op.** It burns the user after EVERY hit (onDamagingHit), so a multi-hit /
+  Parental Bond user's later physical hits are halved (Guts: ×1.5; Lum/Rawst cure it between hits;
+  Fire types, burn-proof abilities, Misty Terrain underfoot are immune). New oracle: the library's own
+  per-hit rolls, burned from hit 2 (`spicySprayExpected`), plus a non-vacuity suite.
+- ✅ **Grassy Glide ignored its +1 in Grassy Terrain**, so Armor Tail / Queenly Majesty / Dazzling never
+  blocked it (Rillaboom 99% Grassy Glide → Farigiraf, #5 × #8). A deliberate library difference; Gale
+  Wings stays mirrored (full-HP benchmarks).
+- ✅ **Calc: Stored Power / Power Trip double-counted the mirrored boost controls** (Bulk Up +1 read Power
+  Trip 100 BP, not 60) — `calcOf` now keeps one stat per control.
+- Noted, not changed: Assurance's PB child doubles (game-correct; library bug), and three PB-child
+  re-run quirks of the library (Seed re-fire after Seed Sower, Klutz Knock Off, Meteor Beam re-boost) —
+  unreachable or ~0% in this format.
+
+### Per-form weights, Z-Mega names, prototype-safe lookups, move-sheet polish — 2026-11-18
+Phase 2 of the 2026-10 parity work: the data model and display, on top of the engine port below.
+- ✅ **Every form carries its own weight.** `BattleForm.weightKg` (PokeAPI's `/pokemon` entry for the
+  form) replaces the base species' weight `calc-data.ts` gave all 84 alt forms — 69 differ (Mega Steelix
+  400 → 740 kg, Mega Sableye 11 → 161, Mega Metagross 550 → 942.9, Mega Lucario Z 54 → 49.4), so Low
+  Kick / Grass Knot / Heavy Slam / Heat Crash into or from a Mega used the wrong power bracket. The bake
+  cross-checks every page/form against Showdown's species (`rosterCheck.weightMismatches`, 339/339 —
+  one documented exception, Maushold: PokeAPI's default is Family of Four, Showdown's Family of Three,
+  pinned in `WEIGHT_CHECK_EXCEPTIONS`). New `calc-data.test.ts` pins the calc INDEX (the app's real data
+  path — `damage.test.ts` builds both engines from the library's species data, which is why the parity
+  suite never saw this): per-form weights, the library's weights (only Drampa-Mega / Eelektross-Mega
+  lag in @smogon/calc 0.11, plus Maushold), and 6 weight-move parity pins (Heavy Slam from Mega Steelix,
+  Heat Crash from Mega Camerupt, Low Kick into Mega Kangaskhan, Grass Knot into Mega Sableye / Mega
+  Swampert, Heavy Slam Mega Metagross → Mega Tyranitar), each also proven to MISS with the base weight.
+  Benchmarks don't change: they never include weight moves (power null). Status: weight cross-check +
+  Mega Steelix canary.
+- ✅ **Z-Mega names.** `prettySmogonName` read X/Y only, so "Garchomp-Mega-Z" / "Absol-Mega-Z" /
+  "Lucario-Mega-Z" rendered raw in partner chips and KO lists; it now reads any suffix letter, drops a
+  gender tag (Meowstic-F-Mega → Mega Meowstic, the one collapsed form), and names Primal, regional
+  (Ninetales-Alola → Alolan Ninetales, Tauros-Paldea-Aqua → Paldean Tauros (Aqua)) and Rotom forms the
+  way the pages do; Showdown form names (Indeedee-F, Aegislash-Blade) and real hyphens (Kommo-o,
+  Porygon-Z) pass through. The Calc's form pills (`/\bX$/` `/\bY$/`) read "Mega" twice for Lucario /
+  Garchomp / Absol → `formPillLabel` / `megaTabLabel` in `format.ts` ("Base · Mega · Mega Z"); Calc.tsx's
+  helper is a one-line delegate (its ITEMS untouched). Data-driven tests: every ladder name equals the
+  page/form's own label; no suffix survives raw in any chip or KO list; no species shows two equal pills.
+- ✅ **Prototype-safe lookups** (`Object.hasOwn`): `natureEffect("toString")` returned a function (a nature
+  can come from a saved set in localStorage), `abilityMatchupNotes(["constructor"])` returned Object as a
+  "note", `defensiveMultiplier` went NaN for a non-type defender, `getTrapWarnings` read Object as a trap
+  and an inherited usage %. Unit-tested.
+- ✅ **Move sheet: "Always crits".** It said "High crit rate" for Frost Breath / Storm Throw (PokeAPI
+  critRate 6) and nothing for Flower Trick (critRate 0). The fact chips moved to `src/lib/move-facts.ts`
+  (unit-tested over the whole index); the flag is `damage.ts`'s `alwaysCrits()`, stamped server-side in
+  `pokedex.ts` — importing `damage.ts` into the sheet put the whole engine on every Pokémon page
+  (+19,854 bytes JS, measured A/B; now 711,973 vs 712,036 without). Screenshots: Frost Breath, Flower
+  Trick sheets; `npm run shot` gained `TAP=` (tap a button first, `|` chains) to shoot sheets open.
+- ✅ **Newcomers pruned per `roster.json`'s own rule** ("Prune a slug once it has established ladder data")
+  as its 2026-09-10 precedent applied it — that prune took every slug with its OWN profile (even 0%
+  all-ranks: barbaracle, falinks, mawile) and kept pyroar, whose Mega already had 1.2%. All 29 Reg M-C
+  slugs had their own profile in 2026-09 AND 2026-10 → pruned; `newcomers` = [pyroar]. The note now
+  states the rule exactly; status checks isNew = the list and warns (⚠) on any newcomer due a prune.
+- ✅ **Data polish:** PokeAPI's placeholder 0s → null (power on Chilly Reception, Dragon Cheer, Revival
+  Blessing, Shed Tail, Shelter, Snowscape, Spicy Extract, Tidy Up + variable Hard Press; accuracy on
+  Dragon Cheer — the sheet showed "Power 0" / "Acc 0"); Milk Drink reads "Heals the user or an adjacent
+  ally…" (the mod retargets it; Showdown's text lags — `LOCAL_MOVE_OVERRIDES` with a `staleText`
+  tripwire); 38 synthesized item sheets now carry Showdown's text (`itemText`) instead of placeholders
+  — the 3 Z stones (also categorized Mega Stones now), 34 Champions-original stones, Leek. Status checks
+  for each.
+- ✅ **Re-bake:** `npm run data` ×2 byte-identical; diff = form `weightKg` ×84, `weightMismatches: []`,
+  `isNew` −29, power/accuracy ×10, Milk Drink text, `itemText`, plus upstream PokeAPI drift on two
+  flavor texts (Infernal Parade / Matcha Gotcha: ' → ’). `data:comp` (pinned 2026-10 / Reg M-C): only
+  the 38 item entries changed — brackets, benchmarks and meta byte-identical. `public/sw.js` VERSION
+  restamped `cpx-6691befff2f2` (commit it with the data).
+- ✅ **Verified:** 28 mutations, each restored by sha256 — 13 code (form weight → base, X/Y-only names /
+  pills, no gender tag, no regional / Rotom rule, bare lookups ×5, old crit wording, no Base pill), 8
+  data-file (Mega Steelix 400 kg, a weightless form, accuracy 0, power 0, Milk Drink text, Z placeholder,
+  uncategorized Z stone, roster newcomer) and 7 generator re-bakes (Maushold exception, no form weight,
+  `?? null`, no Milk Drink override, stale-text tripwire, no Showdown item text, X/Y stone pattern;
+  data byte-identical after each restore) — 28/28 caught. tsc, lint, 430 tests, status ✓ (33 checks, +5),
+  audit --offline 0 HIGH / 1 MEDIUM (teams salvage) / 0 LOW, build 277 pages (temporary
+  `turbopack.root`, restored byte-identically).
+- ✅ 2026-11-18 Maushold (owner call): the page bakes PokeAPI's `maushold-family-of-three` (2.3 kg + its
+  sprite) via ROSTER_TO_POKEAPI_POKEMON; WEIGHT_CHECK_EXCEPTIONS is empty; `calc-data.test.ts` no longer
+  lists it as a library difference. Re-bake diff: 4 Maushold fields in pokemon.json, nothing else.
+- ⏳ Not done, noted (Maushold since fixed, above): `Tauros-Paldea-Aqua` partner chips link to Kantonian Tauros
+  and that page borrows the Paldean set (`teammateSlug` has no `-breed` step; `EXCLUDE_FALLBACK` anchors
+  `-paldea$`, so `-paldea-aqua` slips past it); @smogon/calc 0.11 lags two Mega weights (no newer
+  release needed — the engine follows the baked weights).
+
+### Damage engine: abilities ON, every damage item, three bugs — 2026-11-18
+The parity sweep neutralized abilities (Group A), so every unported ability was invisible to it.
+- ✅ **New Group C sweep (`damage.test.ts`)** — the top 60 Master+ forms with their REAL top ability, top
+  item and ladder spread, top 5 damaging moves (multi-hit / variable / fixed-damage included), into the top
+  16 defenders with theirs, then again with each defender's other abilities: **8515 cases, 4508 of them
+  other-ability**. The pre-port engine failed **891** (Pixilate/Aerilate/Liquid Voice Hyper Voice, Fairy Aura,
+  Armor Tail vs Fake Out, Mega Launcher, Electro Shot's charge +1 SpA, type boosters, Chople Berry, Fire
+  Mane); now 0. State the calc has no input for is left at the library's defaults (list in AGENTS.md).
+- ✅ **Ported (`damage.ts`, restructured on gen789's order):** the -ate family + Normalize + Liquid Voice,
+  Sharpness, Sand Force, Fairy/Dark Aura + Aura Break, Iron Fist, Reckless, Mega Launcher, Strong Jaw, Punk
+  Rock (both sides), Steely Spirit, Steelworker / Dragon's Maw / Rocky Payload, Transistor, Hustle, Gorilla
+  Tactics, Solar Power, Defeatist, Blaze/Torrent/Overgrow/Swarm (≤⅓ HP), Mold Breaker / Teravolt /
+  Turboblaze (the library's ignorable list), Scrappy / Mind's Eye, Fluffy + Long Reach, Dry Skin's Fire
+  weakness, Marvel Scale, Grass Pelt, Soundproof, Bulletproof, Armor Tail / Queenly Majesty / Dazzling,
+  Klutz, Infiltrator, Cloud Nine / Air Lock, Forecast, Protean / Libero, Analytic, Heavy/Light Metal, Parental
+  Bond (child hit + between-hit effects), Skill Link; per-hit multi-hit (Triple Axel 20/40/60, Multiscale and
+  berries first hit only, Stamina / Weak Armor per hit). Champions-originals from the pinned Showdown mod:
+  **Dragonize, Fire Mane, Mega Sol, Aura Guard, Eelevate**; Piercing Drill / Spicy Spray change no roll
+  (Protect isn't modelled — say so). Moves the abilities exposed: Weather Ball, Solar Beam/Blade in weather,
+  Brick Break / Psychic Fangs / Raging Bull (screens; Paldean Raging Bull type), Facade / Hex / Infernal
+  Parade / Venoshock / Barb Barrage, Payback, Stored Power / Power Trip, Acrobatics (doubles BASE power, so
+  Technician no longer applies), Eruption / Water Spout / Flail / Reversal / Hard Press (HP control), Seismic
+  Toss / Night Shade / Final Gambit, Flying Press, Shell Side Arm, Meteor Beam / Electro Shot's +1 SpA, final
+  Speed for Gyro Ball / Electro Ball (Choice Scarf, Iron Ball, paralysis, weather speed abilities).
+- ✅ **Bugs:** Fur Coat read as an ITEM (physical hits into Alolan Persian / Furfrou ~2× too high) → ability;
+  Darkest Lariat / Sacred Sword ignore the target's Def stages; `verdictOf` printed "4+ HKO–4+ HKO" (1962 of
+  4848 golden fixtures) → one label, `guaranteed: true`. Found on the way: Sheer Force misread 41 moves from
+  PokeAPI meta, Reckless missed Wave Crash, Population Bomb / Twin Beam rolled 1 hit — all name-keyed now.
+- ✅ **Calc items:** `ITEMS` offers every pool item that changes a roll — 18 type boosters, 18 resist
+  berries, Muscle Band, Wise Glasses, Light Ball, Iron Ball (63 entries, all in the pool; Metronome out:
+  consecutive uses). Ladder spellings ("Never Melt Ice") map onto the list's, so a preset no longer adds a
+  duplicate option.
+- ✅ **Benchmarks:** the generator feeds @smogon/calc the real top item (not a 7-item allowlist), the
+  library's spelling, genderless mons, Skill Link on the Move, and the Champions-original stand-ins; a new
+  test recomputes every baked row with the engine. data:comp (pinned 2026-10 / Reg M-C): 149 of 1226 rows
+  moved (+4 −19) — Sylveon Hyper Voice 0/1 → 0/3, Mega Pyroar Heat Wave 0/3 → 2/4, Knock Off into item
+  holders; everything else byte-identical.
+- ✅ **Verified:** 110 code mutations (each rule reverted, file restored by checksum) — every one fails its
+  own pins (unpinned rules found that way — Sheer Force × Electro Shot, Toxic/Flare Boost, Wind Rider, Wonder
+  Guard, the between-hit Seed Sower / Sand Spit / Water Compaction / Gooey — got pins); swapping in the old
+  benchmarks fails the benchmark test. tsc, lint, 401 tests, status ✓, audit --offline 0 HIGH / 1 MEDIUM (teams salvage) /
+  0 LOW, build 277 pages (temporary `turbopack.root`, restored byte-identically).
+- ⏳ Not done, noted: Mega forms' weight is the base species' in `calc-data.ts` (Low Kick / Heavy Slam into
+  or from a Mega — done in the entry above); crit-stage guaranteed crits (Leek / Super Luck + Scope Lens + high-crit moves) aren't
+  rolled; multi-hit / Parental Bond fold correlated rolls (min/max exact, OHKO % approximate); no
+  Tailwind / Trick Room / ally-aura / fainted-ally inputs.
+
+### Game data: Serebii → Pokémon Showdown's champions mod (App Store licensing) — 2026-11-18
+Owner-approved for the iOS release: Serebii's pages are "All Content is © Copyright of Serebii.net" with no
+reuse licence (App Review 5.2.2 wants third-party content "specifically permitted"); Showdown's server repo
+is MIT ("Copyright (c) 2011-2026 Guangcong Luo and other contributors"). The pipeline now scrapes NOTHING
+from Serebii.
+- ✅ **New `scripts/showdown-data.mjs`** — every Showdown file read at ONE pinned commit,
+  `PINNED_SHOWDOWN_SHA` = `f827a1d41064e0dec4c19c6ea0394fcf0c23479c` (master, 2026-11-16), recorded in
+  `pokemon.json` → `sources.showdown`; `SHOWDOWN_SHA=<sha> npm run data` trial-bakes a bump. The `.ts` data
+  files (which also hold battle callbacks) are TypeScript-AST-parsed for literals — nothing downloaded is
+  executed; any non-literal is a hard error. Mod inheritance mirrors `Dex.loadData`. Code-only rules are
+  mirrored + tripwired verbatim (PP cap/scale in the mod's `scripts.ts`; `learnsetParent`'s champions
+  no-prevo guard in `sim/dex-species.ts`) — each tripwire and the literal guard were mutation-tested.
+- ✅ **Inventory → replacement.** Per-mon movepool scrape (`pokedex-champions/<mon>`, `SEREBII_SLUG`,
+  `VARIANT_SUFFIX`, the page-union ∩ PokeAPI ∪ Showdown+prevo filter, the mainline fallback) → the mod's
+  per-form `learnsets.ts`, via Showdown's own lookup for this mod (standalone lists, no prevo walk; Rotom
+  appliances ∪ base Rotom adds nothing). `MEGA_FORM_ABILITIES` (Serebii-curated; dead — PokeAPI now serves
+  all 11) → Showdown species abilities as the fallback, Showdown text for Champions-original/changed
+  abilities. `CHAMPIONS_MOVE_OVERRIDES` (Serebii patch notes) → the mod's `moves.ts` + its PP rule. Item-pool
+  cross-check (Serebii's item list) → the mod's `items.ts` (baked `itemPool`, 166 items). Roster/newcomers
+  (scraped from Serebii) → verified identical to the mod's `formats-data.ts` legal set on every bake (the 29
+  Reg M-C newcomers = exactly what Showdown's "Add Champions Regulation M-C" commit made legal; pyroar is
+  the M-B holdover); `roster.json` re-attributed. play.pokemonshowdown.com's unpinned JSON (flags, spread
+  targets, fallback moves) → the same pinned files.
+- ✅ **Movepool diff (old Serebii-derived vs Showdown): 17 of 255 pages, −59 / +2, every one Showdown's
+  way** → `MOVEPOOL_OVERRIDES` stays empty. All 59 removals are a SIBLING form's Champions moves that the old
+  union let through (Serebii pages are multi-form unions; the filter only checked MAINLINE learnsets — and
+  for Indeedee-F it looked up the male's): Raichu −Calm Mind/Speed Swap (Alolan's), Alolan Ninetales
+  −Energy Ball/Quick Attack/Solar Beam (Kantonian's), Persian −Curse/Night Slash, Alolan Persian −Last
+  Resort, Hisuian Arcanine −Play Rough, Slowbro −Double-Edge/Power Gem/Toxic, Galarian Slowbro −Scald,
+  Tauros −Water Pulse (Paldean Aqua's), Slowking −Toxic, Galarian Slowking −Scald, Hisuian Goodra −Acid
+  Armor/Round/Snore/Toxic, Hisuian Avalugg −Flash Cannon/Frost Breath/Hydro Pump/Round/Snore/Surf, Hisuian
+  Decidueye −Curse/Psycho Cut, Lycanroc (Midday) −19 Midnight/Dusk moves (Counter, Crush Claw, Fire/Thunder
+  Punch, Fling, Focus Energy/Punch, Foul Play, Knock Off, Lash Out, Low Sweep, Mega Kick, Outrage, Payback,
+  Reversal, Shadow Claw, Throat Chop, Upper Hand, Uproar), Indeedee-F −12 male moves (After You, Encore,
+  Expanding Force, Extrasensory, Gravity, Last Resort, Magic Room, Power Split/Swap, Psychic Noise, Tri
+  Attack, Wonder Room). +2: Aegislash **King's Shield**, Trevenant **Forest's Curse** — signature moves
+  Serebii's tables lacked. Evidence: PokeAPI's own `champions` version group covers 46 of the 61 changes
+  and agrees with Showdown on all 46 (the other 15 are v1.2.0 newcomers it lacks); the learnsets are
+  datamined (PR #12114 "waiting on personal data and learnsets"; Male Meowstic fix 2ce4267fcf); all 14 real
+  in-game Reg M-B tournament teams stay inside the new movepools (audit 0 LOW). Meowstic is one page for
+  both genders → `POOLED_MOVEPOOLS` keeps the female's Extrasensory/Future Sight (no diff).
+- ✅ **Silent ladder-data hole found + closed:** competitive `moveUsage` drops moves the move index can't
+  resolve, so King's Shield (89% of Aegislash) and Forest's Curse (44% of Trevenant) never showed on their
+  pages. Now baked; `meta.droppedMoves` + a status check make any recurrence red.
+- ✅ **Champions move patches now applied (were mainline):** PP on Champions' scale for every move
+  (8/12/16/20; 410 values changed, e.g. Protect 10 → 8, Fake Out 10 → 12; Revival Blessing keeps 1); power —
+  Apple Acid/Grav Apple 80 → 90, Beak Blast 100 → 120, Bone Rush 25 → 30, Fire Lash 80 → 90, First
+  Impression 90 → 100, Infernal Parade 60 → 65, Meteor Assault 150 → 170, Mountain Gale 100 → 120, Night
+  Daze 85 → 90, Psyshield Bash 70 → 90, Slash 70 → 80, Snipe Shot 80 → 85, Spirit Shackle 80 → 90, Trop
+  Kick 70 → 85; accuracy — Clangorous Soul can't miss, Crabhammer 95, Make It Rain 95, Syrup Bomb 90;
+  type — Growth Grass, Snap Trap Steel; secondaries — Freeze-Dry can't freeze, Iron Head 20% flinch,
+  Moonblast 10%, Dire Claw 30% (text), Make It Rain −2 SpA, Toxic Thread −2 Spe; Milk Drink can target an
+  ally; flags — Crush/Dire/Dragon/Shadow Claw slicing, Double Shock punch, Dragon Cheer sound; Showdown
+  prose for 32 moves whose mechanics changed (Salt Cure 1/16, Rage Fist resets, Encore 3 turns, King's
+  Shield −1 Atk…). The old table's two values (Wish/Strength Sap 8) are the mod's own. KO benchmarks and the
+  damage parity test now feed @smogon/calc the baked Champions move (`championsMoveOverrides`): 11 benchmark
+  rows moved (Pawmot Double Shock 2/7 → 5/6 OHKO/2HKO via Iron Fist, Mega Absol Z Shadow Claw 2/2 → 3/7 via
+  Sharpness, Hisuian Avalugg Mountain Gale 1/7 → 4/8, …), and the sweep regained First Impression (1085 →
+  1093 cases, 0 mismatches; mutation-checked — a wrong override turns 8 red).
+- ✅ **Abilities:** Healer 30% → **50%** (Audino, Aromatisse, Hatterene), Unseen Fist / Piercing Drill now
+  say ¼ damage through Protect, Showdown text for the 7 Champions-original abilities; Run Away (Thievul)
+  blocks trapping in Champions but neither source says so → curated `LOCAL_ABILITY_TEXT` citing #12303.
+  337/339 forms' ability lists equal Showdown's (Greninja's illegal Battle Bond S-slot and Meowstic's
+  pooled Competitive are the 2, both correct here).
+- ✅ **Checks:** status — pinned-commit + per-mon learnset provenance, roster = Showdown legal set, per-form
+  canary (Indeedee-F/Lycanroc), signature-move canary, PP scale, Calc `ITEMS` ⊆ pool (+ the 7 mainline-only
+  items absent), dropped ladder moves; v1.2.0 canaries kept, re-worded. Audit — every ladder item in the
+  pool (142/142). All mutation-checked, then restored byte-identically.
+- Verified: data ×3 byte-identical re-bakes, data:comp, data:teams (forum gate → salvaged, expected), tsc,
+  lint, 132 tests, status ✓ (warns: Lycanroc-Dusk, teams behind), audit --offline 0 HIGH / 1 MEDIUM (= the
+  teams salvage) / 0 LOW, build 277 pages (temporary `turbopack.root`, restored).
+- ✅ **Floette = Floette-Eternal on the stats side too (independent review, same day).** The page had the
+  Eternal learnset/ladder data but PokeAPI's `floette` (Red-Flower) stats 54/45/47/75/98/52 + sprites;
+  `ROSTER_TO_POKEAPI_POKEMON` now fetches `floette-eternal` (74/65/67/125/128/92 — PokeAPI files its own
+  `champions` learnset there). New bake-time cross-check: every page/form's PokeAPI stats + types vs
+  Showdown's species (`sources.rosterCheck.statMismatches`) + a status line; mutation-checked (without the
+  mapping it flags exactly Floette, status exits 1; 338/339 already matched). Re-bake diff = Floette's
+  stats/sprites only; competitive.json byte-identical, sw.js restamped. An independent Python re-derivation
+  of all 255 movepools from the pinned files (line-parsed, Showdown's lookup re-ported) matched 255/255.
+- ⏳ Not fixed, noted: `newcomers` still flags the 29 Reg M-C mons that now have ladder data (prune per its
+  note — done two entries above). (Calc `ITEMS` lacking the damage items — done in the entry above.)
+
+### Reg M-C 2026-10 ladder data + crit parity repair — 2026-11-17
+The scheduled "Refresh battle data" run failed 5 times in a row from 2026-11-02 (issue #55): the first
+2026-10 bake turned the damage-engine parity test red.
+- ✅ **Why it broke:** Mega Froslass jumped #36 → #16 (4.8% → 11.2%) and picked up Frost Breath (0 → 38%
+  of sets), so the sweep sampled an always-crit move for the first time: 8 mismatches, one per top-8
+  defender, every roll ≈⅔ of @smogon/calc's (0.64–0.69 per roll). `damage.ts` only crit on `field.isCritical`, which no
+  UI control sets, so the calc had NEVER rolled a crit: Frost Breath into Rillaboom read a "70–84% 2HKO"
+  that is really a 105–126% guaranteed OHKO.
+- ✅ **Crit rule ported (`damage.ts`)** — decided once before any stat is read, as gen789 does: a forced
+  crit, an `ALWAYS_CRIT_MOVES` move (Frost Breath / Flower Trick / Storm Throw + Wicked Blow / Surging
+  Strikes; by name, since PokeAPI's `critRate` serves Flower Trick as 0) or Merciless into a poisoned
+  target — never into Battle/Shell Armor. Three first-port bugs the dead crit path had hidden are fixed
+  with it: Choice Band/Specs were gated `!crit` (the library keeps them), negative attack stages weren't
+  ignored on a crit, Battle/Shell Armor didn't cancel one. Sniper ×1.5 (6144) added on the library's rung.
+- ✅ **Pinned (`damage.test.ts`)** — 20 Group B parity pins (each always-crit move, both Armors, ±attack/
+  defense stages, Reflect + Aurora Veil, Choice Band/Specs, Sniper on/off, Merciless on/off/vs Shell
+  Armor, forced crit) + a whole-index test that `alwaysCrits` equals the library's `willCrit`.
+  Mutation-checked: the pre-fix engine fails 17 (sweep + 15 pins + classifier; the 5 passes are no-crit
+  controls), and reverting each rule alone fails exactly its own pins.
+- ✅ **Issue #30 — the Reg M-C sample-teams thread exists** (Smogon VGC forum, posted 2026-10-29 by a
+  forum moderator: `…regulation-m-c-sample-teams.3790579`, title now prefixed "Pokémon") → in
+  `KNOWN_THREADS`.
+- ⏳ **…but Meta Teams stay Reg M-B.** Smogon's forum now answers every plain fetch with a JavaScript
+  proof-of-work page (HTTP 200, "Checking your browser…"), the M-B thread included, so `data:teams` can't
+  read the thread and salvages. The generator now names the gate instead of "layout changed?". Deliberately
+  not scripted around (it's Smogon's bot gate): baking M-C teams needs a human call on the source. Issue #30
+  stays open, and its "add the KNOWN_THREADS line" advice is now stale.
+- ✅ **Data:** Reg M-C 2026-09 → **2026-10** (1,631,943 → 1,649,648 battles). Master+ 299 → 291 profiles,
+  all-ranks 333 → 335. Meta: Sneasler #1 (49.9%), Kingambit #2, Basculegion #3, Mega Charizard Y #14 → #4,
+  Rillaboom #1 → #5, Garchomp #19 → #7, Mega Dragonite #48 → #12, Mega Froslass #36 → #16, Mega Salamence
+  #4 → #20; Mega Golisopod, Milotic and Hisuian Arcanine left the top 20. Movepool drift absorbed: base
+  Typhlosion / Samurott / Decidueye shed their Hisuian forms' exclusive moves (Serebii's page is the
+  base+Hisuian union; spot-checked Decidueye), plus small adds (Indeedee Wish/Sing/Alluring Voice,
+  Squawkabilly Lunge/Seed Bomb, Toxtricity, Slowbro, Alolan Ninetales, Hisuian Avalugg — new PokeAPI
+  learnset entries, mostly Legends: Z-A, now passing the multi-form intersection).
+- Verified: data:all, status ✓ (warns: Lycanroc-Dusk, teams salvaged), offline + online audit 0 HIGH /
+  1 MEDIUM (= the teams salvage; online: 333 usages, 0 mismatched), 132 tests, tsc, lint. `npm run refresh`
+  itself exited 1 at `next build` in this worktree (symlinked `node_modules`, see AGENTS.md); the build
+  passed (277 pages) only with the temporary `turbopack.root`, so CI's real `npm ci` run is the true check.
+- ✅ **Independent review** re-ran the bar + mutation checks (each crit rule alone → only its own pins red).
+  It also found the 5 variable-BP Group B pins (Low Kick … Electro Ball) passing VACUOUSLY since they were
+  added: the runner's `calcMove.bp !== meta.power` skip compared the library's bp 0 with the baked
+  `power: null`. Now compared as `meta.power ?? 0`, so they really assert (all 5 match the library).
+
 ### Reg M-C ladder data + refresh-pipeline repair — 2026-10-02
 User: "update the app with the latest data — the pipeline doesn't seem to be working."
 - ✅ **Why it broke (issue #45):** the 2026-10-01 run auto-detected the first Reg M-C month
@@ -433,7 +720,43 @@ User report: "no data for some Pokémon that have been out a while" + bottom she
   accepted churn (reported, not changed): generatedAt restamps every bake → scheduled runs always merge
   a dated diff. Brief updated. NOTE: merge PR #25 before the next scheduled run — the parity failure is
   in main's engine until then.
+- ✅ **iOS-review round 2 (web side, 2026-11-18): team links, briefing immunities, KO headline, 4× tag.**
+  (1) Kimi: "Lycanroc Dusk" (Tough Claws) linked to the Midday-only page — the teams resolver fell back to
+  the base species for unmodeled forms. Now exact page/form or `slug: null`; `generate-teams.mjs --relink`
+  re-resolves the committed teams.json offline (the forum gate blocks the full bake) — diff = that one
+  slug; status + audit fail a linked member whose label/ability/types aren't the destination's (proven
+  red on the old file). (2) Astra #15: briefing "Ground hits 2 of 2" into Levitate-only Heat Rotom + Mega
+  Chimecho — `briefingBestTypes` scores per possible ability (guaranteed immunity/resist never counts;
+  a possible immunity is counted + "⚠ X may be immune"); pins carry `abilities`; Eelevate added to the
+  ability tables. (3) Fable #7: the KO line under "Likely set" headlined unshown moves (36/277, e.g. Mega
+  Charizard Y's 8% Hurricane) — `headlineBenchmark` picks among the six shown; 4 profiles still fall back.
+  (4) Fable #12: briefing 4× tag names its type ("4× Ground", legible ink). Tray chip tag not changed.
 
+- ✅ **iOS-review round 2 (web side, 2026-11-18): calc verdicts.** Four reviewers (Astra, Sol, Fable, Kimi)
+  found the calc's verdicts wrong in ways the TS shared with iOS; all fixed with reviewer-number tests
+  (`calc-data.test.ts`, `damage.test.ts`; 484 tests): battle identity per form (`battleName` — Kantonian
+  Tauros fought as the borrowed Paldea-Aqua set, Castform's Forecast never fired); Focus Sash / Sturdy /
+  Disguise / Ice Face at full HP (`survival`, `hpAfter`); multi-hit KO odds from independent rolls (Twin
+  Beam 50% → 30.47%); 3-use look-ahead (Draco Meteor's "guaranteed 2HKO" that the −2 SpA makes
+  impossible); Dragon Darts one per foe with two targets; Gale Wings priority vs Armor Tail; Aegislash
+  attacks in Blade (`attacksAs`); per-side target counts; resolved move facts on the result (Weather Ball
+  in sun = Fire 100); effective-speed turn order (+ Speed boost, Paralysis, Tailwind, Trick Room
+  controls); Mega stones as `requiredItem`; presets keep fixed-damage moves (Final Gambit, Night Shade);
+  calc links carry the form (`af` / `df`). Also: links to a BASE form always pass `?form=<slug>` (tray,
+  briefing, partner chips, team cards) — the detail page opens on the ladder default otherwise, i.e. the
+  Mega for Meganium; "no live calls" copy → "no live data calls" (images do load from GitHub).
+- ✅ 2026-11-18 Maushold follows the game data (see the Maushold entry above).
+- ✅ **iOS final review (web side, 2026-11-18): one use for a move that faints its user; honest KO odds.**
+  The 3-use look-ahead also walked Explosion, Self-Destruct, Misty Explosion and Final Gambit (the only
+  damaging user-fainting moves in the index — Memento / Healing Wish are status), so Final Gambit
+  (Staraptor into Rillaboom, 192 into 207) read "93–93% · 2HKO" and Explosion (Metagross into Kingambit,
+  66–79 into 207) "3HKO–4+ HKO" — uses the user never lives to make. `damage.ts` walks ONE use for them
+  (`MoveFacts.userFaints`; `uses[1..2]` zero, `koChances` all equal): "OHKO", a partial "OHKO · 31%"
+  (Explosion into Garchomp), or "No KO"; the facts line adds "user faints". KO chances print through
+  `formatKoChance` (format.ts): a real chance is never "0%" / "100%" — "<1%" (Population Bomb into
+  Appletun, 0.0004%, read "0% OHKO") / ">99%". Tests: `calc-data.test.ts` (the reviewers' cases),
+  `format.test.ts`; 504 tests, tsc, lint green. Not done, noted: the BAKED benchmarks (@smogon/calc)
+  still count Explosion "2HKOs" (Metagross, Mega Glalie) on the Threat card / move sheet — a bake-side fix.
 ## Optional / not done
 - ⏳ Download HOME sprites locally for fully offline images (data is already local; deferred as
   repo bloat vs the ~80ms prod nav already in place)

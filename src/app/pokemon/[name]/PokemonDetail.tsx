@@ -103,6 +103,7 @@ export function PokemonDetail({
     types: pokemon.types,
     stats: pokemon.stats,
     abilities: pokemon.abilities,
+    weightKg: pokemon.weightKg,
     sprite: pokemon.sprite,
     artwork: pokemon.artwork,
   };
@@ -172,6 +173,8 @@ export function PokemonDetail({
       speed: comp ? speedAnchors(active.stats, comp.spread).common : null,
       archetype: threat?.archetype ?? [],
       headline: threat?.vectors[0]?.headline ?? null,
+      // The briefing's ability-aware type scoring (battle.ts briefingBestTypes).
+      abilities: active.abilities.map((a) => a.name),
     });
   };
 
@@ -199,7 +202,8 @@ export function PokemonDetail({
         <div className="flex items-center gap-2 justify-self-end pr-3">
           {/* Run the numbers on this mon — seeds it as the calc's attacker. */}
           <Link
-            href={`/calc?a=${pokemon.name}`}
+            // The form on screen too (by key; the base form's key is the slug itself).
+            href={`/calc?a=${pokemon.name}${active && active.key !== pokemon.name ? `&af=${active.key}` : ""}`}
             aria-label="Open in Battle Calc"
             className="tap-target rounded-md bg-surface-2 px-2 py-1 font-display text-[10px] font-semibold uppercase tracking-wider text-muted active:bg-surface"
           >
@@ -502,7 +506,8 @@ export function PokemonDetail({
                 return t.slug ? (
                   <Link
                     key={t.displayName}
-                    href={`/pokemon/${t.slug}`}
+                    // A form chip ("Mega Charizard Y") opens that form, not the base.
+                    href={`/pokemon/${t.slug}?form=${t.formKey ?? t.slug}`}
                     className={`${cls} active:bg-surface-2`}
                   >
                     {inner}
@@ -524,7 +529,7 @@ export function PokemonDetail({
 
         {comp && (
           <p className="px-1 text-[11px] leading-snug text-muted/70">
-            {comp.asForm && `Competitive data shown for ${comp.asForm}. `}
+            {comp.asForm && `Competitive data shown for ${prettySmogonName(comp.asForm)}. `}
             {competitiveMeta.formatLabel} · {bracket === "master" ? "Master+" : "all ranks"} ·{" "}
             {competitiveMeta.month}
           </p>
