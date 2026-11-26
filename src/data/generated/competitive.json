@@ -5,7 +5,7 @@
     "month": "2026-10",
     "battles": 1649648,
     "source": "https://www.smogon.com/stats/2026-10/chaos/gen9championsvgc2026regmc-1760.json",
-    "generatedAt": "2026-11-23",
+    "generatedAt": "2026-11-26",
     "bracketLabels": {
       "master": "Master+ (top ladder brackets)",
       "all": "all ranks"
@@ -64930,8 +64930,8 @@
     "raichunite-x": {
       "slug": "raichunite-x",
       "displayName": "Raichunite X",
-      "shortEffect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
-      "effect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu X.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/raichunite-x.png",
       "flingPower": 80
@@ -64939,8 +64939,8 @@
     "raichunite-y": {
       "slug": "raichunite-y",
       "displayName": "Raichunite Y",
-      "shortEffect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
-      "effect": "A Mega Stone — lets Raichu Mega Evolve into Mega Raichu Y.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/raichunite-y.png",
       "flingPower": 80
@@ -64966,11 +64966,11 @@
     "clefablite": {
       "slug": "clefablite",
       "displayName": "Clefablite",
-      "shortEffect": "If held by a Clefable, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Clefable, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Clefable holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Clefable holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/clefablite.png",
+      "flingPower": 80
     },
     "never-melt-ice": {
       "slug": "never-melt-ice",
@@ -65029,11 +65029,11 @@
     "victreebelite": {
       "slug": "victreebelite",
       "displayName": "Victreebelite",
-      "shortEffect": "If held by a Victreebel, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Victreebel, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Victreebel holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Victreebel holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/victreebelite.png",
+      "flingPower": 80
     },
     "slowbronite": {
       "slug": "slowbronite",
@@ -65101,17 +65101,17 @@
     "starminite": {
       "slug": "starminite",
       "displayName": "Starminite",
-      "shortEffect": "If held by a Starmie, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Starmie, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Starmie holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Starmie holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/starminite.png",
+      "flingPower": 80
     },
     "fairy-feather": {
       "slug": "fairy-feather",
       "displayName": "Fairy Feather",
-      "shortEffect": "Powers up the holder's Fairy-type moves.",
-      "effect": "Powers up the holder's Fairy-type moves.",
+      "shortEffect": "An item to be held by a Pokémon. This feather, which gleams faintly when hit by light, boosts the power of the holder’s Fairy-type moves.",
+      "effect": "An item to be held by a Pokémon. This feather, which gleams faintly when hit by light, boosts the power of the holder’s Fairy-type moves.",
       "category": "Held Items",
       "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/fairy-feather.png",
       "flingPower": null
@@ -65182,29 +65182,29 @@
     "dragoninite": {
       "slug": "dragoninite",
       "displayName": "Dragoninite",
-      "shortEffect": "If held by a Dragonite, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Dragonite, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Dragonite holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Dragonite holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dragoninite.png",
+      "flingPower": 80
     },
     "meganiumite": {
       "slug": "meganiumite",
       "displayName": "Meganiumite",
-      "shortEffect": "If held by a Meganium, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Meganium, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/meganiumite.png",
+      "flingPower": 80
     },
     "feraligite": {
       "slug": "feraligite",
       "displayName": "Feraligite",
-      "shortEffect": "If held by a Feraligatr, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Feraligatr, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/feraligite.png",
+      "flingPower": 80
     },
     "ampharosite": {
       "slug": "ampharosite",
@@ -65272,11 +65272,11 @@
     "skarmorite": {
       "slug": "skarmorite",
       "displayName": "Skarmorite",
-      "shortEffect": "If held by a Skarmory, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Skarmory, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Skarmory holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Skarmory holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/skarmorite.png",
+      "flingPower": 80
     },
     "houndoominite": {
       "slug": "houndoominite",
@@ -65470,20 +65470,20 @@
     "chimechite": {
       "slug": "chimechite",
       "displayName": "Chimechite",
-      "shortEffect": "If held by a Chimecho, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Chimecho, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Chimecho holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Chimecho holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chimechite.png",
+      "flingPower": 80
     },
     "absolite-z": {
       "slug": "absolite-z",
       "displayName": "Absolite Z",
-      "shortEffect": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol Z in battle.",
-      "effect": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol Z in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/absolite-z.png",
+      "flingPower": 80
     },
     "glalitite": {
       "slug": "glalitite",
@@ -65533,11 +65533,11 @@
     "staraptite": {
       "slug": "staraptite",
       "displayName": "Staraptite",
-      "shortEffect": "If held by a Staraptor, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Staraptor, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/staraptite.png",
+      "flingPower": 80
     },
     "iron-ball": {
       "slug": "iron-ball",
@@ -65578,11 +65578,11 @@
     "garchompite-z": {
       "slug": "garchompite-z",
       "displayName": "Garchompite Z",
-      "shortEffect": "If held by a Garchomp, this item allows it to Mega Evolve into Mega Garchomp Z.",
-      "effect": "If held by a Garchomp, this item allows it to Mega Evolve into Mega Garchomp Z.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/garchompite-z.png",
+      "flingPower": 80
     },
     "lucarionite": {
       "slug": "lucarionite",
@@ -65596,11 +65596,11 @@
     "lucarionite-z": {
       "slug": "lucarionite-z",
       "displayName": "Lucarionite Z",
-      "shortEffect": "If held by a Lucario, this item allows it to Mega Evolve into Mega Lucario Z in battle.",
-      "effect": "If held by a Lucario, this item allows it to Mega Evolve into Mega Lucario Z in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/lucarionite-z.png",
+      "flingPower": 80
     },
     "abomasite": {
       "slug": "abomasite",
@@ -65650,20 +65650,20 @@
     "froslassite": {
       "slug": "froslassite",
       "displayName": "Froslassite",
-      "shortEffect": "If held by a Froslass, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Froslass, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/froslassite.png",
+      "flingPower": 80
     },
     "emboarite": {
       "slug": "emboarite",
       "displayName": "Emboarite",
-      "shortEffect": "If held by an Emboar, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by an Emboar, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/emboarite.png",
+      "flingPower": 80
     },
     "black-glasses": {
       "slug": "black-glasses",
@@ -65677,11 +65677,11 @@
     "excadrite": {
       "slug": "excadrite",
       "displayName": "Excadrite",
-      "shortEffect": "If held by an Excadrill, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by an Excadrill, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. An Excadrill holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. An Excadrill holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/excadrite.png",
+      "flingPower": 80
     },
     "mental-herb": {
       "slug": "mental-herb",
@@ -65704,47 +65704,47 @@
     "scolipite": {
       "slug": "scolipite",
       "displayName": "Scolipite",
-      "shortEffect": "If held by a Scolipede, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Scolipede, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Scolipede holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Scolipede holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scolipite.png",
+      "flingPower": 80
     },
     "scraftinite": {
       "slug": "scraftinite",
       "displayName": "Scraftinite",
-      "shortEffect": "If held by a Scrafty, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Scrafty, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scraftinite.png",
+      "flingPower": 80
     },
     "eelektrossite": {
       "slug": "eelektrossite",
       "displayName": "Eelektrossite",
-      "shortEffect": "If held by an Eelektross, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by an Eelektross, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/eelektrossite.png",
+      "flingPower": 80
     },
     "chandelurite": {
       "slug": "chandelurite",
       "displayName": "Chandelurite",
-      "shortEffect": "If held by a Chandelure, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Chandelure, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Chandelure holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Chandelure holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chandelurite.png",
+      "flingPower": 80
     },
     "golurkite": {
       "slug": "golurkite",
       "displayName": "Golurkite",
-      "shortEffect": "If held by a Golurk, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Golurk, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/golurkite.png",
+      "flingPower": 80
     },
     "electric-seed": {
       "slug": "electric-seed",
@@ -65758,47 +65758,47 @@
     "chesnaughtite": {
       "slug": "chesnaughtite",
       "displayName": "Chesnaughtite",
-      "shortEffect": "If held by a Chesnaught, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Chesnaught, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Chesnaught holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Chesnaught holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/chesnaughtite.png",
+      "flingPower": 80
     },
     "delphoxite": {
       "slug": "delphoxite",
       "displayName": "Delphoxite",
-      "shortEffect": "If held by a Delphox, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Delphox, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Delphox holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Delphox holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/delphoxite.png",
+      "flingPower": 80
     },
     "greninjite": {
       "slug": "greninjite",
       "displayName": "Greninjite",
-      "shortEffect": "If held by a Greninja, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Greninja, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Greninja holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Greninja holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/greninjite.png",
+      "flingPower": 80
     },
     "pyroarite": {
       "slug": "pyroarite",
       "displayName": "Pyroarite",
-      "shortEffect": "If held by a Pyroar, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Pyroar, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/pyroarite.png",
+      "flingPower": 80
     },
     "floettite": {
       "slug": "floettite",
       "displayName": "Floettite",
-      "shortEffect": "If held by an Eternal Flower Floette, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by an Eternal Flower Floette, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A special Floette holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A special Floette holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/floettite.png",
+      "flingPower": 80
     },
     "kebia-berry": {
       "slug": "kebia-berry",
@@ -65812,11 +65812,11 @@
     "meowsticite": {
       "slug": "meowsticite",
       "displayName": "Meowsticite",
-      "shortEffect": "If held by a Meowstic, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Meowstic, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Meowstic holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Meowstic holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/meowsticite.png",
+      "flingPower": 80
     },
     "spell-tag": {
       "slug": "spell-tag",
@@ -65839,38 +65839,38 @@
     "malamarite": {
       "slug": "malamarite",
       "displayName": "Malamarite",
-      "shortEffect": "If held by a Malamar, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Malamar, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Malamar holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Malamar holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/malamarite.png",
+      "flingPower": 80
     },
     "barbaracite": {
       "slug": "barbaracite",
       "displayName": "Barbaracite",
-      "shortEffect": "If held by a Barbaracle, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Barbaracle, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/barbaracite.png",
+      "flingPower": 80
     },
     "dragalgite": {
       "slug": "dragalgite",
       "displayName": "Dragalgite",
-      "shortEffect": "If held by a Dragalge, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Dragalge, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Dragalge holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Dragalge holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dragalgite.png",
+      "flingPower": 80
     },
     "hawluchanite": {
       "slug": "hawluchanite",
       "displayName": "Hawluchanite",
-      "shortEffect": "If held by a Hawlucha, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Hawlucha, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Hawlucha holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Hawlucha holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/hawluchanite.png",
+      "flingPower": 80
     },
     "kasib-berry": {
       "slug": "kasib-berry",
@@ -65893,11 +65893,11 @@
     "crabominite": {
       "slug": "crabominite",
       "displayName": "Crabominite",
-      "shortEffect": "If held by a Crabominable, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Crabominable, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/crabominite.png",
+      "flingPower": 80
     },
     "binding-band": {
       "slug": "binding-band",
@@ -65920,20 +65920,20 @@
     "golisopite": {
       "slug": "golisopite",
       "displayName": "Golisopite",
-      "shortEffect": "If held by a Golisopod, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Golisopod, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Golisopod holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Golisopod holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/golisopite.png",
+      "flingPower": 80
     },
     "drampanite": {
       "slug": "drampanite",
       "displayName": "Drampanite",
-      "shortEffect": "If held by a Drampa, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Drampa, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Drampa holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Drampa holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/drampanite.png",
+      "flingPower": 80
     },
     "black-belt": {
       "slug": "black-belt",
@@ -65956,11 +65956,11 @@
     "falinksite": {
       "slug": "falinksite",
       "displayName": "Falinksite",
-      "shortEffect": "If held by a Falinks, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Falinks, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Falinks holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Falinks holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/falinksite.png",
+      "flingPower": 80
     },
     "leppa-berry": {
       "slug": "leppa-berry",
@@ -65974,11 +65974,11 @@
     "scovillainite": {
       "slug": "scovillainite",
       "displayName": "Scovillainite",
-      "shortEffect": "If held by a Scovillain, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Scovillain, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Scovillain holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Scovillain holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/scovillainite.png",
+      "flingPower": 80
     },
     "lum-berry": {
       "slug": "lum-berry",
@@ -65992,20 +65992,20 @@
     "glimmoranite": {
       "slug": "glimmoranite",
       "displayName": "Glimmoranite",
-      "shortEffect": "If held by a Glimmora, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Glimmora, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/glimmoranite.png",
+      "flingPower": 80
     },
     "baxcalibrite": {
       "slug": "baxcalibrite",
       "displayName": "Baxcalibrite",
-      "shortEffect": "If held by a Baxcalibur, this item allows it to Mega Evolve in battle.",
-      "effect": "If held by a Baxcalibur, this item allows it to Mega Evolve in battle.",
+      "shortEffect": "One of a variety of mysterious Mega Stones. A Baxcalibur holding this stone will be able to Mega Evolve during battle.",
+      "effect": "One of a variety of mysterious Mega Stones. A Baxcalibur holding this stone will be able to Mega Evolve during battle.",
       "category": "Mega Stones",
-      "sprite": null,
-      "flingPower": null
+      "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/baxcalibrite.png",
+      "flingPower": 80
     },
     "wise-glasses": {
       "slug": "wise-glasses",
